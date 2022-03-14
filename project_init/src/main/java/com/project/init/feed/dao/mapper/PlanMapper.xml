@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.init.feed.dao.IDao" >
+
+<insert id="insertPlan" parameterType="com.project.init.feed.dto.PlanDto">
+	INSERT INTO test_calendar (planName, startDate, endDate) VALUES (#{planName}, #{startDate}, #{endDate})
+</insert>
+
+<select id="selectAllPlan" resultType="com.project.init.feed.dto.PlanDto">
+	<!-- for oracle -->
+	
+	SELECT planName, startDate, endDate FROM test_calendar	
+	
+	<!-- for mysql -->
+	<!--
+	SELECT planName, DATE_FORMAT(startDate, '%Y-%m-%d'"T"'%H:%i:%s') startDate, DATE_FORMAT(endDate, '%Y-%m-%d'"T"'%H:%i:%s') endDate 
+	FROM test_calendar
+	-->
+</select>
+
+</mapper>
