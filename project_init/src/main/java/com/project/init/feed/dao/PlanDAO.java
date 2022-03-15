@@ -31,4 +31,28 @@ public class PlanDAO implements IDao {
 		return dtos;
 	}
 
+
+	@Override
+	public String updatePlan(PlanDto dto) {
+		int result = sqlSession.update("updatePlan", dto);
+		
+		if ( result > 0 ) {
+			return "success";
+		} else {
+			return "failed";
+		}
+	}
+	
+	@Override
+	public String deletePlan(String planNum) {
+		int result = sqlSession.delete("deletePlan", planNum);
+		
+		if ( result > 0 ) {
+			return "success";
+		} else {
+			return "failed";
+		}
+	}
+	
+
 }

@@ -12,3 +12,16 @@
 	border: none;
 }
 
+.notice .dropdown-toggle::after {
+	display : none;
+}
+
+.notice .dropdown-menu {
+	width: 250px;
+	height: 300px;
+	overflow: auto;
+}
+
+.notice .dropdown-menu list-group-item {
+	height: 10%;
+}

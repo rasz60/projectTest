@@ -40,5 +40,23 @@ public class FeedController {
 	@RequestMapping("insertPlan.do")
 	public void insertPlan(@RequestBody PlanDto dto) {
 		dao.insertPlan(dto);
-	}	
+	}
+	
+	@ResponseBody
+	@RequestMapping("modify_plan.do")
+	public String modifyPlan(@RequestBody PlanDto dto) {
+		String result = dao.updatePlan(dto);
+		
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping("delete_plan.do")
+	public String deletePlan(@RequestBody String planNum) {
+		String result = dao.deletePlan(planNum);
+		
+		return result;
+	}
+
+	
 }

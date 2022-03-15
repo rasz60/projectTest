@@ -1,21 +1,31 @@
 package com.project.init.feed.dto;
 
 public class PlanDto {
+	private int planNum;
 	private String planName;
 	private String startDate;
 	private String endDate;
-	
+
 	public PlanDto() {
 		super();
 	}
-	
-	public PlanDto(String planName, String startDate, String endDate) {
+
+	public PlanDto(int planNum, String planName, String startDate, String endDate) {
 		super();
+		this.planNum = planNum;
 		this.planName = planName;
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
 	
+	public int getPlanNum() {
+		return planNum;
+	}
+
+	public void setPlanNum(int planNum) {
+		this.planNum = planNum;
+	}
+
 	public String getPlanName() {
 		return planName;
 	}

@@ -10,4 +10,7 @@ public interface IDao {
 	
 	ArrayList<PlanDto> selectAllPlan();
 
+	String updatePlan(PlanDto dto);
+	
+	String deletePlan(String planNum);
 }
