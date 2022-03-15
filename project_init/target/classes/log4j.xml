@@ -12,7 +12,7 @@
 	
 	<!-- Application Loggers -->
 	<logger name="com.project.init">
-		<level value="info" />
+		<level value="trace" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
