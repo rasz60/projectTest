@@ -39,6 +39,10 @@ section.container {
 	height: 100%;
 }
 
+.modal-content .post-img img {
+	width: 100%;
+}
+
 
 .modal-content .list-group {
 	width: 40%;
