@@ -1,6 +1,8 @@
 package com.project.init.feed.dto;
 
 public class PlanDto {
+	
+	
 	private int planNum;
 	private String planName;
 	private String startDate;

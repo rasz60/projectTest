@@ -38,7 +38,7 @@
 		        	</ul>
 		      	</div>
 		      	<input type="text" class="form-control bg-light mr-1" size="30" aria-label="000" placeholder="search...">
-	    		<button type="button" class="btn btn-default mr-1"><i class="fa-brands fa-sistrix"></i></button>	      	
+	    		<a href="search" class="btn btn-default mr-1"><i class="fa-brands fa-sistrix"></i></a>	      	
 		    </div>
 		</div>
 		

@@ -78,26 +78,13 @@
 				</a>
 			</div>
 			
-			<div class="posts d-flex justify-content-around mt-2">
-				<div class="post mr-2">
-					<div class="post-top border rounded"></div>
-					<div class="post-bottom border"></div>
-				</div>
-				
-				<div class="post mr-2">
-					<div class="post-top border rounded"></div>
-					<div class="post-bottom border"></div>
-				</div>
-				
-				<div class="post mr-2">
-					<div class="post-top border rounded"></div>
-					<div class="post-bottom border"></div>
-				</div>
-				
-				<div class="post">
-					<div class="post-top border rounded"></div>
-					<div class="post-bottom border"></div>
-				</div>
+			<div class="posts d-flex justify-content-between mt-2">
+				<c:forEach begin="1" end="4" var="i">
+					<div class="post mr-2">
+						<div class="post-top border rounded"></div>
+						<div class="post-bottom border"></div>
+					</div>
+				</c:forEach>
 			</div>
 		</div>
 		
@@ -109,26 +96,13 @@
 				</a>
 			</div>
 			
-			<div class="posts d-flex justify-content-around mt-2">
-				<div class="post mr-2">
-					<div class="post-top border rounded"></div>
-					<div class="post-bottom border"></div>
-				</div>
-				
-				<div class="post mr-2">
-					<div class="post-top border rounded"></div>
-					<div class="post-bottom border"></div>
-				</div>
-				
-				<div class="post mr-2">
-					<div class="post-top border rounded"></div>
-					<div class="post-bottom border"></div>
-				</div>
-				
-				<div class="post">
-					<div class="post-top border rounded"></div>
-					<div class="post-bottom border"></div>
-				</div>
+			<div class="posts d-flex justify-content-between mt-2">
+				<c:forEach begin="1" end="4" var="i">
+					<div class="post mr-2">
+						<div class="post-top border rounded"></div>
+						<div class="post-bottom border"></div>
+					</div>
+				</c:forEach>
 			</div>
 		</div>
 		
@@ -140,26 +114,13 @@
 				</a>
 			</div>
 			
-			<div class="posts d-flex justify-content-around mt-2">			
-				<div class="post mr-2">
-					<div class="post-top border rounded"></div>
-					<div class="post-bottom border"></div>
-				</div>
-				
-				<div class="post mr-2">
-					<div class="post-top border rounded"></div>
-					<div class="post-bottom border"></div>
-				</div>
-				
-				<div class="post mr-2">
-					<div class="post-top border rounded"></div>
-					<div class="post-bottom border"></div>
-				</div>
-				
-				<div class="post">
-					<div class="post-top border rounded"></div>
-					<div class="post-bottom border"></div>
-				</div>
+			<div class="posts d-flex justify-content-between mt-2">			
+				<c:forEach begin="1" end="4" var="i">
+					<div class="post mr-2">
+						<div class="post-top border rounded"></div>
+						<div class="post-bottom border"></div>
+					</div>
+				</c:forEach>
 			</div>
 		</div>
 		
@@ -171,26 +132,13 @@
 				</a>
 			</div>
 			
-			<div class="posts d-flex justify-content-around mt-2">			
-				<div class="post mr-2">
-					<div class="post-top border rounded"></div>
-					<div class="post-bottom border"></div>
-				</div>
-				
-				<div class="post mr-2">
-					<div class="post-top border rounded"></div>
-					<div class="post-bottom border"></div>
-				</div>
-				
-				<div class="post mr-2">
-					<div class="post-top border rounded"></div>
-					<div class="post-bottom border"></div>
-				</div>
-				
-				<div class="post">
-					<div class="post-top border rounded"></div>
-					<div class="post-bottom border"></div>
-				</div>
+			<div class="posts d-flex justify-content-between mt-2">			
+				<c:forEach begin="1" end="4" var="i">
+					<div class="post mr-2">
+						<div class="post-top border rounded"></div>
+						<div class="post-bottom border"></div>
+					</div>
+				</c:forEach>
 			</div>
 		</div>
 	</div>	
