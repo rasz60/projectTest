@@ -56,7 +56,7 @@ public class FeedController {
 		logger.info("modifyPlans("+ dto +") in >>>>");
 		String result = dao.updatePlan(dto);
 		
-		logger.info("modifyPlans(" + result + ") out >>>>");
+		logger.info("modifyPlans(" + result + ") result : " + result);
 		
 		return result;
 	}
@@ -67,7 +67,7 @@ public class FeedController {
 		logger.info("deletePlan("+ planNum +") in >>>>");
 		String result = dao.deletePlan(planNum);
 		
-		logger.info("deletePlan("+ result +") out >>>>");
+		logger.info("deletePlan("+ result +") result : " + result);
 		return result;
 	}
 

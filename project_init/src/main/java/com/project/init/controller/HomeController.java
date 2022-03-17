@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-
+	
+	
 	@RequestMapping("/")
 	public String main() {
 		logger.info("main >>>");
@@ -34,7 +35,7 @@ public class HomeController {
 			pageNum = 1;
 		}
 		
-		logger.info(pageNum+"");
+		logger.info("search result : pageNum ? " + pageNum);
 			
 		model.addAttribute("pagePostCount", pagePostCount);
 		model.addAttribute("pageNum", pageNum);

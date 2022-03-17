@@ -22,7 +22,7 @@ public class PlanDAO implements IDao {
 		logger.info("PlanDao Const in >>>");
 		this.sqlSession = sqlSession;
 		
-		logger.info("PlanDao Const out >>> sqlSession getConn success ? " + sqlSession.toString());
+		logger.info("PlanDao Const result : sqlSession getConn success ? " + sqlSession.toString());
 	}
 	
 	
@@ -31,7 +31,7 @@ public class PlanDAO implements IDao {
 		logger.info("insertPlan(" + dto + ") in >>>");
 		int result = sqlSession.insert("insertPlan", dto);
 		
-		logger.info("insertPlan(" + dto + ") out >>> result : " + result);
+		logger.info("insertPlan(" + dto + ") result : " + result);
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class PlanDAO implements IDao {
 		
 		ArrayList<PlanDto> dtos = (ArrayList)sqlSession.selectList("selectAllPlan");
 		
-		logger.info("selectAllPlan(" + ") out >>> dtos.isEmpty() ? " + dtos.isEmpty());
+		logger.info("selectAllPlan(" + ") result : dtos.isEmpty() ? " + dtos.isEmpty());
 		return dtos;
 	}
 
@@ -50,7 +50,7 @@ public class PlanDAO implements IDao {
 		logger.info("PlanDto(" + dto + ") in >>>");
 		int result = sqlSession.update("updatePlan", dto);
 		
-		logger.info("PlanDto(" + dto + ") out >>> result : " + result);
+		logger.info("PlanDto(" + dto + ") result : " + result);
 		
 		if ( result > 0 ) {
 			return "success";
@@ -62,12 +62,10 @@ public class PlanDAO implements IDao {
 	@Override
 	public String deletePlan(String planNum) {
 		logger.info("deletePlan(" + planNum + ") in >>>");
-		
-		
+
 		int result = sqlSession.delete("deletePlan", planNum);
-		
-		
-		logger.info("deletePlan(" + planNum + ") out >>> result : " + result);
+
+		logger.info("deletePlan(" + planNum + ") result : " + result);
 		
 		if ( result > 0 ) {
 			return "success";
