@@ -99,3 +99,7 @@ section.container {
 .main-body-bottom .recommand .posts .post-bottom {
 	height: 18%;
 }
+
+img {
+	object-fit: cover;
+}

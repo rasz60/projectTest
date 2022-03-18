@@ -43,26 +43,7 @@
 	</div>
 </section>
 
-	<!-- modal button -->
-	<input type="hidden" id="modalBtn" data-toggle="modal" data-target="#myModal" value="modal" />
-	
-	<!-- modal 창 -->
-	<div class="modal fade" id="myModal" role="dialog">
-		<div class="modal-dialog modal-dialog-centered modal-xl d-block">
-			<button type="button" id="modalCloseBtn" class="btn btn-xl btn-default text-white text-weight-bold display-1 float-right" data-dismiss="modal">&times;</button>
-			<div class="modal-content">
-				<div class="modal-body bg-light d-flex justify-content-between">
-					<div class="post-img border rounded mr-2"></div>
-					<ul class="list-group d-block">
-						<li class="list-group-item"></li>
-						<li class="list-group-item"></li>
-						<li class="list-group-item"></li>
-						<li class="list-group-item"></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+<%@ include file="modalPost.jsp" %>
 
 <%@ include file="footer.jsp" %>
 

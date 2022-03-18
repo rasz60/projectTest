@@ -73,7 +73,7 @@
 		<div class="recommand recommand-1 mb-2">
 			<div class="recommand-icon text-danger d-flex justify-content-between">
 				<i class="btn1 fa-solid fa-location-arrow"></i>
-				<a href="#" class="text-danger">
+				<a href="search" class="text-danger">
 					<i class="btn2 fa-regular fa-circle-right"></i>
 				</a>
 			</div>
@@ -91,7 +91,7 @@
 		<div class="recommand recommand-2 mb-2">
 			<div class="recommand-icon text-primary d-flex justify-content-between">
 				<i class="btn1 fa-solid fa-users"></i>
-				<a href="#" class="text-primary">
+				<a href="search" class="text-primary">
 					<i class="btn2 fa-regular fa-circle-right"></i>
 				</a>
 			</div>
@@ -109,7 +109,7 @@
 		<div class="recommand recommand-3 mb-2">
 			<div class="recommand-icon text-success d-flex justify-content-between">
 				<i class="btn1 fa-solid fa-font-awesome"></i>
-				<a href="#" class="text-success">
+				<a href="search" class="text-success">
 					<i class="btn2 fa-regular fa-circle-right"></i>
 				</a>
 			</div>
@@ -127,7 +127,7 @@
 		<div class="recommand recommand-4 mb-2">
 			<div class="recommand-icon text-warning d-flex justify-content-between">
 				<i class="btn1 fa-solid fa-trophy"></i>
-				<a href="#" class="text-warning">
+				<a href="search" class="text-warning">
 					<i class="btn2 fa-regular fa-circle-right"></i>
 				</a>
 			</div>
@@ -144,6 +144,23 @@
 	</div>	
 </section>
 
+
+
+<%@ include file="modalPost.jsp" %>
+
 <%@ include file="footer.jsp" %>
+
+
+<script>
+
+$(document).ready(function() {
+	$('.post').click(function() {
+		console.log($(this).text());
+		$('#modalBtn').trigger('click');
+	})
+});
+
+</script>
+
 </body>
 </html>

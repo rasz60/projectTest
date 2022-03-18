@@ -22,32 +22,10 @@ section.container {
 	margin-bottom: 2%;
 }
 
+img {
+	object-fit: cover;
+}
+
 .result_posts .posts .post-bottom {
 	height: 18%;
-}
-
-.modal-dialog {
-	height: 100%;	
-}
-
-.modal-content {
-	height: 90%;
-}
-
-.modal-content .post-img {
-	width: 60%;
-	height: 100%;
-}
-
-.modal-content .post-img img {
-	width: 100%;
-}
-
-
-.modal-content .list-group {
-	width: 40%;
-}
-
-.modal-content .list-group .list-group-item {
-	height: 25%;
 }
