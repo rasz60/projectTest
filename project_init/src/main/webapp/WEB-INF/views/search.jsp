@@ -35,8 +35,10 @@
 		<div class="posts d-flex flex-wrap justify-content-start mt-2">
 			<c:forEach begin="1" end="20" var="i">
 				<div class="post mr-2">
-					<div class="post-top border rounded">${ i}</div>
-					<div class="post-bottom border"></div>
+					<div class="post-top border rounded">
+						<img src="images/5.jpg" alt="test"/>
+					</div>
+					<div class="post-bottom border">${ i}</div>
 				</div>
 			</c:forEach>
 		</div>

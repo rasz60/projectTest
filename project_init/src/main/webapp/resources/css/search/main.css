@@ -20,9 +20,12 @@ section.container {
 .result_posts .posts .post-top {
 	height: 80%;
 	margin-bottom: 2%;
+	overflow: hidden;
 }
 
-img {
+.result_posts .posts .post-top img {
+	max-width: 100%;
+	height: 100%;
 	object-fit: cover;
 }
 
