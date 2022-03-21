@@ -9,12 +9,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-	<!-- modal button -->
-	<input type="hidden" id="modalBtn1" data-toggle="modal" data-target="#myModal" value="modal" />
 	
 	<!-- modal 창 -->
-	<div class="modal fade" id="myModal" role="dialog">
+	<div class="modal fade" id="myModal2" role="dialog">
 		<div class="modal-dialog modal-dialog-centered modal-xl d-block">
 			<button type="button" id="modalCloseBtn" class="btn btn-xl btn-default text-white text-weight-bold display-1 float-right" data-dismiss="modal">&times;</button>
 			<div class="modal-content">

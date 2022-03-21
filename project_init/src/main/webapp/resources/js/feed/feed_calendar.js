@@ -75,8 +75,6 @@ $(document).ready(function() {
 	
 	// 일정 생성(Create 버튼 눌렀을 때)
 	$('#submit').click(function(e) {
-		// 기본 기능인 form submit 기능 차단
-		e.preventDefault();
 		
 		// 각각의 form에 입력된 값을 변수에 저장
 		var frm = $('#frm');
@@ -84,10 +82,26 @@ $(document).ready(function() {
 		var startDate = $('#startDate').val();
 		var endDate = $('#endDate').val();
 		
-		insertPlan(planName, startDate, endDate);
-
-		// form에 reset 버튼 클릭
-		$('.mp_btn #reset').trigger('click');
+		// 1st Validation : input null check
+		if( planName == "" ) {
+			alert('일정 이름을 입력해주세요.');
+			return false;
+		} else if( startDate =="" || endDate =="" ) {
+			alert('일자를 선택해주세요.');
+			return false;
+			
+		// 2nd Validation : 종료일자가 시작일자보다 빠르면 폼을 reset 시키고 submit 되지 않게 함.
+		} else if ( startDate > endDate ) {
+			alert("종료일자가 시작일자보다 빠를 수 없습니다.");
+			$('.mp_btn #reset').trigger('click');
+			return false;
+		}
+		
+		// 3rd Validation : 선택한 일정이 맞는지 다시 한 번 체크
+		if( confirm('선택한 일자로 일정을 만들까요?') == true ) {
+			frm.submit();
+		};
+		
 	})
 	
 	// eventclick 하여 modal창의 버튼을 눌렀을 때

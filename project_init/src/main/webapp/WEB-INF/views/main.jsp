@@ -144,10 +144,7 @@
 	</div>	
 </section>
 
-
-
 <%@ include file="modalPost.jsp" %>
-
 <%@ include file="footer.jsp" %>
 
 

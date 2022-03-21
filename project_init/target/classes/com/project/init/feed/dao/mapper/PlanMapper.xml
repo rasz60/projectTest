@@ -22,4 +22,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	DELETE FROM test_calendar WHERE planNum = #{planNum}
 </delete>
 
+<insert id="insertMap" parameterType="com.project.init.feed.dto.PlanDto2">
+	INSERT INTO plan_test (planId, planName, startDate, endDate, latitude, longitude, placeName, placecount, category, address)
+	VALUES (plan_test_seq.nextVal, #{planName}, #{startDate}, #{endDate}, #{latitude}, #{longitude}, #{placeName}, #{category}, #{placecount}, #{address})
+</insert>
+
 </mapper>

@@ -44,10 +44,10 @@
 		
 		<hr />
 	
-		<div class="d-flex justify-content-between mt-4">
+		<div class="d-flex justify-content-between mt-4" id="main-body">
 			<!-- create plan form -->
 			<div class="border rounded p-3">
-				<form action="planner" id="frm" method="post">
+				<form action="feed/mappage" id="frm" method="get">
 					<div class="form-group">
 						<label for="planName">일정 이름</label>
 						<input type="text" name="planName" id="planName" class="form-control" size="20"/>
@@ -98,7 +98,7 @@
 						
 						<div class="form-group">
 							<label for="endDate">종료 일자</label>
-							<input type="date" id="endDate" name="endDate"" class="form-control"/>
+							<input type="date" id="endDate" name="endDate" class="form-control"/>
 						</div>
 						<div class="button-group text-right">
 							<button type="button" id="btn-modify" class="btn btn-sm btn-success">수정</button>
@@ -110,8 +110,9 @@
 			</div>
 		</div>
 	</div>
-
 </section>
+
+<%@ include file="/WEB-INF/views/feed/modal1.jsp" %>
 <%@ include file="/WEB-INF/views/footer.jsp" %>
 </body>
 </html>

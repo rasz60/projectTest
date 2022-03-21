@@ -2,10 +2,14 @@ package com.project.init.feed.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -70,6 +74,26 @@ public class FeedController {
 		logger.info("deletePlan("+ result +") result : " + result);
 		return result;
 	}
+	
+	@RequestMapping("mappage")
+	public String mappage(HttpServletRequest request, Model model) {
+		logger.info("mappage() in >>>>");
+		
+		return "feed/mappage";
+	}
+	
+	//===== mappage의 form(#frm)에서 받은 data insert =====
+	@RequestMapping(value="insertMap", produces = "application/text; charset=UTF8")
+	@ResponseBody
+	public String insertMap(HttpServletRequest request, HttpServletResponse response, Model model) {
+		System.out.println("insertMap");
+		String result = dao.insertMap(model, request);
 
+		if(result.equals("success"))
+			return "insert-success";
+		else
+			return "insert-failed";
+	}
+	
 	
 }
