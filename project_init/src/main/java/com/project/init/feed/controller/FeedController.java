@@ -76,13 +76,15 @@ public class FeedController {
 	}
 	
 	@RequestMapping("mappage")
-	public String mappage(HttpServletRequest request, Model model) {
-		logger.info("mappage() in >>>>");
+	public String mappage(PlanDto dto, Model model) {
+		logger.info("mappage(" + dto.getPlanName() + ") in >>>>");
+		
+		model.addAttribute("plan", dto);
 		
 		return "feed/mappage";
 	}
 	
-	//===== mappageÀÇ form(#frm)¿¡¼­ ¹ÞÀº data insert =====
+	//===== mappageï¿½ï¿½ form(#frm)ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ data insert =====
 	@RequestMapping(value="insertMap", produces = "application/text; charset=UTF8")
 	@ResponseBody
 	public String insertMap(HttpServletRequest request, HttpServletResponse response, Model model) {

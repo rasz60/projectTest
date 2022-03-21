@@ -10,23 +10,26 @@ public class PlanDto2 {
 	private String planName;
 	private String startDate;
 	private String endDate;
-	private String latitude; //À§µµ
-	private String longitude; //°æµµ
-	private String placeName; //Àå¼ÒÀÌ¸§
-	private String category; //Ä«Å×°í¸®
-	private String placecount; //¼±ÅÃÇÑ Àå¼Ò °¹¼ö
-	private String address; //ÁÖ¼Ò
+	private String theme;
+	private String latitude; //ï¿½ï¿½ï¿½ï¿½
+	private String longitude; //ï¿½æµµ
+	private String placeName; //ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½
+	private String category; //Ä«ï¿½×°ï¿½
+	private String placecount; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	private String address; //ï¿½Ö¼ï¿½
 	public PlanDto2() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public PlanDto2(String planNum, String planName, String startDate, String endDate, String latitude, String longitude,
-			String placeName, String category, String placecount, String address) {
+
+	public PlanDto2(String planNum, String planName, String startDate, String endDate, String theme, String latitude,
+			String longitude, String placeName, String category, String placecount, String address) {
 		super();
 		this.planNum = planNum;
 		this.planName = planName;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.theme = theme;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.placeName = placeName;
@@ -34,6 +37,7 @@ public class PlanDto2 {
 		this.placecount = placecount;
 		this.address = address;
 	}
+
 	public String getPlanNum() {
 		return planNum;
 	}
@@ -58,6 +62,16 @@ public class PlanDto2 {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
+	
+	
+	public String getTheme() {
+		return theme;
+	}
+
+	public void setTheme(String theme) {
+		this.theme = theme;
+	}
+
 	public String getLatitude() {
 		return latitude;
 	}

@@ -40,11 +40,14 @@ public class PlanDAO implements IDao {
 
 	@Override
 	public ArrayList<PlanDto> selectAllPlan() {
-		logger.info("selectAllPlan() in >>>");
+		//logger.info("selectAllPlan() in >>>");
+		//ArrayList<PlanDto> dtos = (ArrayList)sqlSession.selectList("selectAllPlan");
 		
-		ArrayList<PlanDto> dtos = (ArrayList)sqlSession.selectList("selectAllPlan");
+		logger.info("getCalendarEvent() in >>>");
+		ArrayList<PlanDto> dtos = (ArrayList)sqlSession.selectList("getCalendarEvent");
+		logger.info("getCalendarEvent(" + ") result : dtos.isEmpty() ? " + dtos.isEmpty());
 		
-		logger.info("selectAllPlan(" + ") result : dtos.isEmpty() ? " + dtos.isEmpty());
+		//logger.info("selectAllPlan(" + ") result : dtos.isEmpty() ? " + dtos.isEmpty());
 		return dtos;
 	}
 
@@ -83,19 +86,20 @@ public class PlanDAO implements IDao {
 	public String insertMap(Model model, HttpServletRequest request) {
 		logger.info("insertMap in >>>> ");
 		
-		String index = request.getParameter("placecount"); //mappage¿¡¼­ ¼±ÅÃÇÑ Àå¼Ò ¼ö(placecount) ±¸ÇØ¼­ index °´Ã¼¿¡ ´ã±â
-		int j = Integer.parseInt(index); // StringÀ¸·Î ¹ÞÀº °ª Integer·Î Çü º¯È¯ ÇØ¼­ °´Ã¼ j¿¡ ´ã±â
+		String index = request.getParameter("placecount"); //mappageï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½(placecount) ï¿½ï¿½ï¿½Ø¼ï¿½ index ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½
+		int j = Integer.parseInt(index); // Stringï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Integerï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½Ø¼ï¿½ ï¿½ï¿½Ã¼ jï¿½ï¿½ ï¿½ï¿½ï¿½
 		System.out.println("j");
-		for(int i = 0; i < j; i++) { //°´Ã¼ jÀÇ ¼ö¸¸Å­ ¹Ýº¹ÇØ¼­ result¿¡ ÀúÀå
+		for(int i = 0; i < j; i++) { //ï¿½ï¿½Ã¼ jï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å­ ï¿½Ýºï¿½ï¿½Ø¼ï¿½ resultï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			PlanDto2 pdto2 = new PlanDto2(null,
 					  request.getParameter("plan-name"),
 					  request.getParameter("start-date"),
 					  request.getParameter("end-date"),
+					  request.getParameter("theme"),
 					  request.getParameter("latitude" + i),
 					  request.getParameter("longitude" + i), 
 					  request.getParameter("placeName" + i), 
-					  request.getParameter("category" + i),
 					  request.getParameter("placecount"),
+					  request.getParameter("category" + i),
 					  request.getParameter("address" + i));
 			int res = sqlSession.insert("insertMap", pdto2);
 		}

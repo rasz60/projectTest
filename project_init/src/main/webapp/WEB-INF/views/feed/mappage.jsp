@@ -76,11 +76,12 @@ margin-left : 20px;
 총 갯수 : <span id="showIndex"></span> / 10
 </div>
 <button type="button" id="insertButton" class="btn btn-success" style="float: right;">추가</button>	
-<form id="frm" name="frm" action="insertMap" method="post">    	
+<form id="frm" name="frm" action="insertMap" method="post">	
 	<input type="text" id="index" name="placecount" value=""/>
-	<input type="text" name="plan-name" id="plan-name" value="${param.planName}"/>
-	<input type="text" name="start-date" id="start-date" value="${param.startDate}"/>
-	<input type="text" name="end-date" id="end-date" value="${param.endDate}"/>
+	<input type="text" name="plan-name" id="plan-name" value="${plan.planName}" readonly/>
+	<input type="text" name="start-date" id="start-date" value="${plan.startDate}" readonly/>
+	<input type="text" name="end-date" id="end-date" value="${plan.endDate}" readonly/>
+	<input type="text" name="theme" id="theme" value="${plan.theme}" readonly/>
 	<button type="submit" id="submit" class="btn btn-primary" style="float: right;">저장</button>   	    	    	
 </form>
 
@@ -142,12 +143,7 @@ var index = 0
     var newDiv = document.createElement("div")
     newDiv.setAttribute("class", "newDiv")
     newDiv.setAttribute("name", "index")
-    
-    var hidden = '';
-    
-    
-    var hiddenInput= $('.newDiv').html();
-    
+
     var newInput1 = document.createElement("input") //위도 input
     newInput1.setAttribute("id", "latitude"+index)
     newInput1.setAttribute("type", "text")
@@ -234,7 +230,7 @@ $("#frm").submit(function(event){ //#frm의 data 전체를 ajax로 서버에 보
  		   	var token = $("meta[name='_csrf']").attr('content');
  			var header = $("meta[name='_csrf_header']").attr('content');
 		        xhr.setRequestHeader(header, token);
-		    },
+		},
 		success : function(data){
 			console.log(data);
 			if(data.search("insert-success") > -1){
@@ -242,7 +238,7 @@ $("#frm").submit(function(event){ //#frm의 data 전체를 ajax로 서버에 보
 				$("#modalBtn").trigger("click");
 					$("#closeBtn").click(function(event){
 					event.preventDefault();
-					location.href = "/feed"; // 성공시 이동 페이지 
+					location.href = "/feed"; // 성공시 이동 페이지
 				});
 			}
 			else{

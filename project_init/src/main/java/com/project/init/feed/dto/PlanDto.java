@@ -7,17 +7,19 @@ public class PlanDto {
 	private String planName;
 	private String startDate;
 	private String endDate;
+	private String theme;
 
 	public PlanDto() {
 		super();
 	}
 
-	public PlanDto(int planNum, String planName, String startDate, String endDate) {
+	public PlanDto(int planNum, String planName, String startDate, String endDate, String theme) {
 		super();
 		this.planNum = planNum;
 		this.planName = planName;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.theme = theme;
 	}
 	
 	public int getPlanNum() {
@@ -50,6 +52,14 @@ public class PlanDto {
 
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
+	}
+
+	public String getTheme() {
+		return theme;
+	}
+
+	public void setTheme(String theme) {
+		this.theme = theme;
 	}
 	
 }

@@ -3,6 +3,7 @@ create table plan_test(
     planName VARCHAR2(200) NOT NULL,
     startDate VARCHAR2(100) NOT NULL,
     endDate VARCHAR2(100) NOT NULL,
+    theme VARCHAR2(100) NOT NULL,
     latitude varchar2(20) not null, 
     longitude varchar2(20) not null, 
     placeName varchar2(50) not null, 
@@ -14,5 +15,3 @@ create table plan_test(
 create SEQUENCE plan_test_seq nocache;
 
 commit;
-
-select * from plan_test;

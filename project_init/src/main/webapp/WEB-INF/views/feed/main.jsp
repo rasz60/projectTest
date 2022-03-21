@@ -47,20 +47,39 @@
 		<div class="d-flex justify-content-between mt-4" id="main-body">
 			<!-- create plan form -->
 			<div class="border rounded p-3">
-				<form action="feed/mappage" id="frm" method="get">
+				<form action="feed/mappage" id="frm" method="post">
+					<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" />
 					<div class="form-group">
 						<label for="planName">일정 이름</label>
-						<input type="text" name="planName" id="planName" class="form-control" size="20"/>
+						<input type="text" name="planName" id="planName" class="form-control" required/>
 					</div>
+					
 					<div class="form-group">
 						<label for="startDate">시작 일자</label>
-						<input type="text" name="startDate" id="startDate" class="form-control bg-light" size="20" readonly="readonly"/>
+						<input type="text" name="startDate" id="startDate" class="form-control bg-light" required readonly/>
 					</div>
+					
 					<div class="form-group">
 						<label for="endDate">종료 일자</label>
-						<input type="text" name="endDate" id="endDate" class="form-control bg-light" size="20" readonly="readonly"/>
+						<input type="text" name="endDate" id="endDate" class="form-control bg-light" required readonly/>
 					</div>
-		
+					
+					<div class="form-group">
+						<label for="theme">목적</label>
+						<select class="custom-select my-1 mr-sm-2 " id="theme" name="theme">
+							<option value="방문" selected>방문</option>
+							<option value="데이트">데이트</option>
+							<option value="가족여행">가족여행</option>
+							<option value="친구들과">친구들과</option>
+							<option value="맛집탐방">맛집탐방</option>
+							<option value="비즈니스">비즈니스</option>
+							<option value="소개팅">소개팅</option>
+							<option value="미용">미용</option>
+							<option value="운동">운동</option>
+							<option value="문화생활">문화생활</option>
+							<option value="여가생활">여가생활</option>
+						</select>
+					</div>
 					<div class="d-flex justify-content-end mp_btn">
 						<input type="submit" class="btn btn-sm btn-primary mr-1" id="submit" value="Create"/>
 						<input type="reset" class="btn btn-sm btn-danger px-2" id="reset" value="Clear" />
@@ -100,6 +119,7 @@
 							<label for="endDate">종료 일자</label>
 							<input type="date" id="endDate" name="endDate" class="form-control"/>
 						</div>
+
 						<div class="button-group text-right">
 							<button type="button" id="btn-modify" class="btn btn-sm btn-success">수정</button>
 							<button type="button" id="btn-delete" class="btn btn-sm btn-danger">삭제</button>
