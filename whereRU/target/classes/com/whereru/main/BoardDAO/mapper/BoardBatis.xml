@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mapper 문서 형식 지정 -->
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- root element는 mapper -->
+<!-- 속성 namespace는 인터페이스의 경로 및 인터페이스명 -->
+<mapper namespace = "com.whereru.main.BoardDAO.InterfaceBoardDAO">	   
+
+	<insert id="write" parameterType="String">
+		Insert into testboard4(boardnum,nickname,title,content,location,titleImg,filenames)
+		 values (board_num.NEXTVAL,#{nickname},#{title},#{content},#{location},#{titleImg},#{filenames})
+	</insert>
+	
+	<select id="list" resultType="com.whereru.main.BoardDTO.MainDTO" >
+		SELECT * FROM testboard4
+	</select>
+	
+	<select id="getlist" parameterType="String" resultType="com.whereru.main.BoardDTO.MainDTO">
+		SELECT * FROM testboard4 where boardNum= #{boardNum} ORDER BY BOARDNUM 
+	</select>
+	
+	<select id="deleteBoard" parameterType="String" >
+		DELETE FROM testboard4 WHERE boardNum = #{boardNum}
+	</select>
+
+	<select id="modifyList" parameterType="String" resultType="com.whereru.main.BoardDTO.MainDTO">
+		SELECT * FROM testboard4 where boardNum= #{boardNum}
+	</select>
+	
+	<update id="modifyExcute" parameterType="String" >
+	UPDATE testboard4 SET nickname = #{nickname},title = #{title},content = #{content}, location = #{location}, titleImg = #{titleImg}, filenames = #{filenames} WHERE boardnum = #{boardNum}
+	
+	</update>
+	
+</mapper>
