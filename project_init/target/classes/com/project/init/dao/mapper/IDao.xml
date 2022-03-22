@@ -6,4 +6,15 @@
 
 <mapper namespace="com.project.init.dao.IDao">
 
+<insert id="insertPlanMst" parameterType="com.project.init.dto.PlanMstDto" >
+	INSERT INTO plan_mst (plannum, planName, startDate, endDate, theme) VALUES (plan_mst_seq.NEXTVAL, #{planName}, #{startDate}, #{endDate}, #{theme})
+	<selectKey resultType="int" keyProperty="planNum" order="AFTER">
+		SELECT plannum_seq.currVal from dual
+	</selectKey>
+</insert>
+
+<select id="selectPlan" parameterType="int" resultType="com.project.init.dto.PlanMstDto">
+	SELECT * FROM plan_mst WHERE plannum = #{planNum}
+</select>
+
 </mapper>
