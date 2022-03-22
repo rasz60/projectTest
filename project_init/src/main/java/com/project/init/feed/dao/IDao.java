@@ -12,6 +12,9 @@ public interface IDao {
 	
 	void insertPlan(PlanDto dto);
 	
+	PlanDto selectPlan(int planNum);
+	
+	
 	ArrayList<PlanDto> selectAllPlan();
 
 	String updatePlan(PlanDto dto);

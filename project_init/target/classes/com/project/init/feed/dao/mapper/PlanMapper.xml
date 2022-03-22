@@ -5,8 +5,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.project.init.feed.dao.IDao" >
 
 <insert id="insertPlan" parameterType="com.project.init.feed.dto.PlanDto">
-	INSERT INTO test_calendar (plannum, planName, startDate, endDate) VALUES (plannum_seq.NEXTVAL, #{planName}, #{startDate}, #{endDate})
+	INSERT INTO test_calendar (plannum, planName, startDate, endDate, theme) VALUES (plannum_seq.NEXTVAL, #{planName}, #{startDate}, #{endDate}, #{theme})
+	<selectKey resultType="int" keyProperty="planNum" order="AFTER">
+		SELECT plannum_seq.currVal from dual
+	</selectKey>
 </insert>
+
+<select id="selectPlan" parameterType="int" resultType="com.project.init.feed.dto.PlanDto">
+	SELECT * FROM test_calendar WHERE plannum = #{planNum}
+</select>
+
+
+
 <!-- 
 <select id="selectAllPlan" resultType="com.project.init.feed.dto.PlanDto">
 	SELECT planNum, planName, startDate, endDate FROM test_calendar	

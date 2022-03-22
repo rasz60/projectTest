@@ -47,7 +47,7 @@
 		<div class="d-flex justify-content-between mt-4" id="main-body">
 			<!-- create plan form -->
 			<div class="border rounded p-3">
-				<form action="feed/mappage" id="frm" method="post">
+				<form action="feed/mappage.do" id="frm" method="post">
 					<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" />
 					<div class="form-group">
 						<label for="planName">일정 이름</label>
@@ -81,7 +81,7 @@
 						</select>
 					</div>
 					<div class="d-flex justify-content-end mp_btn">
-						<input type="submit" class="btn btn-sm btn-primary mr-1" id="submit" value="Create"/>
+						<button type="submit" class="btn btn-sm btn-primary mr-1" id="submit" >Create</button>
 						<input type="reset" class="btn btn-sm btn-danger px-2" id="reset" value="Clear" />
 					</div>
 				</form>

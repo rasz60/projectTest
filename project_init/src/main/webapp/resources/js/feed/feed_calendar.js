@@ -75,7 +75,7 @@ $(document).ready(function() {
 	
 	// 일정 생성(Create 버튼 눌렀을 때)
 	$('#submit').click(function(e) {
-		
+
 		// 각각의 form에 입력된 값을 변수에 저장
 		var frm = $('#frm');
 		var planName = $('#planName').val();

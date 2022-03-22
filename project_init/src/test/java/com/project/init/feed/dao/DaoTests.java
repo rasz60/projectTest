@@ -41,6 +41,11 @@ public class DaoTests {
 		dao.deletePlan("4");
 	}
 	
+	@Test
+	public void test2_1() {
+		PlanDto dto = new PlanDto(0, "test1", "2022-05-12", "2022-05-13", "¹æ¹®");
+		dao.insertPlan(dto);
+	}
 	
 	@Test
 	public void test3() {

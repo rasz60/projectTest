@@ -68,7 +68,7 @@ margin-left : 20px;
 <a href = "markerclusterer">markerclusterer</a>
 
 <div class="container">
-<h3>Map</h3>
+<h3>DATE 1 : ${plan.startDate }</h3>
 <hr/>
 
 <!-- input창 -->
@@ -78,10 +78,7 @@ margin-left : 20px;
 <button type="button" id="insertButton" class="btn btn-success" style="float: right;">추가</button>	
 <form id="frm" name="frm" action="insertMap" method="post">	
 	<input type="text" id="index" name="placecount" value=""/>
-	<input type="text" name="plan-name" id="plan-name" value="${plan.planName}" readonly/>
-	<input type="text" name="start-date" id="start-date" value="${plan.startDate}" readonly/>
-	<input type="text" name="end-date" id="end-date" value="${plan.endDate}" readonly/>
-	<input type="text" name="theme" id="theme" value="${plan.theme}" readonly/>
+	<input type="text" name="planNum" id="planNum" value="${plan.planNum}" readonly/>
 	<button type="submit" id="submit" class="btn btn-primary" style="float: right;">저장</button>   	    	    	
 </form>
 

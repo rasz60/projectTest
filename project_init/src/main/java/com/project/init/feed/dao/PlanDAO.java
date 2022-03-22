@@ -29,13 +29,13 @@ public class PlanDAO implements IDao {
 		logger.info("PlanDao Const result : sqlSession getConn success ? " + sqlSession.toString());
 	}
 	
-	
 	@Override
 	public void insertPlan(PlanDto dto) {
 		logger.info("insertPlan(" + dto + ") in >>>");
 		int result = sqlSession.insert("insertPlan", dto);
 		
-		logger.info("insertPlan(" + dto + ") result : " + result);
+		logger.info("insertPlan(" + dto + ") result1 : " + result);
+		logger.info("insertPlan(" + dto + ") result2 : " + dto.getPlanNum());
 	}
 
 	@Override
@@ -86,10 +86,10 @@ public class PlanDAO implements IDao {
 	public String insertMap(Model model, HttpServletRequest request) {
 		logger.info("insertMap in >>>> ");
 		
-		String index = request.getParameter("placecount"); //mappage���� ������ ��� ��(placecount) ���ؼ� index ��ü�� ���
-		int j = Integer.parseInt(index); // String���� ���� �� Integer�� �� ��ȯ �ؼ� ��ü j�� ���
+		String index = request.getParameter("placecount"); //mappage占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占� 占쏙옙(placecount) 占쏙옙占쌔쇽옙 index 占쏙옙체占쏙옙 占쏙옙占�
+		int j = Integer.parseInt(index); // String占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙 Integer占쏙옙 占쏙옙 占쏙옙환 占쌔쇽옙 占쏙옙체 j占쏙옙 占쏙옙占�
 		System.out.println("j");
-		for(int i = 0; i < j; i++) { //��ü j�� ����ŭ �ݺ��ؼ� result�� ����
+		for(int i = 0; i < j; i++) { //占쏙옙체 j占쏙옙 占쏙옙占쏙옙큼 占쌥븝옙占쌔쇽옙 result占쏙옙 占쏙옙占쏙옙
 			PlanDto2 pdto2 = new PlanDto2(null,
 					  request.getParameter("plan-name"),
 					  request.getParameter("start-date"),
@@ -105,6 +105,19 @@ public class PlanDAO implements IDao {
 		}
 		
 		return "success";
+	}
+
+
+
+
+
+	@Override
+	public PlanDto selectPlan(int planNum) {
+		logger.info("selectPlan (" + planNum + ") in >>>");
+		
+		PlanDto dto = sqlSession.selectOne("selectPlan", planNum);
+		
+		return dto;
 	}
 	
 }

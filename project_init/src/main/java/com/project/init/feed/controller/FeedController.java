@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.init.feed.dao.IDao;
 import com.project.init.feed.dto.PlanDto;
@@ -74,14 +76,25 @@ public class FeedController {
 		logger.info("deletePlan("+ result +") result : " + result);
 		return result;
 	}
-	
+
 	@RequestMapping("mappage")
-	public String mappage(PlanDto dto, Model model) {
-		logger.info("mappage(" + dto.getPlanName() + ") in >>>>");
+	public String mappage(@RequestParam("plan") int planNum, Model model) {
+		logger.info("mappage() in >>>>");
 		
-		model.addAttribute("plan", dto);
+		model.addAttribute("plan", dao.selectPlan(planNum));
 		
 		return "feed/mappage";
+	}
+
+	@RequestMapping("mappage.do")
+	public String mappageDo(PlanDto dto, RedirectAttributes rttr) {
+		logger.info("mappage.do(" + dto.getPlanName() + ") in >>>>");
+		
+		dao.insertPlan(dto);
+		
+		rttr.addAttribute("plan", dto.getPlanNum());
+		
+		return "redirect:mappage";
 	}
 	
 	//===== mappage�� form(#frm)���� ���� data insert =====
@@ -96,6 +109,5 @@ public class FeedController {
 		else
 			return "insert-failed";
 	}
-	
-	
+
 }
