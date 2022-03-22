@@ -1,0 +1,52 @@
+1. calendar : 계획 이름, 날짜, 테마 지정
+ - 날짜 최대 10일까지
+ - map-page로 넘어가기전에 plan-mst insert
+
+[parameter] ex>
+planNum / userid / startDate / endDate / theme
+
+plan-mst
+planNum / userid / startDate / endDate / theme
+
+
+진웅 - 3/24
+2. map-page : 날짜별 시간(start, end), 장소(위도, 경도, 주소, cat, 장소이름, input 개수)
+ - 각 Date 별로 탭메뉴 생성
+ - 장소 최대 10개
+ - plan-dt insert / NULL 가능하게 해서 임시 저장할 수 있게..?
+
+[parameter] ex> 일정이 3일 인데 첫 날만 작성 저장
+planNum / userid / Date1 / dtnum (default = 0) / startTime / endTime / lat / long / address/ cat / placeName / count
+planNum / userid / Date1 / dtnum (default = 0) / startTime / endTime / lat / long / address/ cat / placeName / count
+planNum / userid / Date1 / dtnum (default = 0) / startTime / endTime / lat / long / address/ cat / placeName / count
+planNum / userid / Date1 / dtnum (default = 0) / startTime / endTime / lat / long / address/ cat / placeName / count
+planNum / userid / Date1 / dtnum (default = 0) / startTime / endTime / lat / long / address/ cat / placeName / count
+
+planNum / userid / Date2 / dtnum (default = 0) / null - * / count
+planNum / userid / Date3 / dtnum (default = 0) / null - * / count
+
+for() {
+	new dto();
+	if ( dto.getDtNum == 0 )
+ 		insert(dto);
+	else {
+		update(dto);
+	};
+};
+
+plan-list ( dao에서 for으로 한 줄씩 insert )
+
+INSERT INTO plan-dt 
+VALUES (#{planNum}, #{userid}, sequence, 
+           #{Date}, #{startTime}, #{endTime}, #{lat}, #{long}, #{address}. #{cat}, #{placeName}, #{count});
+
+
+재현 - 3/24
+3. details-plan : 날짜, 시간, 장소 자동 생성하고 세부 일정 input 제공
+ - plan-dt에 따로 저장
+ - 한페이지에 일정 표시 ( plan-list select( ) )
+  plandtNum / Date / startTime / endTime / location / (+)detail (default = null) / (+)transportation (select-box)
+ 
+
+plan-dt
+INSERT INTO plan-dt (plandtNum, details) VALUES (#{plandtNum}, #{detail}, #{transportation});
