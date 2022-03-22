@@ -77,15 +77,6 @@ public class FeedController {
 		return result;
 	}
 
-	@RequestMapping("mappage")
-	public String mappage(@RequestParam("plan") int planNum, Model model) {
-		logger.info("mappage() in >>>>");
-		
-		model.addAttribute("plan", dao.selectPlan(planNum));
-		
-		return "feed/mappage";
-	}
-
 	@RequestMapping("mappage.do")
 	public String mappageDo(PlanDto dto, RedirectAttributes rttr) {
 		logger.info("mappage.do(" + dto.getPlanName() + ") in >>>>");
@@ -97,6 +88,15 @@ public class FeedController {
 		return "redirect:mappage";
 	}
 	
+	@RequestMapping("mappage")
+	public String mappage(@RequestParam("plan") int planNum, Model model) {
+		logger.info("mappage() in >>>>");
+		
+		model.addAttribute("plan", dao.selectPlan(planNum));
+		
+		return "feed/mappage2";
+	}
+
 	//===== mappage�� form(#frm)���� ���� data insert =====
 	@RequestMapping(value="insertMap", produces = "application/text; charset=UTF8")
 	@ResponseBody
