@@ -28,7 +28,6 @@
 <link rel="stylesheet" type="text/css" href="css/feed/feed_calendar.css" />
 <link rel="stylesheet" type="text/css" href="css/includes/footer.css" />
 <title>Message Box</title>
-
 </head>
 
 <body>

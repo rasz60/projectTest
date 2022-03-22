@@ -21,8 +21,7 @@
 <link rel="stylesheet" type="text/css" href="css/includes/header.css" />
 <link rel="stylesheet" type="text/css" href="css/search/searchResult.css" />
 <link rel="stylesheet" type="text/css" href="css/includes/footer.css" />
-<title>Insert title here</title>
-
+<title>Search Result</title>
 </head>
 
 <body>

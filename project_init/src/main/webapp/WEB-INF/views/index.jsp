@@ -21,7 +21,7 @@
 <link rel="stylesheet" type="text/css" href="css/includes/header.css" />
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 <link rel="stylesheet" type="text/css" href="css/includes/footer.css" />
-<title>Insert title here</title>
+<title>Index</title>
 
 </head>
 

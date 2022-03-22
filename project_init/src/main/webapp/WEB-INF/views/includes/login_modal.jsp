@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8" />
 <link rel="stylesheet" type="text/css" href="css/includes/login_modal.css" />
-<title>Insert title here</title>
+<title>login</title>
 </head>
 <body>
 <input type="hidden" id="loginModalBtn" data-toggle="modal" data-target="#loginModal" value="modal" />
