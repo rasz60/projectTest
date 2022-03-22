@@ -93,44 +93,7 @@
 	</div>
 	<!-- modal button -->
 	<input type="hidden" id="modalBtn2" data-toggle="modal" data-target="#myModal2" value="modal" />
-	
-	<!-- modal 창 -->
-	<div class="modal fade" id="myModal2" role="dialog">
-		<div class="modal-dialog modal-dialog-centered modal-sm d-block">
-			<button type="button" id="modalCloseBtn" class="btn btn-xl btn-default text-white text-weight-bold display-1 float-right" data-dismiss="modal">&times;</button>
-			<div class="modal-content">
-				<div class="modal-header bg-light d-flex justify-content-start">
-					<h4 id="plan-name" class="modal-title display-4 font-italic">update</h4>
-				</div>
-				
-				<div class="modal-body bg-light d-flex justify-content-center">
-					<form action="feed/modify_plan.do" method="post" id="modify_form">
-						<input type="hidden" name="planNum" id="planNum" />
-						<div class="form-group">
-							<label for="planName">일정 이름</label>
-							<input type="text" id="planName" name="planName" class="form-control"/>
-						</div>
-						
-						<div class="form-group">
-							<label for="startDate">시작 일자</label>
-							<input type="date" id="startDate" name="startDate" class="form-control"/>
-						</div>
-						
-						<div class="form-group">
-							<label for="endDate">종료 일자</label>
-							<input type="date" id="endDate" name="endDate" class="form-control"/>
-						</div>
 
-						<div class="button-group text-right">
-							<button type="button" id="btn-modify" class="btn btn-sm btn-success">수정</button>
-							<button type="button" id="btn-delete" class="btn btn-sm btn-danger">삭제</button>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer bg-light mb-2"></div>
-			</div>
-		</div>
-	</div>
 </section>
 
 <%@ include file="event_modi_modal.jsp" %>

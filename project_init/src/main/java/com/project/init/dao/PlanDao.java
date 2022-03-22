@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.project.init.dto.PlanMstDto;
+import com.project.init.util.Constant;
 
 @Component
 public class PlanDao implements IDao {
@@ -20,6 +21,7 @@ public class PlanDao implements IDao {
 		logger.info("PlanDao Const in >>>");
 		this.sqlSession = sqlSession;
 		
+		Constant.pdao = this;
 		logger.info("PlanDao Const result : sqlSession getConn success ? " + sqlSession.toString());
 	}
 	
@@ -44,8 +46,6 @@ public class PlanDao implements IDao {
 		logger.info("selectPlanMst(" + planNum + ") result : " + (dto != null ? "success" : "null"));
 		return dto;
 	}
-	
-	
-	
+
 	
 }
