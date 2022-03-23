@@ -73,8 +73,6 @@ var eDate = strToDate('<c:out value="${plan.endDate}" />');
 var dateCount = (eDate.getTime() - sDate.getTime()) / (1000*60*60*24);
 var dates = getPlanDate(sDate, eDate);
 
-dateCount=10;
-
 $(document).ready(function(){
 	
 	for ( var i = 2; i <= dateCount; i++ ) {
@@ -106,8 +104,9 @@ $(document).ready(function(){
 					+ "</div>"
 					+ "<button type='button' id='insertButton' class='btn btn-success' style='float: right;'>추가</button>"
 					+ "<form id='frm" + i + "' name='frm" + i + "' action='insertMap' method='post'>"
-					+ "<input type='text' id='index' name='placecount' value=''/>"
 					+ "<input type='text' name='planNum' id='planNum' value='${plan.planNum}' readonly/>"
+					+ "<input type='text' name='planDtNum' id='planDtNum' value=0 readonly/>"
+					+ "<input type='text' name='date'" + i + " id='planDate' value='" + dates[i-1] + "' readonly />"
 					+ "<button type='submit' id='submit' class='btn btn-primary' style='float: right;'>저장</button>"
 					+ "</form>"
 					+ "</div>"
@@ -181,6 +180,18 @@ ul.tabs li.current{
   display: inherit;
 }
 
+textarea {
+	resize: none;
+}
+
+#deleteBtn {
+	height: 50%;
+}
+
+.toggle-box {
+	display: none;
+}
+
 </style>
 
 <title>Insert title here</title>
@@ -191,7 +202,7 @@ ul.tabs li.current{
 	<ul class="tabs">
 		<li class='tab-link current' data-tab='tab-1'>date1</li>
 	</ul>
-	<div id="tab-1" class="container mt-2 tab-content current">
+	<div id="tab-1" class="mt-2 tab-content current">
 		<h3>DATE 1 : ${plan.startDate }</h3>
 		<hr/>
 		
@@ -217,27 +228,56 @@ ul.tabs li.current{
 			
 			
 			<!-- input창 -->
-			<div class="col-6">
-				<div>
-					총 갯수 : <span id="showIndex"></span> / 10
+			<div id="inputContainer" class="col-6">
+				<div class="mb-4">
+					총 갯수 : <span class="showIndex"></span> / 10
+					<button type="button" class="btn btn-success insertButton btn-sm float-right">추가</button>
+					<button type="button" class="btn btn-sm btn-primary submit float-right mr-1">저장</button>
 				</div>
-				<button type="button" id="insertButton" class="btn btn-success" style="float: right;">추가</button>
+
+
+				<form id="frm1" name="frm1" action="insertMap" method="post" data-index="1" data-count="1">
+					<!-- [pk] planDtNum : new input ? value=0 : value=planDtNum -->
+					<input type='hidden' class="form-control" name='planDtNum' id='planDtNum' value=0 readonly/>
+					<!-- [fk] planNum : planMst_planNum-->
+					<input type="hidden" class="form-control" name="planNum" id="planNum" value="${plan.planNum}" readonly/>
+					<!-- planDate : planDt_planDate -->
+					<input type="hidden" class="form-control" name="planDate" id="planDate" value="${plan.startDate}" readonly/>
 					
-				<form id="frm" name="frm" action="insertMap" method="post">	
-					<input type="text" name="planNum" id="planNum" value="${plan.planNum}" readonly/>
-					<input type="text" name="planDate" id="planDate" value="${plan.startDate}" />
-					
-					<input type="date" class="form-control" name="date" id="date"/>
-					
-					<div class="form-group">
-						<label for="startTime">StartTime</label>
-						<input type="time" class="form-control" name="startTime" id="startTime"/>
-					</div>
-					<div class="form-group">
-						<label for="endTime">EndTime</label>
-						<input type="time" class="form-control" name="endTime" id="endTime"/>
-					</div>
-					<button type="submit" id="submit" class="btn btn-primary" style="float: right;">저장</button>   	    	    	
+					<!-- User submit Input -->
+					<div class="details1 mt-5 py-2 border">
+						<h3 class="font-italic ml-2 d-inline">Place</h3>
+						<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2" data-num="1">-</button>
+						<hr />
+						<div class="frm1_detail_top row mx-0 justify-content-between">
+							<div class="form-group col-4">
+								<label for="frm1_placeName1">placeName</label>
+								<input type="text" class="form-control" name="frm1_placeName1" id="frm1_placeName1" readonly/>
+							</div>
+							
+							<div class="form-group col-4">
+								<label for="frm1_startTime1">StartTime</label>
+								<input type="time" class="form-control" name="frm1_startTime1" id="frm1_startTime1"/>
+							</div>
+							
+							<div class="form-group col-4">
+								<label for="frm1_endTime1">EndTime</label>
+								<input type="time" class="form-control" name="frm1_endTime1" id="frm1_endTime1"/>
+							</div>
+							
+							<div class="form-inline col-9 ml-0">
+								<label for="frm1_transpotation1" class="col-3">교통수단</label>
+								<input type="text" class="form-control col-9" name="frm1_transpotation1" id="frm1_transpotation1"/>
+							</div>
+							
+							<button type="button" class="btn btn-sm btn-outline-secondary details-btn col-2 mr-3" data-count="0">상세 일정</button>
+							
+							<div class="form-group col-12 toggle-box">
+								<label for="frm1_details1">상세 일정</label>
+								<textarea rows="5" class="form-control" name="frm1_details1" id="frm1_details1"></textarea>
+							</div>
+						</div>
+					</div> 
 				</form>
 			</div>
 		</div>
@@ -268,6 +308,86 @@ ul.tabs li.current{
 <script type="text/javascript" src="../js/feed/kakaomap/kakaomap.js"></script>
 <script>
 $(document).ready(function () {
+
+	$('#inputContainer button').click(function(e) {
+		e.preventDefault();
+		
+		var target = $(this);
+		
+		if ( target.hasClass('details-btn') === true ) {
+			if ( $(this).attr('data-count') == 0 ) {
+				$(this).siblings('.toggle-box').css('display','block');
+				$(this).attr('data-count', '1');
+			} else {
+				$(this).siblings('.toggle-box').css('display','none');
+				$(this).attr('data-count', '0');			
+			}
+		}
+		else if ( target.hasClass('deleteBtn') === true) {
+			var targetClass = "details" + $(this).attr('data-num');
+			var motherForm = $(this).parent().parent('form');
+			var formCount = Number(motherForm.attr('data-count'));
+			
+			if ( formCount == 1 ) {
+				alert('최소 한개 이상의 일정이 있어야 합니다.');
+				return false;
+			} else {
+				if ( $(this).parent().hasClass(targetClass) === true ) {
+					$(this).parent().remove();
+					motherForm.attr('data-count', formCount - 1);
+					console.log(motherForm.attr('data-count'));
+				}
+			}
+		}
+		else if ( target.hasClass('insertButton') === true ) {
+			var targetForm = $(this).parent().siblings('form');
+			var namePrefix = targetForm.attr('id');
+			var index = targetForm.attr('data-index');
+			var detailsCount = Number(targetForm.attr('data-count'));
+			console.log(detailsCount);
+			var insertElement = '<div class="details' + index + ' mt-5 py-2 border">'
+							  + '<h3 class="font-italic ml-2 d-inline">Place</h3>'
+							  + '<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2" data-num="' + index + '">-</button>'
+							  + '<hr />'
+							  + '<div class="frm1_detail_top row mx-0 justify-content-between">'
+							  + '<div class="form-group col-4">'
+							  + '<label for="' + namePrefix + '_placeName' + index + '">placeName</label>'
+							  + '<input type="text" class="form-control" name="' + namePrefix + '_placeName' + index + '" id="' + namePrefix + '_placeName' + index + '" readonly/>'
+							  + '</div>'
+							  + '<div class="form-group col-4">'
+							  + '<label for="' + namePrefix + '_startTime' + index + '">StartTime</label>'
+							  + '<input type="time" class="form-control" name="' + namePrefix + '_startTime' + index + '" id="startTime' + index + '"/>'
+							  + '</div>'
+							  + '<div class="form-group col-4">'
+							  + '<label for="endTime' + index + '">EndTime</label>'
+							  + '<input type="time" class="form-control" name="' + namePrefix + '_endTime' + index + '" id="' + namePrefix + '_endTime' + index + '"/>'
+							  + '</div>'
+							  + '<div class="form-inline col-9 ml-0">'
+							  + '<label for="' + namePrefix + '_transpotation' + index + '" class="col-3">교통수단</label>'
+							  + '<input type="text" class="form-control col-9" name="' + namePrefix + '_transpotation' + index + '" id="' + namePrefix + '_transpotation' + index + '"/> '
+							  + '</div>'
+							  + '<button type="button" class="btn btn-sm btn-outline-secondary details-btn col-2 mr-3" data-count="0">상세 일정</button>'
+							  + '<div class="form-group col-12 toggle-box">'
+							  + '<label for="' + namePrefix + '_details' + index + '">상세 일정</label>'
+							  + '<textarea rows="5" class="form-control" name="' + namePrefix + '_details' + index + '" id="' + namePrefix + '_details' + index + '"></textarea>'
+							  + '</div>'
+							  + '</div>'
+							  + '</div>';
+
+			if ( index <= 10 ) {
+				targetForm.attr('data-index', index);
+				targetForm.append(insertElement);
+				targetForm.attr('data-count', detailsCount + 1);
+				console.log(targetForm.attr('data-count'));
+			} else {
+				alert('하루 일정이 10개를 초과할 수 없습니다.');
+				return false;
+			}
+			
+		};
+		
+	});
+	
 	/*
 	//latitude, longitude, placeName 값이 들어갈 input창 생성
 	var Form = $("#frm")
@@ -355,7 +475,7 @@ $(document).ready(function () {
 
 	$("#insertButton").trigger("click") // 추가 버튼
 	$("#showIndex").text(index)       	
-	*/
+
 	$("#frm").submit(function(event){ //#frm의 data 전체를 ajax로 서버에 보내기
 		event.preventDefault(); //원래 form의 기능인 submit를 ajax로 처리
 		$.ajax({
@@ -396,6 +516,7 @@ $(document).ready(function () {
 			}			
 		});
 	});
+	*/
 });
 </script>
 </body>
