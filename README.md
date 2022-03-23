@@ -1,7 +1,10 @@
+# project_init v.1.2.2.BETA (2022/03/23 14:42)
+#### controller 추가 외 업데이트 완료 (상세 spread-sheet 확인)
+
+
 # project_init v.1.1.1.BETA (2022/03/23 00:15)
 
 #### dependency 2건 추가 완료 (상세 spread-sheet 확인)
-
 #### viewPage, java Class 초기 세팅 완료
 
 
@@ -15,6 +18,7 @@
 ###### tomcat 서버 server.xml 파일 8443 port에 있는 Certificate(line:79) 각자 환경에 맞게 변경하여 사용
 #### 기본 패키지 세팅 및 not found exception 나지 않도록 context 설정에 필요한 클래스 세팅
 ###### home.jsp 파일에 jsp 기본 세팅 완료(api 제외)
+
 
 
 # projectTest

@@ -4,15 +4,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.project.init.dao.PlanDao;
 import com.project.init.dto.PlanMstDto;
 import com.project.init.util.Constant;
 
-@Service
 public class PlanMstSelectCommand implements ICommand {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PlanMstInsertCommand.class);

@@ -19,4 +19,10 @@ public class HomeController {
 		return "index";
 	}
 	
+	@RequestMapping("/join")
+	public String join() {
+		logger.info("index() in >>>>");
+		return "join/join";
+	}
+	
 }

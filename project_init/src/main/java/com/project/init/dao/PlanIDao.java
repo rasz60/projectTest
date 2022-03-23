@@ -3,7 +3,7 @@ package com.project.init.dao;
 
 import com.project.init.dto.PlanMstDto;
 
-public interface IDao {
+public interface PlanIDao {
 
 	void insertPlanMst(PlanMstDto dto);
 	

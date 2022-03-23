@@ -18,7 +18,23 @@ pageEncoding="UTF-8"%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-<title>Plan List</title>
+<title>Insert title here</title>
+<style>
+html, body {
+	height: 100%;
+}
+
+div.container {
+	height: auto;
+}
+
+.planlist #mapbox {
+	max-width: 100%;
+	min-height: 800px;
+}
+
+</style>
+
 <style>
 .map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
 .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
@@ -60,44 +76,99 @@ pageEncoding="UTF-8"%>
 margin-left : 20px;
 }
 </style>
-
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd&libraries=services"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd"></script>
 </head>
 <body>
-<a href = "main">main</a><br/>
-<a href = "markerclusterer">markerclusterer</a>
 
-<div class="container">
-<h3>DATE 1 : ${mstDto.startDate }</h3>
+<script>
+$(document).ready(function() {
+	let sdate = '<c:out value="${plan.startDate}"/>';
+	let edate = '<c:out value="${plan.endDate}"/>';
+	
+	let sy = sdate.slice(0, 4);
+	let sm = Number(sdate.slice(5, 7)) -1 ;
+	let sd = sdate.slice(8);
+	
+	let ey = edate.slice(0, 4);
+	let em = Number(edate.slice(5, 7)) -1;
+	let ed = edate.slice(8);
+	
+	
+	let start = new Date(sy, sm, sd);
+	let end = new Date(ey, em, ed);
+	let date = new Date(start);
+
+	console.log(start + " ~ " + end);
+	
+	let dates = [start.toISOString().split('T')[0]];
+	
+	for (var i = 1; date < end; i ) {
+		date.setDate(date.getDate() + i);
+		dates.push(date.toISOString().split('T')[0]);
+	};
+	
+	console.log(dates);
+	
+})
+
+
+</script>
+
+
+<div class="container-fluid mt-2">
+<h3>DATE 1 : ${plan.startDate }</h3>
 <hr/>
 
-<!-- input창 -->
-<div>
-총 갯수 : <span id="showIndex"></span> / 10
-</div>
-<button type="button" id="insertButton" class="btn btn-success" style="float: right;">추가</button>	
-<form id="frm" name="frm" action="feed/insertMap" method="post">	
-	<input type="text" id="index" name="placecount" value=""/>
-	<input type="text" name="planNum" id="planNum" value="${mstDto.planNum}" readonly/>
-	<button type="submit" id="submit" class="btn btn-primary" style="float: right;">저장</button>   	    	    	
-</form>
-
-<!-- 저장 누를 시 생성되는 modal창 -->
-<div class="container">
-	<input id="modalBtn" type="hidden" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" value="modal"/>
-	<!-- modal창 -->
-	<div class="modal fade" id="myModal" role="dialog">
-		<div class="modal-dialog modal-dialog-centered modal-sm text-center">
-			<div class="modal-content">
-				<div class="modal-header bg-light">
-					<h4 class="modal-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;POST작성</h4>
-				</div>
-				<div class="modal-body bg-light">
-					<h4>작성되었습니다.</h4>
-				</div>
-				<div class="modal-footer bg-light">
-					<button id="closeBtn" type="button" class="btn btn-default btn-success" data-dismiss="modal">Close</button>
+<div class="planlist row">
+	<!-- 맵 생성 -->
+	<div id="mapbox" class="map_wrap col-6">
+		<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+		<div id="menu_wrap" class="bg_white">
+	    	<div class="option">
+	        	<div>
+	            	<form onsubmit="searchPlaces(); return false;">
+	                	키워드 : <input type="text" value="이태원 맛집" id="keyword" size="15"> 
+	                	<button type="submit">검색하기</button> 
+	            	</form>
+	        	</div>
+	    	</div>
+	    	<hr>
+	    	<ul id="placesList"></ul>
+	    	<div id="pagination"></div>
+		</div>
+	</div>
+	
+	<!-- input창 -->
+	<div class="col-6">
+		<div>
+			총 갯수 : <span id="showIndex"></span> / 10
+		</div>
+		<button type="button" id="insertButton" class="btn btn-success" style="float: right;">추가</button>
+			
+		<form id="frm" name="frm" action="insertMap" method="post">	
+			<input type="text" id="index" name="placecount" value=""/>
+			<input type="text" name="planNum" id="planNum" value="${plan.planNum}" readonly/>
+			<button type="submit" id="submit" class="btn btn-primary" style="float: right;">저장</button>   	    	    	
+		</form>
+		
+		<!-- 저장 누를 시 생성되는 modal창 -->
+		<div class="container">
+			<input id="modalBtn" type="hidden" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" value="modal"/>
+			<!-- modal창 -->
+			<div class="modal fade" id="myModal" role="dialog">
+				<div class="modal-dialog modal-dialog-centered modal-sm text-center">
+					<div class="modal-content">
+						<div class="modal-header bg-light">
+							<h4 class="modal-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;POST작성</h4>
+						</div>
+						<div class="modal-body bg-light">
+							<h4>작성되었습니다.</h4>
+						</div>
+						<div class="modal-footer bg-light">
+							<button id="closeBtn" type="button" class="btn btn-default btn-success" data-dismiss="modal">Close</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -105,25 +176,6 @@ margin-left : 20px;
 </div>
 
 
-
-
-<!-- 맵 생성 -->
-<div class="map_wrap">
-	<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
-	<div id="menu_wrap" class="bg_white">
-    	<div class="option">
-        	<div>
-            	<form onsubmit="searchPlaces(); return false;">
-                	키워드 : <input type="text" value="이태원 맛집" id="keyword" size="15"> 
-                	<button type="submit">검색하기</button> 
-            	</form>
-        	</div>
-    	</div>
-    	<hr>
-    	<ul id="placesList"></ul>
-    	<div id="pagination"></div>
-	</div>
-</div>
 </div>
 
 <script>
@@ -242,11 +294,19 @@ $("#frm").submit(function(event){ //#frm의 data 전체를 ajax로 서버에 보
 			else{
 				$(".modal-body").text("다시입력해주세요");
 				$("#modalBtn").trigger("click");
+					$("#closeBtn").click(function(event){
+					event.preventDefault();
+					location.href = "mappage"; //실패시 이동 페이지 
+				});
 			}
 		},
 		error : function(data){
 			$(".modal-body").text("다시입력해주세요");
 			$("#modalBtn").trigger("click");
+				$("#closeBtn").click(function(event){
+				event.preventDefault();
+				location.href = "mappage"; //실패시 이동 페이지
+			});
 		}			
 	});
 });

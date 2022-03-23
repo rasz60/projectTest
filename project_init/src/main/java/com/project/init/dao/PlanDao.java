@@ -10,7 +10,7 @@ import com.project.init.dto.PlanMstDto;
 import com.project.init.util.Constant;
 
 @Component
-public class PlanDao implements IDao {
+public class PlanDao implements PlanIDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(PlanDao.class);
 

@@ -18,24 +18,17 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-<!-- calendar api start -->
-<script src="js/feed/fc/main.js"></script>
-<script src="js/feed/fc/locales/ko.js"></script>
-<script src="js/feed/feed_calendar.js"></script>
-<link href="css/feed/fc/main.css" rel="stylesheet"></link>
-<!-- calendar api end -->
 <link rel="stylesheet" type="text/css" href="css/includes/header.css" />
 <link rel="stylesheet" type="text/css" href="css/includes/footer.css" />
-<title>Message Box</title>
+<title>Join</title>
 </head>
-
 <body>
 <%@ include file="../includes/header.jsp" %>
 
 
 <section class="container mb-5">
 <br /><br /><br /><br />
-	<h1 class="display-4">MESSAGE BOX</h1>
+	<h1 class="display-4">Join</h1>
 </section>
 
 <%@ include file="../includes/footer.jsp" %>
