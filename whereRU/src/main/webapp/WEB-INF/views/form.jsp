@@ -35,8 +35,8 @@
 	<form id="addForm" action="uploadMulti?${_csrf.parameterName}=${_csrf.token }" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
 		<div class="form-group">
-			<label for="nickname">NICKNAME</label>
-			<input name="nickname" type="text" class="nickname form-control" placeholder="nickname" required>
+			<label for="email">EMAIL</label>
+			<input name="email" type="text" class="email form-control" placeholder="email" required>
 		</div>
 		<div class="form-group">
 			<label for="title">TITLE</label>
@@ -68,7 +68,7 @@
 <script type="text/javascript">
 
 
-function checkfrm() { //ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+function checkfrm() { 
 	if($('.location').val()==""){
 		alert('장소는 필수입력입니다 ㅜㅜ');
 		return false;

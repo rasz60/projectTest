@@ -25,6 +25,13 @@
 <link rel="stylesheet" type="text/css" href="css/search/main.css" />
 <link rel="stylesheet" type="text/css" href="css/search/modalPost.css" />
 <title>List</title>
+<style>
+ul{
+   list-style:none;
+   }
+</style>
+
+
 </head>
 <body>
 <%@ include file="header.jsp" %>
@@ -35,10 +42,10 @@
 			<c:forEach items="${list}" var="list" >
 				<div class="post mr-2">
 					<div class="post-top border rounded">
-						<img class="titleimg" width="280px" src="images/${list.titleImg}" data-value="${list.boardNum}" data-toggle="modal" data-target="#modal-reg">
+						<img class="titleimg" width="280px" src="images/${list.titleImage}" data-value="${list.postNo}" data-toggle="modal" data-target="#modal-reg">
 					</div>
 					<div class="post-bottom border text-center">
-						<h5>${list.location}</h4>
+						<h5>${list.location}</h5>
 					</div>
 				</div>
 			</c:forEach>
@@ -66,14 +73,37 @@
                         </div>
                     </div>
                     <ul class="list-group d-block">
-                        <li class="list-group-item mb-1"><i class="modal-icon fa-regular fa-circle-user"></i></li>
-                        <li class="list-group-item mb-1"><i class="modal-icon fa-regular fa-rectangle-list"></i></li>
-                        <li class="list-group-item mb-1 d-flex row mx-0">
-                            <div class="col-6"><i class="modal-icon fa-regular fa-heart"></i></div>
-                            <div class="col-3"><i class="modal-icon fa-regular fa-bookmark"></i></div>
-                            <div class="col-3"><i class="modal-icon fa-regular fa-comment-dots"></i></div>
+                        <li class="list-group-item mb-1"><i class="modal-icon fa-regular fa-circle-user"></i>
+                        <ul class="userNickname">
+                        	
+                        </ul>
                         </li>
-                        <li class="list-group-item"><i class="modal-icon fa-regular fa-comment-dots"></i></li>
+                        <li class="list-group-item mb-1"><i class="modal-icon fa-regular fa-rectangle-list"></i>
+						<ul class="postContent">
+                        	
+                        </ul>
+						</li>
+                        <li class="list-group-item mb-1 d-flex row mx-0">
+                            <div class="col-6"><i class="modal-icon fa-regular fa-heart"></i>fa-heart</div>
+                            <div class="col-3"><i class="modal-icon fa-regular fa-bookmark"></i>fa-bookmark</div>
+                            <div class="col-3"><i class="modal-icon fa-regular fa-comment-dots"></i>fa-comment-dots</div>
+                        </li>
+                        <li class="list-group-item comments"><i class="modal-icon fa-regular fa-comment-dots"></i>comment
+								<p>첫 번째 댓글입니다.<p>
+                        	<ul class="reply">
+                        		<li><p >첫 번째 대 댓글입니다.</p></li>
+                        		<li><p >두 번째 대 댓글입니다.</p></li>
+                        		<li><p >세 번째 대 댓글입니다.</p></li>
+                        	</ul>
+                        	<p>두 번째 댓글입니다.</p>
+                        </li>
+                        <li>
+                        <div class="row">
+                        <input type="text" class="col-sm-10 comment">
+                        <button type="button" class="btn btn-outline-success addcomment" role="button">전송</button>
+                        </div>
+                        </li>
+                        
                     </ul>
                 </div>
             <!-- Modal footer -->
@@ -90,12 +120,14 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-    $(".titleimg").click(function(){
-        let boardNum = $(this).attr("data-value");
-        
+	let postNo = "";
+	$(".titleimg").click(function(){
+        postNo = $(this).attr("data-value");
+        let comments ="";
+    
         $.ajax({
             url:"getlist.do",
-            data:{boardNum:boardNum},
+            data:{postNo:postNo},
             type:"post",
  		    beforeSend: function(xhr){
 	 		   	var token = $("meta[name='_csrf']").attr('content');
@@ -103,38 +135,116 @@ $(document).ready(function() {
  		        xhr.setRequestHeader(header, token);
  		    },
             success:function(data){
-            	
 	           	var Cslide = "";
                 var Citem = "";
+                var userNickname="";
+                var postContent="";
 
-            	let nickname = data[0].nickname;
+            	let email = data[0].email;
             	let title = data[0].title;
             	let content = data[0].content;
             	let location = data[0].location;
-            	let titleImg = data[0].titleImg;
-            	let filenames = data[0].filenames.split('/');
-            	let boardNum = data[0].boardNum;
+            	let titleImage = data[0].titleImage;
+            	let images = data[0].images.split('/');
+            	let postNo = data[0].postNo;
             	
-            	for(var i=0; i<filenames.length-1; i++){
+            	for(var i=0; i<images.length-1; i++){
                     if(i==0){
-                       Citem+='<div class="carousel-item active"><img src="images/'+filenames[i]+'"></div>';
+                       Citem+='<div class="carousel-item active"><img src="images/'+images[i]+'"></div>';
                     }else{
-                       Citem+='<div class="carousel-item"><img src="images/'+filenames[i]+'"></div>';
+                       Citem+='<div class="carousel-item"><img src="images/'+images[i]+'"></div>';
                     }
                 }
-               
+               	
+            	userNickname ='<li>'+email+'</li>';
+            	postContent ='<li>'+content+'</li>';
+            	
+				//내용 넣는 프로세스
                 $(".Citem").html(Citem);
-               
-                $(".modify").alert('rreturn?');
-                $(".modify").attr('href','modify?boardNum='+boardNum);
-                $(".delete").attr('href','delete.do?boardNum='+boardNum);
+                $(".userNickname").html(userNickname);
+                $(".postContent").html(postContent);
+                
+                $(".modify").attr('href','modify?postNo='+postNo);
+                $(".delete").attr('href','delete.do?postNo='+postNo);
             },
             error:function(data){
                 console.log("ajax 처리 실패");
             }
         });
+        
+        $.ajax({
+            url:"getcomments.do",
+            data:{postNo:postNo},
+            type:"post",
+ 		    beforeSend: function(xhr){
+	 		   	var token = $("meta[name='_csrf']").attr('content');
+	 			var header = $("meta[name='_csrf_header']").attr('content');
+ 		        xhr.setRequestHeader(header, token);
+ 		    },
+            success:function(data){
+	           	console.log(data);
+	           	for(var i=0; i<data.length; i++){
+					comments += '<span>'+data[i].content+'</span>'+'&nbsp<a href="#">댓글달기</a><br/>';
+				}
+				$('.comments').html(comments);
+            },
+            error:function(data){
+                console.log("ajax 처리 실패");
+            }
+        });
+        
     });
+
+	$('.addcomment').click(function () {
+		
+		let content = $('.comment').val();
+		let comments ="";
+		$.ajax({
+			url : 'addcomments.do',
+			type : 'post',
+			data : {postNo : postNo,
+					content : content},
+			beforeSend: function(xhr){
+		 	  	var token = $("meta[name='_csrf']").attr('content');
+		 		var header = $("meta[name='_csrf_header']").attr('content');
+	 		    xhr.setRequestHeader(header, token);
+	 		},
+	 		success : function (data) {
+	 			console.log('success');
+	 	        $.ajax({
+	 	            url:"getcomments.do",
+	 	            data:{postNo:postNo},
+	 	            type:"post",
+	 	 		    beforeSend: function(xhr){
+	 		 		   	var token = $("meta[name='_csrf']").attr('content');
+	 		 			var header = $("meta[name='_csrf_header']").attr('content');
+	 	 		        xhr.setRequestHeader(header, token);
+	 	 		    },
+	 	            success:function(data){
+	 		           	console.log(data);
+	 		           	for(var i=0; i<data.length; i++){
+	 						comments += '<p>'+data[i].content+'<p>';
+	 					}
+	 					$('.comments').html(comments);
+	 					$('.comment').val('');
+	 	            },
+	 	            error:function(data){
+	 	                console.log("ajax 처리 실패");
+	 	            }
+	 	        });
+			},
+			error : function (data) {
+				console.log('ERROR');
+			}
+			
+		});
+	});
+
+
+
 });
+
+
 
 function deleteCheck(){
     if(confirm("삭제하시겠습니까?")){

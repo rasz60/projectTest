@@ -8,29 +8,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace = "com.whereru.main.BoardDAO.InterfaceBoardDAO">	   
 
 	<insert id="write" parameterType="String">
-		Insert into testboard4(boardnum,nickname,title,content,location,titleImg,filenames)
-		 values (board_num.NEXTVAL,#{nickname},#{title},#{content},#{location},#{titleImg},#{filenames})
+		Insert into POST(POSTNO,EMAIL,TITLE,CONTENT,LOCATION,TITLEIMAGE,IMAGES)
+		 values (POST_NO_SEQ.NEXTVAL,#{email},#{title},#{content},#{location},#{titleImage},#{images})
 	</insert>
 	
 	<select id="list" resultType="com.whereru.main.BoardDTO.MainDTO" >
-		SELECT * FROM testboard4
+		SELECT * FROM POST ORDER BY POSTNO DESC
 	</select>
 	
 	<select id="getlist" parameterType="String" resultType="com.whereru.main.BoardDTO.MainDTO">
-		SELECT * FROM testboard4 where boardNum= #{boardNum} ORDER BY BOARDNUM 
+		SELECT * FROM POST where POSTNO= #{postNo} ORDER BY POSTNO 
 	</select>
 	
 	<select id="deleteBoard" parameterType="String" >
-		DELETE FROM testboard4 WHERE boardNum = #{boardNum}
+		DELETE FROM POST WHERE POSTNO = #{postNo}
 	</select>
 
 	<select id="modifyList" parameterType="String" resultType="com.whereru.main.BoardDTO.MainDTO">
-		SELECT * FROM testboard4 where boardNum= #{boardNum}
+		SELECT * FROM POST where POSTNO= #{postNo}
 	</select>
 	
 	<update id="modifyExcute" parameterType="String" >
-	UPDATE testboard4 SET nickname = #{nickname},title = #{title},content = #{content}, location = #{location}, titleImg = #{titleImg}, filenames = #{filenames} WHERE boardnum = #{boardNum}
-	
+	UPDATE POST SET EMAIL = #{email},TITLE = #{title},CONTENT = #{content}, LOCATION = #{location}, TITLEIMAGE = #{titleImage}, IMAGES = #{images} WHERE POSTNO = #{postNo}
 	</update>
+
+	<insert id="addcomments" parameterType="com.whereru.main.BoardDTO.CommentsDTO">
+		Insert into COMMENTS(COMMENTNO,POSTNO,CONTENT)
+		 values (COMMENTS_SEQ.NEXTVAL,#{postNo},#{content})
+	</insert>
 	
+	<select id="getcomments" parameterType="String" resultType="com.whereru.main.BoardDTO.CommentsDTO">
+		SELECT * FROM COMMENTS where POSTNO= #{postNo}
+	</select>
 </mapper>

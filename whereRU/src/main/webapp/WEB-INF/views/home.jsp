@@ -32,6 +32,7 @@
 <section class="container">
 	<h3><a href="form">폼</a></h3>
 	<h3><a href="list">릿</a></h3>
+	<h3><a href="join">죤</a></h3>
 	
 	<div class="main-body-top d-flex justify-content-between mb-3">
 		<div class="map border rounded p-2">

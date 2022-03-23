@@ -33,11 +33,11 @@
  <br/><br/>
  <c:forEach items="${list}" var="list" >
  <section class="container mt-6 pt-1" style="margin: 200px, 0;">
-	<form action="modifyExcute.do?boardNum=${list.boardNum}&${_csrf.parameterName}=${_csrf.token }" method="post" enctype="multipart/form-data">
+	<form action="modifyExcute.do?postNo=${list.postNo}&${_csrf.parameterName}=${_csrf.token }" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
 		<div class="form-group">
-			<label for="nickname">NICKNAME</label>
-			<input name="nickname" type="text" class="nickname form-control" placeholder="${list.nickname}" value="${list.nickname}" required>
+			<label for="email">EMAIL</label>
+			<input name="email" type="text" class="email form-control" placeholder="${list.email}" value="${list.email}" required>
 		</div>
 		<div class="form-group">
 			<label for="title">TITLE</label>

@@ -1,83 +1,165 @@
 package com.whereru.main.BoardDTO;
 
+import java.sql.Timestamp;
+
 public class MainDTO {
-	private String boardNum;
-	private String nickname;
+	private String postNo;
+	private String email;
+	private String plan;
+	private String withUser;
+	private String titleImage;
+	private String images;
 	private String title;
 	private String content;
+	private int likes;
+	private String hashtag;
+	private Timestamp regDate;
 	private String location;
-	private String titleImg;
-	private String filenames;
-	
+	private int views;
+	private String authority;
+
 	public MainDTO() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
-	
-	public MainDTO(String nickname, String title, String content, String location, String titleImg,
-			String filenames) {
+
+
+	public MainDTO(String postNo,String email, String title,String content,String location,String titleImage,String images) {
 		super();
-		this.nickname = nickname;
+		this.postNo = postNo;
+		this.email = email;
+		this.titleImage = titleImage;
+		this.images = images;
 		this.title = title;
 		this.content = content;
 		this.location = location;
-		this.titleImg = titleImg;
-		this.filenames = filenames;
+		
 	}
 	
-	public MainDTO(String boardNum,String nickname, String title, String content, String location, String titleImg,
-			String filenames) {
+	public MainDTO(String email, String title,String content,String location,String titleImage,String images) {
 		super();
-		this.boardNum = boardNum;
-		this.nickname = nickname;
+		this.email = email;
+		this.titleImage = titleImage;
+		this.images = images;
 		this.title = title;
 		this.content = content;
 		this.location = location;
-		this.titleImg = titleImg;
-		this.filenames = filenames;
+		
 	}
-	public String getBoardNum() {
-		return boardNum;
+
+
+
+	public String getPostNo() {
+		return postNo;
 	}
-	public void setBoardNum(String boardNum) {
-		this.boardNum = boardNum;
+
+	public void setPostNo(String postNo) {
+		this.postNo = postNo;
 	}
-	public String getNickname() {
-		return nickname;
+
+	public String getEmail() {
+		return email;
 	}
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
+
+	public String getPlan() {
+		return plan;
+	}
+
+	public void setPlan(String plan) {
+		this.plan = plan;
+	}
+
+	public String getWithUser() {
+		return withUser;
+	}
+
+	public void setWithUser(String withUser) {
+		this.withUser = withUser;
+	}
+
+	public String getTitleImage() {
+		return titleImage;
+	}
+
+	public void setTitleImage(String titleImage) {
+		this.titleImage = titleImage;
+	}
+
+	public String getImages() {
+		return images;
+	}
+
+	public void setImages(String images) {
+		this.images = images;
+	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public String getContent() {
 		return content;
 	}
+
 	public void setContent(String content) {
 		this.content = content;
 	}
+
+	public int getLikes() {
+		return likes;
+	}
+
+	public void setLikes(int likes) {
+		this.likes = likes;
+	}
+
+	public String getHashtag() {
+		return hashtag;
+	}
+
+	public void setHashtag(String hashtag) {
+		this.hashtag = hashtag;
+	}
+
+	public Timestamp getRegDate() {
+		return regDate;
+	}
+
+	public void setRegDate(Timestamp regDate) {
+		this.regDate = regDate;
+	}
+
 	public String getLocation() {
 		return location;
 	}
+
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	public String getTitleImg() {
-		return titleImg;
-	}
-	public void setTitleImg(String titleImg) {
-		this.titleImg = titleImg;
-	}
-	public String getFilenames() {
-		return filenames;
-	}
-	public void setFilenames(String filenames) {
-		this.filenames = filenames;
+
+	public int getViews() {
+		return views;
 	}
 
+	public void setViews(int views) {
+		this.views = views;
+	}
 
+	public String getAuthority() {
+		return authority;
+	}
 
+	public void setAuthority(String authority) {
+		this.authority = authority;
+	}
+
+	
 }
