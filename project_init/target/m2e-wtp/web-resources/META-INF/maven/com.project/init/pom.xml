@@ -193,20 +193,21 @@
 		</dependency>
 		
 		<!-- oracle-jdbc -->
-		<!-- 
+ 
 		<dependency>
 		    <groupId>com.oracle.database.jdbc</groupId>
 		    <artifactId>ojdbc6</artifactId>
 		    <version>11.2.0.4</version>
 		</dependency>
-		 -->
+
 		<!-- mysql connector -->
+		<!--
 		<dependency>
 		    <groupId>mysql</groupId>
 		    <artifactId>mysql-connector-java</artifactId>
 		    <version>8.0.21</version>
 		</dependency>
-		
+		 -->		
 		
 		<!-- MyBatis -->		
 		<dependency>
