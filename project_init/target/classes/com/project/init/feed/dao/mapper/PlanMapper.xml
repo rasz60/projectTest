@@ -42,4 +42,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	VALUES (plan_test_seq.nextVal, #{planName}, #{startDate}, #{endDate}, #{theme}, #{latitude}, #{longitude}, #{placeName}, #{category}, #{placecount}, #{address})
 </insert>
 
+
+<insert id="insertPlanDt" parameterType="com.project.init.feed.dto.PlanDtDto">
+	INSERT INTO plan_dt_test
+	VALUES (plan_dt_seq.nextVAL, #{planNum}, #{planDate}, #{placeName}, #{startTime}, #{endTime}, #{transpotation}, #{details})
+</insert>
+
+
+
+
+<!-- comment test -->
+<insert id="McommentC" parameterType="com.project.init.feed.dto.CommentDto">
+	INSERT INTO comment_test
+	VALUES (comment_test_seq.nextVAL, #{comments}, comment_test_seq.currVAL, comment_test_seq.currVAL, #{iNum}) 
+</insert>
+
+
+
+
 </mapper>
+

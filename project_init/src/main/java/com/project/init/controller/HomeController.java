@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.init.feed.dao.IDao;
+import com.project.init.feed.dto.CommentDto;
 
 @Controller
 public class HomeController {
@@ -27,6 +28,24 @@ public class HomeController {
 		logger.info("main >>>");
 		
 		return "main";
+	}
+	
+	@RequestMapping("home")
+	public String home() {
+		logger.info("home >>>");
+		
+		return "home";
+	}
+	
+	@RequestMapping(value = "home/comment.do", produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String commentDo(HttpServletRequest request, Model model) {
+		
+		
+		
+		dao.insertMcomment(request);
+		
+		return "";
 	}
 	
 	@RequestMapping("search")

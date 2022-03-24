@@ -1,6 +1,7 @@
 package com.project.init.feed.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -97,13 +98,25 @@ public class FeedController {
 		return "feed/mappage2";
 	}
 
+	@RequestMapping(value="/insertPlanDt.do", produces = "application/text; charset=UTF8")
+	@ResponseBody
+	public String insertPlanDtDo(HttpServletRequest request, HttpServletResponse response, Model model) {
+		logger.info("insertPlanDtDo in >>>>");
+
+		dao.insertPlanDtDo(model, request);
+		
+		return "";
+	}
+	
+	
+	
 	//===== mappage�� form(#frm)���� ���� data insert =====
 	@RequestMapping(value="insertMap", produces = "application/text; charset=UTF8")
 	@ResponseBody
 	public String insertMap(HttpServletRequest request, HttpServletResponse response, Model model) {
 		System.out.println("insertMap");
 		String result = dao.insertMap(model, request);
-
+		
 		if(result.equals("success"))
 			return "insert-success";
 		else

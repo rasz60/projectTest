@@ -78,43 +78,18 @@ $(document).ready(function(){
 	for ( var i = 2; i <= dateCount; i++ ) {
 		var tab_link = "<li class='tab-link' data-tab='tab-" + i  + "'>date" + i  + "</li>";
 		
-		var tab_div = "<div id='tab-" + i + "' class='container mt-2 tab-content'>" 
-					+ "<h3>DATE" + i + " : " + dates[i-1] + "</h3>"
-					+ "<hr/>"
-					+ "<div class='planlist row'>"
-					+ "<div id='kakaobox' class='map_wrap col-6'>"
-					+ "<div id='map" + i + "' style='width:100%;height:100%;position:relative;overflow:hidden;'></div>"
-					+ "<div id='menu_wrap' class='bg_white'>"
-					+ "<div class='option'>"
-					+ "<div>"
-					+ "<form onsubmit='searchPlaces(); return false;'>"
-					+ "키워드 : <input type='text' value='이태원 맛집' id='keyword' size='15'>"
-					+ "<button type='submit'>검색하기</button>"
-					+ "</form>"
-					+ "</div>"
-					+ "</div>"
-			    	+ "<hr/>"
-			    	+ "<ul id='placesList'></ul>"
-			    	+ "<div id='pagination'></div>"
-			    	+ "</div>"
-			    	+ "</div>"
-					+ "<div class='col-6'>"
-					+ "<div>"
-					+ "총 갯수 : <span id='showIndex'></span> / 10"
-					+ "</div>"
-					+ "<button type='button' id='insertButton' class='btn btn-success' style='float: right;'>추가</button>"
-					+ "<form id='frm" + i + "' name='frm" + i + "' action='insertMap' method='post'>"
-					+ "<input type='text' name='planNum' id='planNum' value='${plan.planNum}' readonly/>"
-					+ "<input type='text' name='planDtNum' id='planDtNum' value=0 readonly/>"
-					+ "<input type='text' name='date'" + i + " id='planDate' value='" + dates[i-1] + "' readonly />"
-					+ "<button type='submit' id='submit' class='btn btn-primary' style='float: right;'>저장</button>"
-					+ "</form>"
-					+ "</div>"
-					+ "</div>"
-					+ "</div>";
-			
+		var tab_div = '<div id="tab-' + i + '" class="mt-2 tab-content current">' 
+			        + $('#tab-1').html();
+		            + '</div>';
+		            
 		$('.tabs').append(tab_link);
 		$('#tabdiv').append(tab_div);
+		
+		$('#tab-' + i ).removeClass('current');
+		$('#tab-' + i + '>h3').text('DATE ' + i + ' : ' + dates[i-1]);
+		$('#tab-' + i + ' #frm1').attr('name', 'frm' + i);
+		$('#tab-' + i + ' #frm1').attr('id', 'frm' + i);
+		$('#tab-' + i + ' input#planDate1').val(dates[i-1]);
 	};
 	
 	
@@ -188,9 +163,6 @@ textarea {
 	height: 50%;
 }
 
-.toggle-box {
-	display: none;
-}
 
 </style>
 
@@ -202,6 +174,8 @@ textarea {
 	<ul class="tabs">
 		<li class='tab-link current' data-tab='tab-1'>date1</li>
 	</ul>
+	<button type="button" id="submitAll" class="btn btn-sm btn-primary float-right">전체 전송</button>
+
 	<div id="tab-1" class="mt-2 tab-content current">
 		<h3>DATE 1 : ${plan.startDate }</h3>
 		<hr/>
@@ -228,7 +202,7 @@ textarea {
 			
 			
 			<!-- input창 -->
-			<div id="inputContainer" class="col-6">
+			<div class="col-6 inputContainer">
 				<div class="mb-4">
 					총 갯수 : <span class="showIndex"></span> / 10
 					<button type="button" class="btn btn-success insertButton btn-sm float-right">추가</button>
@@ -237,50 +211,49 @@ textarea {
 
 
 				<form id="frm1" name="frm1" action="insertMap" method="post" data-index="1" data-count="1">
-					<!-- [pk] planDtNum : new input ? value=0 : value=planDtNum -->
-					<input type='hidden' class="form-control" name='planDtNum' id='planDtNum' value=0 readonly/>
-					<!-- [fk] planNum : planMst_planNum-->
-					<input type="hidden" class="form-control" name="planNum" id="planNum" value="${plan.planNum}" readonly/>
-					<!-- planDate : planDt_planDate -->
-					<input type="hidden" class="form-control" name="planDate" id="planDate" value="${plan.startDate}" readonly/>
-					
 					<!-- User submit Input -->
-					<div class="details1 mt-5 py-2 border">
+					<div class="detail mt-5 py-2 border">
 						<h3 class="font-italic ml-2 d-inline">Place</h3>
 						<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2" data-num="1">-</button>
 						<hr />
-						<div class="frm1_detail_top row mx-0 justify-content-between">
+						<div class="inputbox row mx-0 justify-content-between">
+							<!-- [fk] planNum : planMst_planNum-->
+							<input type="hidden" class="form-control" name="planNum" id="planNum0" value="${plan.planNum}" readonly/>
+							<!-- [pk] planDtNum : new input ? value=0 : value=planDtNum -->
+							<input type="hidden" class="form-control" name="planDtNum" id="planDtNum0" value="" readonly/>
+							<!-- planDate : planDt_planDate -->
+							<input type="hidden" class="form-control" name="planDate" id="planDate0" value="${plan.startDate}" readonly/>
+
 							<div class="form-group col-4">
-								<label for="frm1_placeName1">placeName</label>
-								<input type="text" class="form-control" name="frm1_placeName1" id="frm1_placeName1" readonly/>
+								<label for="placeName1">placeName</label>
+								<input type="text" class="form-control" name="placeName" id="placeName0"/>
 							</div>
 							
 							<div class="form-group col-4">
-								<label for="frm1_startTime1">StartTime</label>
-								<input type="time" class="form-control" name="frm1_startTime1" id="frm1_startTime1"/>
+								<label for="startTime1">StartTime</label>
+								<input type="time" class="form-control" name="startTime" id="startTime0"/>
 							</div>
 							
 							<div class="form-group col-4">
-								<label for="frm1_endTime1">EndTime</label>
-								<input type="time" class="form-control" name="frm1_endTime1" id="frm1_endTime1"/>
+								<label for="endTime1">EndTime</label>
+								<input type="time" class="form-control" name="endTime" id="endTime0"/>
 							</div>
 							
-							<div class="form-inline col-9 ml-0">
-								<label for="frm1_transpotation1" class="col-3">교통수단</label>
-								<input type="text" class="form-control col-9" name="frm1_transpotation1" id="frm1_transpotation1"/>
+							<div class="form-group col-12">
+								<label for="transpotation1">교통수단</label>
+								<input type="text" class="form-control" name="transpotation" id="transpotation0"/>
 							</div>
-							
-							<button type="button" class="btn btn-sm btn-outline-secondary details-btn col-2 mr-3" data-count="0">상세 일정</button>
-							
+						
 							<div class="form-group col-12 toggle-box">
-								<label for="frm1_details1">상세 일정</label>
-								<textarea rows="5" class="form-control" name="frm1_details1" id="frm1_details1"></textarea>
+								<label for="details1">상세 일정</label>
+								<textarea rows="5" class="form-control" name="details" id="details0"></textarea>
 							</div>
 						</div>
-					</div> 
+					</div>
 				</form>
 			</div>
 		</div>
+
 	</div>
 </div>
 
@@ -307,6 +280,43 @@ textarea {
 
 <script type="text/javascript" src="../js/feed/kakaomap/kakaomap.js"></script>
 <script>
+$(document).ready(function() {
+	$('#submitAll').click(function() {
+		
+		let data = $('form').serialize();
+		
+		console.log($('form').serialize());
+		
+		$.ajax({
+			url: 'insertPlanDt.do',
+			type: 'post',
+			data: data,
+ 		    beforeSend: function(xhr){
+	 		   	var token = $("meta[name='_csrf']").attr('content');
+	 			var header = $("meta[name='_csrf_header']").attr('content');
+ 		        xhr.setRequestHeader(header, token);
+ 		    },
+			success: function() {
+				console.log('success');
+			},
+			error: function() {
+				console.log('error');				
+			}
+		})
+
+	})
+})
+
+
+
+</script>
+
+
+
+
+
+<script>
+/*
 $(document).ready(function () {
 
 	$('#inputContainer button').click(function(e) {
@@ -387,8 +397,7 @@ $(document).ready(function () {
 		};
 		
 	});
-	
-	/*
+
 	//latitude, longitude, placeName 값이 들어갈 input창 생성
 	var Form = $("#frm")
 	var index = 0    	
@@ -516,8 +525,9 @@ $(document).ready(function () {
 			}			
 		});
 	});
-	*/
+
 });
+*/
 </script>
 </body>
 </html>

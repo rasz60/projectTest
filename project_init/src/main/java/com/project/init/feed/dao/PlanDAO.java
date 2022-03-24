@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
+import com.project.init.feed.dto.CommentDto;
+import com.project.init.feed.dto.PlanDtDto;
 import com.project.init.feed.dto.PlanDto;
 import com.project.init.feed.dto.PlanDto2;
 
@@ -119,5 +121,60 @@ public class PlanDAO implements IDao {
 		
 		return dto;
 	}
+	
+	
+	@Override
+	public /*ArrayList<PlanDtDto>*/ void insertPlanDtDo(Model model, HttpServletRequest request) {
+		
+		ArrayList<PlanDtDto> dtos = null;
+		
+		String[] planDtNum = request.getParameterValues("planDtNum");
+		String[] planNum = request.getParameterValues("planNum");
+		String[] planDate = request.getParameterValues("planDate");
+		String[] placeName = request.getParameterValues("placeName");
+		String[] startTime = request.getParameterValues("startTime");
+		String[] endTime = request.getParameterValues("endTime");
+		String[] transpotation = request.getParameterValues("transpotation");
+		String[] details = request.getParameterValues("details");
+		
+		for ( int i = 0; i < planDtNum.length; i++ ) {
+			
+			logger.debug(planNum[i]+"");
+			
+			PlanDtDto dto = new PlanDtDto(0,
+										  Integer.parseInt(planNum[i]),
+										  planDate[i],
+										  placeName[i],
+										  startTime[i],
+										  endTime[i],
+										  transpotation[i],
+										  details[i]);
+			
+			int res = sqlSession.insert("insertPlanDt", dto);
+			
+			logger.trace(res > 0 ? "insert success": "index[" + i + "] insert failed ");
+		}
+			
+		//return dtos;
+	}
+
+	@Override
+	public void insertMcomment(HttpServletRequest request) {
+		logger.info("insertComment >>> ");
+
+		
+		
+		CommentDto dto = new CommentDto(0,request.getParameter("comments"), 0,0,0);
+		
+		
+		
+		
+		sqlSession.insert("McommentC", dto);
+		
+	}
+	
+	
+	
+	
 	
 }

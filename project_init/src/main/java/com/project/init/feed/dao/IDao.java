@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
 
+import com.project.init.feed.dto.CommentDto;
 import com.project.init.feed.dto.PlanDto;
 
 public interface IDao {
@@ -22,4 +23,8 @@ public interface IDao {
 	String deletePlan(String planNum);
 	
 	String insertMap(Model model, HttpServletRequest request);
+	
+	/*ArrayList<PlanDtDto>*/ void insertPlanDtDo(Model model, HttpServletRequest request);
+	
+	void insertMcomment(HttpServletRequest request);
 }
