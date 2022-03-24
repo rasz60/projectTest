@@ -1,5 +1,7 @@
 package com.project.init.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -7,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,21 +35,53 @@ public class HomeController {
 	
 	@RequestMapping("home")
 	public String home() {
-		logger.info("home >>>");
+		logger.info("home in >>>");
+		
+		
 		
 		return "home";
 	}
 	
-	@RequestMapping(value = "home/comment.do", produces = "application/text; charset=UTF-8")
 	@ResponseBody
-	public String commentDo(HttpServletRequest request, Model model) {
+	@RequestMapping(value="home/allComments.do", produces="application/json; charset=UTF-8")
+	public ArrayList<CommentDto> allComments() {
+		logger.info("allComments in >>>");
 		
+		ArrayList<CommentDto> result = dao.selectComments();
 		
-		
-		dao.insertMcomment(request);
-		
-		return "";
+		logger.info("allComments result : " + result);
+		return result;
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="home/comment.do", produces="application/text; charset=UTF-8")
+	public String commentDo(@RequestBody CommentDto dto) {
+		logger.info("commentDo in >>>");
+		
+		String result = dao.insertMcomment(dto);
+		
+		logger.info("commentDo result : " + result);
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="home/recomment.do", produces="application/text; charset=UTF-8")
+	public String recommandDo(@RequestBody CommentDto dto) {
+		logger.info("commentDo in >>>");
+		
+		dto.setiNum(dto.getiNum() + 1);
+		
+		String result = dao.insertMcomment(dto);
+		
+		logger.info("commentDo result : " + result);
+		return result;
+	}
+	
+	
+	
+	
+	
 	
 	@RequestMapping("search")
 	public String search(HttpServletRequest request, Model model) {

@@ -26,5 +26,8 @@ public interface IDao {
 	
 	/*ArrayList<PlanDtDto>*/ void insertPlanDtDo(Model model, HttpServletRequest request);
 	
-	void insertMcomment(HttpServletRequest request);
+	
+	
+	String insertMcomment(CommentDto dto);
+	ArrayList<CommentDto> selectComments();
 }

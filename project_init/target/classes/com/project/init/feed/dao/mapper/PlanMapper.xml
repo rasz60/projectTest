@@ -53,11 +53,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- comment test -->
 <insert id="McommentC" parameterType="com.project.init.feed.dto.CommentDto">
-	INSERT INTO comment_test
-	VALUES (comment_test_seq.nextVAL, #{comments}, comment_test_seq.currVAL, comment_test_seq.currVAL, #{iNum}) 
+	<choose>
+		<when test="iNum == 0">
+			INSERT INTO comment_test (commentNum, comments, mNum, gNum, iNum)
+			VALUES (comment_seq.nextVAL, #{comments}, comment_seq.currVAL, comment_seq.currVAL, 0) 		
+		</when>
+		
+		<when test="iNum == 1">
+			INSERT INTO comment_test (commentNum, comments, mNum, gNum, iNum)
+			VALUES (comment_seq.nextVAL, #{comments}, #{mNum}, comment_seq.currVAL, 1)
+		</when>
+
+		<otherwise>
+			INSERT INTO comment_test (commentNum, comments, mNum, gNum, iNum)
+			VALUES (comment_seq.nextVAL, #{comments}, #{mNum}, #{gNum}, #{iNum})
+		</otherwise>
+	</choose>
 </insert>
 
-
+<select id="selectAllComments" resultType="com.project.init.feed.dto.CommentDto">
+	SELECT * 
+	FROM comment_test 
+	ORDER BY mNum ASC, gNum ASC, iNum ASC, commentNum ASC
+</select>
 
 
 </mapper>

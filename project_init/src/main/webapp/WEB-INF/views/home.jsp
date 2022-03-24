@@ -23,6 +23,48 @@
 <link rel="stylesheet" type="text/css" href="css/main/main.css" />
 <link rel="stylesheet" type="text/css" href="css/footer.css" />
 <title>Insert title here</title>
+<script>
+$(document).ready(function() {
+	function allComments() {
+		$.ajax({
+			url: 'home/allComments.do',
+			type: 'post',
+		    beforeSend: function(xhr){
+	 		   	var token = $("meta[name='_csrf']").attr('content');
+	 			var header = $("meta[name='_csrf_header']").attr('content');
+			        xhr.setRequestHeader(header, token);
+			},
+			success: function(data) {
+				for ( var i = 0; i < data.length; i++ ) {
+					let box = '<input type="text" class="form-control comment" value="' + data[i].comments + '" readonly />'
+							+ '<form action="home/recomment.do" method="post" name="refrm" class="refrm">'
+							+ '<input type="text" class="form-control col-10" name="commentNum" value="' + data[i].commentNum + '"/>'
+							+ '<input type="text" class="form-control col-10" name="mNum" value="' + data[i].mNum + '"/>'
+							+ '<input type="text" class="form-control col-10" name="gNum" value="' + data[i].gNum + '"/>'
+							+ '<input type="text" class="form-control col-10" name="inum" value="' + data[i].iNum + '"/>'
+							+ '<div class="form-group row mx-0">'
+							+ '<input type="text" class="form-control col-10" id="recomment-input" name="comments"/>'
+							+ '<button type="submit" class="btn btn-sm btn-primary" >댓글</button>'
+							+ '</div>'
+							+ '</form>';
+					$('#commentary').append(box);
+					
+				}
+			},
+			error: function(data) {
+				console.log(data);
+			}
+		});
+	};
+	
+	allComments();
+	
+})
+
+
+
+</script>
+
 </head>
 
 
@@ -39,74 +81,85 @@
 			<label for="comment-input" class="col-1 mt-2">댓글 : </label>
 			<input type="text" class="form-control col-10" id="comment-input" name="comments"/>
 
-			<button type="button" id="m-comment" class="btn btn-sm btn-primary col-1">댓글</button>	
+			<button type="button" id="m-comment" class="btn btn-sm btn-primary col-1">댓글</button>
 		</div>
 	</form>
-	
-	<!-- 댓글이 뿌려지는 곳 -->
-	<div class="form-group row mx-0">
-		<label for="comment-input" class="col-1 mt-2">댓글 : </label>
-		<input type="hidden" class="mnum" value="${comments.no }"/>
-		<input type="hidden" class="inum" value="${comments.mnum }"/>
-		<input type="hidden" class="inum" value="${comments.gnum }"/>
-		<input type="hidden" class="mnum" value="${comments.inum }"/>
-		<input type="text" class="form-control col-10" id="comment-input" name="comments"/>
-		<button type="button" id="c-comment" class="btn btn-sm btn-primary col-1" 
-		data-no=${comments.no } data-mnum=${comments.mnum } data-gnum=${comments.gnum } data-inum=${comments.inum } >댓글</button>
-	</div>
-	
-	
-	<div class="form-group row mx-0">
-		<label for="comment-input" class="col-1 mt-2">댓글 : </label>
-		<input type="text" class="form-control col-10" id="comment-input" name="comments"/>
-		<button type="button" id="m-comment" class="btn btn-sm btn-primary col-1" data-indent=0 >댓글</button>
-	</div>
-	
+
 </div>
 
-</body>
+
+
+
+
+
+
+
 
 
 <script>
-
-$(document).ready(function() {
+$(function() {
 	
-	let m_index = 0;
 	$('#m-comment').click(function(e) {
+			e.preventDefault();
+			
+			let comment = $('#comment-input').val();
+			
+			if ( comment == null ) {
+				alert('null exception');
+				return false;
+			};
+			
+			let data = {
+					commentNum : 0,
+					comments : comment,
+					mNum : 0,
+					gNum : 0,
+					iNum : 0
+			};
+		
+			$.ajax({
+				url: $('form').attr('action'),
+				type: $('form').attr('method'),
+				data: JSON.stringify(data),
+				contentType: 'application/json; charset-utf-8',
+	 		    beforeSend: function(xhr){
+		 		   	var token = $("meta[name='_csrf']").attr('content');
+		 			var header = $("meta[name='_csrf_header']").attr('content');
+	 		        xhr.setRequestHeader(header, token);
+	 		    },
+				success: function(data) {
+					if( data == 'success' ) {
+						allComments();
+					}
+				},
+				error: function(data) {
+					console.log(data);
+				}
+			});
+			
+		});
+		
+	});
+	
+	
+	$('.refrm').submit(function(e){
 		e.preventDefault();
-
-		let indentNum = $(this).attr("data-value");
-		let comment = $('#comment-input').val();
-		let createBox = $('.form-group').html();
-		
-		
-		let data = 'iNum=' + indentNum + "&" + $('form').serialize();
-		
-		console.log(data);
-		
 		$.ajax({
-			url: $('form').attr('action'),
-			type: $('form').attr('method'),
-			data: data,
- 		    beforeSend: function(xhr){
-	 		   	var token = $("meta[name='_csrf']").attr('content');
-	 			var header = $("meta[name='_csrf_header']").attr('content');
- 		        xhr.setRequestHeader(header, token);
- 		    },
+			url: $(this).attr('action'),
+			type: $(this).attr('method'),
 			success: function(data) {
-				console.log(data);
+				if( data == 'success' ) {
+					allComments();
+				}
 			},
 			error: function(data) {
 				console.log(data);
 			}
 		});
-		
-		m_index++;		
-	})
-	
-})
-
-
-
+	});
 </script>
+
+
+
+</body>
 </html>

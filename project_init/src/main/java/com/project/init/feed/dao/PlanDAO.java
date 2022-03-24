@@ -157,20 +157,25 @@ public class PlanDAO implements IDao {
 			
 		//return dtos;
 	}
-
+	
 	@Override
-	public void insertMcomment(HttpServletRequest request) {
+	public ArrayList<CommentDto> selectComments() {
+		
+		ArrayList<CommentDto> dtos = (ArrayList)sqlSession.selectList("selectAllComments");
+		
+		return dtos;
+	}
+	
+	
+	
+	@Override
+	public String insertMcomment(CommentDto dto) {
 		logger.info("insertComment >>> ");
+		int res = sqlSession.insert("McommentC", dto);
 
+		logger.info("insertComment result : " + (res == 1 ? "success": "failed") );
 		
-		
-		CommentDto dto = new CommentDto(0,request.getParameter("comments"), 0,0,0);
-		
-		
-		
-		
-		sqlSession.insert("McommentC", dto);
-		
+		return res == 1 ? "success": "failed";
 	}
 	
 	
