@@ -2,10 +2,10 @@
 var markers = [];
 
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-mapOption = {
-    center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-    level: 3 // 지도의 확대 레벨
-};
+	mapOption = {
+	    center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+	    level: 3 // 지도의 확대 레벨
+	};
 
 
 //지도를 생성합니다    
@@ -60,77 +60,81 @@ if (status === kakao.maps.services.Status.OK) {
 
 //검색 결과 목록과 마커를 표출하는 함수입니다
 function displayPlaces(places) {
+	
+	//console.log(places);
+	
+	var listEl = document.getElementById('placesList'), 
+	menuEl = document.getElementById('menu_wrap'),
+	fragment = document.createDocumentFragment(), //새로운 빈 DocumentFragment 를 생성합니다. DocumentFragment 인터페이스는 부모가 없는 아주 작은 document 객체를 나타냅니다. 
+	bounds = new kakao.maps.LatLngBounds(), //LatLngBounds - WGS84 좌표계에서 사각영역 정보를 표현하는 객체를 생성한다.
+											//WGS84 좌표계는 지심 좌표계인데 이것은 지구 타원체의 중심을 원점으로 하고 X, Y ,Z 방향의 축을 따라 좌표를 결정
+	listStr = '';
+	
+	// 검색 결과 목록에 추가된 항목들을 제거합니다
+	removeAllChildNods(listEl);
+	
+	// 지도에 표시되고 있는 마커를 제거합니다
+	removeMarker();
+	
+	
+	for ( var i=0; i<places.length; i++ ) {
+	
+	    // 마커를 생성하고 지도에 표시합니다
+	    var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x), //LatLng - WGS84 좌표 정보를 가지고 있는 객체를 생성한다.
+	        marker = addMarker(placePosition, i), 
+	        itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+	    
+	    var category = places[i].category_name; //카테고리 정보를 가지고 있는 객체 생성 
+	    var address = places[i].address_name; // 도로명 주소 정보를 가지고 있는 객체 생성
+	    //console.log(address);
+	    // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+	    // LatLngBounds 객체에 좌표를 추가합니다
+	    bounds.extend(placePosition); //extend() - 다수의 객체를 하나의 객체로 합치는 merge기능을 수행
+	    
+	    // 마커와 검색결과 항목에 click 했을때
+	    // 해당 장소에 인포윈도우에 장소명을 표시합니다
+	    (function(marker, title, category, address) {
+	    	//addListener(target, type, handler) - 다음 지도 API 객체에 이벤트를 등록한다. 
+	    	//target : 이벤트를 지원하는 다음 지도 API 객체, type : 이벤트 이름, handler : 이벤트를 처리할 함수
+	    	
+	    	kakao.maps.event.addListener(marker, 'mouseover', function() { //마커에 마우스 올렸을 때
+	            displayInfowindow(marker, title); // displayInfowindow()에서 처리
+	        });
+	
+	        kakao.maps.event.addListener(marker, 'mouseout', function() { // 마커에 마우스 치웠을 때 인포창 닫기
+	            infowindow.close();
+	        });
+	        
+	        itemEl.onmouseover =  function () { //검색목록에 마우스 올렸을 때
+	            displayInfowindow(marker, title); // displayInfowindow()에서 처리
+	        };
+	
+	        itemEl.onmouseout =  function () { // 검색목록에 마우스 치웠을 때 인포창 닫기
+	            infowindow.close();
+	        };
+	    	        	
+	        kakao.maps.event.addListener(marker, 'click', function() { // 마커 클릭 시
+				
+				var cc = $(this).parent('div[id^=tab]').attr('class');
+				console.log(cc);
 
-console.log(places);
-
-var listEl = document.getElementById('placesList'), 
-menuEl = document.getElementById('menu_wrap'),
-fragment = document.createDocumentFragment(), //새로운 빈 DocumentFragment 를 생성합니다. DocumentFragment 인터페이스는 부모가 없는 아주 작은 document 객체를 나타냅니다. 
-bounds = new kakao.maps.LatLngBounds(), //LatLngBounds - WGS84 좌표계에서 사각영역 정보를 표현하는 객체를 생성한다.
-										//WGS84 좌표계는 지심 좌표계인데 이것은 지구 타원체의 중심을 원점으로 하고 X, Y ,Z 방향의 축을 따라 좌표를 결정
-listStr = '';
-
-// 검색 결과 목록에 추가된 항목들을 제거합니다
-removeAllChildNods(listEl);
-
-// 지도에 표시되고 있는 마커를 제거합니다
-removeMarker();
-
-
-for ( var i=0; i<places.length; i++ ) {
-
-    // 마커를 생성하고 지도에 표시합니다
-    var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x), //LatLng - WGS84 좌표 정보를 가지고 있는 객체를 생성한다.
-        marker = addMarker(placePosition, i), 
-        itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
-    
-    var category = places[i].category_name; //카테고리 정보를 가지고 있는 객체 생성 
-    var address = places[i].address_name; // 도로명 주소 정보를 가지고 있는 객체 생성
-    console.log(address);
-    // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-    // LatLngBounds 객체에 좌표를 추가합니다
-    bounds.extend(placePosition); //extend() - 다수의 객체를 하나의 객체로 합치는 merge기능을 수행
-    
-    // 마커와 검색결과 항목에 click 했을때
-    // 해당 장소에 인포윈도우에 장소명을 표시합니다
-    (function(marker, title, category, address) {
-    	//addListener(target, type, handler) - 다음 지도 API 객체에 이벤트를 등록한다. 
-    	//target : 이벤트를 지원하는 다음 지도 API 객체, type : 이벤트 이름, handler : 이벤트를 처리할 함수
-    	
-    	kakao.maps.event.addListener(marker, 'mouseover', function() { //마커에 마우스 올렸을 때
-            displayInfowindow(marker, title); // displayInfowindow()에서 처리
-        });
-
-        kakao.maps.event.addListener(marker, 'mouseout', function() { // 마커에 마우스 치웠을 때 인포창 닫기
-            infowindow.close();
-        });
-        
-        itemEl.onmouseover =  function () { //검색목록에 마우스 올렸을 때
-            displayInfowindow(marker, title); // displayInfowindow()에서 처리
-        };
-
-        itemEl.onmouseout =  function () { // 검색목록에 마우스 치웠을 때 인포창 닫기
-            infowindow.close();
-        };
-    	        	
-        kakao.maps.event.addListener(marker, 'click', function() { // 마커 클릭 시 
-        	inputdata(marker, title, category, address); // inputdata()에서 처리            	
-        });
-    	                     
-        itemEl.onclick =  function () { // 검색 목록창 클릭 시
-        	inputdata(marker, title, category, address); // inputdata()에서 처리                
-        }; 
-    })(marker, places[i].place_name, places[i].category_name, places[i].address_name);
-
-    fragment.appendChild(itemEl); //appendChild() - 새로운 노드를 해당 노드의 자식 노드 리스트(child node list)의 맨 마지막에 추가        
-}
-
-// 검색결과 항목들을 검색결과 목록 Element에 추가합니다
-listEl.appendChild(fragment);
-menuEl.scrollTop = 0; //scrollTop - 현재 스크롤의 위치값
-
-// 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-map.setBounds(bounds); //setBounds() - 주어진 영역이 화면 안에 전부 나타날 수 있도록 지도의 중심 좌표와 확대 수준을 설정한다.
+	        	inputdata(marker, title, category, address); // inputdata()에서 처리      	
+	        });
+	    	                     
+	        itemEl.onclick =  function () { // 검색 목록창 클릭 시
+	        	inputdata(marker, title, category, address); // inputdata()에서 처리                
+	        }; 
+	    })(marker, places[i].place_name, places[i].category_name, places[i].address_name);
+	
+	    fragment.appendChild(itemEl); //appendChild() - 새로운 노드를 해당 노드의 자식 노드 리스트(child node list)의 맨 마지막에 추가        
+	}
+	
+	// 검색결과 항목들을 검색결과 목록 Element에 추가합니다
+	listEl.appendChild(fragment);
+	menuEl.scrollTop = 0; //scrollTop - 현재 스크롤의 위치값
+	
+	// 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+	map.setBounds(bounds); //setBounds() - 주어진 영역이 화면 안에 전부 나타날 수 있도록 지도의 중심 좌표와 확대 수준을 설정한다.
 }
 
 
@@ -237,9 +241,8 @@ $('#address'+index).val(address);
 $('#category'+index).val(category);
 $('#latitude'+index).val(marker.getPosition().getLat());
 $('#longitude'+index).val(marker.getPosition().getLng());
-$('#placeName'+index).val(title);
+$('#placeName'+index).val(category);
 index += 1 //index 번호 장소 선택 마다 1씩증가
-
 }
 
 // 검색결과 목록의 자식 Element를 제거하는 함수입니다

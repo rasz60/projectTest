@@ -22,91 +22,6 @@ pageEncoding="UTF-8"%>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd"></script>
 <link rel="stylesheet" type="text/css" href="../css/feed/kakaomap/kakaomap.css" />
 
-<!-- date 계산, tab-menu 생성 -->
-<script>
-function strToDate(str) {
-	let y = str.slice(0, 4);
-	let m = Number(str.slice(5, 7)) - 1;
-	let d = str.slice(8);
-	
-	return new Date(y, m, d);
-}
-
-function dateToStr(date) {
-	let y = date.getFullYear();
-	let m = date.getMonth() + 1;
-	let d = date.getDate();
-	
-	if ( m < 9 ) {
-		m = "0" + m;
-	}
-	
-	if ( d < 9 ) {
-		d = "0" + d;
-	}
-	
-	return y+"-"+m+"-"+d;
-}
-
-function getPlanDate(start, end) {
-	var dates = [];
-	dates.push(dateToStr(start));
-
-	var date = new Date(start);
-	
-	while ( date < end ) {
-		date.setDate(date.getDate() + 1);
-		
-		dates.push(dateToStr(date));
-	}
-	
-	return dates;
-}
-
-console.log('<c:out value="${plan.startDate}" />')
-
-var sDate = strToDate('<c:out value="${plan.startDate}" />');
-console.log(sDate);
-
-
-var eDate = strToDate('<c:out value="${plan.endDate}" />');
-var dateCount = (eDate.getTime() - sDate.getTime()) / (1000*60*60*24);
-var dates = getPlanDate(sDate, eDate);
-
-$(document).ready(function(){
-	
-	for ( var i = 2; i <= dateCount; i++ ) {
-		var tab_link = "<li class='tab-link' data-tab='tab-" + i  + "'>date" + i  + "</li>";
-		
-		var tab_div = '<div id="tab-' + i + '" class="mt-2 tab-content current">' 
-			        + $('#tab-1').html();
-		            + '</div>';
-		            
-		$('.tabs').append(tab_link);
-		$('#tabdiv').append(tab_div);
-		
-		$('#tab-' + i ).removeClass('current');
-		$('#tab-' + i + '>h3').text('DATE ' + i + ' : ' + dates[i-1]);
-		$('#tab-' + i + ' #frm1').attr('name', 'frm' + i);
-		$('#tab-' + i + ' #frm1').attr('id', 'frm' + i);
-		$('#tab-' + i + ' input#planDate1').val(dates[i-1]);
-	};
-	
-	
-	$('ul.tabs li').click(function(){
-	    var tab_id = $(this).attr('data-tab');
-
-	    $('ul.tabs li').removeClass('current');
-	    $('.tab-content').removeClass('current');
-
-	    $(this).addClass('current');
-		$("#"+tab_id).addClass('current');
-	});
-
-})
-
-</script>
-
 <!-- tab-menu css -->
 <style>
 html, body {
@@ -203,50 +118,50 @@ textarea {
 			
 			<!-- input창 -->
 			<div class="col-6 inputContainer">
-				<div class="mb-4">
-					총 갯수 : <span class="showIndex"></span> / 10
+				<div class="title mb-4">
+					총 갯수 : <span class="showIndex">1</span> / 10
 					<button type="button" class="btn btn-success insertButton btn-sm float-right">추가</button>
 					<button type="button" class="btn btn-sm btn-primary submit float-right mr-1">저장</button>
 				</div>
 
 
-				<form id="frm1" name="frm1" action="insertMap" method="post" data-index="1" data-count="1">
+				<form id="frm1" name="frm1" action="insertMap" method="post" data-count="0">
 					<!-- User submit Input -->
 					<div class="detail mt-5 py-2 border">
 						<h3 class="font-italic ml-2 d-inline">Place</h3>
-						<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2" data-num="1">-</button>
+						<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2">-</button>
 						<hr />
 						<div class="inputbox row mx-0 justify-content-between">
 							<!-- [fk] planNum : planMst_planNum-->
-							<input type="hidden" class="form-control" name="planNum" id="planNum0" value="${plan.planNum}" readonly/>
+							<input type="hidden" class="form-control" name="planNum" value="${plan.planNum}" readonly/>
 							<!-- [pk] planDtNum : new input ? value=0 : value=planDtNum -->
-							<input type="hidden" class="form-control" name="planDtNum" id="planDtNum0" value="" readonly/>
+							<input type="hidden" class="form-control" name="planDtNum" value="" readonly/>
 							<!-- planDate : planDt_planDate -->
-							<input type="hidden" class="form-control" name="planDate" id="planDate0" value="${plan.startDate}" readonly/>
+							<input type="hidden" class="form-control" name="planDate" value="${plan.startDate}" readonly/>
 
 							<div class="form-group col-4">
-								<label for="placeName1">placeName</label>
-								<input type="text" class="form-control" name="placeName" id="placeName0"/>
+								<label for="placeName">placeName</label>
+								<input type="text" class="form-control" name="placeName" id="placeName" data-index="0" readonly/>
 							</div>
 							
 							<div class="form-group col-4">
-								<label for="startTime1">StartTime</label>
-								<input type="time" class="form-control" name="startTime" id="startTime0"/>
+								<label for="startTime">StartTime</label>
+								<input type="time" class="form-control" name="startTime" id="startTime" data-index="0"/>
 							</div>
 							
 							<div class="form-group col-4">
-								<label for="endTime1">EndTime</label>
-								<input type="time" class="form-control" name="endTime" id="endTime0"/>
+								<label for="endTime">EndTime</label>
+								<input type="time" class="form-control" name="endTime" id="endTime" data-index="0"/>
 							</div>
 							
 							<div class="form-group col-12">
-								<label for="transpotation1">교통수단</label>
-								<input type="text" class="form-control" name="transpotation" id="transpotation0"/>
+								<label for="transpotation">교통수단</label>
+								<input type="text" class="form-control" name="transpotation" id="transpotation" data-index="0"/>
 							</div>
 						
 							<div class="form-group col-12 toggle-box">
-								<label for="details1">상세 일정</label>
-								<textarea rows="5" class="form-control" name="details" id="details0"></textarea>
+								<label for="details">상세 일정</label>
+								<textarea rows="5" class="form-control" name="details" id="details" data-index="0"></textarea>
 							</div>
 						</div>
 					</div>
@@ -280,7 +195,44 @@ textarea {
 
 <script type="text/javascript" src="../js/feed/kakaomap/kakaomap.js"></script>
 <script>
+
 $(document).ready(function() {
+		
+	// 페이지가 세팅되면 #frm1에 detail 박스 코드를 변수로 저장 (최초 한 번만)
+	var detailbox = $('#frm1').html();
+	
+	// 일정 날짜 수(dateCount)만큼 tab-link와 tabdiv 생성
+	for ( var i = 2; i <= dateCount; i++ ) {
+		var tab_link = "<li class='tab-link' data-tab='tab-" + i  + "'>date" + i  + "</li>";
+		
+		var tab_div = '<div id="tab-' + i + '" class="mt-2 tab-content current">' 
+			        + $('#tab-1').html();
+		            + '</div>';
+		            
+		$('.tabs').append(tab_link);
+		$('#tabdiv').append(tab_div);
+		
+		$('#tab-' + i ).removeClass('current');
+		$('#tab-' + i + '>h3').text('DATE ' + i + ' : ' + dates[i-1]);
+		$('#tab-' + i + ' #frm1').attr('name', 'frm' + i);
+		$('#tab-' + i + ' #frm1').attr('id', 'frm' + i);
+		$('#tab-' + i + ' input#planDate1').val(dates[i-1]);
+	};
+
+	// tab-link를 클릭 변경 이벤트
+	$('ul.tabs li').click(function(){
+	    var tab_id = $(this).attr('data-tab');
+		
+	    // 다른 tab-link와 tab-div의 current class를 삭제
+	    $('ul.tabs li').removeClass('current');
+	    $('.tab-content').removeClass('current');
+	    
+	    // 본인에게만 current class 부여
+	    $(this).addClass('current');
+		$("#"+tab_id).addClass('current');
+	});
+	
+	
 	$('#submitAll').click(function() {
 		
 		let data = $('form').serialize();
@@ -304,99 +256,113 @@ $(document).ready(function() {
 			}
 		})
 
-	})
+	});
+	
+	$('.inputContainer .insertButton').on('click', function() {
+		var target = $(this).parent().siblings('form');
+		var value = Number(target.attr('data-count')) + 1;
+		
+		if ( value > 9 ) {
+			alert('하루에 열개 이상의 일정을 생성할 수 없습니다.');
+			return false;
+		} else {
+			target.attr('data-count', value);
+			target.append(detailbox);
+			
+			$('.inputbox .form-control').attr('data-index', value);
+			$('form[id^="frm"] .deleteBtn').on('click', function() {
+				var target = $(this).parent().parent('form');
+				var value = Number(target.attr('data-count'));
+				
+				if ( value == 0 ) {
+					alert('최소 한 개의 일정이 있어야 합니다.');
+					return false;
+						
+				} else {
+					target.attr('data-count', value-1);
+					target.siblings('.title').children('.showIndex').text(value);
+					
+					$(this).parent().remove();
+				}
+			});
+			$(this).siblings('.showIndex').text(Number(value + 1));
+		}
+	});
 })
-
 
 
 </script>
 
+<!-- date 계산, tab-menu 생성 -->
+<script>
+function strToDate(str) {
+	let y = str.slice(0, 4);
+	let m = Number(str.slice(5, 7)) - 1;
+	let d = str.slice(8);
+	
+	return new Date(y, m, d);
+}
 
+function dateToStr(date) {
+	let y = date.getFullYear();
+	let m = date.getMonth() + 1;
+	let d = date.getDate();
+	
+	if ( m < 9 ) {
+		m = "0" + m;
+	}
+	
+	if ( d < 9 ) {
+		d = "0" + d;
+	}
+	
+	return y+"-"+m+"-"+d;
+}
+
+function getPlanDate(start, end) {
+	var dates = [];
+	dates.push(dateToStr(start));
+
+	var date = new Date(start);
+	
+	while ( date < end ) {
+		date.setDate(date.getDate() + 1);
+		
+		dates.push(dateToStr(date));
+	}
+	
+	return dates;
+}
+
+function deletebox() {	
+	$('form[id^="frm"] .deleteBtn').on('click', function() {
+		var target = $(this).parent().parent('form');
+		var value = Number(target.attr('data-count'));
+		
+		if ( value == 0 ) {
+			alert('최소 한 개의 일정이 있어야 합니다.');
+			return false;
+			
+		} else {
+			target.attr('data-count', value-1);
+			$(this).parent().remove();
+		}
+	});
+};
+
+
+var sDate = strToDate('<c:out value="${plan.startDate}" />');
+var eDate = strToDate('<c:out value="${plan.endDate}" />');
+var dateCount = (eDate.getTime() - sDate.getTime()) / (1000*60*60*24);
+var dates = getPlanDate(sDate, eDate);
+
+</script>
 
 
 
 <script>
 /*
 $(document).ready(function () {
-
-	$('#inputContainer button').click(function(e) {
-		e.preventDefault();
-		
-		var target = $(this);
-		
-		if ( target.hasClass('details-btn') === true ) {
-			if ( $(this).attr('data-count') == 0 ) {
-				$(this).siblings('.toggle-box').css('display','block');
-				$(this).attr('data-count', '1');
-			} else {
-				$(this).siblings('.toggle-box').css('display','none');
-				$(this).attr('data-count', '0');			
-			}
-		}
-		else if ( target.hasClass('deleteBtn') === true) {
-			var targetClass = "details" + $(this).attr('data-num');
-			var motherForm = $(this).parent().parent('form');
-			var formCount = Number(motherForm.attr('data-count'));
-			
-			if ( formCount == 1 ) {
-				alert('최소 한개 이상의 일정이 있어야 합니다.');
-				return false;
-			} else {
-				if ( $(this).parent().hasClass(targetClass) === true ) {
-					$(this).parent().remove();
-					motherForm.attr('data-count', formCount - 1);
-					console.log(motherForm.attr('data-count'));
-				}
-			}
-		}
-		else if ( target.hasClass('insertButton') === true ) {
-			var targetForm = $(this).parent().siblings('form');
-			var namePrefix = targetForm.attr('id');
-			var index = targetForm.attr('data-index');
-			var detailsCount = Number(targetForm.attr('data-count'));
-			console.log(detailsCount);
-			var insertElement = '<div class="details' + index + ' mt-5 py-2 border">'
-							  + '<h3 class="font-italic ml-2 d-inline">Place</h3>'
-							  + '<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2" data-num="' + index + '">-</button>'
-							  + '<hr />'
-							  + '<div class="frm1_detail_top row mx-0 justify-content-between">'
-							  + '<div class="form-group col-4">'
-							  + '<label for="' + namePrefix + '_placeName' + index + '">placeName</label>'
-							  + '<input type="text" class="form-control" name="' + namePrefix + '_placeName' + index + '" id="' + namePrefix + '_placeName' + index + '" readonly/>'
-							  + '</div>'
-							  + '<div class="form-group col-4">'
-							  + '<label for="' + namePrefix + '_startTime' + index + '">StartTime</label>'
-							  + '<input type="time" class="form-control" name="' + namePrefix + '_startTime' + index + '" id="startTime' + index + '"/>'
-							  + '</div>'
-							  + '<div class="form-group col-4">'
-							  + '<label for="endTime' + index + '">EndTime</label>'
-							  + '<input type="time" class="form-control" name="' + namePrefix + '_endTime' + index + '" id="' + namePrefix + '_endTime' + index + '"/>'
-							  + '</div>'
-							  + '<div class="form-inline col-9 ml-0">'
-							  + '<label for="' + namePrefix + '_transpotation' + index + '" class="col-3">교통수단</label>'
-							  + '<input type="text" class="form-control col-9" name="' + namePrefix + '_transpotation' + index + '" id="' + namePrefix + '_transpotation' + index + '"/> '
-							  + '</div>'
-							  + '<button type="button" class="btn btn-sm btn-outline-secondary details-btn col-2 mr-3" data-count="0">상세 일정</button>'
-							  + '<div class="form-group col-12 toggle-box">'
-							  + '<label for="' + namePrefix + '_details' + index + '">상세 일정</label>'
-							  + '<textarea rows="5" class="form-control" name="' + namePrefix + '_details' + index + '" id="' + namePrefix + '_details' + index + '"></textarea>'
-							  + '</div>'
-							  + '</div>'
-							  + '</div>';
-
-			if ( index <= 10 ) {
-				targetForm.attr('data-index', index);
-				targetForm.append(insertElement);
-				targetForm.attr('data-count', detailsCount + 1);
-				console.log(targetForm.attr('data-count'));
-			} else {
-				alert('하루 일정이 10개를 초과할 수 없습니다.');
-				return false;
-			}
-			
-		};
-		
-	});
 
 	//latitude, longitude, placeName 값이 들어갈 input창 생성
 	var Form = $("#frm")
