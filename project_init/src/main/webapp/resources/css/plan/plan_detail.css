@@ -1,0 +1,52 @@
+html, body {
+	height: 100%;
+}
+
+section.container-fluid {
+	margin-top: 5em;
+	padding-bottom: 2em;
+	height: auto;
+}
+
+.planlist {
+	max-height: 900px;
+	overflow: auto;
+}
+
+.planlist #kakaobox {
+	max-width: 100%;
+	min-height: 900px;
+}
+
+h3[id^=date-title] {
+	font-size: 30px;
+	font-weight: 400;
+}
+
+#tabdiv{
+  width: 100%;
+  margin: 0 auto;
+  max-height: 900px;
+  overflow: auto;
+}
+
+.tab-content {
+  display: none;
+  padding: 15px;
+}
+
+.tab-content.current{
+  display: inherit;
+}
+
+.none {
+	 display: none;
+}
+
+textarea {
+	resize: none;
+}
+
+#deleteBtn {
+	height: 50%;
+}

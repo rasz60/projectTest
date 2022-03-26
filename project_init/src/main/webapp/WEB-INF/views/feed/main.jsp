@@ -47,7 +47,7 @@
 		<div class="d-flex justify-content-between mt-4" id="main-body">
 			<!-- create plan form -->
 			<div class="border rounded p-3">
-				<form action="feed/mappage.do" id="frm" method="post">
+				<form action="plan" id="frm" method="post">
 					<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" />
 					<div class="form-group">
 						<label for="planName">일정 이름</label>

@@ -61,8 +61,6 @@ if (status === kakao.maps.services.Status.OK) {
 //검색 결과 목록과 마커를 표출하는 함수입니다
 function displayPlaces(places) {
 	
-	//console.log(places);
-	
 	var listEl = document.getElementById('placesList'), 
 	menuEl = document.getElementById('menu_wrap'),
 	fragment = document.createDocumentFragment(), //새로운 빈 DocumentFragment 를 생성합니다. DocumentFragment 인터페이스는 부모가 없는 아주 작은 document 객체를 나타냅니다. 
@@ -76,21 +74,19 @@ function displayPlaces(places) {
 	// 지도에 표시되고 있는 마커를 제거합니다
 	removeMarker();
 	
-	
 	for ( var i=0; i<places.length; i++ ) {
-	
+		
 	    // 마커를 생성하고 지도에 표시합니다
 	    var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x), //LatLng - WGS84 좌표 정보를 가지고 있는 객체를 생성한다.
 	        marker = addMarker(placePosition, i), 
 	        itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
-	    
-	    var category = places[i].category_name; //카테고리 정보를 가지고 있는 객체 생성 
-	    var address = places[i].address_name; // 도로명 주소 정보를 가지고 있는 객체 생성
-	    //console.log(address);
+			
+			console.log(places[i]);
+			
 	    // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
 	    // LatLngBounds 객체에 좌표를 추가합니다
 	    bounds.extend(placePosition); //extend() - 다수의 객체를 하나의 객체로 합치는 merge기능을 수행
-	    
+
 	    // 마커와 검색결과 항목에 click 했을때
 	    // 해당 장소에 인포윈도우에 장소명을 표시합니다
 	    (function(marker, title, category, address) {
@@ -112,17 +108,21 @@ function displayPlaces(places) {
 	        itemEl.onmouseout =  function () { // 검색목록에 마우스 치웠을 때 인포창 닫기
 	            infowindow.close();
 	        };
-	    	        	
-	        kakao.maps.event.addListener(marker, 'click', function() { // 마커 클릭 시
-				
-				var cc = $(this).parent('div[id^=tab]').attr('class');
-				console.log(cc);
 
-	        	inputdata(marker, title, category, address); // inputdata()에서 처리      	
+	        kakao.maps.event.addListener(marker, 'click', function() { // 마커 클릭 시
+				var key = $('p.active').parent().data('inputform');
+				var target1 = $('#'+key);
+				var value = target1.attr('data-count');
+
+				inputdata(marker, target1, value, title, category, address);// inputdata()에서 처리
 	        });
 	    	                     
 	        itemEl.onclick =  function () { // 검색 목록창 클릭 시
-	        	inputdata(marker, title, category, address); // inputdata()에서 처리                
+				var key = $('p.active').parent().data('inputform');
+				var target1 = $('#'+key);
+				var value = target1.attr('data-count');
+
+				inputdata(marker, target1, value, title, category, address);// inputdata()에서 처리              
 	        }; 
 	    })(marker, places[i].place_name, places[i].category_name, places[i].address_name);
 	
@@ -136,6 +136,7 @@ function displayPlaces(places) {
 	// 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
 	map.setBounds(bounds); //setBounds() - 주어진 영역이 화면 안에 전부 나타날 수 있도록 지도의 중심 좌표와 확대 수준을 설정한다.
 }
+
 
 
 //검색결과 항목을 Element로 반환하는 함수입니다
@@ -175,9 +176,8 @@ var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_
     markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
         marker = new kakao.maps.Marker({
         position: position, // 마커의 위치
-        image: markerImage 
+        image: markerImage
     });
-
 marker.setMap(map); // 지도 위에 마커를 표출합니다
 markers.push(marker);  // 배열에 생성된 마커를 추가합니다
 
@@ -234,15 +234,72 @@ infowindow.open(map, marker);
 
 //마커와 검색결과 목록 클릭 시 input에 data 입력
 //input에 insert하기 위한 index번호 생성
-var index = 0
-function inputdata(marker, title, category, address) {
 
-$('#address'+index).val(address);
-$('#category'+index).val(category);
-$('#latitude'+index).val(marker.getPosition().getLat());
-$('#longitude'+index).val(marker.getPosition().getLng());
-$('#placeName'+index).val(category);
-index += 1 //index 번호 장소 선택 마다 1씩증가
+function inputdata(marker, target1, value, title, category, address) {
+
+	if ( value > 9 ) {
+		alert('하루에 열개 이상의 일정을 생성할 수 없습니다.');
+		return false;
+
+	} else if ( value != 0 ){
+		var boxHtml = '<div class="detail' + value + ' mt-2 py-2 border bg-light rounded">'
+					+ '<h3 class="font-italic ml-2 d-inline mt-2">Place</h3>'
+					+ '<!-- placeName -->'
+					+ '<input type="text" class="form-control col-8 d-inline ml-3" name="placeName" readonly/>'
+					+ '<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2 mt-1"><i class="fa-solid fa-minus"></i></button>'
+					+ '<button type="button" class="btn btn-sm btn-dark detailBtn float-right mr-2 mt-1" data-count="0"><i class="fa-solid fa-angles-down"></i></button>'
+					+ '<hr />'
+					+ '<div class="inputbox row mx-0 justify-content-between">'
+					+ '<!-- [pk] planDtNum -->'
+					+ '<input type="hidden" class="form-control" name="planDtNum" value="0" readonly/>'
+					+ '<!-- planDate -->'
+					+ '<input type="hidden" class="form-control" name="planDate" readonly/>'
+					+ '<!-- latitude -->'
+					+ '<input type="hidden" class="form-control" name="latitude" readonly/>'
+					+ '<!-- longitude -->'
+					+ '<input type="hidden" class="form-control" name="longitude" readonly/>'
+					+ '<!-- address -->'
+					+ '<input type="hidden" class="form-control" name="address" readonly/>'
+					+ '<!-- category -->'
+					+ '<input type="hidden" class="form-control" name="category" readonly/>'
+					+ '<!-- startTime -->'
+					+ '<div class="form-group col-6">'
+					+ '<label for="startTime">StartTime</label>'
+					+ '<input type="time" class="form-control" name="startTime" value="" />'
+					+ '</div>'
+					+ '<!-- endTime -->'
+					+ '<div class="form-group col-6">'
+					+ '<label for="endTime">EndTime</label>'
+					+ '<input type="time" class="form-control" name="endTime" value="" />'
+					+ '</div>'
+					+ '<!-- transportation -->'
+					+ '<div class="form-group col-12 toggle none">'
+					+ '<label for="transportation">교통수단</label>'
+					+ '<input type="text" class="form-control" name="transportation" value="" />'
+					+ '</div>'
+					+ '<!-- details -->'
+					+ '<div class="form-group col-12 toggle none">'
+					+ '<label for="details">상세 일정</label>'
+					+ '<textarea rows="5" class="form-control" name="details" value="" ></textarea>'
+					+ '</div>'
+					+ '</div>'
+					+ '</div>';
+		target1.append(boxHtml);
+	}
+
+	var target2 = target1.children('.detail' + value);
+	var target3 = target1.children('.detail' + value).children('.inputbox');
+	
+	target3.children('input[name=planDate]').val(target1.attr('data-date'));
+	target2.children('input[name=placeName]').val(title);
+	target3.children('input[name=latitude]').val(marker.getPosition().getLat());
+	target3.children('input[name=longitude]').val(marker.getPosition().getLng());
+	target3.children('input[name=address]').val(address);
+	target3.children('input[name=category]').val(category);
+
+
+	target1.attr('data-count', Number(value) + 1);					
+	target1.parent().siblings('p.mt-2').children('.showIndex').text(Number(value) + 1);
 }
 
 // 검색결과 목록의 자식 Element를 제거하는 함수입니다

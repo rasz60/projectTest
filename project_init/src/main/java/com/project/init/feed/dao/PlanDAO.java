@@ -9,10 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.project.init.feed.dto.CommentDto;
-import com.project.init.feed.dto.PlanDtDto;
 import com.project.init.feed.dto.PlanDto;
 import com.project.init.feed.dto.PlanDto2;
 
@@ -85,77 +85,12 @@ public class PlanDAO implements IDao {
 
 
 	@Override
-	public String insertMap(Model model, HttpServletRequest request) {
-		logger.info("insertMap in >>>> ");
-		
-		String index = request.getParameter("placecount"); //mappage占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占� 占쏙옙(placecount) 占쏙옙占쌔쇽옙 index 占쏙옙체占쏙옙 占쏙옙占�
-		int j = Integer.parseInt(index); // String占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙 Integer占쏙옙 占쏙옙 占쏙옙환 占쌔쇽옙 占쏙옙체 j占쏙옙 占쏙옙占�
-		System.out.println("j");
-		for(int i = 0; i < j; i++) { //占쏙옙체 j占쏙옙 占쏙옙占쏙옙큼 占쌥븝옙占쌔쇽옙 result占쏙옙 占쏙옙占쏙옙
-			PlanDto2 pdto2 = new PlanDto2(null,
-					  request.getParameter("plan-name"),
-					  request.getParameter("start-date"),
-					  request.getParameter("end-date"),
-					  request.getParameter("theme"),
-					  request.getParameter("latitude" + i),
-					  request.getParameter("longitude" + i), 
-					  request.getParameter("placeName" + i), 
-					  request.getParameter("placecount"),
-					  request.getParameter("category" + i),
-					  request.getParameter("address" + i));
-			int res = sqlSession.insert("insertMap", pdto2);
-		}
-		
-		return "success";
-	}
-
-
-
-
-
-	@Override
 	public PlanDto selectPlan(int planNum) {
 		logger.info("selectPlan (" + planNum + ") in >>>");
 		
 		PlanDto dto = sqlSession.selectOne("selectPlan", planNum);
 		
 		return dto;
-	}
-	
-	
-	@Override
-	public /*ArrayList<PlanDtDto>*/ void insertPlanDtDo(Model model, HttpServletRequest request) {
-		
-		ArrayList<PlanDtDto> dtos = null;
-		
-		String[] planDtNum = request.getParameterValues("planDtNum");
-		String[] planNum = request.getParameterValues("planNum");
-		String[] planDate = request.getParameterValues("planDate");
-		String[] placeName = request.getParameterValues("placeName");
-		String[] startTime = request.getParameterValues("startTime");
-		String[] endTime = request.getParameterValues("endTime");
-		String[] transpotation = request.getParameterValues("transpotation");
-		String[] details = request.getParameterValues("details");
-		
-		for ( int i = 0; i < planDtNum.length; i++ ) {
-			
-			logger.debug(planNum[i]+"");
-			
-			PlanDtDto dto = new PlanDtDto(0,
-										  Integer.parseInt(planNum[i]),
-										  planDate[i],
-										  placeName[i],
-										  startTime[i],
-										  endTime[i],
-										  transpotation[i],
-										  details[i]);
-			
-			int res = sqlSession.insert("insertPlanDt", dto);
-			
-			logger.trace(res > 0 ? "insert success": "index[" + i + "] insert failed ");
-		}
-			
-		//return dtos;
 	}
 	
 	@Override
@@ -176,6 +111,71 @@ public class PlanDAO implements IDao {
 		logger.info("insertComment result : " + (res == 1 ? "success": "failed") );
 		
 		return res == 1 ? "success": "failed";
+	}
+
+	@Override
+	@Transactional
+	public String insertPlanDtDo(HttpServletRequest request, Model model) {
+		logger.info("insertPlanDtDo >>> ");
+		
+		String result = null;
+		
+		
+		//[planMst]
+		int planNum = Integer.parseInt(request.getParameter("planNum"));
+		String planName = request.getParameter("planName");
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		String theme = request.getParameter("theme");
+		
+		//Make mstDto
+		PlanDto mstDto = new PlanDto(planNum, planName, startDate, endDate, theme);
+		int res1 = sqlSession.insert("insertMst", mstDto);
+		result = res1 > 0 ? "success": "failed";
+		
+		logger.info("insertPlanDtDo res1 : " + result);
+
+		//[planDt]
+		String[] planDtNum = request.getParameterValues("planDtNum");
+		String[] placeName = request.getParameterValues("placeName");
+		String[] planDate = request.getParameterValues("planDate");
+		String[] startTime = request.getParameterValues("startTime");
+		String[] endTime = request.getParameterValues("endTime");
+		String[] latitude = request.getParameterValues("latitude");
+		String[] longitude = request.getParameterValues("longitude");
+		String[] address = request.getParameterValues("address");
+		String[] category = request.getParameterValues("category");
+		String[] transportation = request.getParameterValues("transportation");
+		String[] details = request.getParameterValues("details");
+		
+		//Make dtDto[]
+		for ( int i = 0 ; i < planDtNum.length; i++ ) {
+			PlanDto2 dtDto = new PlanDto2(Integer.parseInt(planDtNum[i]),
+										  mstDto.getPlanNum(),
+										  placeName[i],
+										  planDate[i],
+										  startTime[i],
+										  endTime[i],
+										  latitude[i],
+										  longitude[i],
+										  address[i],
+										  category[i],
+										  transportation[i],
+										  details[i]);
+			int res2 = sqlSession.insert("insertDt", dtDto);
+			result = res2 > 0 ? "success": "failed";
+		};
+
+		
+		logger.info("insertPlanDtDo res2 : " + result);
+
+		return result;
+	}
+
+	@Override
+	public String insertMap(Model model, HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

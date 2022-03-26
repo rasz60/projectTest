@@ -78,49 +78,5 @@ public class FeedController {
 		return result;
 	}
 
-	@RequestMapping("mappage.do")
-	public String mappageDo(PlanDto dto, RedirectAttributes rttr) {
-		logger.info("mappage.do(" + dto.getPlanName() + ") in >>>>");
-		
-		dao.insertPlan(dto);
-		
-		rttr.addAttribute("plan", dto.getPlanNum());
-		
-		return "redirect:mappage";
-	}
-	
-	@RequestMapping("mappage")
-	public String mappage(@RequestParam("plan") int planNum, Model model) {
-		logger.info("mappage() in >>>>");
-		
-		model.addAttribute("plan", dao.selectPlan(planNum));
-		
-		return "feed/mappage2";
-	}
-
-	@RequestMapping(value="/insertPlanDt.do", produces = "application/text; charset=UTF8")
-	@ResponseBody
-	public String insertPlanDtDo(HttpServletRequest request, HttpServletResponse response, Model model) {
-		logger.info("insertPlanDtDo in >>>>");
-
-		dao.insertPlanDtDo(model, request);
-		
-		return "";
-	}
-	
-	
-	
-	//===== mappage�� form(#frm)���� ���� data insert =====
-	@RequestMapping(value="insertMap", produces = "application/text; charset=UTF8")
-	@ResponseBody
-	public String insertMap(HttpServletRequest request, HttpServletResponse response, Model model) {
-		System.out.println("insertMap");
-		String result = dao.insertMap(model, request);
-		
-		if(result.equals("success"))
-			return "insert-success";
-		else
-			return "insert-failed";
-	}
 
 }

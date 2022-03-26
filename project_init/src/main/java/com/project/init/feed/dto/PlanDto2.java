@@ -1,77 +1,70 @@
 package com.project.init.feed.dto;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class PlanDto2 {
-	private static final Logger logger = LoggerFactory.getLogger(PlanDto2.class);
 	
-	private String planNum;
-	private String planName;
-	private String startDate;
-	private String endDate;
-	private String theme;
-	private String latitude; //����
-	private String longitude; //�浵
-	private String placeName; //����̸�
-	private String category; //ī�װ�
-	private String placecount; //������ ��� ����
-	private String address; //�ּ�
+	private int planDtNum;
+	private int planNum;
+	private String placeName;
+	private String planDate;
+	private String startTime;
+	private String endTime;
+	private String latitude;
+	private String longitude;
+	private String address;
+	private String category;
+	private String transportation;
+	private String details;
+	
 	public PlanDto2() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public PlanDto2(String planNum, String planName, String startDate, String endDate, String theme, String latitude,
-			String longitude, String placeName, String category, String placecount, String address) {
+	
+	
+	public PlanDto2(int planDtNum, int planNum, String placeName, String planDate, String startTime, String endTime,
+			String latitude, String longitude, String address, String category, String transportation, String details) {
 		super();
+		this.planDtNum = planDtNum;
 		this.planNum = planNum;
-		this.planName = planName;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.theme = theme;
+		this.placeName = placeName;
+		this.planDate = planDate;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.placeName = placeName;
-		this.category = category;
-		this.placecount = placecount;
 		this.address = address;
+		this.category = category;
+		this.transportation = transportation;
+		this.details = details;
 	}
 
-	public String getPlanNum() {
+
+
+	public int getPlanDtNum() {
+		return planDtNum;
+	}
+	public void setPlanDtNum(int planDtNum) {
+		this.planDtNum = planDtNum;
+	}
+	public int getPlanNum() {
 		return planNum;
 	}
-	public void setPlanNum(String planNum) {
+	public void setPlanNum(int planNum) {
 		this.planNum = planNum;
 	}
-	public String getPlanName() {
-		return planName;
+	public String getPlaceName() {
+		return placeName;
 	}
-	public void setPlanName(String planName) {
-		this.planName = planName;
+	public void setPlaceName(String placeName) {
+		this.placeName = placeName;
 	}
-	public String getStartDate() {
-		return startDate;
+	public String getPlanDate() {
+		return planDate;
 	}
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
+	public void setPlanDate(String planDate) {
+		this.planDate = planDate;
 	}
-	public String getEndDate() {
-		return endDate;
-	}
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
-	
-	
-	public String getTheme() {
-		return theme;
-	}
-
-	public void setTheme(String theme) {
-		this.theme = theme;
-	}
-
 	public String getLatitude() {
 		return latitude;
 	}
@@ -84,11 +77,11 @@ public class PlanDto2 {
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
 	}
-	public String getPlaceName() {
-		return placeName;
+	public String getAddress() {
+		return address;
 	}
-	public void setPlaceName(String placeName) {
-		this.placeName = placeName;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	public String getCategory() {
 		return category;
@@ -96,20 +89,29 @@ public class PlanDto2 {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	public String getPlacecount() {
-		return placecount;
+	public String getStartTime() {
+		return startTime;
 	}
-	public void setPlacecount(String placecount) {
-		this.placecount = placecount;
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
 	}
-	public String getAddress() {
-		return address;
+	public String getEndTime() {
+		return endTime;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
-	public static Logger getLogger() {
-		return logger;
+	public String getTransportation() {
+		return transportation;
+	}
+	public void setTransportation(String transportation) {
+		this.transportation = transportation;
+	}
+	public String getDetails() {
+		return details;
+	}
+	public void setDetails(String details) {
+		this.details = details;
 	}
 	
 	
