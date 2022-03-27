@@ -32,6 +32,7 @@
 
 <body>
 <%@ include file="/WEB-INF/views/header.jsp" %>
+
 <section class="container mb-5">
 	<div class="body-container">
 		<div id="feed-header" class="d-flex justify-content-around">
@@ -42,9 +43,34 @@
 			<div id="profile-right" class="p-3 mb-5 bg-body"></div>
 		</div>
 		
-		<hr />
-	
-		<div class="d-flex justify-content-between mt-4" id="main-body">
+		<ul class="nav nav-tabs feed-tabs row mx-0">
+			<li class='nav-item col-3 active' data-tab=''>
+				<a href="" class="nav-link mb-1">
+					<i class="fa-regular fa-calendar-check"></i>
+				</a>
+			</li>
+			
+			<li class='nav-item col-3' data-tab=''>
+				<a href="" class="nav-link mb-1">
+					<i class="fa-solid fa-map-location-dot"></i>
+				</a>
+			</li>
+			
+			<li class='nav-item col-3' data-tab=''>
+				<a href="" class="nav-link mb-1">
+					<i class="fa-solid fa-images"></i>
+				</a>
+			</li>
+			
+			<li class='nav-item col-3' data-tab=''>
+				<a href="" class="nav-link mb-1">
+					<i class="fa-solid fa-gear"></i>
+				</a>
+			</li>
+		</ul>
+		
+		
+		<div class="d-flex justify-content-between mt-5" id="main-body">
 			<!-- create plan form -->
 			<div class="border rounded p-3">
 				<form action="plan" id="frm" method="post">
@@ -97,42 +123,59 @@
 	
 	<!-- modal 창 -->
 	<div class="modal fade" id="myModal2" role="dialog">
-		<div class="modal-dialog modal-dialog-centered modal-sm d-block">
+		<div class="modal-dialog modal-dialog-centered modal-xl d-block">
 			<button type="button" id="modalCloseBtn" class="btn btn-xl btn-default text-white text-weight-bold display-1 float-right" data-dismiss="modal">&times;</button>
 			<div class="modal-content">
 				<div class="modal-header bg-light d-flex justify-content-start">
-					<h4 id="plan-name" class="modal-title display-4 font-italic">update</h4>
+					<h4 id="plan-name" class="modal-title display-4 font-italic"></h4>
 				</div>
 				
-				<div class="modal-body bg-light d-flex justify-content-center">
-					<form action="feed/modify_plan.do" method="post" id="modify_form">
+				<div class="modal-body bg-light">
+					<form action="feed/modify_plan.do" class="row" method="post" id="modify_form">
 						<input type="hidden" name="planNum" id="planNum" />
-						<div class="form-group">
+						<div class="form-group col-4">
 							<label for="planName">일정 이름</label>
 							<input type="text" id="planName" name="planName" class="form-control"/>
 						</div>
 						
-						<div class="form-group">
+						<div class="form-group col-4">
 							<label for="startDate">시작 일자</label>
 							<input type="date" id="startDate" name="startDate" class="form-control"/>
 						</div>
 						
-						<div class="form-group">
+						<div class="form-group col-4">
 							<label for="endDate">종료 일자</label>
 							<input type="date" id="endDate" name="endDate" class="form-control"/>
 						</div>
-
-						<div class="button-group text-right">
-							<button type="button" id="btn-modify" class="btn btn-sm btn-success">수정</button>
-							<button type="button" id="btn-delete" class="btn btn-sm btn-danger">삭제</button>
-						</div>
 					</form>
+					<div class="button-group d-flex justify-content-end mt-2">
+						<button type="button" id="btn-modify" class="btn btn-sm btn-success mx-1">일정 수정</button>
+						<button type="button" id="btn-delete" class="btn btn-sm btn-danger mx-1">일정 삭제</button>
+						<button type="button" id="btn-detail" class="btn btn-sm btn-dark mx-1">상세 수정</button>
+					</div>
+					<hr />
+					<h4 id="plan-day" class="display-4 font-italic" style="font-size: 30px; font-weight: 600;">day 1</h4>
+					<div class="plan-details mt-2 d-flex row mx-0" style="height:500px;">
+						<button type="button" class="btn btn-outline-light text-dark col-1">
+							<i class="fa-solid fa-angle-left"></i>
+						</button>
+						
+						<div id="modal_map" class="col-6 border"></div>
+						<div id="modal_details" class="col-4 border"></div>
+							
+						<button type="button" class="btn btn-outline-light text-dark col-1">
+							<i class="fa-solid fa-angle-right"></i>
+						</button>			
+					</div>
 				</div>
 				<div class="modal-footer bg-light mb-2"></div>
 			</div>
 		</div>
 	</div>
+
 </section>
+
+
 
 <%@ include file="/WEB-INF/views/feed/modal1.jsp" %>
 <%@ include file="/WEB-INF/views/footer.jsp" %>

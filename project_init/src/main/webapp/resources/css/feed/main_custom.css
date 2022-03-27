@@ -1,3 +1,5 @@
+/* 페이지 전체 스크롤바 설정 */
+
 body::-webkit-scrollbar {
     width: 10px;  /* 스크롤바의 너비 */
 }
@@ -11,37 +13,64 @@ body::-webkit-scrollbar-track {
     background: #CCCCCC;  /*스크롤바 뒷 배경 색상*/
 }
 
-
+/* 메뉴바와 section간 margin 조정 */
 section.container {
 	margin-top: 5em;
 }
 
-/*test*/
+/* 각각의 피드페이지로 넘어가는 tab-box */
+.feed-tabs {
+	border-top: 1px solid #dee2e6;
+	border-bottom: none;
+}
+
+.feed-tabs .nav-item {
+	font-size: 1.5rem;
+	text-align: center;
+}
+
+/* 선택된 탭 색상, hover 색상 */
+.feed-tabs .nav-item.active {
+	background-color: #257DDB ;
+}
+
+.feed-tabs .nav-item.active:hover,
+.feed-tabs .nav-item.active .nav-link,
+.feed-tabs .nav-item.active .nav-link:hover {
+	background-color: #257DDB ;	
+	color: white;
+	text-decoration : none;
+}
+
+/* 선택되지 않은 탭 색상, hover 색상 */
+.feed-tabs .nav-item .nav-link {
+	color: #ABABAB;
+	border : none;
+}
+
+.feed-tabs .nav-item:hover,
+.feed-tabs .nav-item .nav-link:hover {
+	color: white;
+	background-color: #D6D6D6 ;
+}
 
 
 
-/* 새로 생성된 이벤트 블럭 커스텀 */
-
-
-
-/* 테두리 */
+/* 달력 관련 */
+/* 새로 생성된 이벤트 블럭 테두리 */
 .fc-event {
 	border-color: white;
 }
 
-#calendar > div.fc-view-harness.fc-view-harness-active > 
-div > table > tbody > tr > td > div > div > div > table > tbody > tr {
-	max-height: 20px;
-	overflow: auto;
-}
-
+/* 토요일, 일요일 글씨색 변경 */
 .fc-day-sat>div, .fc-day-sat>div>div {
 	color : blue;
 }
-
 .fc-day-sun>div, .fc-day-sun>div>div {
 	color : red;
 }
+
+/* 달력 스크롤바 설정 */
 .fc-scroller::-webkit-scrollbar {
     width: 5px;  /* 스크롤바의 너비 */
 }
@@ -55,6 +84,8 @@ div > table > tbody > tr > td > div > div > div > table > tbody > tr {
     background: #CCCCCC;  /*스크롤바 뒷 배경 색상*/
 }
 
+
+
 .modal-dialog {
 	height : 100%;
 }
@@ -66,6 +97,10 @@ div > table > tbody > tr > td > div > div > div > table > tbody > tr {
 #modalCloseBtn {
 	font-size: 4rem;
 	cursor: pointer;
+}
+
+.modal-body #modify_form {
+	width: 100%;
 }
 
 .modal-header #plan-date {
