@@ -2,6 +2,19 @@ html, body {
 	height: 100%;
 }
 
+body::-webkit-scrollbar {
+    width: 10px;  /* 스크롤바의 너비 */
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #A0A0A0 ; /* 스크롤바의 색상 */
+    border-radius: 15px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #CCCCCC;  /*스크롤바 뒷 배경 색상*/
+}
+
 section.container-fluid {
 	margin-top: 5em;
 	padding-bottom: 2em;
@@ -10,7 +23,6 @@ section.container-fluid {
 
 .planlist {
 	max-height: 900px;
-	overflow: auto;
 }
 
 .planlist #kakaobox {
@@ -29,6 +41,23 @@ h3[id^=date-title] {
   max-height: 900px;
   overflow: auto;
 }
+
+
+#tabdiv::-webkit-scrollbar {
+    width: 8px;  /* 스크롤바의 너비 */
+}
+
+#tabdiv::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+    background: #D0D0D0; /* 스크롤바의 색상 */
+    
+    border-radius: 10px;
+}
+
+#tabdiv::-webkit-scrollbar-track {
+    background: #EFEFEF;  /*스크롤바 뒷 배경 색상*/
+}
+
 
 .tab-content {
   display: none;

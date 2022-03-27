@@ -77,11 +77,16 @@ $(document).ready(function() {
 	$('#submit').click(function(e) {
 
 		// 각각의 form에 입력된 값을 변수에 저장
-		var frm = $('#frm');
 		var planName = $('#planName').val();
 		var startDate = $('#startDate').val();
 		var endDate = $('#endDate').val();
-		
+
+		var start = strToDate(startDate);
+		var end = strToDate(endDate);
+		var dateCount = ((end - start) / (1000*60*60*24)) + 1;
+			
+		$('#dateCount').val(dateCount);
+
 		// 1st Validation : input null check
 		if( planName == "" ) {
 			alert('일정 이름을 입력해주세요.');
@@ -99,8 +104,11 @@ $(document).ready(function() {
 		
 		// 3rd Validation : 선택한 일정이 맞는지 다시 한 번 체크
 		if( confirm('선택한 일자로 일정을 만들까요?') == true ) {
-			frm.submit();
-		};
+			$('#frm').submit();			
+
+		} else {
+			return false;
+		}
 		
 	})
 	
@@ -156,13 +164,22 @@ $(document).ready(function() {
 	 		    },
 	 			success : function(data) {
 	 				// arraylist를 json으로 변환한 데이터를 하나씩 꺼내와서 calendar에 event로 추가
-	 				for (var i = 0; i < data.length; i++ ) {
-	 					calendar.addEvent({
+				
+					
+					for (var i = 0; i < data.length; i++ ) {
+	 					var color = eventColor(data[i].theme);
+						var eventEnd = strToDate(data[i].endDate);
+						
+						eventEnd.setDate(eventEnd.getDate() + 1);
+						dateToStr(eventEnd)
+						
+						calendar.addEvent({
 							// event가 가지고 있는 id라는 변수에 planNum 추가
 							id: data[i].planNum,
 	 						title : data[i].planName,
 	 						start : data[i].startDate,
-	 						end : data[i].endDate
+	 						end : dateToStr(eventEnd),
+							backgroundColor : color
 	 					})
 	 				}		
 	 			},
@@ -172,74 +189,6 @@ $(document).ready(function() {
 	 			}
 	 		})
 	};
-	
-	
-	// 새로운 일정을 생성하는 메서드
-	function insertPlan(planName, startDate, endDate) {
-		// 1st Validation : input null check
-		if( planName == "" ) {
-			alert('일정 이름을 입력해주세요.');
-			return false;
-		} else if( startDate =="" || endDate =="" ) {
-			alert('일자를 선택해주세요.');
-			return false;
-			
-		// 2nd Validation : 종료일자가 시작일자보다 빠르면 폼을 reset 시키고 submit 되지 않게 함.
-		} else if ( startDate > endDate ) {
-			alert("종료일자가 시작일자보다 빠를 수 없습니다.");
-			$('.mp_btn #reset').trigger('click');
-			return false;
-		}
-		
-		// 3rd Validation : 선택한 일정이 맞는지 다시 한 번 체크
-		if( confirm('선택한 일자로 일정을 만들까요?') == true ) {
-
-			// 실제 db에는 calendar allday 속성에 따라 실제 종료일자보다 + 1된 날짜로 들어가야 제대로 된 이벤트 블럭이 생성됨.
-			let yyyymm = endDate.substr(0, 8);
-			let dd = Number(endDate.substr(8, 2)) + 1;
-
-			if ( dd < 10 ) {
-				dd = "0" + dd
-			}
-
-			let realEndDate = yyyymm + dd;
-			
-			// 선택한 값을 json 형태 자료로 생성
-			let json = {
-					planName : planName,
-					startDate : startDate,
-					endDate : realEndDate
-			};
-		
-			// ajax로 json 객체를 controller로 보내서 db 추가
-			$.ajax({
-				url : 'feed/insertPlan.do',
-				type : 'post',
-				// ajax로 보내는 데이터 타입
-				contentType : 'application/json; charset=UTF-8',
-				// json형태의 string 변수를 실제 json 타입 데이터로 변환
-				data : JSON.stringify(json),
-				// security _csrf 처리
-	 		    beforeSend: function(xhr){
-		 		   	var token = $("meta[name='_csrf']").attr('content');
-		 			var header = $("meta[name='_csrf_header']").attr('content');
-	 		        xhr.setRequestHeader(header, token);
-	 		    },
-				success : function(data) {
-					console.log(data);
-					// calendar의 모든 이벤트를 제거한 후 다시 db에서 불러오기
-					calendar.removeAllEvents();
-					getAllPlans();
-				},
-				error: function() {
-					console.log('오류');
-				}
-			});
-		// confirm창에서 취소를 눌렀을 때
-		} else {
-			return false;
-		}
-	}
 	
 	
 	// 일정을 수정하는 메서드
@@ -343,5 +292,82 @@ $(document).ready(function() {
 		});
 	}
 	
+	
+	function eventColor(theme) {
+		var color = "";
+		
+		switch(theme) {
+		
+		case "방문" : 
+			color = "#007bff";
+			break;
+		
+		case "데이트" : 
+			color = "#dc3545";
+			break;
+		
+		case "가족여행" : 
+			color = "#28a745";
+			break;
+		
+		case "친구들과" : 
+			color = "#17a2b8";
+			break;
+		
+		case "맛집탐방" : 
+			color = "#fd7e14";
+			break;
+			
+		case "비즈니스" : 
+			color = "#6610f2";
+			break;
+			
+		case "소개팅" : 
+			color = "#e83e8c";
+			break;
+			
+		case "미용" : 
+			color = "#20c997";
+			break;
+			
+		case "운동" : 
+			color = "#6f42c1";
+			break;	
+		
+		case "문화생활" : 
+			color = "#A2A7B7";
+			break;
+		
+		case "여가생활" : 
+			color = "#E9C288";
+			break;
+		}
+		
+		return color;
+	}
+	
+	function strToDate(str) {
+		let y = str.slice(0, 4);
+		let m = Number(str.slice(5, 7)) - 1;
+		let d = str.slice(8);
+		
+		return new Date(y, m, d);
+	}
+	
+	function dateToStr(date) {
+		let y = date.getFullYear();
+		let m = date.getMonth() + 1;
+		let d = date.getDate();
+		
+		if ( m < 9 ) {
+			m = "0" + m;
+		}
+		
+		if ( d < 9 ) {
+			d = "0" + d;
+		}
+		
+		return y+"-"+m+"-"+d;
+	}
 
 });					

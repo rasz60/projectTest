@@ -252,6 +252,10 @@ function inputdata(marker, target1, value, title, category, address) {
 					+ '<div class="inputbox row mx-0 justify-content-between">'
 					+ '<!-- [pk] planDtNum -->'
 					+ '<input type="hidden" class="form-control" name="planDtNum" value="0" readonly/>'
+					+ '<!-- day -->'
+					+ '<input type="hidden" class="form-control" name="planDay" readonly/>'
+					+ '<!-- placeCount -->'
+					+ '<input type="hidden" class="form-control" name="placeIndex" value="0" readonly/>'
 					+ '<!-- planDate -->'
 					+ '<input type="hidden" class="form-control" name="planDate" readonly/>'
 					+ '<!-- latitude -->'
@@ -290,6 +294,8 @@ function inputdata(marker, target1, value, title, category, address) {
 	var target2 = target1.children('.detail' + value);
 	var target3 = target1.children('.detail' + value).children('.inputbox');
 	
+	
+	target3.children('input[name=planDay]').val(target1.attr('data-day'));
 	target3.children('input[name=planDate]').val(target1.attr('data-date'));
 	target2.children('input[name=placeName]').val(title);
 	target3.children('input[name=latitude]').val(marker.getPosition().getLat());
@@ -300,6 +306,7 @@ function inputdata(marker, target1, value, title, category, address) {
 
 	target1.attr('data-count', Number(value) + 1);					
 	target1.parent().siblings('p.mt-2').children('.showIndex').text(Number(value) + 1);
+	target3.children('input[name=placeIndex]').val(Number(value) + 1);
 }
 
 // 검색결과 목록의 자식 Element를 제거하는 함수입니다

@@ -1,8 +1,5 @@
 $(document).ready(function() {
 	
-	// 페이지가 세팅되면 #frm1에 detail 박스 코드를 변수로 저장 (최초 한 번만)
-	var detailbox = $('#frm1').html();
-	
 	// 일정 날짜 수(dateCount)만큼 tab-link와 tabdiv 생성
 	for ( var i = 2; i <= dateCount; i++ ) {
 		var tab_link = "<li class='nav-item' data-tab='tab-" + i  + "' data-inputForm='frm" + i  + "'  ><p class='nav-link'>date" + i  + "</p></li>";
@@ -19,6 +16,7 @@ $(document).ready(function() {
 		$('#tab-' + i + ' #frm1').attr('name', 'frm' + i);
 		$('#tab-' + i + ' #frm1').attr('id', 'frm' + i);
 		$('#tab-' + i + ' #frm' + i).attr('data-date', dates[i-1]);
+		$('#frm' + i).attr('data-day', 'day' + i);
 		$('#frm' + i + ' input[name=planDate]').val(dates[i-1]);
 	};
 
@@ -44,12 +42,10 @@ $(document).ready(function() {
 		$('#modalBtn').trigger('click');
 		
 		$('#trueBtn').click(function(e) {
-			
 			e.preventDefault();
-			
+
 			let data = $('form').serialize();
 			
-			console.log(data);
 			
 			$.ajax({
 				url: 'plan/detail.do',
@@ -58,14 +54,9 @@ $(document).ready(function() {
 				success: function(data) {
 					console.log(data);
 					if ( data == "success" ) {
-						$('.modal-body').text('저장이 완료 되었습니다.');
-						$('#trueBtn').css('visability', 'none');
-						$('#falseBtn').click(function() {
-						location.href = "/feed";
-						})
+						location.href = "feed";
 					} else {
 						$('.modal-body').text('저장에 실패하였습니다.');
-						$('#trueBtn').css('visability', 'none');
 					}
 				},
 				error: function() {
@@ -86,7 +77,7 @@ $(document).ready(function() {
 		
 		target.attr('data-count', delValue);
 		target.parent().siblings('p.mt-2').children('.showIndex').text(delValue);
-		
+		$(this).siblings('inputbox').children('input[name=placeIndex]').val(delValue);
 		$(this).parent().remove();
 	});
 					

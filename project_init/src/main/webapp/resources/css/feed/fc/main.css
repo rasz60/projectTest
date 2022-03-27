@@ -6,6 +6,7 @@
   cursor: not-allowed;
 }
 
+
 /* TODO: not attached to body. attached to specific els. move */
 .fc-unselectable {
   -webkit-user-select: none;
@@ -59,6 +60,7 @@
   .fc-theme-standard th {
     border: 1px solid #ddd;
     border: 1px solid var(--fc-border-color, #ddd);
+	
 }
 /* for FF, which doesn't expand a 100% div within a table cell. use absolute positioning */
 /* inner-wrappers are responsible for being absolute */
@@ -138,6 +140,8 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
   /* reset */
 
 }
+
+/* 월 이동 버튼 디자인 */
 .fc .fc-button {
     border-radius: 0;
     overflow: visible;
@@ -177,7 +181,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
             user-select: none;
     background-color: transparent;
     border: 1px solid transparent;
-    padding: 0.3em 0.5em;
+    padding: 0.2em 0.3em;
     font-size: 1em;
     line-height: 1;
     border-radius: 0.25em;
@@ -187,31 +191,31 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
   }
 .fc .fc-button:focus {
     outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.25);
+    box-shadow: 0 0 0 0.2rem #6B7CDF;
   }
 .fc .fc-button:disabled {
     opacity: 0.65;
   }
 .fc {
 
-  /* "primary" coloring */
+/* "primary" coloring */
 
 }
 .fc .fc-button-primary {
     color: #fff;
     color: var(--fc-button-text-color, #fff);
-    background-color: #0A0773;
-    background-color: var(--fc-button-bg-color, #0A0773);
-    border-color: #0A0773;
-    border-color: var(--fc-button-border-color, #0A0773);
+    background-color: #007bff;
+    background-color: var(--fc-button-bg-color, #007bff);
+    border-color: #007bff;
+    border-color: var(--fc-button-border-color, #007bff);
   }
 .fc .fc-button-primary:hover {
     color: #fff;
     color: var(--fc-button-text-color, #fff);
-    background-color: #5350AA;
-    background-color: var(--fc-button-hover-bg-color, #5350AA);
-    border-color: #5350AA;
-    border-color: var(--fc-button-hover-border-color, #5350AA);
+    background-color: #6B7CDF;
+    background-color: var(--fc-button-hover-bg-color, #6B7CDF);
+    border-color: #6B7CDF;
+    border-color: var(--fc-button-hover-border-color, #6B7CDF);
   }
 .fc .fc-button-primary:disabled { /* not DRY */
     color: #fff;
@@ -321,7 +325,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
   }
 .fc .fc-scroller-harness {
     position: relative;
-    overflow: hidden ;
+    overflow: hidden;
     direction: ltr;
       /* hack for chrome computing the scroller's right/left wrong for rtl. undone below... */
       /* TODO: demonstrate in codepen */
@@ -711,9 +715,11 @@ A HORIZONTAL event
     position: relative;
     z-index: 1; /* container inner z-index's because <tr>s can't do it */
   }
+
+/* 오늘 날짜 배경색 */
 .fc .fc-daygrid-day.fc-day-today {
-      background-color: rgba(255, 220, 40, 0.15);
-      background-color: var(--fc-today-bg-color, rgba(255, 220, 40, 0.15));
+      background-color: #FDFFE8;
+      background-color: var(--fc-today-bg-color, #FDFFE8);
     }
 .fc .fc-daygrid-day-frame {
     position: relative;

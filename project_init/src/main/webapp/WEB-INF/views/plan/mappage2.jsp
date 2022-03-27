@@ -39,11 +39,11 @@ function dateToStr(date) {
 	let m = date.getMonth() + 1;
 	let d = date.getDate();
 	
-	if ( m < 9 ) {
+	if ( m <= 9 ) {
 		m = "0" + m;
 	}
 	
-	if ( d < 9 ) {
+	if ( d <= 9 ) {
 		d = "0" + d;
 	}
 	
@@ -67,7 +67,7 @@ function getPlanDate(start, end) {
 
 var sDate = strToDate('<c:out value="${plan.startDate}" />');
 var eDate = strToDate('<c:out value="${plan.endDate}" />');
-var dateCount = (eDate.getTime() - sDate.getTime()) / (1000*60*60*24);
+var dateCount = '<c:out value="${plan.dateCount}" />';
 var dates = getPlanDate(sDate, eDate);
 
 </script>
@@ -117,6 +117,8 @@ var dates = getPlanDate(sDate, eDate);
 				<input type="hidden" class="form-control" name="startDate" value="${plan.startDate}" readonly/>
 				<!-- endDate -->
 				<input type="hidden" class="form-control" name="endDate" value="${plan.endDate}" readonly/>
+				<!-- dateCount -->
+				<input type="hidden" class="form-control" name="dateCount" value="${plan.dateCount}" readonly/>
 				<!-- theme -->
 				<input type="hidden" class="form-control" name="theme" value="${plan.theme}" readonly/>
 			</form>
@@ -125,13 +127,13 @@ var dates = getPlanDate(sDate, eDate);
 			<div id="tab-1" class="mt-2 tab-content current">
 			
 				<!-- User submit Input -->
-				<h3 class="display-4 font-italic" id="date-title">DATE 1 : ${plan.startDate }</h3>
+				<h3 class="display-4 font-italic" id="date-title">DAY 1 : ${plan.startDate }</h3>
 				<hr />
 				<p class="mt-2">일정 : <span class="showIndex">0</span> / 10</p>
 				<!-- input창 -->
 				<div class="inputDiv">
 					<!-- [planDt] -->
-					<form id="frm1" name="frm1" action="#" method="post" data-count="0" data-date="${plan.startDate}">
+					<form id="frm1" name="frm1" action="#" method="post" data-count="0" data-day="day1" data-date="${plan.startDate}">
 						<div class="detail0 mt-2 py-2 border bg-light rounded">
 							<h3 class="font-italic ml-2 d-inline mt-2">Place</h3>
 							<!-- placeName -->
@@ -143,6 +145,10 @@ var dates = getPlanDate(sDate, eDate);
 							<div class="inputbox row mx-0 justify-content-between">
 								<!-- [pk] planDtNum -->
 								<input type="hidden" class="form-control" name="planDtNum" value="0" readonly/>
+								<!-- day -->
+								<input type="hidden" class="form-control" name="planDay" value="day1"readonly/>
+								<!-- placeCount -->
+								<input type="hidden" class="form-control" name="placeIndex" readonly/>
 								<!-- planDate -->
 								<input type="hidden" class="form-control" name="planDate" value="${plan.startDate}" readonly/>
 								<!-- latitude -->
@@ -157,25 +163,25 @@ var dates = getPlanDate(sDate, eDate);
 								<!-- startTime -->
 								<div class="form-group col-6">
 									<label for="startTime">StartTime</label>
-									<input type="time" class="form-control" name="startTime" value="" />
+									<input type="time" class="form-control" name="startTime" />
 								</div>
 								
 								<!-- endTime -->
 								<div class="form-group col-6">
 									<label for="endTime">EndTime</label>
-									<input type="time" class="form-control" name="endTime" value="" />
+									<input type="time" class="form-control" name="endTime" />
 								</div>
 								
 								<!-- transportation -->								
 								<div class="form-group col-12 toggle none">
 									<label for="transportation">교통수단</label>
-									<input type="text" class="form-control" name="transportation" value="" />
+									<input type="text" class="form-control" name="transportation" />
 								</div>
 								
 								<!-- details -->	
 								<div class="form-group col-12 toggle none">
 									<label for="details">상세 일정</label>
-									<textarea rows="5" class="form-control" name="details" value="" ></textarea>
+									<textarea rows="5" class="form-control" name="details" ></textarea>
 								</div>
 							</div>
 						</div>

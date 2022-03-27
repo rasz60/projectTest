@@ -80,6 +80,8 @@
 							<option value="여가생활">여가생활</option>
 						</select>
 					</div>
+					<input type="hidden" name="dateCount" id="dateCount" class="form-control"/>
+					
 					<div class="d-flex justify-content-end mp_btn">
 						<button type="submit" class="btn btn-sm btn-primary mr-1" id="submit" >Create</button>
 						<input type="reset" class="btn btn-sm btn-danger px-2" id="reset" value="Clear" />

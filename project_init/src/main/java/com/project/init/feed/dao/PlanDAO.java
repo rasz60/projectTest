@@ -126,10 +126,12 @@ public class PlanDAO implements IDao {
 		String planName = request.getParameter("planName");
 		String startDate = request.getParameter("startDate");
 		String endDate = request.getParameter("endDate");
+		String dateCount = request.getParameter("dateCount");
 		String theme = request.getParameter("theme");
 		
 		//Make mstDto
-		PlanDto mstDto = new PlanDto(planNum, planName, startDate, endDate, theme);
+		PlanDto mstDto = new PlanDto(planNum, planName, startDate, endDate, dateCount, theme);
+		logger.info(mstDto.getDateCount());
 		int res1 = sqlSession.insert("insertMst", mstDto);
 		result = res1 > 0 ? "success": "failed";
 		
@@ -138,9 +140,11 @@ public class PlanDAO implements IDao {
 		//[planDt]
 		String[] planDtNum = request.getParameterValues("planDtNum");
 		String[] placeName = request.getParameterValues("placeName");
+		String[] planDay = request.getParameterValues("planDay");
 		String[] planDate = request.getParameterValues("planDate");
 		String[] startTime = request.getParameterValues("startTime");
 		String[] endTime = request.getParameterValues("endTime");
+		String[] placeIndex = request.getParameterValues("placeIndex");
 		String[] latitude = request.getParameterValues("latitude");
 		String[] longitude = request.getParameterValues("longitude");
 		String[] address = request.getParameterValues("address");
@@ -153,15 +157,18 @@ public class PlanDAO implements IDao {
 			PlanDto2 dtDto = new PlanDto2(Integer.parseInt(planDtNum[i]),
 										  mstDto.getPlanNum(),
 										  placeName[i],
+										  planDay[i],
 										  planDate[i],
 										  startTime[i],
 										  endTime[i],
+										  placeIndex[i],
 										  latitude[i],
 										  longitude[i],
 										  address[i],
 										  category[i],
 										  transportation[i],
 										  details[i]);
+			
 			int res2 = sqlSession.insert("insertDt", dtDto);
 			result = res2 > 0 ? "success": "failed";
 		};

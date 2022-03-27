@@ -31,7 +31,7 @@ public class PlanController {
 	@RequestMapping("")
 	public String planmstDo(PlanDto dto, Model model) {
 		logger.info("planmst.do(" + dto.getPlanName() + ") in >>>>");
-		
+		logger.info(dto.getDateCount());
 		model.addAttribute("plan", dto);
 		
 		return "plan/mappage2";

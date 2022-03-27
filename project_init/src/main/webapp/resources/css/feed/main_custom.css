@@ -1,5 +1,58 @@
+body::-webkit-scrollbar {
+    width: 10px;  /* 스크롤바의 너비 */
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #A0A0A0 ; /* 스크롤바의 색상 */
+    border-radius: 15px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #CCCCCC;  /*스크롤바 뒷 배경 색상*/
+}
+
+
 section.container {
 	margin-top: 5em;
+}
+
+/*test*/
+
+
+
+/* 새로 생성된 이벤트 블럭 커스텀 */
+
+
+
+/* 테두리 */
+.fc-event {
+	border-color: white;
+}
+
+#calendar > div.fc-view-harness.fc-view-harness-active > 
+div > table > tbody > tr > td > div > div > div > table > tbody > tr {
+	max-height: 20px;
+	overflow: auto;
+}
+
+.fc-day-sat>div, .fc-day-sat>div>div {
+	color : blue;
+}
+
+.fc-day-sun>div, .fc-day-sun>div>div {
+	color : red;
+}
+.fc-scroller::-webkit-scrollbar {
+    width: 5px;  /* 스크롤바의 너비 */
+}
+
+.fc-scroller::-webkit-scrollbar-thumb {
+    background: #A0A0A0 ; /* 스크롤바의 색상 */
+    border-radius: 15px;
+}
+
+.fc-scroller::-webkit-scrollbar-track {
+    background: #CCCCCC;  /*스크롤바 뒷 배경 색상*/
 }
 
 .modal-dialog {
