@@ -283,13 +283,13 @@ public class PlanDAO implements IDao {
 	}
 
 	@Override
-	public ArrayList<PlanDto2> selectPlanDt(int planNum) {
-		logger.info("selectPlanDt (" + planNum + ") in >>> ");
+	public ArrayList<PlanDto2> selectPlanDt(PlanDto2 dto) {
+		logger.info("selectPlanDt (" + dto.getPlanNum() + ") in >>> ");
 		
-		ArrayList<PlanDto2> result = (ArrayList)sqlSession.selectList("selectPlanDt", planNum);
+		ArrayList<PlanDto2> result = (ArrayList)sqlSession.selectList("selectPlanDt", dto);
+
 		
-		
-		logger.info("selectPlanDt (" + planNum + ") result ? " + result.isEmpty());
+		logger.info("selectPlanDt (" + dto.getPlanNum() + ") result ? " + result.isEmpty());
 		
 		return result;
 	}

@@ -65,22 +65,29 @@
 						<button type="button" id="btn-detail" class="btn btn-sm btn-dark mx-1">상세 수정</button>
 					</div>
 				
-					<div class="detail-days d-flex" data-index="1">
-						<button type="button" class="btn btn-outline-light text-dark col-1">
+					<div class="detail-days d-flex" data-plan="" data-next="1">
+						<button type="button" class="btn btn-outline-light text-dark col-1 prev-btn">
 							<i class="fa-solid fa-angle-left"></i>
 						</button>
 						
-						<h4 id="plan-day" class="display-4 font-italic" style="font-size: 30px; font-weight: 600;">day 1</h4>
+						<h4 id="plan-day" class="display-4 font-italic">day 1</h4>
 						
-						<button type="button" class="btn btn-outline-light text-dark col-1">
+						<button type="button" class="btn btn-outline-light text-dark col-1 next-btn">
 							<i class="fa-solid fa-angle-right"></i>
 						</button>
 					</div>
-					<div class="plan-details mt-2 d-flex row mx-0" style="height:500px;">
+					<div class="plan-details mt-2 d-flex row mx-0">
 						<div id="map" class="col-8 border"></div>
-						<div id="details show" class="col-4 border">
-						
-						
+						<div id="details" class="col-4 px-0">
+							<c:forEach begin="1" end="10">
+								<div class="list-group-item row mx-0 pt-1">
+									<h4 class="placeName font-italic"></h4>
+									<div class="times row mx-0">
+										<h6 class="col-6 font-italic startTime"></h6>
+										<h6 class="col-6 font-italic endTime"></h6>
+									</div>
+								</div>
+							</c:forEach>
 						</div>
 					</div>
 				</div>

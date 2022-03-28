@@ -32,5 +32,5 @@ public interface IDao {
 
 	String modifyPlanMst(HttpServletRequest request);
 
-	ArrayList<PlanDto2> selectPlanDt(int planNum);
+	ArrayList<PlanDto2> selectPlanDt(PlanDto2 dto);
 }

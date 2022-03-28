@@ -71,19 +71,21 @@ section.container {
 }
 
 /* �떖�젰 �뒪�겕濡ㅻ컮 �꽕�젙 */
-.fc-scroller::-webkit-scrollbar {
+.fc-scroller::-webkit-scrollbar,
+.plan-details > #details::-webkit-scrollbar {
     width: 5px;  /* �뒪�겕濡ㅻ컮�쓽 �꼫鍮� */
 }
 
-.fc-scroller::-webkit-scrollbar-thumb {
+.fc-scroller::-webkit-scrollbar-thumb,
+.plan-details > #details::-webkit-scrollbar-thumb {
     background: #A0A0A0 ; /* �뒪�겕濡ㅻ컮�쓽 �깋�긽 */
     border-radius: 15px;
 }
 
-.fc-scroller::-webkit-scrollbar-track {
+.fc-scroller::-webkit-scrollbar-track,
+.plan-details > #details::-webkit-scrollbar-track {
     background: #CCCCCC;  /*�뒪�겕濡ㅻ컮 �뮮 諛곌꼍 �깋�긽*/
 }
-
 
 
 .modal-dialog {
@@ -103,34 +105,28 @@ section.container {
 	width: 100%;
 }
 
-.modal-header #plan-date {
-	line-height : 100%;
+
+.modal-body .detail-days #plan-day {
+	font-size: 30px;
+	font-weight: 600;
 }
 
-
-.modal-body #map-container {
-	width : 40%;
-	height : 100%;
+.modal-body .plan-details {
+	height: 700px;
 }
 
-.modal-body #map-container #map {
-	height : 65%;
+.modal-body .plan-details #map {
+	height: 100%;
 }
 
-.modal-body #map-container #locations {
-	height : 30%;
+.modal-body .plan-details #details {
+	height: 100%;
+	overflow : auto;
 }
 
-.modal-body #plan_container {
-	width : 55%;
-	height : 100%;
+.modal-body .plan-details #details .list-group-item {
+	height: 10%;
 }
-
-
-.modal-body #plan_container .time_box .form-group {
-	width: 30%;
-}
-
 
 .body-container #feed-header {
 	width: 100%;

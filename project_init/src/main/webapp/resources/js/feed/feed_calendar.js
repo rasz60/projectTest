@@ -60,11 +60,15 @@ $(document).ready(function() {
 			
 			
 			console.log('진입');
+			
+			var data = {planNum : info.event.id,
+						planDay : 'day1'};
+			
 			// 상세 일정을 불러옴
 			$.ajax({
 				url: 'feed/modify_modal.do',
 				type: 'post',
-				data: info.event.id,
+				data: JSON.stringify(data),
 				contentType: 'application/json; charset=UTF-8',
 				beforeSend: function(xhr){
 		 		   	var token = $("meta[name='_csrf']").attr('content');
@@ -83,16 +87,23 @@ $(document).ready(function() {
 					$('.modal-body form .form-group #modal-eventColor').val(info.event.backgroundColor);
 					$('.modal-body form #modal-originDateCount').val(info.event.extendedProps.dateCount);
 					
+					for( var i = 0; i < data.length; i++ ) {
+						if ( i == 0 ) {
+							$('.modal-body>.detail-days').attr('data-plan', data[0].planDay);
+							$('.modal-body>.detail-days').attr('data-next', Number(data[0].planDay.substring(3)) + 1);
+							$('.modal-body>.detail-days>plan-day').text(data[0].planDay);
+							
+						}
+						$('.list-group-item:nth-child(' + (i+1) + ')').children('.placeName').text(data[i].placeName);
+						$('.list-group-item:nth-child(' + (i+1) + ') .times').children('.startTime').append('Start  :  ' + data[i].startTime);
+						$('.list-group-item:nth-child(' + (i+1) + ') .times').children('.endTime').append('End  :  ' + data[i].endTime);
+					}
+											
 				},
 				error : function(data) {
 					
 				}
 			})
-			
-
-
-			
-
 		}
 	});
 
@@ -219,8 +230,7 @@ $(document).ready(function() {
 				
 			}
 		})
-		
-				
+	
 	})
 	
 	$('#btn-delete').click(function(e) {

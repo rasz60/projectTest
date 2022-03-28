@@ -22,6 +22,12 @@ public class PlanDto2 {
 		super();
 	}
 	
+	public PlanDto2(int planNum, String planDay) {
+		super();
+		this.planNum = planNum;
+		this.planDay = planDay;
+	}
+	
 	public PlanDto2(int planNum, String planDay, String planDate) {
 		super();
 		this.planNum = planNum;

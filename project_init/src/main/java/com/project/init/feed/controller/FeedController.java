@@ -51,12 +51,12 @@ public class FeedController {
 
 	@ResponseBody
 	@RequestMapping(value = "modify_modal.do", produces="application/json; charset=UTF-8")
-	public ArrayList<PlanDto2> modifyModal(@RequestBody String planNum) {
-		logger.info("modifyModal("+ planNum +") in >>>>");
+	public ArrayList<PlanDto2> modifyModal(@RequestBody PlanDto2 dto) {
+		logger.info("modifyModal("+ dto.getPlanNum() +") in >>>>");
 		
-		ArrayList<PlanDto2> result= dao.selectPlanDt(Integer.parseInt(planNum));
+		ArrayList<PlanDto2> result= dao.selectPlanDt(dto);
 		
-		logger.info("modifyPlans("+ planNum +") result.isEmpty() ? " + result.isEmpty());
+		logger.info("modifyPlans("+ dto.getPlanNum() +") result.isEmpty() ? " + result.isEmpty());
 		
 		return result;
 	}
