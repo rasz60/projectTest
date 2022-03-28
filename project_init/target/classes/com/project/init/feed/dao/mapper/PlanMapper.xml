@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.project.init.feed.dao.IDao" >
 
 <insert id="insertPlan" parameterType="com.project.init.feed.dto.PlanDto">
-	INSERT INTO plan_mst (planNum, planName, startDate, endDate, theme) VALUES (plannum_seq.NEXTVAL, #{planName}, #{startDate}, #{endDate}, #{theme})
+	INSERT INTO plan_mst (planNum, planName, startDate, endDate, eventColor) VALUES (plannum_seq.NEXTVAL, #{planName}, #{startDate}, #{endDate}, #{eventColor})
 	<selectKey resultType="int" keyProperty="planNum" order="AFTER">
 		SELECT plannum_seq.currVal from dual
 	</selectKey>
