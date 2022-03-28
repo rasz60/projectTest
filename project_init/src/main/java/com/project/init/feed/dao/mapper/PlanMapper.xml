@@ -3,28 +3,9 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.init.feed.dao.IDao" >
-
-<insert id="insertPlan" parameterType="com.project.init.feed.dto.PlanDto">
-	INSERT INTO plan_mst (planNum, planName, startDate, endDate, eventColor) VALUES (plannum_seq.NEXTVAL, #{planName}, #{startDate}, #{endDate}, #{eventColor})
-	<selectKey resultType="int" keyProperty="planNum" order="AFTER">
-		SELECT plannum_seq.currVal from dual
-	</selectKey>
-</insert>
-
-<select id="selectPlan" parameterType="int" resultType="com.project.init.feed.dto.PlanDto">
-	SELECT * FROM plan_mst WHERE plannum = #{planNum}
-</select>
-
-
-
-<!-- 
-<select id="selectAllPlan" resultType="com.project.init.feed.dto.PlanDto">
-	SELECT planNum, planName, startDate, endDate FROM test_calendar	
-</select>
- -->
  
 <select id="getCalendarEvent" resultType="com.project.init.feed.dto.PlanDto">
-	SELECT planNum, planName, startDate, endDate, theme FROM plan_mst
+	SELECT planNum, planName, startDate, endDate, eventColor FROM plan_mst
 </select>
 
 <update id="updatePlan" parameterType="com.project.init.feed.dto.PlanDto">
@@ -36,31 +17,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <delete id="deletePlan">
 	DELETE FROM plan_mst WHERE planNum = #{planNum}
 </delete>
-
-
-
-<insert id="insertMap" parameterType="com.project.init.feed.dto.PlanDto2">
-	INSERT INTO plan_test
-	VALUES (plan_test_seq.nextVal, #{planName}, #{startDate}, #{endDate}, #{theme}, #{latitude}, #{longitude}, #{placeName}, #{category}, #{placecount}, #{address})
-</insert>
-
-
-<insert id="insertPlanDt" parameterType="com.project.init.feed.dto.PlanDtDto">
-	INSERT INTO plan_dt_test
-	VALUES (plan_dt_seq.nextVAL, #{planNum}, #{planDate}, #{placeName}, #{startTime}, #{endTime}, #{transpotation}, #{details})
-</insert>
-
-<!-- comment test -->
-<insert id="McommentC" parameterType="com.project.init.feed.dto.CommentDto">
-	
-</insert>
-
-<select id="selectAllComments" resultType="com.project.init.feed.dto.CommentDto">
-	SELECT * 
-	FROM comment_test 
-	ORDER BY mNum ASC, gNum ASC, iNum ASC, commentNum ASC
-</select>
-
 
 <insert id="insertMst" parameterType="com.project.init.feed.dto.PlanDto">
 	INSERT INTO plan_mst (planNum, planName, startDate, endDate, dateCount, eventColor) 
