@@ -19,8 +19,6 @@ public interface IDao {
 	
 	ArrayList<PlanDto> selectAllPlan();
 
-	String updatePlan(PlanDto dto);
-	
 	String deletePlan(String planNum);
 	
 	String insertMap(Model model, HttpServletRequest request);
@@ -31,4 +29,8 @@ public interface IDao {
 	
 	String insertMcomment(CommentDto dto);
 	ArrayList<CommentDto> selectComments();
+
+	String modifyPlanMst(HttpServletRequest request);
+
+	ArrayList<PlanDto2> selectPlanDt(int planNum);
 }

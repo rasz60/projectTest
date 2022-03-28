@@ -25,3 +25,13 @@ CREATE TABLE plan_mst(
     eventColor VARCHAR2(100) NOT NULL
 );
 CREATE SEQUENCE plan_mst_seq nocache;
+
+SELECT * FROM plan_dt;
+SELECT * FROM plan_mst;
+
+DROP TABLE plan_mst;
+DROP SEQUENCE plan_mst_seq;
+
+DROP TABLE plan_dt;
+DROP SEQUENCE plan_dt_seq;
+commit;

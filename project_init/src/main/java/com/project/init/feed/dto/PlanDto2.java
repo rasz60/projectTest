@@ -21,6 +21,13 @@ public class PlanDto2 {
 	public PlanDto2() {
 		super();
 	}
+	
+	public PlanDto2(int planNum, String planDay, String planDate) {
+		super();
+		this.planNum = planNum;
+		this.planDay = planDay;
+		this.planDate = planDate;
+	}
 
 	public PlanDto2(int planDtNum, int planNum, String placeName, String planDay, String planDate, String startTime,
 			String endTime, String theme, String latitude, String longitude, String address,

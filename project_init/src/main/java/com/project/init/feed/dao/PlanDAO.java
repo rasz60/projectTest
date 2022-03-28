@@ -1,6 +1,10 @@
 package com.project.init.feed.dao;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -53,21 +57,6 @@ public class PlanDAO implements IDao {
 		return dtos;
 	}
 
-
-	@Override
-	public String updatePlan(PlanDto dto) {
-		logger.info("PlanDto(" + dto + ") in >>>");
-		int result = sqlSession.update("updatePlan", dto);
-		
-		logger.info("PlanDto(" + dto + ") result : " + result);
-		
-		if ( result > 0 ) {
-			return "success";
-		} else {
-			return "failed";
-		}
-	}
-	
 	@Override
 	public String deletePlan(String planNum) {
 		logger.info("deletePlan(" + planNum + ") in >>>");
@@ -185,8 +174,124 @@ public class PlanDAO implements IDao {
 		return null;
 	}
 	
+	@Override
+	@Transactional
+	public String modifyPlanMst(HttpServletRequest request) {
+		logger.info("modifyPlanMst in >>> ");
+		String result = null;
+		
+		int planNum = Integer.parseInt(request.getParameter("planNum"));
+		String planName = request.getParameter("planName");
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		String originDateCount = request.getParameter("originDateCount");
+		String newDateCount = request.getParameter("newDateCount");
+		String eventColor = request.getParameter("eventColor");
+		
+		PlanDto mstDto = new PlanDto(planNum, 
+				 					 planName, 
+									 startDate, 
+									 endDate, 
+									 newDateCount, 
+									 eventColor);
+		
+		
+		
+		int res = sqlSession.update("updatePlanMst", mstDto);
+
+		result = res > 0 ? "success": "failed";
+		
+		logger.info("modifyPlanMst result 1 : " + result);
+		
+		int origin = Integer.parseInt(originDateCount);
+		int newly = Integer.parseInt(newDateCount);
+		
+		
+		int y = Integer.parseInt(startDate.substring(0, 4));
+		int m = Integer.parseInt(startDate.substring(5, 7)) - 1;;
+		int d = Integer.parseInt(startDate.substring(8));
+		
+		Date date = new Date((y-1900), m, d);
+		
+		// date count가 같으면 각 date의 날짜만 바꿔줌
+		if ( origin == newly ) {
+			
+			for ( int i = 0; i < newly; i++ ) {
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(date);
+				cal.add(Calendar.DATE, i);
+				
+				String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+				
+				PlanDto2 dtDto = new PlanDto2(planNum, "day"+(i+1), r);
+				
+				int resDt = sqlSession.update("updatePlanDt1", dtDto);
+				
+				result = resDt > 0 ? "success": "failed";
+			}
+			
+			
+		// date count가 더 커졌으면 원래의 일정 수 만큼만 바꿔줌
+		} else if ( origin < newly ) {
+			
+			for ( int i = 0; i < origin; i++ ) {
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(date);
+				cal.add(Calendar.DATE, i);
+				
+				String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+				
+				PlanDto2 dtDto = new PlanDto2(planNum, "day"+(i+1), r);
+				
+				int resDt = sqlSession.update("updatePlanDt1", dtDto);
+				
+				result = resDt > 0 ? "success": "failed";
+			}
+			
+			// date count가 작아졌으면 (원래 일정 수 - 새로운 일정 수) 만큼 지우고 나머지 날짜를 바꿈		
+		} else if ( origin > newly ) {
+			
+			for (int i = (newly+1); i <= origin; i++) {
+				PlanDto2 dtDto = new PlanDto2(planNum, "day"+i, "-");
+
+				int resDt = sqlSession.delete("deletePlanDt1", dtDto);
+				result = resDt > 0 ? "success": "failed";
+				
+				result = resDt > 0 ? "success": "failed";
+			}
+			
+			
+			for ( int i = 0; i < newly; i++ ) {
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(date);
+				cal.add(Calendar.DATE, i);
+				
+				String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+				
+				PlanDto2 dtDto = new PlanDto2(planNum, "day"+(i+1), r);
+				
+				int resDt = sqlSession.update("updatePlanDt1", dtDto);
+				
+				result = resDt > 0 ? "success": "failed";
+			}
+			
+		}
+		
+		logger.info("modifyPlanMst result 2 : " + result);
 	
-	
-	
-	
+		return result;
+	}
+
+	@Override
+	public ArrayList<PlanDto2> selectPlanDt(int planNum) {
+		logger.info("selectPlanDt (" + planNum + ") in >>> ");
+		
+		ArrayList<PlanDto2> result = (ArrayList)sqlSession.selectList("selectPlanDt", planNum);
+		
+		
+		logger.info("selectPlanDt (" + planNum + ") result ? " + result.isEmpty());
+		
+		return result;
+	}
+
 }

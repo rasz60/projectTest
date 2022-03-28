@@ -20,25 +20,47 @@
 				</div>
 				
 				<div class="modal-body bg-light">
-					<form action="feed/modify_plan.do" class="row" method="post" id="modify_form">
-						<input type="hidden" name="planNum" id="planNum" />
-						<div class="form-group col-4">
+					<form action="#" class="row" method="post" id="modify_form">
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" />
+						<input type="hidden" name="planNum" id="modal-planNum" />
+						<input type="hidden" name="originDateCount" id="modal-originDateCount" value="" />
+						<input type="hidden" name="newDateCount" id="modal-newDateCount" value="" />
+						<div class="form-group col-8">
 							<label for="planName">일정 이름</label>
-							<input type="text" id="planName" name="planName" class="form-control"/>
+							<input type="text" id="modal-planName" name="planName" class="form-control"/>
+						</div>
+
+						<div class="form-group col-4">
+							<label for="modal-eventColor">블럭 색상</label>
+							<select class="custom-select my-1 mr-sm-2 " id="modal-eventColor" name="eventColor">
+								<option value="#007bff" selected>Blue</option>
+								<option value="#6610f2">Indigo</option>
+								<option value="#6f42c1">Purple</option>
+								<option value="#e83e8c">Pink</option>
+								<option value="#dc3545">Red</option>
+								<option value="#fd7e14">Orange</option>
+								<option value="#ffc107">Yellow</option>
+								<option value="#28a745">Green</option>
+								<option value="#20c997">Teal</option>
+								<option value="#17a2b8">Cyan</option>
+								<option value="#6c757d">Gray</option>
+								<option value="gray-dark">Dark Gray</option>
+							</select>
 						</div>
 						
-						<div class="form-group col-4">
-							<label for="startDate">시작 일자</label>
-							<input type="date" id="startDate" name="startDate" class="form-control"/>
+						<div class="form-group col-6">
+							<label for="modal-startDate">시작 일자</label>
+							<input type="date" id="modal-startDate" name="startDate" class="form-control"/>
 						</div>
 						
-						<div class="form-group col-4">
-							<label for="endDate">종료 일자</label>
-							<input type="date" id="endDate" name="endDate" class="form-control"/>
+						<div class="form-group col-6">
+							<label for="modal-endDate">종료 일자</label>
+							<input type="date" id="modal-endDate" name="endDate" class="form-control"/>
 						</div>
+						
 					</form>
 					<div class="button-group d-flex justify-content-end mt-2">
-						<button type="button" id="btn-modify" class="btn btn-sm btn-success mx-1">일정 수정</button>
+						<button type="submit" id="btn-modify" class="btn btn-sm btn-success mx-1">일정 수정</button>
 						<button type="button" id="btn-delete" class="btn btn-sm btn-danger mx-1">일정 삭제</button>
 						<button type="button" id="btn-detail" class="btn btn-sm btn-dark mx-1">상세 수정</button>
 					</div>
@@ -59,7 +81,6 @@
 						<div id="details show" class="col-4 border">
 						
 						
-						
 						</div>
 					</div>
 				</div>
@@ -67,7 +88,6 @@
 			</div>
 		</div>
 	</div>
-	
 	
 </body>
 </html>

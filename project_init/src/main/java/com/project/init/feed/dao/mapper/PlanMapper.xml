@@ -5,18 +5,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.project.init.feed.dao.IDao" >
  
 <select id="getCalendarEvent" resultType="com.project.init.feed.dto.PlanDto">
-	SELECT planNum, planName, startDate, endDate, eventColor FROM plan_mst
+	SELECT * FROM plan_mst
 </select>
-
-<update id="updatePlan" parameterType="com.project.init.feed.dto.PlanDto">
-	UPDATE plan_mst 
-	SET planName = #{planName}, startDate = #{startDate}, endDate = #{endDate} 
-	WHERE planNum = #{planNum}
-</update>
-
-<delete id="deletePlan">
-	DELETE FROM plan_mst WHERE planNum = #{planNum}
-</delete>
 
 <insert id="insertMst" parameterType="com.project.init.feed.dto.PlanDto">
 	INSERT INTO plan_mst (planNum, planName, startDate, endDate, dateCount, eventColor) 
@@ -25,6 +15,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT plan_mst_seq.currVal from dual
 	</selectKey>
 </insert>
+
+<select id="selectPlanDt" parameterType="int" resultType="com.project.init.feed.dto.PlanDto2">
+	SELECT * FROM plan_dt WHERE planNum = #{planNum} ORDER BY startTime ASC
+</select>
 
 
 <insert id="insertDt" parameterType="com.project.init.feed.dto.PlanDto2">
@@ -47,6 +41,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 #{details})
 </insert>
 
+<update id="updatePlanMst" parameterType="com.project.init.feed.dto.PlanDto">
+	UPDATE plan_mst
+	
+	SET planNum = #{planNum},
+		planName = #{planName},
+		startDate = #{startDate},
+		endDate = #{endDate},
+		dateCount = #{dateCount},
+		eventColor = #{eventColor}
+		
+	WHERE planNum = #{planNum}
+</update>
+
+<update id="updatePlanDt1" parameterType="com.project.init.feed.dto.PlanDto2">
+	UPDATE plan_dt 
+	
+	SET planDate = #{planDate}
+		
+	WHERE planNum = #{planNum}
+	AND planDay = #{planDay}
+</update>
+
+<delete id="deletePlanDt1" parameterType="com.project.init.feed.dto.PlanDto2">
+	DELETE FROM plan_dt WHERE planNum = #{planNum} AND planDay = #{planDay}
+</delete>
 
 </mapper>
 

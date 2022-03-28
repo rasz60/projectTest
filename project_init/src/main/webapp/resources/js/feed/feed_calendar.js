@@ -58,29 +58,41 @@ $(document).ready(function() {
 			// 실제 표시될 eventEndDate를 생성
 			let eventEndDate = yyyymm + dd;
 			
-	    	$('#modalBtn2').trigger('click');
-			$('.modal-header #plan-name').text(info.event.title);
-			$('.modal-body form #planNum').val(info.event.id);
-			$('.modal-body form .form-group #planName').val(info.event.title);
-			$('.modal-body form .form-group #startDate').val(info.event.startStr);
-			$('.modal-body form .form-group #endDate').val(eventEndDate);
 			
-			
-	    	// modal창을 띄우고 수정할 내용을 각 input value에 뿌려줌
-			/*
+			console.log('진입');
+			// 상세 일정을 불러옴
 			$.ajax({
-				url: 'feed/modify_mst.do',
+				url: 'feed/modify_modal.do',
 				type: 'post',
 				data: info.event.id,
+				contentType: 'application/json; charset=UTF-8',
+				beforeSend: function(xhr){
+		 		   	var token = $("meta[name='_csrf']").attr('content');
+		 			var header = $("meta[name='_csrf_header']").attr('content');
+	 		        xhr.setRequestHeader(header, token);
+	 		    },
 				success: function(data) {
-
-					createBox(data);
+					console.log(data);
+					// modal창을 띄우고 수정할 내용을 각 input value에 뿌려줌
+			    	$('#modalBtn2').trigger('click');
+					$('.modal-header #plan-name').text(info.event.title);
+					$('.modal-body form #modal-planNum').val(info.event.id);
+					$('.modal-body form .form-group #modal-planName').val(info.event.title);
+					$('.modal-body form .form-group #modal-startDate').val(info.event.startStr);
+					$('.modal-body form .form-group #modal-endDate').val(eventEndDate);
+					$('.modal-body form .form-group #modal-eventColor').val(info.event.backgroundColor);
+					$('.modal-body form #modal-originDateCount').val(info.event.extendedProps.dateCount);
+					
 				},
 				error : function(data) {
 					
 				}
 			})
-			*/
+			
+
+
+			
+
 		}
 	});
 
@@ -117,9 +129,15 @@ $(document).ready(function() {
 			alert("종료일자가 시작일자보다 빠를 수 없습니다.");
 			$('.mp_btn #reset').trigger('click');
 			return false;
+			
+		// 3rd Validation : 10일 초과되는 일정 생성 불가
+		} else if ( dateCount > 10 ) {
+			alert("10일을 초과한 일정을 생성할 수 없습니다.");
+			$('.mp_btn #reset').trigger('click');
+			return false;
 		}
 		
-		// 3rd Validation : 선택한 일정이 맞는지 다시 한 번 체크
+		// 4th Validation : 선택한 일정이 맞는지 다시 한 번 체크
 		if( confirm('선택한 일자로 일정을 만들까요?') == true ) {
 			$('#frm').submit();			
 
@@ -129,38 +147,93 @@ $(document).ready(function() {
 		
 	})
 	
-	// eventclick 하여 modal창의 버튼을 눌렀을 때
-	$('#modify_form .btn').click(function(e) {
+	$('#btn-modify').click(function(e) {
+		console.log('진입');
+		
 		e.preventDefault();
 
-		// 클릭된 버튼을 변수로 저장
-		let eventBtn = $(this);
-	
-		// 각각의 input value를 변수로 저장
-		let planNum = $('#modify_form #planNum').val();
-		let planName = $('#modify_form .form-group #planName').val();
-		let startDate = $('#modify_form .form-group #startDate').val();
-		let endDate = $('#modify_form .form-group #endDate').val();
-		
-		// 클릭된 버튼의 id가 btn-modify일 때(수정 버튼)
-		if ( eventBtn.attr('id') == 'btn-modify' ) {
+		var planName = $('#modal-planName').val();
+		var startDate = $('#modal-startDate').val();
+		var endDate = $('#modal-endDate').val();
+
+		var start = strToDate(startDate);
+		var end = strToDate(endDate);
+		var dateCount = ((end - start) / (1000*60*60*24)) + 1;
 			
-			// 수정 메서드 실행
-			modifyPlan(planNum, planName, startDate, endDate);
+		$('#modal-newDateCount').val(dateCount);
 
-		// 클릭된 버튼의 id가 btn-modify이 아닐 때(삭제 버튼)
-		} else {
-			// confirm창에서 확인을 눌렀을 때
-			if ( confirm("일정을 삭제할까요?") ) {
-				// 삭제 메서드 실행
-				deletePlan(planNum);
-
-			// confirm창에서 취소가 눌렀을 때
-			} else {
+		// 1st Validation : input null check
+		if( planName == "" ) {
+			alert('일정 이름을 입력해주세요.');
+			return false;
+			
+		} else if( startDate =="" || endDate =="" ) {
+			alert('일자를 선택해주세요.');
+			return false;
+			
+		// 2nd Validation : 종료일자가 시작일자보다 빠르면 폼을 return = false / submit 되지 않게 함.
+		} else if ( startDate > endDate ) {
+			alert("종료일자가 시작일자보다 빠를 수 없습니다.");
+			return false;
+		
+		// 3rd Validation : 10일 초과되는 일정 생성 불가
+		} else if ( dateCount > 10 ) {
+			alert("10일을 초과한 일정을 생성할 수 없습니다.");
+			$('.mp_btn #reset').trigger('click');
+			return false;
+		}
+		
+		// 4th Validation : 원래의 일정과 날짜가 달라진 경우
+		var originDates = $('#modal-originDateCount').val();
+		
+		// 원래 일정보다 짧아진 경우
+		if ( originDates < dateCount ) {
+			if( confirm('원래 일정(' + originDates + '일)보다 긴 ' + dateCount + '일를 지정했습니다. 수정할까요?') == false ) {
 				return false;
 			}
-		}		
+		}
+		
+		// 원래 일정보다 길어진 경우
+		else if ( originDates > dateCount ) {
+			if( confirm('원래 일정(' + originDates + '일)보다 짧은 ' + dateCount + '일을 지정했습니다. 수정할까요? (새로운 일정 수를 초과하는 상세 일정은 모두 삭제됩니다.)')  == false ) {
+				return false;
+			}
+		
+		// 5th Validation : 마지막 확인 절차
+		} else {
+			if( confirm('선택한 일자로 일정을 만들까요?') == false ) {
+				return false;
+			}
+		}
+		
+		$.ajax({
+			url: 'feed/modify_plan.do',
+			type: 'post',
+			data: $('#modify_form').serialize(),
+			success: function() {
+				$('#modalCloseBtn').trigger('click');
+				calendar.removeAllEvents();
+				getAllPlans();
+			},
+			error: function(data) {
+				
+			}
+		})
+		
+				
 	})
+	
+	$('#btn-delete').click(function(e) {
+		e.preventDefault();
+		
+	})
+	
+	$('#btn-detail').click(function(e) {
+		e.preventDefault();
+		
+	})
+
+	
 	
 	
 	
@@ -196,7 +269,8 @@ $(document).ready(function() {
 	 						title : data[i].planName,
 	 						start : data[i].startDate,
 	 						end : dateToStr(eventEnd),
-							backgroundColor : color
+							backgroundColor : color,
+							dateCount: data[i].dateCount
 	 					})
 	 				}		
 	 			},

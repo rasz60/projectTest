@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.init.feed.dao.IDao;
 import com.project.init.feed.dto.PlanDto;
+import com.project.init.feed.dto.PlanDto2;
 
 @Controller
 @RequestMapping("/feed")
@@ -47,36 +48,31 @@ public class FeedController {
 		return dao.selectAllPlan();
 	}
 	
+
 	@ResponseBody
-	@RequestMapping("insertPlan.do")
-	public void insertPlan(@RequestBody PlanDto dto) {
-		logger.info("insertPlans(" + dto + ") in >>>>");
+	@RequestMapping(value = "modify_modal.do", produces="application/json; charset=UTF-8")
+	public ArrayList<PlanDto2> modifyModal(@RequestBody String planNum) {
+		logger.info("modifyModal("+ planNum +") in >>>>");
 		
-		dao.insertPlan(dto);
+		ArrayList<PlanDto2> result= dao.selectPlanDt(Integer.parseInt(planNum));
 		
-		logger.info("insertPlans(" + dto + ") out >>>>");
-	}
-	
-	@ResponseBody
-	@RequestMapping("modify_plan.do")
-	public String modifyPlan(@RequestBody PlanDto dto) {
-		logger.info("modifyPlans("+ dto +") in >>>>");
-		String result = dao.updatePlan(dto);
-		
-		logger.info("modifyPlans(" + result + ") result : " + result);
+		logger.info("modifyPlans("+ planNum +") result.isEmpty() ? " + result.isEmpty());
 		
 		return result;
 	}
 	
+	
 	@ResponseBody
-	@RequestMapping("delete_plan.do")
-	public String deletePlan(@RequestBody String planNum) {
-		logger.info("deletePlan("+ planNum +") in >>>>");
-		String result = dao.deletePlan(planNum);
+	@RequestMapping(value = "modify_plan.do", produces="application/text; charset=UTF-8")
+	public String modifyPlan(HttpServletRequest request) {
+		logger.info("modifyPlans("+ request.getParameter("planNum") +") in >>>>");
+		String result= null;
 		
-		logger.info("deletePlan("+ result +") result : " + result);
+		result = dao.modifyPlanMst(request);
+		
 		return result;
 	}
+	
 
 
 }

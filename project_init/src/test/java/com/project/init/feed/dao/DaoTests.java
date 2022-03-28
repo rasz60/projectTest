@@ -1,6 +1,10 @@
 package com.project.init.feed.dao;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -25,42 +29,24 @@ public class DaoTests {
 	@Autowired
 	private IDao dao;
 	
-	
-	@Test
-	public void test1() {
-		
-		ArrayList<PlanDto> list = dao.selectAllPlan();
-		
-		for(PlanDto i : list) {
-			logger.info(i);
-		}
-	}
-
-	@Test
-	public void test2() {
-		dao.deletePlan("4");
-	}
-	
 	@Test
 	public void test2_1() {
-		PlanDto dto = new PlanDto(0, "test1", "2022-05-12", "2022-05-13", "¹æ¹®");
-		dao.insertPlan(dto);
-	}
-	
-	@Test
-	public void test3() {
-		int totalPostCount = 19;
-		int pagePostCount = 20;
-		int pageNum = 0;
 		
-		if ( totalPostCount % pagePostCount == 0 ) {
-			pageNum = totalPostCount / pagePostCount;
-		} else if ( totalPostCount % pagePostCount > 0 ) {
-			pageNum = totalPostCount / pagePostCount + 1;
-		} else if ( totalPostCount < pagePostCount ) {
-			pageNum = 1;
-		}
+		String startDate = "2022-03-20";
 		
-		logger.info(pageNum);
+		int y = Integer.parseInt(startDate.substring(0, 4));
+		int m = Integer.parseInt(startDate.substring(5, 7)) - 1;;
+		int d = Integer.parseInt(startDate.substring(8));
+		
+		Date date = new Date((y-1900), m, d);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DATE, 0);
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String r = df.format(cal.getTime());
+		
+		System.out.println(r);
+		
 	}
 }
