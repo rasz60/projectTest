@@ -236,17 +236,17 @@ infowindow.open(map, marker);
 //input에 insert하기 위한 index번호 생성
 
 function inputdata(marker, target1, value, title, category, address) {
-
-	if ( value > 9 ) {
+	var plusVal = Number(value) + 1;
+	if ( value > 10 ) {
 		alert('하루에 열개 이상의 일정을 생성할 수 없습니다.');
 		return false;
 
 	} else if ( value != 0 ){
-		var boxHtml = '<div class="detail' + value + ' mt-2 py-2 border bg-light rounded">'
+		var boxHtml = '<div class="detail' + plusVal + ' mt-2 py-2 border bg-light rounded" data-index="' + plusVal + '">'
 					+ '<h3 class="font-italic ml-2 d-inline mt-2">Place</h3>'
 					+ '<!-- placeName -->'
 					+ '<input type="text" class="form-control col-8 d-inline ml-3" name="placeName" readonly/>'
-					+ '<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2 mt-1"><i class="fa-solid fa-minus"></i></button>'
+					+ '<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2 mt-1" data-index="' + plusVal + '"><i class="fa-solid fa-minus"></i></button>'
 					+ '<button type="button" class="btn btn-sm btn-dark detailBtn float-right mr-2 mt-1" data-count="0"><i class="fa-solid fa-angles-down"></i></button>'
 					+ '<hr />'
 					+ '<div class="inputbox row mx-0 justify-content-between">'
@@ -304,23 +304,42 @@ function inputdata(marker, target1, value, title, category, address) {
 					+ '</div>'
 					+ '</div>';
 		target1.append(boxHtml);
+
+		var target2 = target1.children('.detail' + plusVal);
+		var target3 = target1.children('.detail' + plusVal).children('.inputbox');
+		
+		
+		target3.children('input[name=planDay]').val(target1.attr('data-day'));
+		target3.children('input[name=planDate]').val(target1.attr('data-date'));
+		target2.children('input[name=placeName]').val(title);
+		target3.children('input[name=latitude]').val(marker.getPosition().getLat());
+		target3.children('input[name=longitude]').val(marker.getPosition().getLng());
+		target3.children('input[name=address]').val(address);
+		target3.children('input[name=category]').val(category);
+	
+	
+		target1.attr('data-count', plusVal);					
+		target1.parent().siblings('p.mt-2').children('.showIndex').text(plusVal);
+		
+	} else {
+		target1.attr('data-count', plusVal);					
+		target1.parent().siblings('p.mt-2').children('.showIndex').text(plusVal);
+
+		
+		var target2 = target1.children('.detail' + plusVal);
+		var target3 = target1.children('.detail' + plusVal).children('.inputbox');
+		
+		
+		target3.children('input[name=planDay]').val(target1.attr('data-day'));
+		target3.children('input[name=planDate]').val(target1.attr('data-date'));
+		target2.children('input[name=placeName]').val(title);
+		target3.children('input[name=latitude]').val(marker.getPosition().getLat());
+		target3.children('input[name=longitude]').val(marker.getPosition().getLng());
+		target3.children('input[name=address]').val(address);
+		target3.children('input[name=category]').val(category);
 	}
 
-	var target2 = target1.children('.detail' + value);
-	var target3 = target1.children('.detail' + value).children('.inputbox');
-	
-	
-	target3.children('input[name=planDay]').val(target1.attr('data-day'));
-	target3.children('input[name=planDate]').val(target1.attr('data-date'));
-	target2.children('input[name=placeName]').val(title);
-	target3.children('input[name=latitude]').val(marker.getPosition().getLat());
-	target3.children('input[name=longitude]').val(marker.getPosition().getLng());
-	target3.children('input[name=address]').val(address);
-	target3.children('input[name=category]').val(category);
 
-
-	target1.attr('data-count', Number(value) + 1);					
-	target1.parent().siblings('p.mt-2').children('.showIndex').text(Number(value) + 1);
 }
 
 // 검색결과 목록의 자식 Element를 제거하는 함수입니다

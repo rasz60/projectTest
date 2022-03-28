@@ -134,11 +134,11 @@ var dates = getPlanDate(sDate, eDate);
 				<div class="inputDiv">
 					<!-- [planDt] -->
 					<form id="frm1" name="frm1" action="#" method="post" data-count="0" data-day="day1" data-date="${plan.startDate}">
-						<div class="detail0 mt-2 py-2 border bg-light rounded">
+						<div class="detail1 mt-2 py-2 border bg-light rounded" data-index="1">
 							<h3 class="font-italic ml-2 d-inline mt-2">Place</h3>
 							<!-- placeName -->
 							<input type="text" class="form-control col-8 d-inline ml-3" name="placeName" readonly/>
-							<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2 mt-1"><i class="fa-solid fa-minus"></i></button>
+							<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2 mt-1" data-index="1"><i class="fa-solid fa-minus"></i></button>
 							<button type="button" class="btn btn-sm btn-dark detailBtn float-right mr-2 mt-1" data-count="0"><i class="fa-solid fa-angles-down"></i></button>
 							<hr />
 

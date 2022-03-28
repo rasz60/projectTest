@@ -57,14 +57,30 @@ $(document).ready(function() {
 			
 			// 실제 표시될 eventEndDate를 생성
 			let eventEndDate = yyyymm + dd;
-						
-	    	// modal창을 띄우고 수정할 내용을 각 input value에 뿌려줌
+			
 	    	$('#modalBtn2').trigger('click');
 			$('.modal-header #plan-name').text(info.event.title);
 			$('.modal-body form #planNum').val(info.event.id);
-    		$('.modal-body form .form-group #planName').val(info.event.title);
-    		$('.modal-body form .form-group #startDate').val(info.event.startStr);
-    		$('.modal-body form .form-group #endDate').val(eventEndDate);
+			$('.modal-body form .form-group #planName').val(info.event.title);
+			$('.modal-body form .form-group #startDate').val(info.event.startStr);
+			$('.modal-body form .form-group #endDate').val(eventEndDate);
+			
+			
+	    	// modal창을 띄우고 수정할 내용을 각 input value에 뿌려줌
+			/*
+			$.ajax({
+				url: 'feed/modify_mst.do',
+				type: 'post',
+				data: info.event.id,
+				success: function(data) {
+
+					createBox(data);
+				},
+				error : function(data) {
+					
+				}
+			})
+			*/
 		}
 	});
 
