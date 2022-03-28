@@ -127,10 +127,10 @@ public class PlanDAO implements IDao {
 		String startDate = request.getParameter("startDate");
 		String endDate = request.getParameter("endDate");
 		String dateCount = request.getParameter("dateCount");
-		String theme = request.getParameter("theme");
+		String eventColor = request.getParameter("eventColor");
 		
 		//Make mstDto
-		PlanDto mstDto = new PlanDto(planNum, planName, startDate, endDate, dateCount, theme);
+		PlanDto mstDto = new PlanDto(planNum, planName, startDate, endDate, dateCount, eventColor);
 		logger.info(mstDto.getDateCount());
 		int res1 = sqlSession.insert("insertMst", mstDto);
 		result = res1 > 0 ? "success": "failed";
@@ -144,6 +144,7 @@ public class PlanDAO implements IDao {
 		String[] planDate = request.getParameterValues("planDate");
 		String[] startTime = request.getParameterValues("startTime");
 		String[] endTime = request.getParameterValues("endTime");
+		String[] theme = request.getParameterValues("theme");
 		String[] placeIndex = request.getParameterValues("placeIndex");
 		String[] latitude = request.getParameterValues("latitude");
 		String[] longitude = request.getParameterValues("longitude");
@@ -161,6 +162,7 @@ public class PlanDAO implements IDao {
 										  planDate[i],
 										  startTime[i],
 										  endTime[i],
+										  theme[i],
 										  placeIndex[i],
 										  latitude[i],
 										  longitude[i],

@@ -3,16 +3,16 @@ html, body {
 }
 
 body::-webkit-scrollbar {
-    width: 10px;  /* 스크롤바의 너비 */
+    width: 10px;
 }
 
 body::-webkit-scrollbar-thumb {
-    background: #A0A0A0 ; /* 스크롤바의 색상 */
+    background: #A0A0A0 ;
     border-radius: 15px;
 }
 
 body::-webkit-scrollbar-track {
-    background: #CCCCCC;  /*스크롤바 뒷 배경 색상*/
+    background: #CCCCCC;  
 }
 
 section.container-fluid {
@@ -44,18 +44,18 @@ h3[id^=date-title] {
 
 
 #tabdiv::-webkit-scrollbar {
-    width: 8px;  /* 스크롤바의 너비 */
+    width: 8px;  /* �뒪�겕濡ㅻ컮�쓽 �꼫鍮� */
 }
 
 #tabdiv::-webkit-scrollbar-thumb {
-    height: 30%; /* 스크롤바의 길이 */
-    background: #D0D0D0; /* 스크롤바의 색상 */
+    height: 30%; /* �뒪�겕濡ㅻ컮�쓽 湲몄씠 */
+    background: #D0D0D0; /* �뒪�겕濡ㅻ컮�쓽 �깋�긽 */
     
     border-radius: 10px;
 }
 
 #tabdiv::-webkit-scrollbar-track {
-    background: #EFEFEF;  /*스크롤바 뒷 배경 색상*/
+    background: #EFEFEF;  /*�뒪�겕濡ㅻ컮 �뮮 諛곌꼍 �깋�긽*/
 }
 
 

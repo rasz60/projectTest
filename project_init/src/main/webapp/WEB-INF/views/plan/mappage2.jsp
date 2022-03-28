@@ -146,7 +146,7 @@ var dates = getPlanDate(sDate, eDate);
 								<!-- [pk] planDtNum -->
 								<input type="hidden" class="form-control" name="planDtNum" value="0" readonly/>
 								<!-- day -->
-								<input type="hidden" class="form-control" name="planDay" value="day1"readonly/>
+								<input type="hidden" class="form-control" name="planDay" value="day1" readonly/>
 								<!-- placeCount -->
 								<input type="hidden" class="form-control" name="placeIndex" readonly/>
 								<!-- planDate -->
@@ -158,18 +158,35 @@ var dates = getPlanDate(sDate, eDate);
 								<!-- address -->
 								<input type="hidden" class="form-control" name="address" readonly/>
 								<!-- category -->
-								<input type="hidden" class="form-control" name="category" readonly/>			
+								<input type="hidden" class="form-control" name="category" readonly/>
 								
 								<!-- startTime -->
-								<div class="form-group col-6">
+								<div class="form-group col-4">
 									<label for="startTime">StartTime</label>
 									<input type="time" class="form-control" name="startTime" />
 								</div>
 								
 								<!-- endTime -->
-								<div class="form-group col-6">
+								<div class="form-group col-4">
 									<label for="endTime">EndTime</label>
 									<input type="time" class="form-control" name="endTime" />
+								</div>
+								
+								<div class="form-group col-4">
+									<label for="theme">목적</label>
+									<select class="custom-select my-1 mr-sm-2 " id="theme" name="theme">
+										<option value="방문" selected>방문</option>
+										<option value="데이트">데이트</option>
+										<option value="가족여행">가족여행</option>
+										<option value="친구들과">친구들과</option>
+										<option value="맛집탐방">맛집탐방</option>
+										<option value="비즈니스">비즈니스</option>
+										<option value="소개팅">소개팅</option>
+										<option value="미용">미용</option>
+										<option value="운동">운동</option>
+										<option value="문화생활">문화생활</option>
+										<option value="여가생활">여가생활</option>
+									</select>
 								</div>
 								
 								<!-- transportation -->								

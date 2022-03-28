@@ -63,8 +63,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 <insert id="insertMst" parameterType="com.project.init.feed.dto.PlanDto">
-	INSERT INTO plan_mst (planNum, planName, startDate, endDate, dateCount, theme) 
-	VALUES (plan_mst_seq.NEXTVAL, #{planName}, #{startDate}, #{endDate}, #{dateCount}, #{theme})
+	INSERT INTO plan_mst (planNum, planName, startDate, endDate, dateCount, eventColor) 
+	VALUES (plan_mst_seq.NEXTVAL, #{planName}, #{startDate}, #{endDate}, #{dateCount}, #{eventColor})
 	<selectKey resultType="int" keyProperty="planNum" order="AFTER">
 		SELECT plan_mst_seq.currVal from dual
 	</selectKey>
@@ -82,6 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 #{planDate},
  		 #{startTime},
  		 #{endTime},
+ 		 #{theme},
  		 #{placeIndex},
 		 #{latitude},
 		 #{longitude},

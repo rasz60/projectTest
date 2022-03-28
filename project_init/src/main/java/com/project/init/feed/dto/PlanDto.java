@@ -8,20 +8,20 @@ public class PlanDto {
 	private String startDate;
 	private String endDate;
 	private String dateCount;
-	private String theme;
+	private String eventColor;
 
 	public PlanDto() {
 		super();
 	}
 	
-	public PlanDto(int planNum, String planName, String startDate, String endDate, String dateCount, String theme) {
+	public PlanDto(int planNum, String planName, String startDate, String endDate, String dateCount, String eventColor) {
 		super();
 		this.planNum = planNum;
 		this.planName = planName;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.dateCount = dateCount;
-		this.theme = theme;
+		this.eventColor = eventColor;
 	}
 
 	public int getPlanNum() {
@@ -56,12 +56,12 @@ public class PlanDto {
 		this.endDate = endDate;
 	}
 
-	public String getTheme() {
-		return theme;
+	public String getEventColor() {
+		return eventColor;
 	}
 
-	public void setTheme(String theme) {
-		this.theme = theme;
+	public void setEventColor(String eventColor) {
+		this.eventColor = eventColor;
 	}
 
 	public String getDateCount() {

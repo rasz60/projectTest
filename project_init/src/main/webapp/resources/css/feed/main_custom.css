@@ -1,24 +1,24 @@
-/* 페이지 전체 스크롤바 설정 */
+/* �럹�씠吏� �쟾泥� �뒪�겕濡ㅻ컮 �꽕�젙 */
 
 body::-webkit-scrollbar {
-    width: 10px;  /* 스크롤바의 너비 */
+    width: 10px;  /* �뒪�겕濡ㅻ컮�쓽 �꼫鍮� */
 }
 
 body::-webkit-scrollbar-thumb {
-    background: #A0A0A0 ; /* 스크롤바의 색상 */
+    background: #A0A0A0 ; /* �뒪�겕濡ㅻ컮�쓽 �깋�긽 */
     border-radius: 15px;
 }
 
 body::-webkit-scrollbar-track {
-    background: #CCCCCC;  /*스크롤바 뒷 배경 색상*/
+    background: #CCCCCC;  /*�뒪�겕濡ㅻ컮 �뮮 諛곌꼍 �깋�긽*/
 }
 
-/* 메뉴바와 section간 margin 조정 */
+/* 硫붾돱諛붿� section媛� margin 議곗젙 */
 section.container {
 	margin-top: 5em;
 }
 
-/* 각각의 피드페이지로 넘어가는 tab-box */
+/* 媛곴컖�쓽 �뵾�뱶�럹�씠吏�濡� �꽆�뼱媛��뒗 tab-box */
 .feed-tabs {
 	border-top: 1px solid #dee2e6;
 	border-bottom: none;
@@ -29,20 +29,20 @@ section.container {
 	text-align: center;
 }
 
-/* 선택된 탭 색상, hover 색상 */
+/* �꽑�깮�맂 �꺆 �깋�긽, hover �깋�긽 */
 .feed-tabs .nav-item.active {
-	background-color: #257DDB ;
+	background-color: #403D3D;
 }
 
 .feed-tabs .nav-item.active:hover,
 .feed-tabs .nav-item.active .nav-link,
 .feed-tabs .nav-item.active .nav-link:hover {
-	background-color: #257DDB ;	
+	background-color: #403D3D;	
 	color: white;
 	text-decoration : none;
 }
 
-/* 선택되지 않은 탭 색상, hover 색상 */
+/* �꽑�깮�릺吏� �븡�� �꺆 �깋�긽, hover �깋�긽 */
 .feed-tabs .nav-item .nav-link {
 	color: #ABABAB;
 	border : none;
@@ -56,13 +56,13 @@ section.container {
 
 
 
-/* 달력 관련 */
-/* 새로 생성된 이벤트 블럭 테두리 */
+/* �떖�젰 愿��젴 */
+/* �깉濡� �깮�꽦�맂 �씠踰ㅽ듃 釉붾윮 �뀒�몢由� */
 .fc-event {
 	border-color: white;
 }
 
-/* 토요일, 일요일 글씨색 변경 */
+/* �넗�슂�씪, �씪�슂�씪 湲��뵪�깋 蹂�寃� */
 .fc-day-sat>div, .fc-day-sat>div>div {
 	color : blue;
 }
@@ -70,18 +70,18 @@ section.container {
 	color : red;
 }
 
-/* 달력 스크롤바 설정 */
+/* �떖�젰 �뒪�겕濡ㅻ컮 �꽕�젙 */
 .fc-scroller::-webkit-scrollbar {
-    width: 5px;  /* 스크롤바의 너비 */
+    width: 5px;  /* �뒪�겕濡ㅻ컮�쓽 �꼫鍮� */
 }
 
 .fc-scroller::-webkit-scrollbar-thumb {
-    background: #A0A0A0 ; /* 스크롤바의 색상 */
+    background: #A0A0A0 ; /* �뒪�겕濡ㅻ컮�쓽 �깋�긽 */
     border-radius: 15px;
 }
 
 .fc-scroller::-webkit-scrollbar-track {
-    background: #CCCCCC;  /*스크롤바 뒷 배경 색상*/
+    background: #CCCCCC;  /*�뒪�겕濡ㅻ컮 �뮮 諛곌꼍 �깋�긽*/
 }
 
 

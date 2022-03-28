@@ -124,7 +124,7 @@ function displayPlaces(places) {
 
 				inputdata(marker, target1, value, title, category, address);// inputdata()에서 처리              
 	        }; 
-	    })(marker, places[i].place_name, places[i].category_name, places[i].address_name);
+	    })(marker, places[i].place_name, places[i].category_group_code, places[i].address_name);
 	
 	    fragment.appendChild(itemEl); //appendChild() - 새로운 노드를 해당 노드의 자식 노드 리스트(child node list)의 맨 마지막에 추가        
 	}

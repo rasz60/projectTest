@@ -36,8 +36,9 @@ $(document).ready(function() {
 	});
 	
 	
-	$('#submitAll').click(function() {
-
+	$('#submitAll').click(function(e) {
+		e.preventDefault();
+		
 		$('.modal-body').text('모든 일정 작성을 완료하고 피드로 이동할까요?');
 		$('#modalBtn').trigger('click');
 		

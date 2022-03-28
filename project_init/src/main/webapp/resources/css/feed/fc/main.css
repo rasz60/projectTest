@@ -141,7 +141,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 
 }
 
-/* 월 이동 버튼 디자인 */
+/* �썡 �씠�룞 踰꾪듉 �뵒�옄�씤 */
 .fc .fc-button {
     border-radius: 0;
     overflow: visible;
@@ -191,7 +191,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
   }
 .fc .fc-button:focus {
     outline: 0;
-    box-shadow: 0 0 0 0.2rem #6B7CDF;
+    box-shadow: 0 0 0 0.2rem #757575;
   }
 .fc .fc-button:disabled {
     opacity: 0.65;
@@ -204,18 +204,18 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 .fc .fc-button-primary {
     color: #fff;
     color: var(--fc-button-text-color, #fff);
-    background-color: #007bff;
-    background-color: var(--fc-button-bg-color, #007bff);
-    border-color: #007bff;
-    border-color: var(--fc-button-border-color, #007bff);
+    background-color: #403D3D;
+    background-color: var(--fc-button-bg-color, #403D3D);
+    border-color: #403D3D;
+    border-color: var(--fc-button-border-color, #403D3D);
   }
 .fc .fc-button-primary:hover {
     color: #fff;
     color: var(--fc-button-text-color, #fff);
-    background-color: #6B7CDF;
-    background-color: var(--fc-button-hover-bg-color, #6B7CDF);
-    border-color: #6B7CDF;
-    border-color: var(--fc-button-hover-border-color, #6B7CDF);
+    background-color: #757575;
+    background-color: var(--fc-button-hover-bg-color, #757575);
+    border-color: #757575;
+    border-color: var(--fc-button-hover-border-color, #757575);
   }
 .fc .fc-button-primary:disabled { /* not DRY */
     color: #fff;
@@ -716,7 +716,7 @@ A HORIZONTAL event
     z-index: 1; /* container inner z-index's because <tr>s can't do it */
   }
 
-/* 오늘 날짜 배경색 */
+/* �삤�뒛 �궇吏� 諛곌꼍�깋 */
 .fc .fc-daygrid-day.fc-day-today {
       background-color: #FDFFE8;
       background-color: var(--fc-today-bg-color, #FDFFE8);
