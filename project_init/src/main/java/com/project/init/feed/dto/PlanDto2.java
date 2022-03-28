@@ -11,7 +11,6 @@ public class PlanDto2 {
 	private String startTime;
 	private String endTime;
 	private String theme;
-	private String placeIndex;
 	private String latitude;
 	private String longitude;
 	private String address;
@@ -24,7 +23,7 @@ public class PlanDto2 {
 	}
 
 	public PlanDto2(int planDtNum, int planNum, String placeName, String planDay, String planDate, String startTime,
-			String endTime, String theme, String placeIndex, String latitude, String longitude, String address,
+			String endTime, String theme, String latitude, String longitude, String address,
 			String category, String transportation, String details) {
 		super();
 		this.planDtNum = planDtNum;
@@ -35,7 +34,6 @@ public class PlanDto2 {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.theme = theme;
-		this.placeIndex = placeIndex;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.address = address;
@@ -106,14 +104,6 @@ public class PlanDto2 {
 
 	public void setTheme(String theme) {
 		this.theme = theme;
-	}
-
-	public String getPlaceIndex() {
-		return placeIndex;
-	}
-
-	public void setPlaceIndex(String placeIndex) {
-		this.placeIndex = placeIndex;
 	}
 
 	public String getLatitude() {

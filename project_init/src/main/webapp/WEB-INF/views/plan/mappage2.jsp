@@ -120,7 +120,7 @@ var dates = getPlanDate(sDate, eDate);
 				<!-- dateCount -->
 				<input type="hidden" class="form-control" name="dateCount" value="${plan.dateCount}" readonly/>
 				<!-- theme -->
-				<input type="hidden" class="form-control" name="theme" value="${plan.theme}" readonly/>
+				<input type="hidden" class="form-control" name="eventColor" value="${plan.eventColor}" readonly/>
 			</form>
 			
 			
@@ -147,8 +147,6 @@ var dates = getPlanDate(sDate, eDate);
 								<input type="hidden" class="form-control" name="planDtNum" value="0" readonly/>
 								<!-- day -->
 								<input type="hidden" class="form-control" name="planDay" value="day1" readonly/>
-								<!-- placeCount -->
-								<input type="hidden" class="form-control" name="placeIndex" readonly/>
 								<!-- planDate -->
 								<input type="hidden" class="form-control" name="planDate" value="${plan.startDate}" readonly/>
 								<!-- latitude -->
@@ -172,6 +170,7 @@ var dates = getPlanDate(sDate, eDate);
 									<input type="time" class="form-control" name="endTime" />
 								</div>
 								
+								<!-- theme -->
 								<div class="form-group col-4">
 									<label for="theme">목적</label>
 									<select class="custom-select my-1 mr-sm-2 " id="theme" name="theme">

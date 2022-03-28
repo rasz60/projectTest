@@ -168,7 +168,7 @@ $(document).ready(function() {
 				
 					
 					for (var i = 0; i < data.length; i++ ) {
-	 					var color = eventColor(data[i].theme);
+	 					var color = data[i].eventColor;
 						var eventEnd = strToDate(data[i].endDate);
 						
 						eventEnd.setDate(eventEnd.getDate() + 1);
@@ -291,60 +291,6 @@ $(document).ready(function() {
 				console.log('오류');
 			}
 		});
-	}
-	
-	
-	function eventColor(theme) {
-		var color = "";
-		
-		switch(theme) {
-		
-		case "방문" : 
-			color = "#007bff";
-			break;
-		
-		case "데이트" : 
-			color = "#dc3545";
-			break;
-		
-		case "가족여행" : 
-			color = "#28a745";
-			break;
-		
-		case "친구들과" : 
-			color = "#17a2b8";
-			break;
-		
-		case "맛집탐방" : 
-			color = "#fd7e14";
-			break;
-			
-		case "비즈니스" : 
-			color = "#6610f2";
-			break;
-			
-		case "소개팅" : 
-			color = "#e83e8c";
-			break;
-			
-		case "미용" : 
-			color = "#20c997";
-			break;
-			
-		case "운동" : 
-			color = "#6f42c1";
-			break;	
-		
-		case "문화생활" : 
-			color = "#A2A7B7";
-			break;
-		
-		case "여가생활" : 
-			color = "#E9C288";
-			break;
-		}
-		
-		return color;
 	}
 	
 	function strToDate(str) {

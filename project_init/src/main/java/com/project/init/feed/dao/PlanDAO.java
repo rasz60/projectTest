@@ -145,7 +145,6 @@ public class PlanDAO implements IDao {
 		String[] startTime = request.getParameterValues("startTime");
 		String[] endTime = request.getParameterValues("endTime");
 		String[] theme = request.getParameterValues("theme");
-		String[] placeIndex = request.getParameterValues("placeIndex");
 		String[] latitude = request.getParameterValues("latitude");
 		String[] longitude = request.getParameterValues("longitude");
 		String[] address = request.getParameterValues("address");
@@ -163,7 +162,6 @@ public class PlanDAO implements IDao {
 										  startTime[i],
 										  endTime[i],
 										  theme[i],
-										  placeIndex[i],
 										  latitude[i],
 										  longitude[i],
 										  address[i],

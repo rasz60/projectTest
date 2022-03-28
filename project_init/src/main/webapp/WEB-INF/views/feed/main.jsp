@@ -91,19 +91,20 @@
 					</div>
 					
 					<div class="form-group">
-						<label for="theme">목적</label>
-						<select class="custom-select my-1 mr-sm-2 " id="theme" name="theme">
-							<option value="방문" selected>방문</option>
-							<option value="데이트">데이트</option>
-							<option value="가족여행">가족여행</option>
-							<option value="친구들과">친구들과</option>
-							<option value="맛집탐방">맛집탐방</option>
-							<option value="비즈니스">비즈니스</option>
-							<option value="소개팅">소개팅</option>
-							<option value="미용">미용</option>
-							<option value="운동">운동</option>
-							<option value="문화생활">문화생활</option>
-							<option value="여가생활">여가생활</option>
+						<label for="eventColor">블럭 색상</label>
+						<select class="custom-select my-1 mr-sm-2 " id="eventColor" name="eventColor">
+							<option value="#007bff" selected>Blue</option>
+							<option value="#6610f2">Indigo</option>
+							<option value="#6f42c1">Purple</option>
+							<option value="#e83e8c">Pink</option>
+							<option value="#dc3545">Red</option>
+							<option value="#fd7e14">Orange</option>
+							<option value="#ffc107">Yellow</option>
+							<option value="#28a745">Green</option>
+							<option value="#20c997">Teal</option>
+							<option value="#17a2b8">Cyan</option>
+							<option value="#6c757d">Gray</option>
+							<option value="gray-dark">Dark Gray</option>
 						</select>
 					</div>
 					<input type="hidden" name="dateCount" id="dateCount" class="form-control"/>

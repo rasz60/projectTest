@@ -254,8 +254,6 @@ function inputdata(marker, target1, value, title, category, address) {
 					+ '<input type="hidden" class="form-control" name="planDtNum" value="0" readonly/>'
 					+ '<!-- day -->'
 					+ '<input type="hidden" class="form-control" name="planDay" readonly/>'
-					+ '<!-- placeCount -->'
-					+ '<input type="hidden" class="form-control" name="placeIndex" value="0" readonly/>'
 					+ '<!-- planDate -->'
 					+ '<input type="hidden" class="form-control" name="planDate" readonly/>'
 					+ '<!-- latitude -->'
@@ -267,14 +265,31 @@ function inputdata(marker, target1, value, title, category, address) {
 					+ '<!-- category -->'
 					+ '<input type="hidden" class="form-control" name="category" readonly/>'
 					+ '<!-- startTime -->'
-					+ '<div class="form-group col-6">'
+					+ '<div class="form-group col-4">'
 					+ '<label for="startTime">StartTime</label>'
 					+ '<input type="time" class="form-control" name="startTime" value="" />'
 					+ '</div>'
 					+ '<!-- endTime -->'
-					+ '<div class="form-group col-6">'
+					+ '<div class="form-group col-4">'
 					+ '<label for="endTime">EndTime</label>'
 					+ '<input type="time" class="form-control" name="endTime" value="" />'
+					+ '</div>'
+					+ '<!-- theme -->'
+					+ '<div class="form-group col-4">'
+					+ '<label for="theme">목적</label>'
+					+ '<select class="custom-select my-1 mr-sm-2 " id="theme" name="theme">'
+					+ '<option value="방문" selected>방문</option>'
+					+ '<option value="데이트">데이트</option>'
+					+ '<option value="가족여행">가족여행</option>'
+					+ '<option value="친구들과">친구들과</option>'
+					+ '<option value="맛집탐방">맛집탐방</option>'
+					+ '<option value="비즈니스">비즈니스</option>'
+					+ '<option value="소개팅">소개팅</option>'
+					+ '<option value="미용">미용</option>'
+					+ '<option value="운동">운동</option>'
+					+ '<option value="문화생활">문화생활</option>'
+					+ '<option value="여가생활">여가생활</option>'
+					+ '</select>'
 					+ '</div>'
 					+ '<!-- transportation -->'
 					+ '<div class="form-group col-12 toggle none">'
@@ -306,7 +321,6 @@ function inputdata(marker, target1, value, title, category, address) {
 
 	target1.attr('data-count', Number(value) + 1);					
 	target1.parent().siblings('p.mt-2').children('.showIndex').text(Number(value) + 1);
-	target3.children('input[name=placeIndex]').val(Number(value) + 1);
 }
 
 // 검색결과 목록의 자식 Element를 제거하는 함수입니다

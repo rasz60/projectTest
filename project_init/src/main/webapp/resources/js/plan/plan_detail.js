@@ -78,7 +78,6 @@ $(document).ready(function() {
 		
 		target.attr('data-count', delValue);
 		target.parent().siblings('p.mt-2').children('.showIndex').text(delValue);
-		$(this).siblings('inputbox').children('input[name=placeIndex]').val(delValue);
 		$(this).parent().remove();
 	});
 					
