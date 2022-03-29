@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.project.init.feed.dto.CommentDto;
 import com.project.init.feed.dto.PlanDto;
@@ -14,13 +15,11 @@ public interface IDao {
 	
 	void insertPlan(PlanDto dto);
 	
-	PlanDto selectPlan(int planNum);
+	PlanDto selectPlanMst(String planNum);
 	
 	
 	ArrayList<PlanDto> selectAllPlan();
 
-	String deletePlan(String planNum);
-	
 	String insertMap(Model model, HttpServletRequest request);
 	
 	String insertPlanDtDo(HttpServletRequest request, Model model);
@@ -32,5 +31,6 @@ public interface IDao {
 
 	String modifyPlanMst(HttpServletRequest request);
 
-	ArrayList<PlanDto2> selectPlanDt(PlanDto2 dto);
+	ArrayList<PlanDto2> selectPlanDt(String planNum);
+	String deletePlan(String planNum);
 }

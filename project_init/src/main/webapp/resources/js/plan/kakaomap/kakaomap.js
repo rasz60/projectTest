@@ -254,6 +254,8 @@ function inputdata(marker, target1, value, title, category, address) {
 					+ '<input type="hidden" class="form-control" name="planDtNum" value="0" readonly/>'
 					+ '<!-- day -->'
 					+ '<input type="hidden" class="form-control" name="planDay" readonly/>'
+					+ '<!-- placeCount -->'
+					+ '<input type="hidden" class="form-control" name="placeCount" readonly/>'
 					+ '<!-- planDate -->'
 					+ '<input type="hidden" class="form-control" name="planDate" readonly/>'
 					+ '<!-- latitude -->'

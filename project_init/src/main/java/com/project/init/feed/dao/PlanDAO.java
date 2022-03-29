@@ -1,6 +1,5 @@
 package com.project.init.feed.dao;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,48 +57,12 @@ public class PlanDAO implements IDao {
 	}
 
 	@Override
-	public String deletePlan(String planNum) {
-		logger.info("deletePlan(" + planNum + ") in >>>");
-
-		int result = sqlSession.delete("deletePlan", planNum);
-
-		logger.info("deletePlan(" + planNum + ") result : " + result);
-		
-		if ( result > 0 ) {
-			return "success";
-		} else {
-			return "failed";
-		}
-	}
-
-
-	@Override
-	public PlanDto selectPlan(int planNum) {
+	public PlanDto selectPlanMst(String planNum) {
 		logger.info("selectPlan (" + planNum + ") in >>>");
 		
-		PlanDto dto = sqlSession.selectOne("selectPlan", planNum);
+		PlanDto dto = sqlSession.selectOne("selectPlanMst", Integer.parseInt(planNum));
 		
 		return dto;
-	}
-	
-	@Override
-	public ArrayList<CommentDto> selectComments() {
-		
-		ArrayList<CommentDto> dtos = (ArrayList)sqlSession.selectList("selectAllComments");
-		
-		return dtos;
-	}
-	
-	
-	
-	@Override
-	public String insertMcomment(CommentDto dto) {
-		logger.info("insertComment >>> ");
-		int res = sqlSession.insert("McommentC", dto);
-
-		logger.info("insertComment result : " + (res == 1 ? "success": "failed") );
-		
-		return res == 1 ? "success": "failed";
 	}
 
 	@Override
@@ -129,6 +92,7 @@ public class PlanDAO implements IDao {
 		//[planDt]
 		String[] planDtNum = request.getParameterValues("planDtNum");
 		String[] placeName = request.getParameterValues("placeName");
+		String[] placeCount = request.getParameterValues("placeCount");
 		String[] planDay = request.getParameterValues("planDay");
 		String[] planDate = request.getParameterValues("planDate");
 		String[] startTime = request.getParameterValues("startTime");
@@ -142,21 +106,22 @@ public class PlanDAO implements IDao {
 		String[] details = request.getParameterValues("details");
 		
 		//Make dtDto[]
-		for ( int i = 0 ; i < planDtNum.length; i++ ) {
+		for ( int i = 0 ; i < planDay.length; i++ ) {
 			PlanDto2 dtDto = new PlanDto2(Integer.parseInt(planDtNum[i]),
-										  mstDto.getPlanNum(),
-										  placeName[i],
-										  planDay[i],
-										  planDate[i],
-										  startTime[i],
-										  endTime[i],
-										  theme[i],
-										  latitude[i],
-										  longitude[i],
-										  address[i],
-										  category[i],
-										  transportation[i],
-										  details[i]);
+					  mstDto.getPlanNum(),
+					  placeName[i],
+					  placeCount[i],
+					  planDay[i],
+					  planDate[i],
+					  startTime[i],
+					  endTime[i],
+					  theme[i],
+					  latitude[i],
+					  longitude[i],
+					  address[i],
+					  category[i],
+					  transportation[i],
+					  details[i]);
 			
 			int res2 = sqlSession.insert("insertDt", dtDto);
 			result = res2 > 0 ? "success": "failed";
@@ -168,11 +133,21 @@ public class PlanDAO implements IDao {
 		return result;
 	}
 
+
 	@Override
-	public String insertMap(Model model, HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<PlanDto2> selectPlanDt(String planNum) {
+		logger.info("selectPlanDt (" + planNum + ") in >>> ");
+		
+		ArrayList<PlanDto2> result = (ArrayList)sqlSession.selectList("selectPlanDt", Integer.parseInt(planNum));
+
+		
+		logger.info("selectPlanDt (" +planNum + ") result ? " + result.isEmpty());
+		
+		return result;
 	}
+
+	
+	
 	
 	@Override
 	@Transactional
@@ -281,17 +256,58 @@ public class PlanDAO implements IDao {
 	
 		return result;
 	}
-
+	
+	
 	@Override
-	public ArrayList<PlanDto2> selectPlanDt(PlanDto2 dto) {
-		logger.info("selectPlanDt (" + dto.getPlanNum() + ") in >>> ");
-		
-		ArrayList<PlanDto2> result = (ArrayList)sqlSession.selectList("selectPlanDt", dto);
+	@Transactional
+	public String deletePlan(String planNum) {
+		logger.info("deletePlan(" + planNum + ") in >>>");
 
+		String result = null;
+
+		// [PlanMst] - delete
+		int res1 = sqlSession.delete("deletePlanMst", Integer.parseInt(planNum));
+		result = res1 > 0 ? "success": "failed";
+		logger.info("deletePlan(" + planNum + ") result1 : " + result);
 		
-		logger.info("selectPlanDt (" + dto.getPlanNum() + ") result ? " + result.isEmpty());
+		// [PlanDt] - delete
+		int res2 = sqlSession.delete("deletePlanDt", Integer.parseInt(planNum));
+		result = res2 > 0 ? "success": "failed";
+		logger.info("deletePlan(" + planNum + ") result2 : " + result);
+		
 		
 		return result;
 	}
+	
+	
+	
+	@Override
+	public String insertMap(Model model, HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+
+	@Override
+	public String insertMcomment(CommentDto dto) {
+		logger.info("insertComment >>> ");
+		int res = sqlSession.insert("McommentC", dto);
+
+		logger.info("insertComment result : " + (res == 1 ? "success": "failed") );
+		
+		return res == 1 ? "success": "failed";
+	}
+	
+	
+	@Override
+	public ArrayList<CommentDto> selectComments() {
+		
+		ArrayList<CommentDto> dtos = (ArrayList)sqlSession.selectList("selectAllComments");
+		
+		return dtos;
+	}
+	
+	
+
 
 }

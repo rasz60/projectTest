@@ -46,8 +46,18 @@ $(document).ready(function() {
 		$('#trueBtn').click(function(e) {
 			e.preventDefault();
 
-			let data = $('form').serialize();
+			var form = $('form[id^=frm]').get();
 			
+			console.log(form.length);
+			
+			// PlanDt - placeCount
+			for ( var i = 1; i < form.length; i++ ) {
+				var count = $('#frm' + i).data('count');
+				$('#frm' + i).children('div').children('.inputbox').children('input[name=placeCount]').val(count);
+			}
+
+						
+			let data = $('form').serialize();
 			
 			$.ajax({
 				url: 'plan/detail.do',

@@ -47,6 +47,21 @@ public class PlanController {
 		return result;
 	}
 
+	@RequestMapping("detail_modify")
+	public String detail_modify(String planNum, Model model) {
+		logger.info("detail_modify(" + planNum + ") in >>>>");
+		
+		PlanDto result1= dao.selectPlanMst(planNum);
+		model.addAttribute("plan1", result1);
+		
+				
+		ArrayList<PlanDto2> result2= dao.selectPlanDt(planNum);
+		model.addAttribute("plan2", result2);
+		
+		return "plan/plan_modify";
+	}
+	
+	
 	
 	/*
 

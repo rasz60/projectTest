@@ -6,6 +6,7 @@ public class PlanDto2 {
 	private int planDtNum;
 	private int planNum;
 	private String placeName;
+	private String placeCount;
 	private String planDay;
 	private String planDate;
 	private String startTime;
@@ -35,13 +36,14 @@ public class PlanDto2 {
 		this.planDate = planDate;
 	}
 
-	public PlanDto2(int planDtNum, int planNum, String placeName, String planDay, String planDate, String startTime,
+	public PlanDto2(int planDtNum, int planNum, String placeName, String placeCount, String planDay, String planDate, String startTime,
 			String endTime, String theme, String latitude, String longitude, String address,
 			String category, String transportation, String details) {
 		super();
 		this.planDtNum = planDtNum;
 		this.planNum = planNum;
 		this.placeName = placeName;
+		this.placeCount = placeCount;
 		this.planDay = planDay;
 		this.planDate = planDate;
 		this.startTime = startTime;
@@ -77,6 +79,14 @@ public class PlanDto2 {
 
 	public void setPlaceName(String placeName) {
 		this.placeName = placeName;
+	}
+
+	public String getPlaceCount() {
+		return placeCount;
+	}
+
+	public void setPlaceCount(String placeCount) {
+		this.placeCount = placeCount;
 	}
 
 	public String getPlanDay() {

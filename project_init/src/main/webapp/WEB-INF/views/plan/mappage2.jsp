@@ -134,6 +134,7 @@ var dates = getPlanDate(sDate, eDate);
 				<div class="inputDiv">
 					<!-- [planDt] -->
 					<form id="frm1" name="frm1" action="#" method="post" data-count="0" data-day="day1" data-date="${plan.startDate}">
+						
 						<div class="detail1 mt-2 py-2 border bg-light rounded" data-index="1">
 							<h3 class="font-italic ml-2 d-inline mt-2">Place</h3>
 							<!-- placeName -->
@@ -147,6 +148,8 @@ var dates = getPlanDate(sDate, eDate);
 								<input type="hidden" class="form-control" name="planDtNum" value="0" readonly/>
 								<!-- day -->
 								<input type="hidden" class="form-control" name="planDay" value="day1" readonly/>
+								<!-- placeCount -->
+								<input type="hidden" class="form-control" name="placeCount" readonly/>
 								<!-- planDate -->
 								<input type="hidden" class="form-control" name="planDate" value="${plan.startDate}" readonly/>
 								<!-- latitude -->

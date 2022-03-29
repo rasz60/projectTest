@@ -16,12 +16,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</selectKey>
 </insert>
 
-<select id="selectPlanDt" parameterType="com.project.init.feed.dto.PlanDto2" resultType="com.project.init.feed.dto.PlanDto2">
+<select id="selectPlanMst" parameterType="int" resultType="com.project.init.feed.dto.PlanDto">
+	SELECT * 
+	FROM plan_Mst 
+	WHERE planNum = #{planNum}
+</select>
+
+
+<select id="selectPlanDt" parameterType="int" resultType="com.project.init.feed.dto.PlanDto2">
 	SELECT * 
 	FROM plan_dt 
-	WHERE planNum = #{planNum} 
-	AND planDay = #{planDay}
-	ORDER BY startTime ASC
+	WHERE planNum = #{planNum}
+	ORDER BY planDay, startTime ASC
 </select>
 
 
@@ -32,6 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(plan_dt_seq.NEXTVAL,
 		 #{planNum}, 
 		 #{placeName},
+		 #{placeCount},
 		 #{planDay},
 		 #{planDate},
  		 #{startTime},
@@ -69,6 +76,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <delete id="deletePlanDt1" parameterType="com.project.init.feed.dto.PlanDto2">
 	DELETE FROM plan_dt WHERE planNum = #{planNum} AND planDay = #{planDay}
+</delete>
+
+
+<delete id="deletePlanMst" parameterType="int">
+	DELETE FROM plan_Mst WHERE planNum = #{planNum}
+</delete>
+
+<delete id="deletePlanDt" parameterType="int">
+	DELETE FROM plan_dt WHERE planNum = #{planNum}
 </delete>
 
 </mapper>

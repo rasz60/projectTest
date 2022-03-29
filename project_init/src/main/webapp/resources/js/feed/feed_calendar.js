@@ -61,14 +61,11 @@ $(document).ready(function() {
 			
 			console.log('진입');
 			
-			var data = {planNum : info.event.id,
-						planDay : 'day1'};
-			
 			// 상세 일정을 불러옴
 			$.ajax({
 				url: 'feed/modify_modal.do',
 				type: 'post',
-				data: JSON.stringify(data),
+				data: info.event.id,
 				contentType: 'application/json; charset=UTF-8',
 				beforeSend: function(xhr){
 		 		   	var token = $("meta[name='_csrf']").attr('content');
@@ -86,19 +83,13 @@ $(document).ready(function() {
 					$('.modal-body form .form-group #modal-endDate').val(eventEndDate);
 					$('.modal-body form .form-group #modal-eventColor').val(info.event.backgroundColor);
 					$('.modal-body form #modal-originDateCount').val(info.event.extendedProps.dateCount);
+					$('.modal-body .detail-days').attr('data-count', info.event.extendedProps.dateCount);
+					$('#plan-day').text('day 1');
+					$('#prev-btn').attr('data-index', 0);
+					$('#next-btn').attr('data-index', 2);
+					$('.plan-details div[id^=detail]:nth-child(n+3)').remove();
+					modifyModal(data, Number(info.event.extendedProps.dateCount));
 					
-					for( var i = 0; i < data.length; i++ ) {
-						if ( i == 0 ) {
-							$('.modal-body>.detail-days').attr('data-plan', data[0].planDay);
-							$('.modal-body>.detail-days').attr('data-next', Number(data[0].planDay.substring(3)) + 1);
-							$('.modal-body>.detail-days>plan-day').text(data[0].planDay);
-							
-						}
-						$('.list-group-item:nth-child(' + (i+1) + ')').children('.placeName').text(data[i].placeName);
-						$('.list-group-item:nth-child(' + (i+1) + ') .times').children('.startTime').append('Start  :  ' + data[i].startTime);
-						$('.list-group-item:nth-child(' + (i+1) + ') .times').children('.endTime').append('End  :  ' + data[i].endTime);
-					}
-											
 				},
 				error : function(data) {
 					
@@ -157,10 +148,79 @@ $(document).ready(function() {
 		}
 		
 	})
-	
-	$('#btn-modify').click(function(e) {
-		console.log('진입');
+
+	$('#next-btn').click(function() {
+
+		var index = $(this).attr('data-index');
 		
+		if ( index < 2 || index > $(this).parent().attr('data-count')) {
+			return false;
+		} else {
+			$('#details' + Number(index-1)).removeClass('active');
+			$('#details' + index).addClass('active');
+			
+			$('#plan-day').text('day ' + index);
+			$(this).attr('data-index', Number(index)+1);
+			$('#prev-btn').attr('data-index', Number(index)-1);
+		}
+	});
+
+	$('#prev-btn').click(function() {
+
+		var index = $(this).attr('data-index');
+		
+		if ( index < 1 ) {
+			return false;
+		} else {
+			console.log('#details' + Number(index+1));
+			
+			$('#details' + (Number(1) + Number(index))).removeClass('active');
+			$('#details' + index).addClass('active');
+			
+			$('#plan-day').text('day ' + index);
+			$(this).attr('data-index', Number(index)-1);
+			$('#next-btn').attr('data-index', Number(index)+1);
+		}
+	});
+	
+	// modal에서 일정 삭제 버튼 클릭시
+	$('#btn-delete').click(function() {
+		var planNum = $('#modal-planNum').val();
+		console.log(planNum);
+		if( confirm('모든 상세 일정도 함께 삭제됩니다. 삭제할까요?') == false ) {
+			return false;
+		}
+		
+		$.ajax({
+			url: "feed/delete_plan.do",
+			type: "post",
+			data: planNum,
+			contentType: 'application/json; charset=UTF-8',
+			beforeSend: function(xhr){
+	 		   	var token = $("meta[name='_csrf']").attr('content');
+	 			var header = $("meta[name='_csrf_header']").attr('content');
+ 		        xhr.setRequestHeader(header, token);
+ 		    },
+			success: function() {
+				$('#modalCloseBtn').trigger('click');
+				calendar.removeAllEvents();
+				getAllPlans();
+			},
+			error : function() {
+				
+			}
+		});
+	});
+	
+	$('#btn-detail').click(function() {
+		var planNum = $('#modal-planNum').val();
+		
+		location.href = $(this).attr('href') + planNum;
+	})
+	
+	
+	// planMst 수정버튼 (modal창)	
+	$('#btn-modify').click(function(e) {
 		e.preventDefault();
 
 		var planName = $('#modal-planName').val();
@@ -291,6 +351,46 @@ $(document).ready(function() {
 	 		})
 	};
 	
+	// 이벤트 블럭 클릭하면 모달창에 정보 가져와서 tab menu 만드는 메서드
+	function modifyModal(data, dateCount) {
+		var target1 = $('.plan-details');
+		var boxHtml = '<div id="details" class="col-4 px-0">'
+					+ $('#details1').html()
+					+ '</div>';
+
+		// details 박스를 동적으로 dateCount만큼 생성
+		for(var i = 1; i <= dateCount; i++ ) {
+			if ( i == 1 ) {
+				$('#details' + i).addClass('active');
+			} else {	
+				target1.append(boxHtml);
+				$('div#details').attr('id', 'details'+ i);
+				$('#details'+ i).removeClass('active');
+			}
+			var target2 = $('#details'+ i);
+			var count = 1;
+			
+			for ( var j = 0; j < data.length; j++ ) {
+				console.log(data[j].planDay);
+				if ( data[j].planDay == "day" + i ) {
+					if ( data[j].startTime == null ) {
+						data[j].startTime = '- - : - - ';
+					}
+					
+					if ( data[j].endTime == null ) {
+						data[j].endTime = '- - : - - ';
+					}
+					
+					target2.children('.planDt' + count).children('h4').text(data[j].placeName);
+					target2.children('.planDt' + count).children('.startTime').text('start : ' + data[j].startTime);
+					target2.children('.planDt' + count).children('.endTime').text('end : ' + data[j].endTime);
+					
+					count++;
+				} 
+			}
+		}
+	}
+
 	
 	// 일정을 수정하는 메서드
 	function modifyPlan(planNum, planName, startDate, endDate) {

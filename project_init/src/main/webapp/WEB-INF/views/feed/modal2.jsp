@@ -57,44 +57,42 @@
 							<label for="modal-endDate">종료 일자</label>
 							<input type="date" id="modal-endDate" name="endDate" class="form-control"/>
 						</div>
-						
-					</form>
-					<div class="button-group d-flex justify-content-end mt-2">
-						<button type="submit" id="btn-modify" class="btn btn-sm btn-success mx-1">일정 수정</button>
-						<button type="button" id="btn-delete" class="btn btn-sm btn-danger mx-1">일정 삭제</button>
-						<button type="button" id="btn-detail" class="btn btn-sm btn-dark mx-1">상세 수정</button>
-					</div>
+				</form>
+				<div class="button-group d-flex justify-content-end mt-2">
+					<button type="submit" id="btn-modify" class="btn btn-sm btn-success mx-1">일정 수정</button>
+					<button type="button" id="btn-delete" class="btn btn-sm btn-danger mx-1">일정 삭제</button>
+					<a href="plan/detail_modify?planNum=" id="btn-detail" class="btn btn-sm btn-dark mx-1">상세 수정</a>
+				</div>
+			
+				<div class="detail-days d-flex" data-count="">
+					<button type="button" class="btn btn-outline-default text-dark col-1" id="prev-btn" data-index="0">
+						<i class="fa-solid fa-angle-left"></i>
+					</button>
+					
+					<h4 id="plan-day" class="display-4 font-italic"></h4>
+					
+					<button type="button" class="btn btn-outline-default text-dark col-1" id="next-btn" data-index="2">
+						<i class="fa-solid fa-angle-right"></i>
+					</button>
+				</div>
 				
-					<div class="detail-days d-flex" data-plan="" data-next="1">
-						<button type="button" class="btn btn-outline-light text-dark col-1 prev-btn">
-							<i class="fa-solid fa-angle-left"></i>
-						</button>
-						
-						<h4 id="plan-day" class="display-4 font-italic">day 1</h4>
-						
-						<button type="button" class="btn btn-outline-light text-dark col-1 next-btn">
-							<i class="fa-solid fa-angle-right"></i>
-						</button>
-					</div>
-					<div class="plan-details mt-2 d-flex row mx-0">
-						<div id="map" class="col-8 border"></div>
-						<div id="details" class="col-4 px-0">
-							<c:forEach begin="1" end="10">
-								<div class="list-group-item row mx-0 pt-1">
-									<h4 class="placeName font-italic"></h4>
-									<div class="times row mx-0">
-										<h6 class="col-6 font-italic startTime"></h6>
-										<h6 class="col-6 font-italic endTime"></h6>
-									</div>
-								</div>
-							</c:forEach>
-						</div>
+				<div class="plan-details mt-2 d-flex row mx-0">
+					<div id="map" class="col-8"></div>
+					<div id="details1" class="col-4 px-0">
+						<c:forEach begin="1" end="10" var="i">
+							<div class="list-group-item planDt${i} flex-row mx-0 pt-1">
+								<h4 class="placeName font-italic"></h4>
+								<h6 class="font-italic col-6 startTime"></h6>
+								<h6 class="font-italic col-6 endTime"></h6>
+							</div>
+						</c:forEach>
 					</div>
 				</div>
-				<div class="modal-footer bg-light mb-2"></div>
 			</div>
+			<div class="modal-footer bg-light mb-2"></div>
 		</div>
 	</div>
+</div>
 	
 </body>
 </html>

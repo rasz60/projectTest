@@ -119,13 +119,29 @@ section.container {
 	height: 100%;
 }
 
-.modal-body .plan-details #details {
+.modal-body .plan-details div[id^=details] {
 	height: 100%;
 	overflow : auto;
+	display: none;
 }
 
-.modal-body .plan-details #details .list-group-item {
+.modal-body .plan-details div[id^=details].active {
+	display: block;
+}
+
+.modal-body .plan-details div[id^=details] .list-group-item {
 	height: 10%;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.modal-body .plan-details div[id^=details] .list-group-item h4 {
+	width:100%;
+}
+
+.modal-body .plan-details div[id^=details] .list-group-item h6 {
+	font-weight: 400;
+	width: 50%;
 }
 
 .body-container #feed-header {

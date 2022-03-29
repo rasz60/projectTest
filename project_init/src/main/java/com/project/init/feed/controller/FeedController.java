@@ -51,12 +51,12 @@ public class FeedController {
 
 	@ResponseBody
 	@RequestMapping(value = "modify_modal.do", produces="application/json; charset=UTF-8")
-	public ArrayList<PlanDto2> modifyModal(@RequestBody PlanDto2 dto) {
-		logger.info("modifyModal("+ dto.getPlanNum() +") in >>>>");
+	public ArrayList<PlanDto2> modifyModal(@RequestBody String planNum) {
+		logger.info("modifyModal("+ planNum +") in >>>>");
 		
-		ArrayList<PlanDto2> result= dao.selectPlanDt(dto);
+		ArrayList<PlanDto2> result= dao.selectPlanDt(planNum);
 		
-		logger.info("modifyPlans("+ dto.getPlanNum() +") result.isEmpty() ? " + result.isEmpty());
+		logger.info("modifyPlans("+ planNum +") result.isEmpty() ? " + result.isEmpty());
 		
 		return result;
 	}
@@ -73,6 +73,14 @@ public class FeedController {
 		return result;
 	}
 	
-
+	@ResponseBody
+	@RequestMapping(value = "delete_plan.do", produces="application/text; charset=UTF-8")
+	public String deletePlan(@RequestBody String planNum) {
+		logger.info("modifyPlans("+ planNum +") in >>>>");
+		
+		String result = dao.deletePlan(planNum);
+		
+		return result;
+	}
 
 }
