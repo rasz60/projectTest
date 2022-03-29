@@ -19,57 +19,14 @@ pageEncoding="UTF-8"%>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd&libraries=services"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd"></script>
-<script type="text/javascript" src="../js/plan/plan_detail.js"></script>
+<script type="text/javascript" src="../js/plan/plan_modify.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/plan/kakaomap/kakaomap.css" />
 <link rel="stylesheet" type="text/css" href="../css/plan/plan_detail.css" />
 <link rel="stylesheet" type="text/css" href="../css/header.css" />
 <link rel="stylesheet" type="text/css" href="../css/footer.css" />
 <title>Insert title here</title>
 <script>
-function strToDate(str) {
-	let y = str.slice(0, 4);
-	let m = Number(str.slice(5, 7)) - 1;
-	let d = str.slice(8);
-	
-	return new Date(y, m, d);
-}
-
-function dateToStr(date) {
-	let y = date.getFullYear();
-	let m = date.getMonth() + 1;
-	let d = date.getDate();
-	
-	if ( m <= 9 ) {
-		m = "0" + m;
-	}
-	
-	if ( d <= 9 ) {
-		d = "0" + d;
-	}
-	
-	return y+"-"+m+"-"+d;
-}
-
-function getPlanDate(start, end) {
-	var dates = [];
-	dates.push(dateToStr(start));
-
-	var date = new Date(start);
-	
-	while ( date < end ) {
-		date.setDate(date.getDate() + 1);
-		
-		dates.push(dateToStr(date));
-	}
-	
-	return dates;
-}
-
-var sDate = strToDate('<c:out value="${plan.startDate}" />');
-var eDate = strToDate('<c:out value="${plan.endDate}" />');
-var dateCount = '<c:out value="${plan.dateCount}" />';
-var dates = getPlanDate(sDate, eDate);
-
+var dateCount = '<c:out value="${plan1.dateCount}" />';
 </script>
 </head>
 
@@ -136,15 +93,23 @@ var dates = getPlanDate(sDate, eDate);
 			</form>
 			
 			<c:forEach var="i" begin="1" end="${plan1.dateCount }">
-				<div id="tab-${i}" class="mt-2 tab-content current">
+				<c:choose>
+					<c:when test="${i == 1}">
+						<div id="tab-${i}" class="mt-2 tab-content current">
+					</c:when>
+				
+					<c:otherwise>
+						<div id="tab-${i}" class="mt-2 tab-content">
+					</c:otherwise>
+				</c:choose>
 					<!-- User submit Input -->
-					<h3 class="display-4 font-italic" id="date-title">DAY ${i} : </h3>
+					<h3 class="display-4 font-italic" id="date-title"></h3>
 					<hr />
 					<p class="mt-2">일정 : <span class="showIndex">0</span> / 10</p>
 					<!-- input창 -->
 					<div class="inputDiv">
 						<!-- [planDt] -->
-						<form id="frm${i}" name="frm${i}" action="#" method="post" data-count="0" data-day="day${i}" data-date="">
+						<form id="frm${i}" name="frm${i}" action="#" method="post" data-count="0" data-day="Day${i}" data-date="">
 							<c:set var="day" value="day${i}" /> 
 							<c:forEach var="plan2" items="${plan2}">
 								

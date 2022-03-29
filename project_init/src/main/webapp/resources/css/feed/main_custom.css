@@ -136,6 +136,7 @@ section.container {
 }
 
 .modal-body .plan-details div[id^=details] .list-group-item h4 {
+	display: inline;
 	width:100%;
 }
 

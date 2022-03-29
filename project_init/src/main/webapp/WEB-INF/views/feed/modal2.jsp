@@ -80,8 +80,8 @@
 					<div id="map" class="col-8"></div>
 					<div id="details1" class="col-4 px-0">
 						<c:forEach begin="1" end="10" var="i">
-							<div class="list-group-item planDt${i} flex-row mx-0 pt-1">
-								<h4 class="placeName font-italic"></h4>
+							<div class="list-group-item planDt${i} flex-row mx-0 px-1 pt-2">
+								<h4 class="placeName col-12 font-italic"></h4>
 								<h6 class="font-italic col-6 startTime"></h6>
 								<h6 class="font-italic col-6 endTime"></h6>
 							</div>
