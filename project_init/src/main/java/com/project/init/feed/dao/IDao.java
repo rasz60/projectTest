@@ -33,4 +33,7 @@ public interface IDao {
 
 	ArrayList<PlanDto2> selectPlanDt(String planNum);
 	String deletePlan(String planNum);
+	
+	String detailModifyDo(HttpServletRequest request);
+	
 }

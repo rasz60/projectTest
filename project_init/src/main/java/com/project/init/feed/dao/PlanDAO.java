@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -280,6 +282,80 @@ public class PlanDAO implements IDao {
 	}
 	
 	
+	@Override
+	@Transactional
+	public String detailModifyDo(HttpServletRequest request) {
+		logger.info("detailModifyDo() in >>> ");
+		
+		Map<String, String> deleteDtMap = new HashMap<>();
+		String[] deleteDtNum = request.getParameter("deleteDtNum").split("/");
+		String result = null;
+		
+		if ( deleteDtNum != null ) {
+			for ( int i = 0; i < deleteDtNum.length; i++ ) {
+				if ( Integer.parseInt(deleteDtNum[i]) != 0 ) {
+					deleteDtMap.put("value", "planDtNum");
+					deleteDtMap.put("planDtNum", deleteDtNum[i]);
+				}
+			}
+			
+			int res = sqlSession.delete("deleteDt", deleteDtMap);
+			result = res == 1 ? "success": "failed";
+		}
+		
+		int planNum = Integer.parseInt(request.getParameter("planNum"));
+		
+		//[planDt]
+		String[] planDtNum = request.getParameterValues("planDtNum");
+		String[] placeName = request.getParameterValues("placeName");
+		String[] placeCount = request.getParameterValues("placeCount");
+		String[] planDay = request.getParameterValues("planDay");
+		String[] planDate = request.getParameterValues("planDate");
+		String[] startTime = request.getParameterValues("startTime");
+		String[] endTime = request.getParameterValues("endTime");
+		String[] theme = request.getParameterValues("theme");
+		String[] latitude = request.getParameterValues("latitude");
+		String[] longitude = request.getParameterValues("longitude");
+		String[] address = request.getParameterValues("address");
+		String[] category = request.getParameterValues("category");
+		String[] transportation = request.getParameterValues("transportation");
+		String[] details = request.getParameterValues("details");
+		
+		//Make dtDto[]
+		for ( int i = 0 ; i < planDtNum.length; i++ ) {
+			PlanDto2 dtDto = new PlanDto2(Integer.parseInt(planDtNum[i]),
+										  planNum,
+										  placeName[i],
+										  placeCount[i],
+										  planDay[i],
+										  planDate[i],
+										  startTime[i],
+										  endTime[i],
+										  theme[i],
+										  latitude[i],
+										  longitude[i],
+										  address[i],
+										  category[i],
+										  transportation[i],
+										  details[i]);
+			
+			if ( dtDto.getPlanDtNum() == 0 ) {
+				int res1 = sqlSession.insert("insertDt", dtDto);
+				result = res1== 1 ? "success": "failed";
+			} else {
+				int res2 = sqlSession.update("updatePlanDt2", dtDto);
+				result = res2 == 1 ? "success": "failed";
+			}
+			
+
+		};
+		
+		
+		return result;
+	}
+	
+	
+	
 	
 	@Override
 	public String insertMap(Model model, HttpServletRequest request) {
@@ -306,7 +382,8 @@ public class PlanDAO implements IDao {
 		
 		return dtos;
 	}
-	
+
+
 	
 
 

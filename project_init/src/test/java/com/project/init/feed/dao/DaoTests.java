@@ -5,18 +5,19 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.project.init.feed.dto.PlanDto;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -28,7 +29,8 @@ public class DaoTests {
 	
 	@Autowired
 	private IDao dao;
-	
+	@Autowired
+	private SqlSession sqlSession;
 	@Test
 	public void test2_1() {
 		
@@ -48,5 +50,35 @@ public class DaoTests {
 		
 		System.out.println(r);
 		
+	}
+
+	
+	@Test
+	@Transactional
+	public void test3() {
+		String[] deleteDtNum = "35/36/37".split("/");
+		
+		
+		Map<String, String> deleteDtMap = new HashMap<>();
+		List<Map<String, String>> deleteDtList = new ArrayList<>();
+		
+		
+		for ( int i = 0; i < deleteDtNum.length; i++ ) {
+			logger.info(deleteDtNum[i]);
+			deleteDtMap.put("planDtNum", deleteDtNum[i]);
+			deleteDtMap.put("value", "planDtNum");
+			
+			deleteDtList.add(deleteDtMap);
+		
+		}
+		
+		
+		
+		logger.info(deleteDtList.get(0).entrySet());
+		
+		
+		
+		
+		sqlSession.delete("deleteDt", deleteDtList);
 	}
 }

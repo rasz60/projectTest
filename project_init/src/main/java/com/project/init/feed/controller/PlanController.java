@@ -60,6 +60,17 @@ public class PlanController {
 		
 		return "plan/plan_modify";
 	}
+	@ResponseBody
+	@RequestMapping(value="detail_modify.do", produces="application/text; charset=UTF-8")
+	public String detailModifyDo(HttpServletRequest request) {
+		logger.info("detail_modify(" + request.getParameter("planNum") + ") in >>>>");
+
+		String result = dao.detailModifyDo(request);
+		
+		logger.info("detail_modify(" + request.getParameter("planNum") + ") result : " + result);
+		return result;
+	}
+
 	
 	
 	

@@ -1,15 +1,23 @@
 $(document).ready(function() {
-	
 
 	for(var i = 1; i <= dateCount; i++ ) {
-		var placeCount = $('#frm'+i+'>.detail>.inputbox>input[name=placeCount]').val();
-		var planDate = $('#frm'+i+'>.detail>.inputbox>input[name=planDate]').val();
+		var placeCount = $('#frm'+i+'>.detail0>.inputbox>input[name=placeCount]').val();
+		var planDate = $('#frm'+i+'>.detail0>.inputbox>input[name=planDate]').val();
 		
 		$('#frm' + i).attr('data-count', placeCount);	
 		$('#frm' + i).parent().siblings('p.mt-2').children('.showIndex').text(placeCount);
 		$('#frm' + i).parent().siblings('#date-title').text($('#frm' + i).attr('data-day') + ' : ' + planDate);
-		
-		
+		$('#frm' + i).attr('data-date', planDate);
+		if ( placeCount == '0' ) {
+			$('#frm' + i + '>div:nth-child(0)').addClass('detail1');
+			$('#frm' + i + '>div:nth-child(' + j + ')').removeClass('detail0');
+		} else {
+			for ( var j = 1; j <= placeCount; j++ ) {
+				console.log('#frm' + i + ' div:nth-child(' + j + ')');
+				$('#frm' + i + '>div:nth-child(' + j + ')').addClass('detail' + j);
+				$('#frm' + i + '>div:nth-child(' + j + ')').removeClass('detail0');
+			}
+		}
 		
 	}
 
@@ -38,9 +46,9 @@ $(document).ready(function() {
 		
 		$('#trueBtn').click(function(e) {
 			e.preventDefault();
-
-			var form = $('form[id^=frm]').get();
 			
+			/*			
+			var form = $('form[id^=frm]').get();
 			console.log(form.length);
 			
 			// PlanDt - placeCount
@@ -48,21 +56,16 @@ $(document).ready(function() {
 				var count = $('#frm' + i).data('count');
 				$('#frm' + i).children('div').children('.inputbox').children('input[name=placeCount]').val(count);
 			}
-
+			*/
 						
 			let data = $('form').serialize();
-			
+			console.log(data);
 			$.ajax({
-				url: 'plan/detail.do',
+				url: '/init/plan/detail_modify.do',
 				type: 'post',
 				data: data,
 				success: function(data) {
-					console.log(data);
-					if ( data == "success" ) {
-						location.href = "feed";
-					} else {
-						$('.modal-body').text('저장에 실패하였습니다.');
-					}
+					location.href = "/init/feed";
 				},
 				error: function() {
 					console.log('error');				
@@ -72,10 +75,20 @@ $(document).ready(function() {
 	});
 	
 	$(document).on('click', '.deleteBtn', function() {
-		var target = $(this).parent().parent('form');
-		var currValue = Number(target.attr('data-count'));
-		var delValue = Number(target.attr('data-count')) - 1 ;
-		var index = $(this).attr('data-index');
+		let target = $(this).parent().parent('form');
+		let currValue = Number(target.attr('data-count'));
+		let delValue = Number(target.attr('data-count')) - 1 ;
+		let index = $(this).attr('data-index');
+		
+		let deleteDtNum = $(this).siblings('.inputbox').children('input[name=planDtNum]').val();
+		let dtInputValue = $('#frm0 input[name=deleteDtNum]').val();
+		
+		if ( dtInputValue == "" ) {
+			$('#frm0 input[name=deleteDtNum]').val(deleteDtNum);
+		} else {
+			$('#frm0 input[name=deleteDtNum]').val(dtInputValue + '/' + deleteDtNum);
+		}
+		
 		
 		if ( delValue < 0 ) {
 			alert('최소 1개 이상의 일정이 필요합니다');
@@ -86,6 +99,7 @@ $(document).ready(function() {
 			
 			var inputBox = $(this).siblings('.inputbox');
 			
+			inputBox.children('input[name=planDtNum]').val('0');
 			inputBox.children('input[name=placeName]').val('');
 			inputBox.children('input[name=latitude]').val('');
 			inputBox.children('input[name=longitude]').val('');

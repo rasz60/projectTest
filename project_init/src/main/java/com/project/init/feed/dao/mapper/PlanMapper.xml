@@ -68,15 +68,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <update id="updatePlanDt1" parameterType="com.project.init.feed.dto.PlanDto2">
 	UPDATE plan_dt 
 	
-	SET planDate = #{planDate}
+	SET planDate = #{planDtNum}
 		
 	WHERE planNum = #{planNum}
 	AND planDay = #{planDay}
 </update>
 
+<update id="updatePlanDt2" parameterType="com.project.init.feed.dto.PlanDto2">
+	UPDATE plan_dt 
+	
+	SET placeName = #{placeName}, 
+		startTime = #{startTime}, 
+		endTime = #{endTime},
+		theme = #{theme}, 
+		latitude = #{latitude}, 
+		longitude = #{longitude}, 
+		address = #{address}, 
+		category = #{category}, 
+		transportation = #{transportation}, 
+		details = #{details}, 
+		placeCount = #{placeCount}		 
+		
+	WHERE planDtNum = #{planDtNum}
+</update>
+
 <delete id="deletePlanDt1" parameterType="com.project.init.feed.dto.PlanDto2">
 	DELETE FROM plan_dt WHERE planNum = #{planNum} AND planDay = #{planDay}
 </delete>
+
+<delete id="deleteDt" parameterType="java.util.ArrayList">
+	DELETE FROM plan_dt
+	<where>
+		<foreach collection="deleteDtList" item="item" open="" close="" separator="OR">
+			${item.value} = #{item.planDtNum}
+		</foreach>
+	</where>
+</delete>
+
 
 
 <delete id="deletePlanMst" parameterType="int">

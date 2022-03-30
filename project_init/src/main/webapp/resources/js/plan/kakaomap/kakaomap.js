@@ -236,7 +236,7 @@ infowindow.open(map, marker);
 //input에 insert하기 위한 index번호 생성
 
 function inputdata(marker, target1, value, title, category, address) {
-	var plusVal = Number(value) + 1;
+	var plusVal = Number(value)+1;
 	if ( value > 10 ) {
 		alert('하루에 열개 이상의 일정을 생성할 수 없습니다.');
 		return false;

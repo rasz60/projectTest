@@ -90,6 +90,9 @@ var dateCount = '<c:out value="${plan1.dateCount}" />';
 				<input type="hidden" class="form-control" name="dateCount" value="${plan1.dateCount}" readonly/>
 				<!-- theme -->
 				<input type="hidden" class="form-control" name="eventColor" value="${plan1.eventColor}" readonly/>
+				
+				<!-- deletePlanDtNum -->
+				<input type="hidden" class="form-control" name="deleteDtNum" readonly/>
 			</form>
 			
 			<c:forEach var="i" begin="1" end="${plan1.dateCount }">
@@ -97,7 +100,7 @@ var dateCount = '<c:out value="${plan1.dateCount}" />';
 					<c:when test="${i == 1}">
 						<div id="tab-${i}" class="mt-2 tab-content current">
 					</c:when>
-				
+					
 					<c:otherwise>
 						<div id="tab-${i}" class="mt-2 tab-content">
 					</c:otherwise>
@@ -114,7 +117,7 @@ var dateCount = '<c:out value="${plan1.dateCount}" />';
 							<c:forEach var="plan2" items="${plan2}">
 								
 								<c:if test="${plan2.planDay eq day}">
-									<div class="detail mt-2 py-2 border bg-light rounded" data-index="1">
+									<div class="detail0 mt-2 py-2 border bg-light rounded" data-index="1">
 										<h3 class="font-italic ml-2 d-inline mt-2">Place</h3>
 										<!-- placeName -->
 										<input type="text" class="form-control col-8 d-inline ml-3" name="placeName" value="${plan2.placeName }" readonly/>

@@ -58,8 +58,17 @@ $(document).ready(function() {
 			// 실제 표시될 eventEndDate를 생성
 			let eventEndDate = yyyymm + dd;
 			
+			$('.plan-details div[id^=details]:nth-child(n+3)').remove();
+					
+			for(var i = 1; i <= 10; i++ ) {
+				$('.planDt' + i + ' .placeName').text('');
+				$('.planDt' + i + ' .startTime').text('');
+				$('.planDt' + i + ' .endTime').text('');
+			}
 			
-			console.log('진입');
+			$('#plan-day').text('day 1');
+			$('#prev-btn').attr('data-index', 0);
+			$('#next-btn').attr('data-index', 2);
 			
 			// 상세 일정을 불러옴
 			$.ajax({
@@ -73,7 +82,6 @@ $(document).ready(function() {
 	 		        xhr.setRequestHeader(header, token);
 	 		    },
 				success: function(data) {
-					console.log(data);
 					// modal창을 띄우고 수정할 내용을 각 input value에 뿌려줌
 			    	$('#modalBtn2').trigger('click');
 					$('.modal-header #plan-name').text(info.event.title);
@@ -84,10 +92,8 @@ $(document).ready(function() {
 					$('.modal-body form .form-group #modal-eventColor').val(info.event.backgroundColor);
 					$('.modal-body form #modal-originDateCount').val(info.event.extendedProps.dateCount);
 					$('.modal-body .detail-days').attr('data-count', info.event.extendedProps.dateCount);
-					$('#plan-day').text('day 1');
-					$('#prev-btn').attr('data-index', 0);
-					$('#next-btn').attr('data-index', 2);
-					$('.plan-details div[id^=detail]:nth-child(n+3)').remove();
+
+
 					modifyModal(data, Number(info.event.extendedProps.dateCount));
 					
 				},
@@ -371,7 +377,6 @@ $(document).ready(function() {
 			var count = 1;
 			
 			for ( var j = 0; j < data.length; j++ ) {
-				console.log(data[j].planDay);
 				if ( data[j].planDay == "day" + i ) {
 					if ( data[j].startTime == null ) {
 						data[j].startTime = '- - : - - ';

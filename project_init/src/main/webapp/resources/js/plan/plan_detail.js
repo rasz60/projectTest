@@ -17,7 +17,7 @@ $(document).ready(function() {
 		$('#tab-' + i + ' #frm1').attr('id', 'frm' + i);
 		$('#tab-' + i + ' #frm' + i).attr('data-date', dates[i-1]);
 		$('#frm' + i).attr('data-day', 'day' + i);
-		$('#frm' + i + ' .detail1 .inputbox input[name=planDay]').val('day' + i);
+		$('#frm' + i + ' .detail0 .inputbox input[name=planDay]').val('day' + i);
 		$('#frm' + i + ' input[name=planDate]').val(dates[i-1]);
 	};
 

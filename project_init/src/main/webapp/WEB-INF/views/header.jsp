@@ -44,7 +44,7 @@
 		
 		<ul class="nav navbar">
 			<li class="mr-4 feed">
-				<a href="feed">
+				<a href="/init/feed">
 					<i class="menu-icon fa-regular fa-circle-user"></i>
 				</a>
 			</li>
