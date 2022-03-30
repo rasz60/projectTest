@@ -74,15 +74,13 @@ $(document).ready(function() {
 		})
 	});
 	
+	// 상세 일정 박스 삭제시	
 	$(document).on('click', '.deleteBtn', function() {
-		let target = $(this).parent().parent('form');
-		let currValue = Number(target.attr('data-count'));
-		let delValue = Number(target.attr('data-count')) - 1 ;
-		let index = $(this).attr('data-index');
-		
+		// 삭제된 상세일정의 planDtNum을 '/'를 구분자로 input에 쌓아둔다.
 		let deleteDtNum = $(this).siblings('.inputbox').children('input[name=planDtNum]').val();
 		let dtInputValue = $('#frm0 input[name=deleteDtNum]').val();
 		
+		// input에 value가 없으면 구분자 없이 입력하고 아니면 prefix '/'를 덧붙인다.
 		if ( dtInputValue == "" ) {
 			$('#frm0 input[name=deleteDtNum]').val(deleteDtNum);
 		} else {
@@ -90,6 +88,12 @@ $(document).ready(function() {
 		}
 		
 		
+		//
+		let target = $(this).parent().parent('form');
+		let currValue = Number(target.attr('data-count'));
+		let delValue = Number(target.attr('data-count')) - 1 ;
+		let index = $(this).parent().index();
+
 		if ( delValue < 0 ) {
 			alert('최소 1개 이상의 일정이 필요합니다');
 			return false;
@@ -116,7 +120,7 @@ $(document).ready(function() {
 		
 		} else {
 
-			for ( var i = Number(index); i <= currValue; i++ ) {
+			for ( var i = Number(index); i < currValue; i++ ) {
 				if ( i == Number(index) ) {
 					target.attr('data-count', delValue);
 					target.parent().siblings('p.mt-2').children('.showIndex').text(delValue);					

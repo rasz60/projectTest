@@ -61,7 +61,7 @@
 				<div class="button-group d-flex justify-content-end mt-2">
 					<button type="submit" id="btn-modify" class="btn btn-sm btn-success mx-1">일정 수정</button>
 					<button type="button" id="btn-delete" class="btn btn-sm btn-danger mx-1">일정 삭제</button>
-					<a href="plan/detail_modify?planNum=" id="btn-detail" class="btn btn-sm btn-dark mx-1">상세 수정</a>
+					<a href="${pageContext.request.contextPath}/plan/detail_modify?planNum=" id="btn-detail" class="btn btn-sm btn-dark mx-1">상세 수정</a>
 				</div>
 			
 				<div class="detail-days d-flex" data-count="">

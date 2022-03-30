@@ -19,11 +19,11 @@ pageEncoding="UTF-8"%>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd&libraries=services"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd"></script>
-<script type="text/javascript" src="../js/plan/plan_modify.js"></script>
-<link rel="stylesheet" type="text/css" href="../css/plan/kakaomap/kakaomap.css" />
-<link rel="stylesheet" type="text/css" href="../css/plan/plan_detail.css" />
-<link rel="stylesheet" type="text/css" href="../css/header.css" />
-<link rel="stylesheet" type="text/css" href="../css/footer.css" />
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/plan/plan_modify.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/plan/kakaomap/kakaomap.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/plan/plan_detail.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/header.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css" />
 <title>Insert title here</title>
 <script>
 var dateCount = '<c:out value="${plan1.dateCount}" />';
@@ -117,11 +117,11 @@ var dateCount = '<c:out value="${plan1.dateCount}" />';
 							<c:forEach var="plan2" items="${plan2}">
 								
 								<c:if test="${plan2.planDay eq day}">
-									<div class="detail0 mt-2 py-2 border bg-light rounded" data-index="1">
+									<div class="detail0 mt-2 py-2 border bg-light rounded">
 										<h3 class="font-italic ml-2 d-inline mt-2">Place</h3>
 										<!-- placeName -->
 										<input type="text" class="form-control col-8 d-inline ml-3" name="placeName" value="${plan2.placeName }" readonly/>
-										<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2 mt-1" data-index="1"><i class="fa-solid fa-minus"></i></button>
+										<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2 mt-1"><i class="fa-solid fa-minus"></i></button>
 										<button type="button" class="btn btn-sm btn-dark detailBtn float-right mr-2 mt-1" data-count="0"><i class="fa-solid fa-angles-down"></i></button>
 										<hr />
 			
@@ -218,7 +218,7 @@ var dateCount = '<c:out value="${plan1.dateCount}" />';
 	</div>
 </div>
 
-<script type="text/javascript" src="../js/plan/kakaomap/kakaomap.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/plan/kakaomap/kakaomap.js"></script>
 
 <%@ include file="../footer.jsp" %>
 

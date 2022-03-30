@@ -57,28 +57,19 @@ public class DaoTests {
 	@Transactional
 	public void test3() {
 		String[] deleteDtNum = "35/36/37".split("/");
-		
-		
-		Map<String, String> deleteDtMap = new HashMap<>();
-		List<Map<String, String>> deleteDtList = new ArrayList<>();
-		
-		
+		Map<String ,String> map = new HashMap<>();
+		List<Map<String ,String>> deleteDtList = new ArrayList<Map<String ,String>>();
+
 		for ( int i = 0; i < deleteDtNum.length; i++ ) {
 			logger.info(deleteDtNum[i]);
-			deleteDtMap.put("planDtNum", deleteDtNum[i]);
-			deleteDtMap.put("value", "planDtNum");
 			
-			deleteDtList.add(deleteDtMap);
-		
+			map.put("value", "planDtNum");
+			map.put("planDtNum", deleteDtNum[i]);
+			deleteDtList.add(map);
 		}
-		
-		
-		
+
 		logger.info(deleteDtList.get(0).entrySet());
-		
-		
-		
-		
+
 		sqlSession.delete("deleteDt", deleteDtList);
 	}
 }

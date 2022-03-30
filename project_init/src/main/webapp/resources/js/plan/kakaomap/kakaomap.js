@@ -242,11 +242,11 @@ function inputdata(marker, target1, value, title, category, address) {
 		return false;
 
 	} else if ( value != 0 ){
-		var boxHtml = '<div class="detail' + plusVal + ' mt-2 py-2 border bg-light rounded" data-index="' + plusVal + '">'
+		var boxHtml = '<div class="detail' + plusVal + ' mt-2 py-2 border bg-light rounded"">'
 					+ '<h3 class="font-italic ml-2 d-inline mt-2">Place</h3>'
 					+ '<!-- placeName -->'
 					+ '<input type="text" class="form-control col-8 d-inline ml-3" name="placeName" readonly/>'
-					+ '<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2 mt-1" data-index="' + plusVal + '"><i class="fa-solid fa-minus"></i></button>'
+					+ '<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2 mt-1" ><i class="fa-solid fa-minus"></i></button>'
 					+ '<button type="button" class="btn btn-sm btn-dark detailBtn float-right mr-2 mt-1" data-count="0"><i class="fa-solid fa-angles-down"></i></button>'
 					+ '<hr />'
 					+ '<div class="inputbox row mx-0 justify-content-between">'

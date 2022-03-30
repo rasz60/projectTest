@@ -99,8 +99,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <delete id="deleteDt" parameterType="java.util.ArrayList">
 	DELETE FROM plan_dt
 	<where>
-		<foreach collection="deleteDtList" item="item" open="" close="" separator="OR">
-			${item.value} = #{item.planDtNum}
+		<foreach collection="list" item="item" index="index" separator="OR">
+			#{item.value} = #{item.planDtNum}
 		</foreach>
 	</where>
 </delete>
