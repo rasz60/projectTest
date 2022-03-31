@@ -21,7 +21,7 @@ public interface IDao {
 	// modal창에서 수정한 내용 반영
 	String modifyPlanMst(HttpServletRequest request);
 	
-	// modalâ���� ������ ���� �ݿ�
+	// modal창에서 삭제한 내용 반영 /*비효율적*/
 	String deletePlan(String planNum);
 	
 	
