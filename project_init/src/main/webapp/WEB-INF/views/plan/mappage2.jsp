@@ -42,9 +42,12 @@ pageEncoding="UTF-8"%>
 
 <section class="container-fluid">
 	<div class="planlist row mx-0">
-		<%-- 맵 생성 --%>
+		<%-- 1. 카카오맵 관련 --%>
 		<div id="kakaobox" class="map_wrap col-7">
+			<%-- 1- 맵이 생성되는 박스 --%>
 			<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+			
+			<%-- 2- 맵 검색 창 --%>
 			<div id="menu_wrap" class="bg_white">
 		    	<div class="option">
 		        	<div>
@@ -59,85 +62,88 @@ pageEncoding="UTF-8"%>
 		    	<div id="pagination"></div>
 			</div>
 		</div>
-
+		
+		<%-- 2. 상세 일정 관련 박스 --%>
 		<div class="planbox col-5 d-block" id="tabdiv">
-			<div>
-				<ul class="nav nav-tabs">
-					<li class='nav-item' data-tab='tab-1' data-inputForm='frm1'>
-						<p class="nav-link active">date1</p>
-					</li>
-				</ul>
-				<button type="button" id="submitAll" class="btn btn-sm btn-success float-right">저장</button>
+			<div class="tab-nav row mx-0 mt-2 justify-content-end" data-count="${plan.dateCount}">
+				<%-- 2-2- 전체 상세일정 저장 버튼 --%>
+				<button type="button" id="submitAll" class="btn btn-sm btn-primary col-1  mr-2">
+					<i class="fa-regular fa-floppy-disk"></i>
+				</button>
+
+				<button type="button" class="btn btn-outline-default text-dark col-1 border" id="prev-btn" data-index="0">
+					<i class="fa-solid fa-angle-left"></i>
+				</button>
+				<button type="button" class="btn btn-outline-default text-dark col-1 border" id="next-btn" data-index="2">
+					<i class="fa-solid fa-angle-right"></i>
+				</button>
 			</div>
 			
-			<!-- [planMst] -->
+			<%-- 2-3- planMst form --%>
 			<form id="frm0" name="frm0" action="#" method="post">
 				<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" readonly/>
-				<!-- [pk] planNum -->
+				<%-- [pk] planNum --%>
 				<input type="hidden" class="form-control" name="planNum" value="${plan.planNum}" value="0" readonly/>
-				<!-- planName -->
+				<%-- planName --%>
 				<input type="hidden" class="form-control" name="planName" value="${plan.planName}" readonly/>
-				<!-- startDate -->
+				<%-- startDate --%>
 				<input type="hidden" class="form-control" name="startDate" value="${plan.startDate}" readonly/>
-				<!-- endDate -->
+				<%-- endDate --%>
 				<input type="hidden" class="form-control" name="endDate" value="${plan.endDate}" readonly/>
-				<!-- dateCount -->
+				<%-- dateCount --%>
 				<input type="hidden" class="form-control" name="dateCount" value="${plan.dateCount}" readonly/>
-				<!-- theme -->
+				<%-- eventColor --%>
 				<input type="hidden" class="form-control" name="eventColor" value="${plan.eventColor}" readonly/>
 			</form>
 			
-			
-			<div id="tab-1" class="mt-2 tab-content current">
-			
-				<!-- User submit Input -->
+			<%-- 2-4- dateCount만큼 반복해서 생성되는 tab 박스 --%>
+			<div id="tab-1" class="tab-content active">
 				<h3 class="display-4 font-italic" id="date-title">DAY 1 : ${plan.startDate }</h3>
 				<hr />
 				<p class="mt-2">일정 : <span class="showIndex">0</span> / 10</p>
-				<!-- input창 -->
 				<div class="inputDiv">
-					<!-- [planDt] -->
+					<%-- 2-4-1 하나의 date안에 planDt form --%>
 					<form id="frm1" name="frm1" action="#" method="post" data-count="0" data-day="day1" data-date="${plan.startDate}">
 						
 						<div class="detail1 mt-2 py-2 border bg-light rounded" data-index="1">
 							<h3 class="font-italic ml-2 d-inline mt-2">Place</h3>
-							<!-- placeName -->
+							<%-- placeName --%>
 							<input type="text" class="form-control col-8 d-inline ml-3" name="placeName" readonly/>
 							<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2 mt-1" data-index="1"><i class="fa-solid fa-minus"></i></button>
 							<button type="button" class="btn btn-sm btn-dark detailBtn float-right mr-2 mt-1" data-count="0"><i class="fa-solid fa-angles-down"></i></button>
 							<hr />
 
 							<div class="inputbox row mx-0 justify-content-between">
-								<!-- [pk] planDtNum -->
+								<%-- [pk] planDtNum --%>
 								<input type="hidden" class="form-control" name="planDtNum" value="0" readonly/>
-								<!-- day -->
+								<%-- day --%>
 								<input type="hidden" class="form-control" name="planDay" value="Day1" readonly/>
-								<!-- placeCount -->
+								<%-- placeCount --%>
 								<input type="hidden" class="form-control" name="placeCount" readonly/>
-								<!-- planDate -->
+								<%-- planDate --%>
 								<input type="hidden" class="form-control" name="planDate" value="${plan.startDate}" readonly/>
-								<!-- latitude -->
+								<%-- latitude --%>
 								<input type="hidden" class="form-control" name="latitude" readonly/>
-								<!-- longitude -->
+								<%-- longitude --%>
 								<input type="hidden" class="form-control" name="longitude" readonly/>
-								<!-- address -->
+								<%-- address --%>
 								<input type="hidden" class="form-control" name="address" readonly/>
-								<!-- category -->
+								<%-- category --%>
 								<input type="hidden" class="form-control" name="category" readonly/>
 								
-								<!-- startTime -->
+								<%-- startTime --%>
 								<div class="form-group col-4">
 									<label for="startTime">StartTime</label>
 									<input type="time" class="form-control" name="startTime" />
 								</div>
 								
-								<!-- endTime -->
+								<%-- endTime --%>
 								<div class="form-group col-4">
 									<label for="endTime">EndTime</label>
 									<input type="time" class="form-control" name="endTime" />
 								</div>
 								
-								<!-- theme -->
+								<%-- theme --%>
 								<div class="form-group col-4">
 									<label for="theme">목적</label>
 									<select class="custom-select my-1 mr-sm-2 " id="theme" name="theme">
@@ -155,13 +161,13 @@ pageEncoding="UTF-8"%>
 									</select>
 								</div>
 								
-								<!-- transportation -->								
+								<%-- transportation --%>								
 								<div class="form-group col-12 toggle none">
 									<label for="transportation">교통수단</label>
 									<input type="text" class="form-control" name="transportation" />
 								</div>
 								
-								<!-- details -->	
+								<%-- details --%>	
 								<div class="form-group col-12 toggle none">
 									<label for="details">상세 일정</label>
 									<textarea rows="5" class="form-control" name="details" ></textarea>
@@ -175,10 +181,10 @@ pageEncoding="UTF-8"%>
 	</div>
 </section>
 
-<!-- 저장 누를 시 생성되는 modal창 -->
+<%-- 저장 누를 시 생성되는 modal창 --%>
 <div class="container">
 	<input id="modalBtn" type="hidden" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" value="modal"/>
-	<!-- modal창 -->
+	<%-- modal창 --%>
 	<div class="modal fade" id="myModal" role="dialog">
 		<div class="modal-dialog modal-dialog-centered modal-md text-center">
 			<div class="modal-content">

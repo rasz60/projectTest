@@ -110,19 +110,25 @@ function displayPlaces(places) {
 	        };
 
 	        kakao.maps.event.addListener(marker, 'click', function() { // 마커 클릭 시
-				var key = $('p.active').parent().data('inputform');
-				var target1 = $('#'+key);
+				// 현재 보여지고 있는 탭 박스의 form을 타겟으로 선언
+				var target1 = $('div.active').children('.inputDiv').children('form');
+				
+				// 타겟의 data-count(상세 일정 개수) value 변수 선언
 				var value = target1.attr('data-count');
-
-				inputdata(marker, target1, value, title, category, address);// inputdata()에서 처리
+				
+				// inputdata()에서 처리
+				inputdata(marker, target1, value, title, category, address);
 	        });
 	    	                     
 	        itemEl.onclick =  function () { // 검색 목록창 클릭 시
-				var key = $('p.active').parent().data('inputform');
-				var target1 = $('#'+key);
+				// 현재 보여지고 있는 탭 박스의 form을 타겟으로 선언
+				var target1 = $('div.active').children('.inputDiv').children('form');
+				
+				// 타겟의 data-count(상세 일정 개수) value 변수 선언
 				var value = target1.attr('data-count');
-
-				inputdata(marker, target1, value, title, category, address);// inputdata()에서 처리              
+				
+				// inputdata()에서 처리
+				inputdata(marker, target1, value, title, category, address);           
 	        }; 
 	    })(marker, places[i].place_name, places[i].category_group_code, places[i].address_name);
 	
@@ -233,14 +239,16 @@ infowindow.open(map, marker);
 }
 
 //마커와 검색결과 목록 클릭 시 input에 data 입력
-//input에 insert하기 위한 index번호 생성
-
 function inputdata(marker, target1, value, title, category, address) {
+	// 현재 상세 일정에 추가할 것이므로 일정 개수(value) + 1한 값을 변수로 선언
 	var plusVal = Number(value)+1;
-	if ( value > 10 ) {
+	
+	// 현재 value가 10인 경우, 10개 이상 만들지 못하게 return false
+	if ( value > 9 ) {
 		alert('하루에 열개 이상의 일정을 생성할 수 없습니다.');
 		return false;
 
+	// 현재 value가 1개 이상 10개 미만일 때, 새로운 상세일정 빈 박스를 생성하고 plusVal 변수로 인덱싱
 	} else if ( value != 0 ){
 		var boxHtml = '<div class="detail' + plusVal + ' mt-2 py-2 border bg-light rounded">'
 					+ '<h3 class="font-italic ml-2 d-inline mt-2">Place</h3>'
@@ -305,42 +313,34 @@ function inputdata(marker, target1, value, title, category, address) {
 					+ '</div>'
 					+ '</div>'
 					+ '</div>';
+		
+		// form 안에 제일 마지막 child로 박스 생성
 		target1.append(boxHtml);
 
-		var target2 = target1.children('.detail' + plusVal);
-		var target3 = target1.children('.detail' + plusVal).children('.inputbox');
-		
-		
-		target3.children('input[name=planDay]').val(target1.attr('data-day'));
-		target3.children('input[name=planDate]').val(target1.attr('data-date'));
-		target2.children('input[name=placeName]').val(title);
-		target3.children('input[name=latitude]').val(marker.getPosition().getLat());
-		target3.children('input[name=longitude]').val(marker.getPosition().getLng());
-		target3.children('input[name=address]').val(address);
-		target3.children('input[name=category]').val(category);
-	
-	
-		target1.attr('data-count', plusVal);					
-		target1.parent().siblings('p.mt-2').children('.showIndex').text(plusVal);
-		
-	} else {
-		target1.attr('data-count', plusVal);					
-		target1.parent().siblings('p.mt-2').children('.showIndex').text(plusVal);
-
-		
-		var target2 = target1.children('.detail' + plusVal);
-		var target3 = target1.children('.detail' + plusVal).children('.inputbox');
-		
-		
-		target3.children('input[name=planDay]').val(target1.attr('data-day'));
-		target3.children('input[name=planDate]').val(target1.attr('data-date'));
-		target2.children('input[name=placeName]').val(title);
-		target3.children('input[name=latitude]').val(marker.getPosition().getLat());
-		target3.children('input[name=longitude]').val(marker.getPosition().getLng());
-		target3.children('input[name=address]').val(address);
-		target3.children('input[name=category]').val(category);
 	}
+	
+	// 맵에서 나온 값을 입력할 .detail 박스
+	var target2 = target1.children('.detail' + plusVal);
+	
+	// 위에서 생성한 .detail 박스안에 input이 들어있는 박스
+	var target3 = target1.children('.detail' + plusVal).children('.inputbox');
 
+	// detail박스에 placeName input에 marker의 title 입력
+	target2.children('input[name=placeName]').val(title);
+
+	// 맵에서 나오는 정보를 갖는 input에 해당 데이터 모두 입력		
+	target3.children('input[name=latitude]').val(marker.getPosition().getLat());
+	target3.children('input[name=longitude]').val(marker.getPosition().getLng());
+	target3.children('input[name=address]').val(address);
+	target3.children('input[name=category]').val(category);
+
+	// form에 attr를 이용하여 planDay, planDate 입력
+	target3.children('input[name=planDay]').val(target1.attr('data-day'));
+	target3.children('input[name=planDate]').val(target1.attr('data-date'));
+
+	// form attr를 +1하고, 현재 일정 개수를 표시해주는 텍스트도 변경
+	target1.attr('data-count', plusVal);					
+	target1.parent().siblings('p.mt-2').children('.showIndex').text(plusVal);
 
 }
 

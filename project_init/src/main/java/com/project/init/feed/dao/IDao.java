@@ -12,20 +12,20 @@ import com.project.init.feed.dto.PlanDto2;
 
 public interface IDao {
 	
-	// ¸ğµç ÀÌº¥Æ® °¡Á®¿À±â
+	// ëª¨ë“  ì´ë²¤íŠ¸ ê°€ì ¸ì˜¤ê¸°
 	ArrayList<PlanDto> selectAllPlan();
 	
-	// planNumÀ¸·Î planDt °ª °¡Á®¿À±â
+	// planNumìœ¼ë¡œ planDt ê°’ ê°€ì ¸ì˜¤ê¸°
 	ArrayList<PlanDto2> selectPlanDt(String planNum);
 	
-	// modalÃ¢¿¡¼­ ¼öÁ¤ÇÑ ³»¿ë ¹İ¿µ
+	// modalì°½ì—ì„œ ìˆ˜ì •í•œ ë‚´ìš© ë°˜ì˜
 	String modifyPlanMst(HttpServletRequest request);
 	
-	// modalÃ¢¿¡¼­ »èÁ¦ÇÑ ³»¿ë ¹İ¿µ
+	// modalÃ¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½İ¿ï¿½
 	String deletePlan(String planNum);
 	
 	
-	// planNumÀ¸·Î planMst °ª °¡Á®¿À±â
+	// planNumìœ¼ë¡œ planMst ê°’ ê°€ì ¸ì˜¤ê¸°
 	PlanDto selectPlanMst(String planNum);	
 	
 	

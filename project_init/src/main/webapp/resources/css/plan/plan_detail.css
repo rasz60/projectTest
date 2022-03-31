@@ -64,7 +64,7 @@ h3[id^=date-title] {
   padding: 15px;
 }
 
-.tab-content.current{
+.tab-content.active{
   display: inherit;
 }
 
