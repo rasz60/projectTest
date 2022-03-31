@@ -143,8 +143,6 @@ $(document).ready(function() {
 				$(this).parent().remove();
 			}
 		}
-		
-
 	});
 					
 	$(document).on('click', '.detailBtn', function() {

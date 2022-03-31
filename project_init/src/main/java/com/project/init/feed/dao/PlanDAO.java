@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
-import com.project.init.feed.dto.CommentDto;
 import com.project.init.feed.dto.PlanDto;
 import com.project.init.feed.dto.PlanDto2;
 
@@ -29,6 +28,7 @@ public class PlanDAO implements IDao {
 	
 	private final SqlSession sqlSession;
 	
+	//sqlSession 생성자 주입
 	@Autowired
 	public PlanDAO (SqlSession sqlSession) {
 		logger.info("PlanDao Const in >>>");
@@ -36,38 +36,175 @@ public class PlanDAO implements IDao {
 		
 		logger.info("PlanDao Const result : sqlSession getConn success ? " + sqlSession.toString());
 	}
-	
-	@Override
-	public void insertPlan(PlanDto dto) {
-		logger.info("insertPlan(" + dto + ") in >>>");
-		int result = sqlSession.insert("insertPlan", dto);
-		
-		logger.info("insertPlan(" + dto + ") result1 : " + result);
-		logger.info("insertPlan(" + dto + ") result2 : " + dto.getPlanNum());
-	}
 
+	// 모든 이벤트 가져오기
 	@Override
 	public ArrayList<PlanDto> selectAllPlan() {
-		//logger.info("selectAllPlan() in >>>");
-		//ArrayList<PlanDto> dtos = (ArrayList)sqlSession.selectList("selectAllPlan");
-		
 		logger.info("getCalendarEvent() in >>>");
-		ArrayList<PlanDto> dtos = (ArrayList)sqlSession.selectList("getCalendarEvent");
-		logger.info("getCalendarEvent(" + ") result : dtos.isEmpty() ? " + dtos.isEmpty());
 		
-		//logger.info("selectAllPlan(" + ") result : dtos.isEmpty() ? " + dtos.isEmpty());
+		ArrayList<PlanDto> dtos = (ArrayList)sqlSession.selectList("getCalendarEvent");
+
+		logger.info("getCalendarEvent(" + ") result : dtos.isEmpty() ? " + dtos.isEmpty());
 		return dtos;
 	}
-
+	
+	// planNum으로 planMst 값 가져오기
 	@Override
 	public PlanDto selectPlanMst(String planNum) {
 		logger.info("selectPlan (" + planNum + ") in >>>");
 		
 		PlanDto dto = sqlSession.selectOne("selectPlanMst", Integer.parseInt(planNum));
 		
+		logger.info("getCalendarEvent(" + ") result : dtos.isEmpty() ? " + dto.getPlanNum());
+		
 		return dto;
 	}
 
+	
+	// planNum으로 planDt 값 가져오기
+	@Override
+	public ArrayList<PlanDto2> selectPlanDt(String planNum) {
+		logger.info("selectPlanDt (" + planNum + ") in >>> ");
+		
+		ArrayList<PlanDto2> result = (ArrayList)sqlSession.selectList("selectPlanDt", Integer.parseInt(planNum));
+
+		logger.info("selectPlanDt (" +planNum + ") result ? " + result.isEmpty());
+		
+		return result;
+	}
+	
+	// modal창에서 수정한 내용 반영 /*비효율적*/
+	@Override
+	@Transactional
+	public String modifyPlanMst(HttpServletRequest request) {
+		logger.info("modifyPlanMst in >>> ");
+		String result = null;
+
+		//parameter parsing
+		int planNum = Integer.parseInt(request.getParameter("planNum"));
+		String planName = request.getParameter("planName");
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		String originDateCount = request.getParameter("originDateCount");
+		String newDateCount = request.getParameter("newDateCount");
+		String eventColor = request.getParameter("eventColor");
+
+		
+		// planMst update : [현재] 바뀐 내용이 없더라도 무조건 update 반영
+		PlanDto mstDto = new PlanDto(planNum, 
+				 					 planName, 
+									 startDate, 
+									 endDate, 
+									 newDateCount, 
+									 eventColor);
+
+		int res = sqlSession.update("updatePlanMst", mstDto);
+		result = res > 0 ? "success": "failed";
+		logger.info("modifyPlanMst result 1 : " + result);
+
+		
+		// 수정되기 전 dateCount		
+		int origin = Integer.parseInt(originDateCount);
+		// 수정되기 후 dateCount
+		int newly = Integer.parseInt(newDateCount);
+		
+		
+		// startDate Date 객체로 만들어서 작업 ( startDate, planDate, endDate 모두 update )
+		int y = Integer.parseInt(startDate.substring(0, 4));
+		int m = Integer.parseInt(startDate.substring(5, 7)) - 1;;
+		int d = Integer.parseInt(startDate.substring(8));
+		
+		Date date = new Date((y-1900), m, d);
+		
+		// dateCount가 작아졌으면 (원래 일정 수 - 새로운 일정 수)만큼 끝에서부터 지우고 나머지 날짜를 바꿔줌
+		if ( origin > newly ) {
+			// 기존 일정에서 newly+1 일차 일정부터 삭제
+			// ex> origin 5일 , newly 2일 = 3일(newly+1)차부터 끝(origin)까지 planDt삭제
+			for (int i = (newly+1); i <= origin; i++) {
+				PlanDto2 dtDto = new PlanDto2(planNum, "day"+i, "-");
+	
+				int resDt = sqlSession.delete("deletePlanDt1", dtDto);
+				result = resDt > 0 ? "success": "failed";
+			}
+			
+			// 새로 입력된 startDate부터 dateCount만큼 반복
+			for ( int i = 0; i < newly; i++ ) {
+				// Calendar 객체 이용 하루씩 늘려가면서 planDate 생성하여 update
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(date);
+				cal.add(Calendar.DATE, i);
+				String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+				
+				PlanDto2 dtDto = new PlanDto2(planNum, "day"+(i+1), r);
+				int resDt = sqlSession.update("updatePlanDt1", dtDto);
+				result = resDt > 0 ? "success": "failed";
+			}
+		}		
+		
+		// date count가 같으면 각 planDate의 날짜만 바꿔줌
+		else if ( origin == newly ) {
+			// 새로 입력된 startDate부터 dateCount만큼 반복
+			for ( int i = 0; i < newly; i++ ) {
+				// Calendar 객체 이용 하루씩 늘려가면서 planDate 생성하여 update
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(date);
+				cal.add(Calendar.DATE, i);
+				String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+				
+				PlanDto2 dtDto = new PlanDto2(planNum, "day"+(i+1), r);
+				int resDt = sqlSession.update("updatePlanDt1", dtDto);
+				result = resDt > 0 ? "success": "failed";
+			}
+			
+			
+		// dateCount가 더 커졌으면 원래의 일정 수 만큼만 바꿔줌
+		} else if ( origin < newly ) {
+			// 새로 입력된 startDate부터 dateCount만큼 반복
+			for ( int i = 0; i < origin; i++ ) {
+				// Calendar 객체 이용 하루씩 늘려가면서 planDate 생성하여 update
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(date);
+				cal.add(Calendar.DATE, i);
+				String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+				
+				PlanDto2 dtDto = new PlanDto2(planNum, "day"+(i+1), r);
+				int resDt = sqlSession.update("updatePlanDt1", dtDto);
+				result = resDt > 0 ? "success": "failed";
+			}
+			
+		}
+		
+		logger.info("modifyPlanMst result 2 : " + result);
+	
+		return result;
+	}
+
+	// modal창에서 삭제한 내용 반영 /*비효율적*/
+	@Override
+	@Transactional
+	public String deletePlan(String planNum) {
+		logger.info("deletePlan(" + planNum + ") in >>>");
+
+		String result = null;
+		
+		/* foreign key 연결하면 해결 [ON DELETE CASCADE ENABLE]*/
+		
+		// [PlanMst] - delete
+		int res1 = sqlSession.delete("deletePlanMst", Integer.parseInt(planNum));
+		result = res1 > 0 ? "success": "failed";
+		logger.info("deletePlan(" + planNum + ") result1 : " + result);
+		
+		// [PlanDt] - delete
+		int res2 = sqlSession.delete("deletePlanDt", Integer.parseInt(planNum));
+		result = res2 > 0 ? "success": "failed";
+		logger.info("deletePlan(" + planNum + ") result2 : " + result);
+		
+		
+		return result;
+	}
+	
+	
+	
 	@Override
 	@Transactional
 	public String insertPlanDtDo(HttpServletRequest request, Model model) {
@@ -135,151 +272,6 @@ public class PlanDAO implements IDao {
 
 		return result;
 	}
-
-
-	@Override
-	public ArrayList<PlanDto2> selectPlanDt(String planNum) {
-		logger.info("selectPlanDt (" + planNum + ") in >>> ");
-		
-		ArrayList<PlanDto2> result = (ArrayList)sqlSession.selectList("selectPlanDt", Integer.parseInt(planNum));
-
-		
-		logger.info("selectPlanDt (" +planNum + ") result ? " + result.isEmpty());
-		
-		return result;
-	}
-
-	
-	
-	
-	@Override
-	@Transactional
-	public String modifyPlanMst(HttpServletRequest request) {
-		logger.info("modifyPlanMst in >>> ");
-		String result = null;
-		
-		int planNum = Integer.parseInt(request.getParameter("planNum"));
-		String planName = request.getParameter("planName");
-		String startDate = request.getParameter("startDate");
-		String endDate = request.getParameter("endDate");
-		String originDateCount = request.getParameter("originDateCount");
-		String newDateCount = request.getParameter("newDateCount");
-		String eventColor = request.getParameter("eventColor");
-		
-		PlanDto mstDto = new PlanDto(planNum, 
-				 					 planName, 
-									 startDate, 
-									 endDate, 
-									 newDateCount, 
-									 eventColor);
-
-		int res = sqlSession.update("updatePlanMst", mstDto);
-
-		result = res > 0 ? "success": "failed";
-		
-		logger.info("modifyPlanMst result 1 : " + result);
-		
-		int origin = Integer.parseInt(originDateCount);
-		int newly = Integer.parseInt(newDateCount);
-		
-		
-		int y = Integer.parseInt(startDate.substring(0, 4));
-		int m = Integer.parseInt(startDate.substring(5, 7)) - 1;;
-		int d = Integer.parseInt(startDate.substring(8));
-		
-		Date date = new Date((y-1900), m, d);
-		
-		// date count가 같으면 각 date의 날짜만 바꿔줌
-		if ( origin == newly ) {
-			
-			for ( int i = 0; i < newly; i++ ) {
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(date);
-				cal.add(Calendar.DATE, i);
-				
-				String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
-				
-				PlanDto2 dtDto = new PlanDto2(planNum, "day"+(i+1), r);
-				
-				int resDt = sqlSession.update("updatePlanDt1", dtDto);
-				
-				result = resDt > 0 ? "success": "failed";
-			}
-			
-			
-		// date count가 더 커졌으면 원래의 일정 수 만큼만 바꿔줌
-		} else if ( origin < newly ) {
-			
-			for ( int i = 0; i < origin; i++ ) {
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(date);
-				cal.add(Calendar.DATE, i);
-				
-				String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
-				
-				PlanDto2 dtDto = new PlanDto2(planNum, "day"+(i+1), r);
-				
-				int resDt = sqlSession.update("updatePlanDt1", dtDto);
-				
-				result = resDt > 0 ? "success": "failed";
-			}
-			
-			// date count가 작아졌으면 (원래 일정 수 - 새로운 일정 수) 만큼 지우고 나머지 날짜를 바꿈		
-		} else if ( origin > newly ) {
-			
-			for (int i = (newly+1); i <= origin; i++) {
-				PlanDto2 dtDto = new PlanDto2(planNum, "day"+i, "-");
-
-				int resDt = sqlSession.delete("deletePlanDt1", dtDto);
-				result = resDt > 0 ? "success": "failed";
-				
-				result = resDt > 0 ? "success": "failed";
-			}
-			
-			
-			for ( int i = 0; i < newly; i++ ) {
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(date);
-				cal.add(Calendar.DATE, i);
-				
-				String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
-				
-				PlanDto2 dtDto = new PlanDto2(planNum, "day"+(i+1), r);
-				
-				int resDt = sqlSession.update("updatePlanDt1", dtDto);
-				
-				result = resDt > 0 ? "success": "failed";
-			}
-			
-		}
-		
-		logger.info("modifyPlanMst result 2 : " + result);
-	
-		return result;
-	}
-	
-	
-	@Override
-	@Transactional
-	public String deletePlan(String planNum) {
-		logger.info("deletePlan(" + planNum + ") in >>>");
-
-		String result = null;
-
-		// [PlanMst] - delete
-		int res1 = sqlSession.delete("deletePlanMst", Integer.parseInt(planNum));
-		result = res1 > 0 ? "success": "failed";
-		logger.info("deletePlan(" + planNum + ") result1 : " + result);
-		
-		// [PlanDt] - delete
-		int res2 = sqlSession.delete("deletePlanDt", Integer.parseInt(planNum));
-		result = res2 > 0 ? "success": "failed";
-		logger.info("deletePlan(" + planNum + ") result2 : " + result);
-		
-		
-		return result;
-	}
-	
 	
 	@Override
 	@Transactional
@@ -355,38 +347,5 @@ public class PlanDAO implements IDao {
 		
 		return result;
 	}
-	
-	
-	
-	
-	@Override
-	public String insertMap(Model model, HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-
-	@Override
-	public String insertMcomment(CommentDto dto) {
-		logger.info("insertComment >>> ");
-		int res = sqlSession.insert("McommentC", dto);
-
-		logger.info("insertComment result : " + (res == 1 ? "success": "failed") );
-		
-		return res == 1 ? "success": "failed";
-	}
-	
-	
-	@Override
-	public ArrayList<CommentDto> selectComments() {
-		
-		ArrayList<CommentDto> dtos = (ArrayList)sqlSession.selectList("selectAllComments");
-		
-		return dtos;
-	}
-
-
-	
-
 
 }

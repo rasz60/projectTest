@@ -11,66 +11,30 @@ pageEncoding="UTF-8"%>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<%-- csrf beforesend 이용을 위한 header setting --%>
 <meta id="_csrf" name="_csrf" content="${_csrf.token}" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 <script src="https://kit.fontawesome.com/b4e02812b5.js" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+<%-- kakaomap javascript CDN --%>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd&libraries=services"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd"></script>
+
+<%-- page custom javascript file --%>
 <script type="text/javascript" src="js/plan/plan_detail.js"></script>
+
+<%-- kakaomap css file --%>
 <link rel="stylesheet" type="text/css" href="css/plan/kakaomap/kakaomap.css" />
+
+<%-- page custom css file --%>
 <link rel="stylesheet" type="text/css" href="css/plan/plan_detail.css" />
 <link rel="stylesheet" type="text/css" href="css/header.css" />
 <link rel="stylesheet" type="text/css" href="css/footer.css" />
 <title>Insert title here</title>
-<script>
-function strToDate(str) {
-	let y = str.slice(0, 4);
-	let m = Number(str.slice(5, 7)) - 1;
-	let d = str.slice(8);
-	
-	return new Date(y, m, d);
-}
-
-function dateToStr(date) {
-	let y = date.getFullYear();
-	let m = date.getMonth() + 1;
-	let d = date.getDate();
-	
-	if ( m <= 9 ) {
-		m = "0" + m;
-	}
-	
-	if ( d <= 9 ) {
-		d = "0" + d;
-	}
-	
-	return y+"-"+m+"-"+d;
-}
-
-function getPlanDate(start, end) {
-	var dates = [];
-	dates.push(dateToStr(start));
-
-	var date = new Date(start);
-	
-	while ( date < end ) {
-		date.setDate(date.getDate() + 1);
-		
-		dates.push(dateToStr(date));
-	}
-	
-	return dates;
-}
-
-var sDate = strToDate('<c:out value="${plan.startDate}" />');
-var eDate = strToDate('<c:out value="${plan.endDate}" />');
-var dateCount = '<c:out value="${plan.dateCount}" />';
-var dates = getPlanDate(sDate, eDate);
-
-</script>
 </head>
 
 <body>
@@ -78,15 +42,15 @@ var dates = getPlanDate(sDate, eDate);
 
 <section class="container-fluid">
 	<div class="planlist row mx-0">
-		<!-- 맵 생성 -->
+		<%-- 맵 생성 --%>
 		<div id="kakaobox" class="map_wrap col-7">
 			<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
 			<div id="menu_wrap" class="bg_white">
 		    	<div class="option">
 		        	<div>
 		            	<form onsubmit="searchPlaces(); return false;">
-		                	키워드 : <input type="text" value="이태원 맛집" id="keyword" size="15"> 
-		                	<button type="submit">검색하기</button> 
+		                	키워드 : <input type="text" value="이태원" id="keyword" size="15"> 
+		                	<button type="submit">검색하기</button>
 		            	</form>
 		        	</div>
 		    	</div>

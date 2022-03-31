@@ -1,39 +1,52 @@
-/* �럹�씠吏� �쟾泥� �뒪�겕濡ㅻ컮 �꽕�젙 */
-
+/* 페이지 스크롤 세팅 */
 body::-webkit-scrollbar {
-    width: 10px;  /* �뒪�겕濡ㅻ컮�쓽 �꼫鍮� */
+    width: 10px;
 }
-
 body::-webkit-scrollbar-thumb {
-    background: #A0A0A0 ; /* �뒪�겕濡ㅻ컮�쓽 �깋�긽 */
+    background: #A0A0A0 ;
     border-radius: 15px;
 }
-
 body::-webkit-scrollbar-track {
     background: #CCCCCC;  /*�뒪�겕濡ㅻ컮 �뮮 諛곌꼍 �깋�긽*/
 }
 
-/* 硫붾돱諛붿� section媛� margin 議곗젙 */
+
+
+/* section과 nav 메뉴 간에 margin 설정 */
 section.container {
 	margin-top: 5em;
 }
 
-/* 媛곴컖�쓽 �뵾�뱶�럹�씠吏�濡� �꽆�뼱媛��뒗 tab-box */
+/* feed-header setting */
+.body-container #feed-header {
+	width: 100%;
+	height : 200px;
+}
+.body-container #feed-header #profile-img {
+	width: 180px;
+	height: 180px;
+}
+.body-container #feed-header #profile-img .profile-img {
+	font-size: 150px;
+	color: darkblue;
+}
+
+
+
+/* feed tab 박스 설정 */
 .feed-tabs {
 	border-top: 1px solid #dee2e6;
 	border-bottom: none;
 }
-
 .feed-tabs .nav-item {
 	font-size: 1.5rem;
 	text-align: center;
 }
 
-/* �꽑�깮�맂 �꺆 �깋�긽, hover �깋�긽 */
+/* 현재 선택된 nav-item 설정 */
 .feed-tabs .nav-item.active {
 	background-color: #403D3D;
 }
-
 .feed-tabs .nav-item.active:hover,
 .feed-tabs .nav-item.active .nav-link,
 .feed-tabs .nav-item.active .nav-link:hover {
@@ -42,12 +55,11 @@ section.container {
 	text-decoration : none;
 }
 
-/* �꽑�깮�릺吏� �븡�� �꺆 �깋�긽, hover �깋�긽 */
+/* 선택되지 않은 nav-item 설정 */
 .feed-tabs .nav-item .nav-link {
 	color: #ABABAB;
 	border : none;
 }
-
 .feed-tabs .nav-item:hover,
 .feed-tabs .nav-item .nav-link:hover {
 	color: white;
@@ -56,13 +68,13 @@ section.container {
 
 
 
-/* �떖�젰 愿��젴 */
-/* �깉濡� �깮�꽦�맂 �씠踰ㅽ듃 釉붾윮 �뀒�몢由� */
+/* calendar관련 custom setting */
+/* event 블럭 테두리 색상 */
 .fc-event {
 	border-color: white;
 }
 
-/* �넗�슂�씪, �씪�슂�씪 湲��뵪�깋 蹂�寃� */
+/* 토요일, 일요일 글씨색 지정 */
 .fc-day-sat>div, .fc-day-sat>div>div {
 	color : blue;
 }
@@ -70,42 +82,22 @@ section.container {
 	color : red;
 }
 
-/* �떖�젰 �뒪�겕濡ㅻ컮 �꽕�젙 */
-.fc-scroller::-webkit-scrollbar,
-.plan-details > #details::-webkit-scrollbar {
-    width: 5px;  /* �뒪�겕濡ㅻ컮�쓽 �꼫鍮� */
-}
-
-.fc-scroller::-webkit-scrollbar-thumb,
-.plan-details > #details::-webkit-scrollbar-thumb {
-    background: #A0A0A0 ; /* �뒪�겕濡ㅻ컮�쓽 �깋�긽 */
-    border-radius: 15px;
-}
-
-.fc-scroller::-webkit-scrollbar-track,
-.plan-details > #details::-webkit-scrollbar-track {
-    background: #CCCCCC;  /*�뒪�겕濡ㅻ컮 �뮮 諛곌꼍 �깋�긽*/
-}
 
 
+/* PlanMst 수정 및 상세 일정 조회 modal */
 .modal-dialog {
 	height : 100%;
 }
-
 .modal-content {
 	height : 40%;
 }
-
 #modalCloseBtn {
 	font-size: 3rem;
 	cursor: pointer;
 }
-
 .modal-body #modify_form {
 	width: 100%;
 }
-
-
 .modal-body .detail-days #plan-day {
 	font-size: 30px;
 	font-weight: 600;
@@ -114,9 +106,19 @@ section.container {
 .modal-body .plan-details {
 	height: 700px;
 }
-
 .modal-body .plan-details #map {
 	height: 100%;
+}
+/* modal창 .plan-details scroll setting */
+.plan-details > #details::-webkit-scrollbar {
+    width: 5px;
+}
+.plan-details > #details::-webkit-scrollbar-thumb {
+    background: #A0A0A0 ;
+    border-radius: 15px;
+}
+.plan-details > #details::-webkit-scrollbar-track {
+    background: #CCCCCC;
 }
 
 .modal-body .plan-details div[id^=details] {
@@ -143,19 +145,4 @@ section.container {
 .modal-body .plan-details div[id^=details] .list-group-item h6 {
 	font-weight: 400;
 	width: 50%;
-}
-
-.body-container #feed-header {
-	width: 100%;
-	height : 200px;
-}
-
-.body-container #feed-header #profile-img {
-	width: 180px;
-	height: 180px;
-}
-
-.body-container #feed-header #profile-img .profile-img {
-	font-size: 150px;
-	color: darkblue;
 }
