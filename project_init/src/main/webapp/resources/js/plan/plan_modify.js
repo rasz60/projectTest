@@ -9,14 +9,17 @@ $(document).ready(function() {
 		$('#frm' + i).parent().siblings('#date-title').text($('#frm' + i).attr('data-day') + ' : ' + planDate);
 		$('#frm' + i).attr('data-date', planDate);
 		if ( placeCount == '0' ) {
-			$('#frm' + i + '>div:nth-child(0)').addClass('detail1');
-			$('#frm' + i + '>div:nth-child(' + j + ')').removeClass('detail0');
+			console.log(placeCount);
+			$('#frm' + i + '>div:nth-child(1)').addClass('detail1');
+			$('#frm' + i + '>div:nth-child(1)').removeClass('detail0');
 		} else {
+			
 			for ( var j = 1; j <= placeCount; j++ ) {
 				console.log('#frm' + i + ' div:nth-child(' + j + ')');
 				$('#frm' + i + '>div:nth-child(' + j + ')').addClass('detail' + j);
 				$('#frm' + i + '>div:nth-child(' + j + ')').removeClass('detail0');
 			}
+			
 		}
 		
 	}
@@ -38,9 +41,11 @@ $(document).ready(function() {
 	});
 	
 	
+	
+	
 	$('#submitAll').click(function(e) {
 		e.preventDefault();
-		
+				
 		$('.modal-body').text('모든 일정 작성을 완료하고 피드로 이동할까요?');
 		$('#modalBtn').trigger('click');
 		
@@ -87,12 +92,10 @@ $(document).ready(function() {
 			$('#frm0 input[name=deleteDtNum]').val(dtInputValue + '/' + deleteDtNum);
 		}
 		
-		
-		//
 		let target = $(this).parent().parent('form');
 		let currValue = Number(target.attr('data-count'));
 		let delValue = Number(target.attr('data-count')) - 1 ;
-		let index = $(this).parent().index();
+		let index = Number($(this).parent().index()) + 1;
 
 		if ( delValue < 0 ) {
 			alert('최소 1개 이상의 일정이 필요합니다');
@@ -119,8 +122,10 @@ $(document).ready(function() {
 			target.parent().siblings('p.mt-2').children('.showIndex').text(delValue);
 		
 		} else {
-
-			for ( var i = Number(index); i < currValue; i++ ) {
+			
+			console.log(index);
+			console.log(currValue);
+			for ( var i = Number(index); i <= currValue; i++ ) {
 				if ( i == Number(index) ) {
 					target.attr('data-count', delValue);
 					target.parent().siblings('p.mt-2').children('.showIndex').text(delValue);					
@@ -128,9 +133,6 @@ $(document).ready(function() {
 				} else {
 					var box = $('.detail' + i);
 					var delBtn = box.children('.deleteBtn');
-					
-					box.attr('data-index', Number(box.attr('data-index'))-1 );
-					delBtn.attr('data-index', Number(box.attr('data-index'))-1 );
 		
 					box.removeClass('detail' + i);
 					box.addClass('detail' + (i-1));
@@ -141,6 +143,7 @@ $(document).ready(function() {
 				$(this).parent().remove();
 			}
 		}
+		
 
 	});
 					

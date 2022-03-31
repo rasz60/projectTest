@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -286,8 +287,9 @@ public class PlanDAO implements IDao {
 	@Transactional
 	public String detailModifyDo(HttpServletRequest request) {
 		logger.info("detailModifyDo() in >>> ");
+		Map<String, String> deleteDtMap = new HashMap<String, String>();
 		
-		Map<String, String> deleteDtMap = new HashMap<>();
+		List<Map<String, String>> deleteDtList = new ArrayList<Map<String, String>>();
 		String[] deleteDtNum = request.getParameter("deleteDtNum").split("/");
 		String result = null;
 		
@@ -297,9 +299,11 @@ public class PlanDAO implements IDao {
 					deleteDtMap.put("value", "planDtNum");
 					deleteDtMap.put("planDtNum", deleteDtNum[i]);
 				}
+				
+				deleteDtList.add(deleteDtMap);
 			}
 			
-			int res = sqlSession.delete("deleteDt", deleteDtMap);
+			int res = sqlSession.delete("deleteDt", deleteDtList);
 			result = res == 1 ? "success": "failed";
 		}
 		

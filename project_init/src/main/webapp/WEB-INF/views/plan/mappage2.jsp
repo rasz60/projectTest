@@ -147,7 +147,7 @@ var dates = getPlanDate(sDate, eDate);
 								<!-- [pk] planDtNum -->
 								<input type="hidden" class="form-control" name="planDtNum" value="0" readonly/>
 								<!-- day -->
-								<input type="hidden" class="form-control" name="planDay" value="day1" readonly/>
+								<input type="hidden" class="form-control" name="planDay" value="Day1" readonly/>
 								<!-- placeCount -->
 								<input type="hidden" class="form-control" name="placeCount" readonly/>
 								<!-- planDate -->

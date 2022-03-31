@@ -242,7 +242,7 @@ function inputdata(marker, target1, value, title, category, address) {
 		return false;
 
 	} else if ( value != 0 ){
-		var boxHtml = '<div class="detail' + plusVal + ' mt-2 py-2 border bg-light rounded"">'
+		var boxHtml = '<div class="detail' + plusVal + ' mt-2 py-2 border bg-light rounded">'
 					+ '<h3 class="font-italic ml-2 d-inline mt-2">Place</h3>'
 					+ '<!-- placeName -->'
 					+ '<input type="text" class="form-control col-8 d-inline ml-3" name="placeName" readonly/>'

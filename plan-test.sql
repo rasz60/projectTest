@@ -2,6 +2,7 @@ CREATE TABLE plan_dt(
     planDtNum NUMBER(38) NOT NULL PRIMARY KEY,
     planNum NUMBER(38) NOT NULL,
     placeName VARCHAR2(50), 
+	placeCount VARCHAR2(50), 
     planDay VARCHAR2(100) NOT NULL,
     planDate VARCHAR2(100) NOT NULL,
     startTime  VARCHAR2(100),
