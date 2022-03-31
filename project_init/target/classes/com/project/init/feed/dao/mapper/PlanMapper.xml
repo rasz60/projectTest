@@ -68,7 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <update id="updatePlanDt1" parameterType="com.project.init.feed.dto.PlanDto2">
 	UPDATE plan_dt 
 	
-	SET planDate = #{planDtNum}
+	SET planDate = #{planDate}
 		
 	WHERE planNum = #{planNum}
 	AND planDay = #{planDay}

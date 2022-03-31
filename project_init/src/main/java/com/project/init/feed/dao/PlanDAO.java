@@ -172,9 +172,7 @@ public class PlanDAO implements IDao {
 									 endDate, 
 									 newDateCount, 
 									 eventColor);
-		
-		
-		
+
 		int res = sqlSession.update("updatePlanMst", mstDto);
 
 		result = res > 0 ? "success": "failed";
