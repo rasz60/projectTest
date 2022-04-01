@@ -28,7 +28,7 @@ public class PlanDAO implements IDao {
 	
 	private final SqlSession sqlSession;
 	
-	//sqlSession 생성자 주입
+	// sqlSession 생성자 주입
 	@Autowired
 	public PlanDAO (SqlSession sqlSession) {
 		logger.info("PlanDao Const in >>>");
@@ -204,19 +204,22 @@ public class PlanDAO implements IDao {
 	
 		String result = null;
 		
-		// parameter로 넘어온 deleteDtNum을 '/'로 구분하여 배열로 생성
-		String[] deleteDtNum = request.getParameter("deleteDtNum").split("/");
+		// deleteDtNum : 삭제된 일정이 하나라도 있을 때
+		if(! request.getParameter("deleteDtNum").equals("") ) {
+			logger.info("detailModifyDo deleteNum is exist");
+			// parameter로 넘어온 deleteDtNum을 '/'로 구분하여 배열로 생성
+			String[] deleteDtNum = request.getParameter("deleteDtNum").split("/");
 		
-		List<Integer> deleteDtList = new ArrayList<Integer>();
-
-		// deleteDtNum != null : 삭제된 일정이 하나라도 있을 때
-		if ( deleteDtNum != null ) {
+			List<Integer> deleteDtList = new ArrayList<Integer>();
+		
 			for ( int i = 0; i < deleteDtNum.length; i++ ) {
 				deleteDtList.add(Integer.parseInt(deleteDtNum[i]));
 			}
 			// myBatis 구문 실행
 			int res = sqlSession.delete("deleteDt", deleteDtList);
 			result = res == 1 ? "success": "failed";
+		} else {
+			logger.info("detailModifyDo deleteNum is null");
 		}
 		
 		
@@ -238,15 +241,17 @@ public class PlanDAO implements IDao {
 			// planDtNum != 0 : 기존에 있던 상세 일정으로 update
 			} else {
 				updateDtos.add(dtos.get(i));
-				
 			}
 		};
 		
-		int res1 = sqlSession.insert("insertDt", insertDtos);
-		int res2 = sqlSession.update("updatePlanDt2", updateDtos);
-		
-		result = res1== 1 ? "success": "failed";
-		result = res2 == 1 ? "success": "failed";
+		if ( insertDtos.isEmpty() == false ) {	
+			int res1 = sqlSession.insert("insertDt", insertDtos);
+			result = res1== 1 ? "success": "failed";
+		}
+		if (updateDtos.isEmpty() == false ) {
+			int res2 = sqlSession.update("updatePlanDt2", updateDtos);
+			result = res2 == 1 ? "success": "failed";
+		}
 		
 		return result;
 	}

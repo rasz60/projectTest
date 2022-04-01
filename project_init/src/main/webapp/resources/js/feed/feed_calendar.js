@@ -397,7 +397,6 @@ $(document).ready(function() {
 			
 			// 박스 생성과 인덱스 추가를 완료한 후, 해당 일자에 맞는 정보 입력
 			var target2 = $('#details'+ i);
-			console.log(target2.attr('id'));
 			// 해당 일자 안에 상세 일정 개수를 표시할 객체
 			var count = 1;
 			
@@ -408,17 +407,14 @@ $(document).ready(function() {
 					// PlaceName이 null인 경우
 					if ( data[j].placeName == null ) {
 						data[j].placeName = 'Place';
-						console.log(data[j].placeName);
 					}
 					// startTime이 null 인 경우
 					if ( data[j].startTime == null ) {
 						data[j].startTime = '- - : - - ';
-						console.log(data[j].startTime);
 					}
 					// startTime이 null 인 경우
 					if ( data[j].endTime == null ) {
 						data[j].endTime = '- - : - - ';
-						console.log(data[j].endTime);
 					}
 					
 					
