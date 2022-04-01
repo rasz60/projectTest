@@ -81,7 +81,7 @@
 						<button type="button" id="btn-delete" class="btn btn-sm btn-danger mx-1">일정 삭제</button>
 						
 						<%-- 2-3- PlanDt 수정 페이지로 이동 --%>
-						<a href="${pageContext.request.contextPath}/plan/detail_modify?planNum=" id="btn-detail" class="btn btn-sm btn-dark mx-1">상세 수정</a>
+						<a href="" id="btn-detail" class="btn btn-sm btn-dark mx-1">상세 수정</a>
 					</div>
 				
 					<%-- 3- planDay tab button 박스 --%>

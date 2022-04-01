@@ -9,7 +9,7 @@ $(document).ready(function() {
 	// sDate부터 eDate까지의 날짜를 문자열 배열로 생성
 	var dates = getPlanDate(sDate, eDate);
 
-	// 일정 날짜 수(dateCount)만큼 tab-link와 tabdiv 동적 생성 (1번은 미리 생성해두고 시작)
+	// 일정 날짜 수(dateCount)만큼 tabdiv 동적 생성 (1번은 미리 생성해두고 시작)
 	for ( var i = 2; i <= Number(dateCount); i++ ) {
 		// 미리 생성해둔 #tab-1의 html을 가져와서 header index만 추가해서 동적 생성
 		var tab_div = '<div id="tab-' + i + '" class="tab-content">' 
@@ -43,7 +43,7 @@ $(document).ready(function() {
 		if ( index < 1 ) {
 			return false;
 		
-		// 첫 번째 날짜의 상세일정 페이지가 아닌 경우
+		// 첫 번째 탭 박스가 아닌 경우
 		} else {
 			// 현재 보여지는 탭 박스의 .active 제거
 			$('#tab-' + (Number(index)+1)).removeClass('active');
@@ -56,10 +56,10 @@ $(document).ready(function() {
 
 	// 상세 일정 표시 부분에 next 버튼 클릭 시
 	$('#next-btn').click(function() {
-		// 버튼에 부여한 data-index 값(= .active인 탭 박스에 index - 1) 을 가져옴
+		// 버튼에 부여한 data-index 값(= .active인 탭 박스에 index + 1) 을 가져옴
 		var index = $(this).attr('data-index');
 		
-		// index < 2  ==  첫 번째 탭 박스가 .active, index가 총 상세 일정의 개수보다 클 경우 == 마지막 탭 박스가 .active
+		// index < 2  ==  첫 번째 탭 박스가 .active || index가 총 상세 일정의 개수보다 클 경우 == 마지막 탭 박스가 .active
 		if ( index < 2 || index > $(this).parent().attr('data-count')) {
 			return false;
 		} else {
@@ -87,7 +87,7 @@ $(document).ready(function() {
 			// id가 frm으로 시작하는 form을 배열로 모두 선택
 			var form = $('form[id^=frm]').get();
 			
-			// form 안에 placeCount input 값을 form에 data-count 값으로 입력
+			// 각각의 form 안에 placeCount input 값을 form에 data-count 값으로 입력 (각각의 일정마다의 상세일정 개수를 저장하는 과정)
 			for ( var i = 1; i < form.length; i++ ) {
 				var count = $('#frm' + i).data('count');
 				$('#frm' + i).children('div').children('.inputbox').children('input[name=placeCount]').val(count);
@@ -116,9 +116,9 @@ $(document).ready(function() {
 		})
 	});
 	
-	/* 동적으로 생성한 엘리먼트에도 이벤트를 부여할 시, $(document).on 사용*/
+	/* 동적으로 생성한 엘리먼트까지 이벤트를 부여할 때, $(document).on 사용 */
 	
-	// startTime input에 값이 입력됐을 경우
+	// startTime input에 값이 입력되고 focus가 풀렸을 경우
 	$(document).on('change', 'input[name=startTime]', function(){
 		var startTime = $(this).val();
 		// endTime의 value
@@ -135,13 +135,13 @@ $(document).ready(function() {
 		}
 	});	
 	
-	// endTime input에 값이 입력됐을 경우
+	// endTime input에 값이 입력되고 focus가 풀렸을 경우
 	$(document).on('change', 'input[name=endTime]', function(){
 		var endTime= $(this).val();
 		// startTime의 value
 		var startTime= $(this).parent().prev().children('input[name=startTime]').val();
 		
-		// endTime의 value가 null이면, 아직 입력하기 전이거나 입력하지 않은 경우는 아무 이벤트를 발생시키지 않음
+		// endTime의 value가 null이면, 아직 입력하기 전이거나 입력하지 않은 것이므로 아무 이벤트를 발생시키지 않음
 		if ( startTime > endTime ) {
 			alert('시작시간보다 종료시간이 빠를 수 없습니다.');
 			$(this).val('').focus();
@@ -190,7 +190,7 @@ $(document).ready(function() {
 			target.parent().siblings('p.mt-2').children('.showIndex').text(delValue);
 		
 		} else {
-			// 지워지는 박스보다 다음에 생긴 박스에 index를 조정 ex> 2번이 지워지면 3,4,5,6번을 2,3,4,5번으로 바꿔주고
+			// 지워지는 박스보다 다음에 생긴 박스에 index를 조정 ex> 2번이 지워지면 3,4,5,6번을 2,3,4,5번으로 바꿈
 			for ( var i = Number(index); i <= currValue; i++ ) {
 				// 자기 자신의 박스를 삭제
 				if ( i == Number(index) ) {

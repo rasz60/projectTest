@@ -19,11 +19,11 @@ pageEncoding="UTF-8"%>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd&libraries=services"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/plan/plan_modify.js"></script>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/plan/kakaomap/kakaomap.css" />
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/plan/plan_detail.css" />
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/header.css" />
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css" />
+<script type="text/javascript" src="../js/plan/plan_modify.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/plan/kakaomap/kakaomap.css" />
+<link rel="stylesheet" type="text/css" href="../css/plan/plan_detail.css" />
+<link rel="stylesheet" type="text/css" href="../css/header.css" />
+<link rel="stylesheet" type="text/css" href="../css/footer.css" />
 <title>Insert title here</title>
 <script>
 var dateCount = '<c:out value="${plan1.dateCount}" />';
@@ -35,9 +35,12 @@ var dateCount = '<c:out value="${plan1.dateCount}" />';
 
 <section class="container-fluid">
 	<div class="planlist row mx-0">
-		<!-- 맵 생성 -->
+		<%-- 1. 카카오 맵 --%>
 		<div id="kakaobox" class="map_wrap col-7">
+			<%-- 1- 맵이 생성되는 박스 --%>
 			<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+			
+			<%-- 2- 맵 검색 창 --%>
 			<div id="menu_wrap" class="bg_white">
 		    	<div class="option">
 		        	<div>
@@ -52,112 +55,107 @@ var dateCount = '<c:out value="${plan1.dateCount}" />';
 		    	<div id="pagination"></div>
 			</div>
 		</div>
-
+	
+		<%-- 2. 상세 일정 관련 박스 --%>
 		<div class="planbox col-5 d-block" id="tabdiv">
-			<div>
-				<ul class="nav nav-tabs">
-					<c:forEach var="i" begin="1" end="${plan1.dateCount }">
-						<c:choose>
-							<c:when test="${i == 1}">
-							<li class='nav-item' data-tab='tab-${i}' data-inputForm='frm${i}'>
-								<p class="nav-link active">date${i}</p>
-							</li>
-							</c:when>
-						
-							<c:otherwise>
-								<li class='nav-item' data-tab='tab-${i}' data-inputForm='frm${i}'>
-									<p class="nav-link">date${i}</p>
-								</li>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-				</ul>
-				<button type="button" id="submitAll" class="btn btn-sm btn-success float-right">저장</button>
+			<div class="tab-nav row mx-0 mt-2 justify-content-end" data-count="${plan1.dateCount}">
+				<%-- 2-2- 전체 상세일정 저장 버튼 --%>
+				<button type="button" id="submitAll" class="btn btn-sm btn-primary col-1  mr-2">
+					<i class="fa-regular fa-floppy-disk"></i>
+				</button>
+
+				<button type="button" class="btn btn-outline-default text-dark col-1 border" id="prev-btn" data-index="0">
+					<i class="fa-solid fa-angle-left"></i>
+				</button>
+				<button type="button" class="btn btn-outline-default text-dark col-1 border" id="next-btn" data-index="2">
+					<i class="fa-solid fa-angle-right"></i>
+				</button>
 			</div>
 			
-			<!-- [planMst] -->
+			<%-- 2-3- planMst form --%>
 			<form id="frm0" name="frm0" action="#" method="post">
 				<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" readonly/>
-				<!-- [pk] planNum -->
+				<%-- [pk] planNum --%>
 				<input type="hidden" class="form-control" name="planNum" value="${plan1.planNum}" value="0" readonly/>
-				<!-- planName -->
+				<%-- planName --%>
 				<input type="hidden" class="form-control" name="planName" value="${plan1.planName}" readonly/>
-				<!-- startDate -->
+				<%-- startDate --%>
 				<input type="hidden" class="form-control" name="startDate" value="${plan1.startDate}" readonly/>
-				<!-- endDate -->
+				<%-- endDate --%>
 				<input type="hidden" class="form-control" name="endDate" value="${plan1.endDate}" readonly/>
-				<!-- dateCount -->
+				<%-- dateCount --%>
 				<input type="hidden" class="form-control" name="dateCount" value="${plan1.dateCount}" readonly/>
-				<!-- theme -->
+				<%-- eventColor --%>
 				<input type="hidden" class="form-control" name="eventColor" value="${plan1.eventColor}" readonly/>
 				
-				<!-- deletePlanDtNum -->
+				<%-- deleteDtNum : 수정하면서 삭제된 planDtNum이 입력되는 input --%>
 				<input type="hidden" class="form-control" name="deleteDtNum" readonly/>
 			</form>
 			
+			<%-- 2-4- dateCount만큼 반복해서 생성되는 tab 박스, 1번째만 .active로 생성 --%>
 			<c:forEach var="i" begin="1" end="${plan1.dateCount }">
 				<c:choose>
 					<c:when test="${i == 1}">
-						<div id="tab-${i}" class="mt-2 tab-content current">
+						<div id="tab-${i}" class="mt-2 tab-content active">
 					</c:when>
 					
 					<c:otherwise>
 						<div id="tab-${i}" class="mt-2 tab-content">
 					</c:otherwise>
 				</c:choose>
-					<!-- User submit Input -->
 					<h3 class="display-4 font-italic" id="date-title"></h3>
 					<hr />
-					<p class="mt-2">일정 : <span class="showIndex">0</span> / 10</p>
-					<!-- input창 -->
+					<p class="mt-2">일정 :  <span class="showIndex">0</span> / 10</p>
 					<div class="inputDiv">
-						<!-- [planDt] -->
-						<form id="frm${i}" name="frm${i}" action="#" method="post" data-count="0" data-day="Day${i}" data-date="">
-							<c:set var="day" value="day${i}" /> 
+						<%-- 2-4-1 하나의 date안에 planDt form --%>
+						<form id="frm${i}" name="frm${i}" action="#" method="post" data-count="0" data-day="day${i}" data-date="${plan1.startDate }">
+							<%-- planDay�� �대�뱁���� 諛��ㅼ�� ���몄�쇱���� 留��ㅺ린 ���댁�� day+i 媛��� 蹂���濡� ���� --%>
+							<c:set var="day" value="day${i}" />
+							<%-- planDt(plan2)�� 諛곗�� 湲몄�대��� 諛�蹂� --%>
 							<c:forEach var="plan2" items="${plan2}">
-								
+								<%-- planDt(plan2)�� planDay媛� �대�뱁���� ��吏��쇰��留� 諛�蹂듯�댁�� ���몄�쇱�� 諛��� ���� --%>
 								<c:if test="${plan2.planDay eq day}">
 									<div class="detail0 mt-2 py-2 border bg-light rounded">
 										<h3 class="font-italic ml-2 d-inline mt-2">Place</h3>
-										<!-- placeName -->
+										<%-- placeName --%>
 										<input type="text" class="form-control col-8 d-inline ml-3" name="placeName" value="${plan2.placeName }" readonly/>
 										<button type="button" class="btn btn-sm btn-danger deleteBtn float-right mr-2 mt-1"><i class="fa-solid fa-minus"></i></button>
 										<button type="button" class="btn btn-sm btn-dark detailBtn float-right mr-2 mt-1" data-count="0"><i class="fa-solid fa-angles-down"></i></button>
 										<hr />
 			
 										<div class="inputbox row mx-0 justify-content-between">
-											<!-- [pk] planDtNum -->
+											<%-- [pk] planDtNum --%>
 											<input type="hidden" class="form-control" name="planDtNum" value="${plan2.planDtNum }" readonly/>
-											<!-- day -->
+											<%-- planDay --%>
 											<input type="hidden" class="form-control" name="planDay" value="${plan2.planDay}" readonly/>
-											<!-- placeCount -->
+											<%-- placeCount --%>
 											<input type="hidden" class="form-control" name="placeCount" value="${plan2.placeCount}" readonly/>
-											<!-- planDate -->
+											<%-- planDate --%>
 											<input type="hidden" class="form-control" name="planDate" value="${plan2.planDate}" readonly/>
-											<!-- latitude -->
+											<%-- latitude --%>
 											<input type="hidden" class="form-control" name="latitude" value="${plan2.latitude}" readonly/>
-											<!-- longitude -->
+											<%-- longitude --%>
 											<input type="hidden" class="form-control" name="longitude" value="${plan2.longitude}" readonly/>
-											<!-- address -->
+											<%-- address --%>
 											<input type="hidden" class="form-control" name="address" value="${plan2.address}" readonly/>
-											<!-- category -->
+											<%-- category --%>
 											<input type="hidden" class="form-control" name="category" value="${plan2.category}" readonly/>
 											
-											<!-- startTime -->
+											<%-- startTime --%>
 											<div class="form-group col-4">
 												<label for="startTime">StartTime</label>
 												<input type="time" class="form-control" name="startTime" value="${plan2.startTime}" />
 											</div>
 											
-											<!-- endTime -->
+											<%-- endTime --%>
 											<div class="form-group col-4">
 												<label for="endTime">EndTime</label>
 												<input type="time" class="form-control" name="endTime" value="${plan2.endTime}" />
 											</div>
 											
-											<!-- theme -->
+											<%-- theme --%>
 											<div class="form-group col-4">
-												<label for="theme">목적</label>
+												<label for="theme">방문</label>
 												<select class="custom-select my-1 mr-sm-2 " id="theme" name="theme">
 													<option value="방문" selected>방문</option>
 													<option value="데이트">데이트</option>
@@ -173,15 +171,15 @@ var dateCount = '<c:out value="${plan1.dateCount}" />';
 												</select>
 											</div>
 											
-											<!-- transportation -->								
+											<%-- transportation --%>								
 											<div class="form-group col-12 toggle none">
-												<label for="transportation">교통수단</label>
+												<label for="transportation">저장</label>
 												<input type="text" class="form-control" name="transportation" value="${plan2.transportation}"/>
 											</div>
 											
-											<!-- details -->	
+											<%-- details --%>	
 											<div class="form-group col-12 toggle none">
-												<label for="details">상세 일정</label>
+												<label for="details">취소</label>
 												<textarea rows="5" class="form-control" name="details" >${plan2.details}</textarea>
 											</div>
 										</div>
@@ -196,10 +194,10 @@ var dateCount = '<c:out value="${plan1.dateCount}" />';
 	</div>
 </section>
 
-<!-- 저장 누를 시 생성되는 modal창 -->
+<%-- 저장 누를 시 생성되는 modal창 --%>
 <div class="container">
 	<input id="modalBtn" type="hidden" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" value="modal"/>
-	<!-- modal창 -->
+	<!-- modal李� -->
 	<div class="modal fade" id="myModal" role="dialog">
 		<div class="modal-dialog modal-dialog-centered modal-md text-center">
 			<div class="modal-content">
@@ -211,14 +209,14 @@ var dateCount = '<c:out value="${plan1.dateCount}" />';
 				</div>
 				<div class="modal-footer bg-light row mx-0">
 					<button id="trueBtn" type="button" class="btn btn-sm btn-primary col-6 mx-0 border-white">저장</button>
-					<button id="falseBtn" type="button" class="btn btn-sm btn-danger col-6 mx-0 border-white" data-dismiss="modal">닫기</button>
+					<button id="falseBtn" type="button" class="btn btn-sm btn-danger col-6 mx-0 border-white" data-dismiss="modal">취소</button>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/plan/kakaomap/kakaomap.js"></script>
+<script type="text/javascript" src="../js/plan/kakaomap/kakaomap.js"></script>
 
 <%@ include file="../footer.jsp" %>
 

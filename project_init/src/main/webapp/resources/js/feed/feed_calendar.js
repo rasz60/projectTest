@@ -50,7 +50,10 @@ $(document).ready(function() {
 			var eventEndDate = strToDate(info.event.endStr);
 			eventEndDate.setDate(eventEndDate.getDate() - 1);
 			eventEndDate = dateToStr(eventEndDate);
-
+			
+			console.log(eventEndDate);
+			
+			
 			// modal창을 띄우기 전에 직전에 클릭한 event의 정보를 초기화 시킴
 			if( $('.modal-header #planName').val() != "" ) {
 				$('.plan-details div[id^=details]:nth-child(n+3)').remove();
@@ -89,7 +92,7 @@ $(document).ready(function() {
 					$('#modal-eventColor').val(info.event.backgroundColor);
 					$('#modal-originDateCount').val(info.event.extendedProps.dateCount);
 					$('.modal-body .detail-days').attr('data-count', info.event.extendedProps.dateCount);
-
+					$('#btn-detail').attr('href', '/init/plan/detail_modify?planNum=' + info.event.id);
 					// modal창에 ajax로 가져온 data를 활용하여 plan_dt list를 만들고 정보를 뿌려주는 메서드
 					modifyModal(data, Number(info.event.extendedProps.dateCount));
 					
@@ -162,7 +165,7 @@ $(document).ready(function() {
 	// modal창에 상세일정 표시 부분에 next 버튼 클릭 시
 	$('#next-btn').click(function() {
 		// 버튼에 부여한 data-index 값(= .active인 탭 박스에 index - 1) 을 가져옴
-		var index = $(this).attr('data-index');
+		var index = Number($(this).attr('data-index'));
 		
 		// index < 2  ==  첫 번째 탭 박스가 .active, index가 총 상세 일정의 개수보다 클 경우 == 마지막 탭 박스가 .active
 		if ( index < 2 || index > $(this).parent().attr('data-count')) {
@@ -279,7 +282,7 @@ $(document).ready(function() {
 			}
 		});
 	});
-	
+
 	/* ---------------------------- Feed Calendar Page Use Method ---------------------------- */
 	
 	// DB에 저장된 일정 불러와 달력에 표시하는 메서드
@@ -333,10 +336,10 @@ $(document).ready(function() {
 		let m = date.getMonth() + 1;
 		let d = date.getDate();
 		
-		if ( m < 9 ) { m = "0" + m;	}
+		if ( m < 10 ) { m = "0" + m;	}
 		
-		if ( d < 9 ) { d = "0" + d; }
-		
+		if ( d < 10 ) { d = "0" + d; }
+		console.log(d);
 		return y+"-"+m+"-"+d;
 	};
 	
@@ -394,25 +397,31 @@ $(document).ready(function() {
 			
 			// 박스 생성과 인덱스 추가를 완료한 후, 해당 일자에 맞는 정보 입력
 			var target2 = $('#details'+ i);
-			
+			console.log(target2.attr('id'));
 			// 해당 일자 안에 상세 일정 개수를 표시할 객체
 			var count = 1;
 			
 			// 일자 안에 상세 일정 개수만큼 반복
 			for ( var j = 0; j < data.length; j++ ) {
+				console.log(data[j].endTime);
 				if ( data[j].planDay == "day" + i ) {
 					// PlaceName이 null인 경우
 					if ( data[j].placeName == null ) {
-						data[j].startTime = 'Place';
+						data[j].placeName = 'Place';
+						console.log(data[j].placeName);
 					}
 					// startTime이 null 인 경우
 					if ( data[j].startTime == null ) {
 						data[j].startTime = '- - : - - ';
+						console.log(data[j].startTime);
 					}
 					// startTime이 null 인 경우
 					if ( data[j].endTime == null ) {
 						data[j].endTime = '- - : - - ';
+						console.log(data[j].endTime);
 					}
+					
+					
 					
 					// 각각의 위치에 텍스트 입력
 					target2.children('.planDt' + count).children('h4').text(data[j].placeName);

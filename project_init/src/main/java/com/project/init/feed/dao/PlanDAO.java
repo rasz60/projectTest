@@ -55,7 +55,7 @@ public class PlanDAO implements IDao {
 		
 		PlanDto dto = sqlSession.selectOne("selectPlanMst", Integer.parseInt(planNum));
 		
-		logger.info("getCalendarEvent(" + ") result : dtos.isEmpty() ? " + dto.getPlanNum());
+		logger.info("selectPlanMst(" + planNum + ") result : " + dto.getPlanNum());
 		
 		return dto;
 	}
@@ -73,31 +73,19 @@ public class PlanDAO implements IDao {
 		return result;
 	}
 	
-	// modal창에서 수정한 내용 반영 /*비효율적*/
+	// modal창에서 수정한 내용 반영 /* 비효율적 = 1.수정 내용 없어도 update처리 */
 	@Override
 	@Transactional
 	public String modifyPlanMst(HttpServletRequest request) {
 		logger.info("modifyPlanMst in >>> ");
 		String result = null;
-
-		//parameter parsing
-		int planNum = Integer.parseInt(request.getParameter("planNum"));
-		String planName = request.getParameter("planName");
-		String startDate = request.getParameter("startDate");
-		String endDate = request.getParameter("endDate");
+		
 		String originDateCount = request.getParameter("originDateCount");
 		String newDateCount = request.getParameter("newDateCount");
-		String eventColor = request.getParameter("eventColor");
-
 		
 		// planMst update : [현재] 바뀐 내용이 없더라도 무조건 update 반영
-		PlanDto mstDto = new PlanDto(planNum, 
-				 					 planName, 
-									 startDate, 
-									 endDate, 
-									 newDateCount, 
-									 eventColor);
-
+		PlanDto mstDto = planMstDtoParser(request);
+		mstDto.setDateCount(newDateCount);
 		int res = sqlSession.update("updatePlanMst", mstDto);
 		result = res > 0 ? "success": "failed";
 		logger.info("modifyPlanMst result 1 : " + result);
@@ -107,87 +95,64 @@ public class PlanDAO implements IDao {
 		int origin = Integer.parseInt(originDateCount);
 		// 수정되기 후 dateCount
 		int newly = Integer.parseInt(newDateCount);
-		
-		
-		// startDate Date 객체로 만들어서 작업 ( startDate, planDate, endDate 모두 update )
-		int y = Integer.parseInt(startDate.substring(0, 4));
-		int m = Integer.parseInt(startDate.substring(5, 7)) - 1;;
-		int d = Integer.parseInt(startDate.substring(8));
-		
-		Date date = new Date((y-1900), m, d);
+
+		List<PlanDto2> updatePlanDt = new ArrayList<PlanDto2>();
 		
 		// dateCount가 작아졌으면 (원래 일정 수 - 새로운 일정 수)만큼 끝에서부터 지우고 나머지 날짜를 바꿔줌
 		if ( origin > newly ) {
-			// 기존 일정에서 newly+1 일차 일정부터 삭제
-			// ex> origin 5일 , newly 2일 = 3일(newly+1)차부터 끝(origin)까지 planDt삭제
+			// 기존 일정에서 newly+1 일차 일정부터 삭제 ex> origin 5일 , newly 2일 = 3일(newly+1)차부터 끝(origin)까지 planDt삭제
 			for (int i = (newly+1); i <= origin; i++) {
-				PlanDto2 dtDto = new PlanDto2(planNum, "day"+i, "-");
-	
+				PlanDto2 dtDto = new PlanDto2(mstDto.getPlanNum(), "day"+i, "-");
+				
 				int resDt = sqlSession.delete("deletePlanDt1", dtDto);
 				result = resDt > 0 ? "success": "failed";
 			}
-			
-			// 새로 입력된 startDate부터 dateCount만큼 반복
-			for ( int i = 0; i < newly; i++ ) {
-				// Calendar 객체 이용 하루씩 늘려가면서 planDate 생성하여 update
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(date);
-				cal.add(Calendar.DATE, i);
-				String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
-				
-				PlanDto2 dtDto = new PlanDto2(planNum, "day"+(i+1), r);
-				int resDt = sqlSession.update("updatePlanDt1", dtDto);
-				result = resDt > 0 ? "success": "failed";
-			}
+			updatePlanDt = getUpdateDtos(mstDto.getPlanNum(), mstDto.getStartDate(), newly);
 		}		
 		
 		// date count가 같으면 각 planDate의 날짜만 바꿔줌
 		else if ( origin == newly ) {
-			// 새로 입력된 startDate부터 dateCount만큼 반복
-			for ( int i = 0; i < newly; i++ ) {
-				// Calendar 객체 이용 하루씩 늘려가면서 planDate 생성하여 update
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(date);
-				cal.add(Calendar.DATE, i);
-				String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
-				
-				PlanDto2 dtDto = new PlanDto2(planNum, "day"+(i+1), r);
-				int resDt = sqlSession.update("updatePlanDt1", dtDto);
-				result = resDt > 0 ? "success": "failed";
-			}
-			
-			
-		// dateCount가 더 커졌으면 원래의 일정 수 만큼만 바꿔줌
-		} else if ( origin < newly ) {
-			// 새로 입력된 startDate부터 dateCount만큼 반복
-			for ( int i = 0; i < origin; i++ ) {
-				// Calendar 객체 이용 하루씩 늘려가면서 planDate 생성하여 update
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(date);
-				cal.add(Calendar.DATE, i);
-				String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
-				
-				PlanDto2 dtDto = new PlanDto2(planNum, "day"+(i+1), r);
-				int resDt = sqlSession.update("updatePlanDt1", dtDto);
-				result = resDt > 0 ? "success": "failed";
-			}
-			
+			updatePlanDt = getUpdateDtos(mstDto.getPlanNum(), mstDto.getStartDate(), newly);				
 		}
+			
+		// dateCount가 더 커졌으면 원래의 일정 수 만큼만 바꿔주고 나머지 일자는 빈 일정을 생성해서 insert
+		else if ( origin < newly ) {
+			// t
+			updatePlanDt = getUpdateDtos(mstDto.getPlanNum(), mstDto.getStartDate(), newly);
+			
+			System.out.println(updatePlanDt.size());
+			ArrayList<PlanDto2> nullPlanDt = new ArrayList<PlanDto2>();
+			
+			for(int i = (newly-1); i >= origin; i-- ) {
+				System.out.println(updatePlanDt.get(i).getPlaceName());
+				updatePlanDt.get(i).setPlanDtNum(0);
+				updatePlanDt.get(i).setTheme("방문");
+				updatePlanDt.get(i).setPlaceCount("0");
+				
+				nullPlanDt.add(updatePlanDt.get(i));
+				updatePlanDt.remove(i);
+			}
+			
+			int resDtSub = sqlSession.insert("insertNullDt", nullPlanDt);
+			
+			logger.info("modifyPlanMst result 3 nullDto insert : " + (resDtSub == 0 ? "success": "failed"));
+		}
+		
+		int resDt = sqlSession.update("updatePlanDt1", updatePlanDt);
+		result = resDt == 0 ? "success": "failed";
 		
 		logger.info("modifyPlanMst result 2 : " + result);
 	
 		return result;
 	}
-
-	// modal창에서 삭제한 내용 반영 /*비효율적*/
+	
+	// modal창에서 삭제한 내용 반영 /* 비효율적 = foreign key 연결하면 해결 [ON DELETE CASCADE ENABLE] */
 	@Override
 	@Transactional
 	public String deletePlan(String planNum) {
 		logger.info("deletePlan(" + planNum + ") in >>>");
 
 		String result = null;
-		
-		/* foreign key 연결하면 해결 [ON DELETE CASCADE ENABLE]*/
 		
 		// [PlanMst] - delete
 		int res1 = sqlSession.delete("deletePlanMst", Integer.parseInt(planNum));
@@ -204,7 +169,7 @@ public class PlanDAO implements IDao {
 	}
 	
 	
-	
+	// planDt insert
 	@Override
 	@Transactional
 	public String insertPlanDtDo(HttpServletRequest request, Model model) {
@@ -212,8 +177,82 @@ public class PlanDAO implements IDao {
 		
 		String result = null;
 		
+		// request에서 넘어온 parameter를 planMstDto로 파싱하는 메서드 실행
+		PlanDto mstDto = planMstDtoParser(request);
 		
-		//[planMst]
+		int res1 = sqlSession.insert("insertMst", mstDto);
+		result = res1 > 0 ? "success": "failed";
+		logger.info("insertPlanDtDo res1(Mst) : " + result);
+		
+		// request에서 넘어온 parameter를 planDtDto로 파싱하는 메서드 실행
+		ArrayList<PlanDto2> dtDtos = (ArrayList)planDtDtoParser(mstDto.getPlanNum(), request);
+		
+		// 배열로 다중행 insert 실행
+		int res2 = sqlSession.insert("insertDt", dtDtos);
+		result = res2 > 0 ? "success": "failed";
+		logger.info("insertPlanDtDo res2(Dt) : " + result);
+
+		return result;
+	}
+	
+	
+	// planDt modify(update, delete, insert 동시 발생) /* 비효율적 1. 수정 내용 없어도 update처리하는 것  2. list 객체로 insert로 개선 */ 
+	@Override
+	@Transactional
+	public String detailModifyDo(HttpServletRequest request) {
+		logger.info("detailModifyDo() in >>> ");
+	
+		String result = null;
+		
+		// parameter로 넘어온 deleteDtNum을 '/'로 구분하여 배열로 생성
+		String[] deleteDtNum = request.getParameter("deleteDtNum").split("/");
+		
+		List<Integer> deleteDtList = new ArrayList<Integer>();
+
+		// deleteDtNum != null : 삭제된 일정이 하나라도 있을 때
+		if ( deleteDtNum != null ) {
+			for ( int i = 0; i < deleteDtNum.length; i++ ) {
+				deleteDtList.add(Integer.parseInt(deleteDtNum[i]));
+			}
+			// myBatis 구문 실행
+			int res = sqlSession.delete("deleteDt", deleteDtList);
+			result = res == 1 ? "success": "failed";
+		}
+		
+		
+		// 수정 페이지에서 넘어온 parameter parsing해서 Dto객체 list 생성
+		int planNum = Integer.parseInt(request.getParameter("planNum"));
+		ArrayList<PlanDto2> dtos = (ArrayList)planDtDtoParser(planNum, request);
+
+		// 처리할 query로 구분해서 담을 list 생성
+		ArrayList<PlanDto2> insertDtos = new ArrayList<PlanDto2>();
+		ArrayList<PlanDto2> updateDtos = new ArrayList<PlanDto2>();
+		
+		// Dto로 만들어서 하나씩 update
+		for ( int i = 0 ; i < dtos.size(); i++ ) {
+	
+			// planDtNum == 0 : 새로 추가된 상세 일정으로 insert
+			if ( dtos.get(i).getPlanDtNum() == 0 ) {
+				insertDtos.add(dtos.get(i));
+				
+			// planDtNum != 0 : 기존에 있던 상세 일정으로 update
+			} else {
+				updateDtos.add(dtos.get(i));
+				
+			}
+		};
+		
+		int res1 = sqlSession.insert("insertDt", insertDtos);
+		int res2 = sqlSession.update("updatePlanDt2", updateDtos);
+		
+		result = res1== 1 ? "success": "failed";
+		result = res2 == 1 ? "success": "failed";
+		
+		return result;
+	}
+	
+	//PlanMstDto를 생성하는 메서드
+	public PlanDto planMstDtoParser(HttpServletRequest request) {
 		int planNum = Integer.parseInt(request.getParameter("planNum"));
 		String planName = request.getParameter("planName");
 		String startDate = request.getParameter("startDate");
@@ -221,85 +260,12 @@ public class PlanDAO implements IDao {
 		String dateCount = request.getParameter("dateCount");
 		String eventColor = request.getParameter("eventColor");
 		
-		//Make mstDto
 		PlanDto mstDto = new PlanDto(planNum, planName, startDate, endDate, dateCount, eventColor);
-		logger.info(mstDto.getDateCount());
-		int res1 = sqlSession.insert("insertMst", mstDto);
-		result = res1 > 0 ? "success": "failed";
 		
-		logger.info("insertPlanDtDo res1 : " + result);
-
-		//[planDt]
-		String[] planDtNum = request.getParameterValues("planDtNum");
-		String[] placeName = request.getParameterValues("placeName");
-		String[] placeCount = request.getParameterValues("placeCount");
-		String[] planDay = request.getParameterValues("planDay");
-		String[] planDate = request.getParameterValues("planDate");
-		String[] startTime = request.getParameterValues("startTime");
-		String[] endTime = request.getParameterValues("endTime");
-		String[] theme = request.getParameterValues("theme");
-		String[] latitude = request.getParameterValues("latitude");
-		String[] longitude = request.getParameterValues("longitude");
-		String[] address = request.getParameterValues("address");
-		String[] category = request.getParameterValues("category");
-		String[] transportation = request.getParameterValues("transportation");
-		String[] details = request.getParameterValues("details");
-		
-		//Make dtDto[]
-		for ( int i = 0 ; i < planDay.length; i++ ) {
-			PlanDto2 dtDto = new PlanDto2(Integer.parseInt(planDtNum[i]),
-					  mstDto.getPlanNum(),
-					  placeName[i],
-					  placeCount[i],
-					  planDay[i],
-					  planDate[i],
-					  startTime[i],
-					  endTime[i],
-					  theme[i],
-					  latitude[i],
-					  longitude[i],
-					  address[i],
-					  category[i],
-					  transportation[i],
-					  details[i]);
-			
-			int res2 = sqlSession.insert("insertDt", dtDto);
-			result = res2 > 0 ? "success": "failed";
-		};
-
-		
-		logger.info("insertPlanDtDo res2 : " + result);
-
-		return result;
+		return mstDto;
 	}
 	
-	@Override
-	@Transactional
-	public String detailModifyDo(HttpServletRequest request) {
-		logger.info("detailModifyDo() in >>> ");
-		Map<String, String> deleteDtMap = new HashMap<String, String>();
-		
-		List<Map<String, String>> deleteDtList = new ArrayList<Map<String, String>>();
-		String[] deleteDtNum = request.getParameter("deleteDtNum").split("/");
-		String result = null;
-		
-		if ( deleteDtNum != null ) {
-			for ( int i = 0; i < deleteDtNum.length; i++ ) {
-				if ( Integer.parseInt(deleteDtNum[i]) != 0 ) {
-					deleteDtMap.put("value", "planDtNum");
-					deleteDtMap.put("planDtNum", deleteDtNum[i]);
-				}
-				
-				deleteDtList.add(deleteDtMap);
-			}
-			
-			int res = sqlSession.delete("deleteDt", deleteDtList);
-			result = res == 1 ? "success": "failed";
-		}
-		
-		int planNum = Integer.parseInt(request.getParameter("planNum"));
-		
-		//[planDt]
+	public List<PlanDto2> planDtDtoParser(int planNum, HttpServletRequest request) {
 		String[] planDtNum = request.getParameterValues("planDtNum");
 		String[] placeName = request.getParameterValues("placeName");
 		String[] placeCount = request.getParameterValues("placeCount");
@@ -314,8 +280,9 @@ public class PlanDAO implements IDao {
 		String[] category = request.getParameterValues("category");
 		String[] transportation = request.getParameterValues("transportation");
 		String[] details = request.getParameterValues("details");
+
+		List<PlanDto2> planDtDtos = new ArrayList<PlanDto2>();
 		
-		//Make dtDto[]
 		for ( int i = 0 ; i < planDtNum.length; i++ ) {
 			PlanDto2 dtDto = new PlanDto2(Integer.parseInt(planDtNum[i]),
 										  planNum,
@@ -333,19 +300,45 @@ public class PlanDAO implements IDao {
 										  transportation[i],
 										  details[i]);
 			
-			if ( dtDto.getPlanDtNum() == 0 ) {
-				int res1 = sqlSession.insert("insertDt", dtDto);
-				result = res1== 1 ? "success": "failed";
-			} else {
-				int res2 = sqlSession.update("updatePlanDt2", dtDto);
-				result = res2 == 1 ? "success": "failed";
-			}
-			
-
+			planDtDtos.add(dtDto);
 		};
 		
-		
-		return result;
+		return planDtDtos;
 	}
+	
+	// modal창에서 수정한 plan을 update할 객체 배열 생성 메서드
+	public List<PlanDto2> getUpdateDtos(int planNum, String startDate, int dateCount) {
+		List<PlanDto2> dtos = new ArrayList<PlanDto2>();
+		
+		// startDate Calendar 객체로 만들어서 작업
+		int y = Integer.parseInt(startDate.substring(0, 4));
+		int m = Integer.parseInt(startDate.substring(5, 7)) - 1;;
+		int d = Integer.parseInt(startDate.substring(8));
+		
+		Date date = new Date((y-1900), m, d);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		
+		for ( int i = 0; i < dateCount; i++ ) {
+			if ( i == 0 ) {
+				// Calendar 객체로 된 startDate부터 하루씩 늘려가면서 planDate 생성
+				cal.add(Calendar.DATE, i);
+			}
+			// Calendar 객체로 된 startDate부터 하루씩 늘려가면서 planDate 생성
+			cal.add(Calendar.DATE, 1);
+			
+			// planDate를 db 포맷에 맞게 변경
+			String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+			
+			// planNum, planDay, planDate 값만 가진 PlanDto2를 만들어서 배열에 저장
+			PlanDto2 dtDto = new PlanDto2(planNum, "day"+(i+1), r);
+			
+			dtos.add(dtDto);
+		}
+		
+		return dtos;
+		
+	}
+	
 
 }

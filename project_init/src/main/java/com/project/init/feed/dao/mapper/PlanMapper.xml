@@ -31,26 +31,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 </select>
 
 
-<insert id="insertDt" parameterType="com.project.init.feed.dto.PlanDto2">
-	INSERT INTO plan_dt
+<update id="insertDt" parameterType="java.util.List">
+	<foreach collection="list" item="dt" index="index" separator=" " open="INSERT ALL" close="SELECT * FROM dual ">
+	INTO plan_dt
 	
 	VALUES
 		(plan_dt_seq.NEXTVAL,
-		 #{planNum}, 
-		 #{placeName},
-		 #{placeCount},
-		 #{planDay},
-		 #{planDate},
- 		 #{startTime},
- 		 #{endTime},
- 		 #{theme},
-		 #{latitude},
-		 #{longitude},
-		 #{address},
-		 #{category},
-		 #{transportation},
-		 #{details})
-</insert>
+		 #{dt.planNum}, 
+		 #{dt.placeName},
+		 #{dt.placeCount},
+		 #{dt.planDay},
+		 #{dt.planDate},
+ 		 #{dt.startTime},
+ 		 #{dt.endTime},
+ 		 #{dt.theme},
+		 #{dt.latitude},
+		 #{dt.longitude},
+		 #{dt.address},
+		 #{dt.category},
+		 #{dt.transportation},
+		 #{dt.details})
+	</foreach>
+</update>
+
+<update id="insertNullDt" parameterType="java.util.List">
+	<foreach collection="list" item="dt" index="index" separator=" " open="INSERT ALL" close="SELECT * FROM dual ">
+	INTO plan_dt
+	(planDtNum, planNum, placeCount, planDay, planDate, theme)
+	VALUES
+		(plan_dt_seq.NEXTVAL,
+		 #{dt.planNum}, 
+		 #{dt.placeCount},
+		 #{dt.planDay},
+		 #{dt.planDate},
+ 		 #{dt.theme}
+		 )
+	</foreach>
+</update>
+
 
 <update id="updatePlanMst" parameterType="com.project.init.feed.dto.PlanDto">
 	UPDATE plan_mst
@@ -65,42 +83,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	WHERE planNum = #{planNum}
 </update>
 
-<update id="updatePlanDt1" parameterType="com.project.init.feed.dto.PlanDto2">
-	UPDATE plan_dt 
-	
-	SET planDate = #{planDate}
+<update id="updatePlanDt1" parameterType="java.util.List">
+	<foreach collection="list" item="dt" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+		UPDATE plan_dt 
 		
-	WHERE planNum = #{planNum}
-	AND planDay = #{planDay}
+		SET planDate = #{dt.planDate}
+		
+		WHERE planNum = #{dt.planNum}
+		AND planDay = #{dt.planDay}
+	</foreach>
 </update>
 
 <update id="updatePlanDt2" parameterType="com.project.init.feed.dto.PlanDto2">
-	UPDATE plan_dt 
-	
-	SET placeName = #{placeName}, 
-		startTime = #{startTime}, 
-		endTime = #{endTime},
-		theme = #{theme}, 
-		latitude = #{latitude}, 
-		longitude = #{longitude}, 
-		address = #{address}, 
-		category = #{category}, 
-		transportation = #{transportation}, 
-		details = #{details}, 
-		placeCount = #{placeCount}		 
+	<foreach collection="list" item="dt" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+		UPDATE plan_dt 
 		
-	WHERE planDtNum = #{planDtNum}
+		SET placeName = #{dt.placeName}, 
+			startTime = #{dt.startTime}, 
+			endTime = #{dt.endTime},
+			theme = #{dt.theme}, 
+			latitude = #{dt.latitude}, 
+			longitude = #{dt.longitude}, 
+			address = #{dt.address}, 
+			category = #{dt.category}, 
+			transportation = #{dt.transportation}, 
+			details = #{dt.details}, 
+			placeCount = #{dt.placeCount}		 
+			
+		WHERE planDtNum = #{dt.planDtNum}
+	</foreach>
 </update>
 
 <delete id="deletePlanDt1" parameterType="com.project.init.feed.dto.PlanDto2">
 	DELETE FROM plan_dt WHERE planNum = #{planNum} AND planDay = #{planDay}
 </delete>
 
-<delete id="deleteDt" parameterType="java.util.ArrayList">
+<delete id="deleteDt" parameterType="java.util.List">
 	DELETE FROM plan_dt
 	<where>
 		<foreach collection="list" item="item" index="index" separator="OR">
-			#{item.value} = #{item.planDtNum}
+			planDtNum = #{item}
 		</foreach>
 	</where>
 </delete>

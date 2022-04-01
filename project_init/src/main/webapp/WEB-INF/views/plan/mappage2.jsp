@@ -116,8 +116,8 @@ pageEncoding="UTF-8"%>
 							<div class="inputbox row mx-0 justify-content-between">
 								<%-- [pk] planDtNum --%>
 								<input type="hidden" class="form-control" name="planDtNum" value="0" readonly/>
-								<%-- day --%>
-								<input type="hidden" class="form-control" name="planDay" value="Day1" readonly/>
+								<%-- planDay --%>
+								<input type="hidden" class="form-control" name="planDay" value="day1" readonly/>
 								<%-- placeCount --%>
 								<input type="hidden" class="form-control" name="placeCount" readonly/>
 								<%-- planDate --%>
