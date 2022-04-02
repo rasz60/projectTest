@@ -172,7 +172,7 @@ $(document).ready(function() {
 			$(this).siblings('input[name=placeName]').val('');
 			
 			var inputBox = $(this).siblings('.inputbox');
-			
+			removeMarker(inputBox.children('input[name=latitude]').val(), inputBox.children('input[name=longitude]').val());
 			inputBox.children('input[name=planDtNum]').val('0');
 			inputBox.children('input[name=placeName]').val('');
 			inputBox.children('input[name=latitude]').val('');
@@ -194,6 +194,7 @@ $(document).ready(function() {
 			for ( var i = Number(index); i <= currValue; i++ ) {
 				// 자기 자신의 박스를 삭제
 				if ( i == Number(index) ) {
+					removeMarker(inputBox.children('input[name=latitude]').val(), inputBox.children('input[name=longitude]').val());
 					// 버튼을 누른 상세일정 박스를 삭제
 					$(this).parent().remove();
 					
@@ -211,7 +212,15 @@ $(document).ready(function() {
 			target.parent().siblings('p.mt-2').children('.showIndex').text(delValue);
 		}
 	});
+
+	function removeMarker(latitude, longitude) {
+
+		position = new kakao.maps.LatLng(latitude, longitude); // 디테일 일정 안에 있는 좌표 값 객체에 담기
 	
+		if(markerPosition.equals(position)){ // 맵에 생성한 마커의 좌표와 디테일 일정 안에 있는 좌표값이 같은 마커
+			marker.setMap(null); // 맵에서 제거
+		}
+	}
 	
 	// detailBtn을 누르면 교통 수단과 상세 일정을 입력하는 input toggle
 	$(document).on('click', '.detailBtn', function() {

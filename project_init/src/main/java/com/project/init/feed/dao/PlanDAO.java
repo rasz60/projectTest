@@ -115,16 +115,16 @@ public class PlanDAO implements IDao {
 			updatePlanDt = getUpdateDtos(mstDto.getPlanNum(), mstDto.getStartDate(), newly);				
 		}
 			
-		// dateCount가 더 커졌으면 원래의 일정 수 만큼만 바꿔주고 나머지 일자는 빈 일정을 생성해서 insert
+		// dateCount가 더 커졌으면 원래의 일정 수 만큼은 바꿔주고 나머지 일자는 빈 일정을 생성해서 insert
 		else if ( origin < newly ) {
-			// t
+			// 새로 생성한 dateCount만큼 생성한 배열을 가져옴
 			updatePlanDt = getUpdateDtos(mstDto.getPlanNum(), mstDto.getStartDate(), newly);
 			
-			System.out.println(updatePlanDt.size());
+			//나머지 일자에 넣을 빈 일정을 담을 배열
 			ArrayList<PlanDto2> nullPlanDt = new ArrayList<PlanDto2>();
 			
+			// 원래 일정을 초과하는 만큼만 nullPlanDt에 담고 전체 배열에서 삭제함
 			for(int i = (newly-1); i >= origin; i-- ) {
-				System.out.println(updatePlanDt.get(i).getPlaceName());
 				updatePlanDt.get(i).setPlanDtNum(0);
 				updatePlanDt.get(i).setTheme("방문");
 				updatePlanDt.get(i).setPlaceCount("0");
@@ -270,6 +270,7 @@ public class PlanDAO implements IDao {
 		return mstDto;
 	}
 	
+	//PlanDtDto를 리스트로 생성하는 메서드
 	public List<PlanDto2> planDtDtoParser(int planNum, HttpServletRequest request) {
 		String[] planDtNum = request.getParameterValues("planDtNum");
 		String[] placeName = request.getParameterValues("placeName");
