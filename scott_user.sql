@@ -16,6 +16,7 @@ CREATE TABLE Userinfo(
  userVisitdate      date
 );
 
+
 alter table userinfo
  add constraint user_nick_uk unique(usernick);
  
