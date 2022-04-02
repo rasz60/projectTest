@@ -17,6 +17,7 @@ CREATE TABLE Userinfo(
 );
 
 
+
 alter table userinfo
  add constraint user_nick_uk unique(usernick);
  
