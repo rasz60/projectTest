@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.init.feed.dao.IDao;
+import com.project.init.feed.dao.UserDao;
 import com.project.init.feed.dto.PlanDto;
 import com.project.init.feed.dto.PlanDto2;
+import com.project.init.util.Constant;
 
 
 @Controller
@@ -26,19 +28,25 @@ public class PlanController {
 	
 	@Autowired
 	private IDao dao;
-	
+	private UserDao udao;
+	@Autowired
+	public void setUdao(UserDao udao) {
+		this.udao = udao;
+		Constant.udao = udao;
+	}
 
-	// feed-calendar ÆäÀÌÁö¿¡¼­ »ý¼ºÇÑ ÀÏÁ¤À» dto·Î ¸¸µé¾î¼­ plan ÆäÀÌÁö·Î ÀÌµ¿
+	// feed-calendar ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ dtoï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½î¼­ plan ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
 	@RequestMapping("")
 	public String planmstDo(PlanDto dto, Model model) {
 		logger.info("planmst.do(" + dto.getPlanName() + ") in >>>>");
 
 		model.addAttribute("plan", dto);
-		
+		model.addAttribute("id", Constant.username);
+
 		return "plan/mappage2";
 	}
 	
-	// planDt »ý¼ºÀ» ¸¶Ä¡°í db·Î insert
+	// planDt ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ dbï¿½ï¿½ insert
 	@ResponseBody
 	@RequestMapping(value = "detail.do", produces = "application/text; charset=UTF-8")
 	public String detailDo(HttpServletRequest request, Model model) {
@@ -50,12 +58,12 @@ public class PlanController {
 	}
 
 	
-	// modalÃ¢¿¡¼­ »ó¼¼ ÀÏÁ¤ ¼öÁ¤À» ´­·¶À» ¶§
+	// modalÃ¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 	@RequestMapping("detail_modify")
 	public String detail_modify(String planNum, Model model) {
 		logger.info("detail_modify(" + planNum + ") in >>>>");
 		
-		// planNumÀ¸·Î planMst¿Í planDt¸¦ °¡Á®¿Í model¿¡ ´ã¾Æ¼­ º¸³¿
+		// planNumï¿½ï¿½ï¿½ï¿½ planMstï¿½ï¿½ planDtï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ modelï¿½ï¿½ ï¿½ï¿½Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½
 		PlanDto result1= dao.selectPlanMst(planNum);
 		model.addAttribute("plan1", result1);
 				
@@ -66,7 +74,7 @@ public class PlanController {
 	}
 	
 	
-	// modalÃ¢¿¡¼­ »ó¼¼ ÀÏÁ¤ ¼öÁ¤À» ¸¶Ä¡°í db insert
+	// modalÃ¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ db insert
 	@ResponseBody
 	@RequestMapping(value="detail_modify.do", produces="application/text; charset=UTF-8")
 	public String detailModifyDo(HttpServletRequest request) {

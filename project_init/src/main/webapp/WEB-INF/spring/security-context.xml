@@ -32,9 +32,15 @@
 		</headers>
 	
 		<!-- 각각의 요청 경로별 권한 지정(절차적으로 처리하여 윗줄에 정의한 권한이 우선) pattern="path" : 접근 경로 / access="spring-EL" : 허용할 권한 범위 -->
-		
+
 		<!-- permitAll : 모두에게 허용 -->
 		<intercept-url pattern="/" access="permitAll" />
+
+		<!-- isAnonymous() : 로그인하지 않은 user -->
+		<intercept-url pattern="/processLogin" access="isAnonymous()" />
+
+		<!-- hasRole('ROLE_##') : 로그인한 회원 중 'ROLE_##' 권한을 가진 user / requires-channel="" : url에 지정한 값이 포함되어 있어야만 접근 -->
+		<intercept-url pattern="/feed" access="hasRole('ROLE_USER')" requires-channel="https" />
 
 		<!-- form으로 submit하여 login 관련 설정
 			 login-page = 로그인 form이 있는 페이지 지정 
@@ -45,11 +51,11 @@
 			 authentication-failure-url = 로그인 실패시 이동 페이지 및 query 값
 			 always-use-default-target = 로그인 성공시 default-target-url로 언제나 이동하는 속성(?)
 		 -->
-		<form-login login-page="/login_view" 
+		<form-login login-page="/" 
 					login-processing-url="/login"
 					username-parameter="uid"
 					password-parameter="upw"
-					default-target-url="/mainFrame"
+					default-target-url="/loginSuc"
 					authentication-failure-url="/processLogin?error=1"
 					always-use-default-target="true" />
 		
@@ -60,7 +66,7 @@
 		 -->			
 		<logout invalidate-session="true"
 				logout-url="/logout"
-				logout-success-url="/processLogin?logout=1" />
+				logout-success-url="/" />
 		
 		<!-- 위조 사이트에서 원 사이트로 접근하는 것을 방지하는 기능 / default가 false이며, 외부 서버 ajax 사용 시 별도 설정 필요  -->
 		<csrf disabled="false" />

@@ -5,12 +5,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.project.init.feed.dao.IDao" >
  
 <select id="getCalendarEvent" resultType="com.project.init.feed.dto.PlanDto">
-	SELECT * FROM plan_mst
+	SELECT * FROM plan_mst WHERE userId = #{userId}
 </select>
 
 <insert id="insertMst" parameterType="com.project.init.feed.dto.PlanDto">
-	INSERT INTO plan_mst (planNum, planName, startDate, endDate, dateCount, eventColor) 
-	VALUES (plan_mst_seq.NEXTVAL, #{planName}, #{startDate}, #{endDate}, #{dateCount}, #{eventColor})
+	INSERT INTO plan_mst (planNum, userId, planName, startDate, endDate, dateCount, eventColor) 
+	VALUES (plan_mst_seq.NEXTVAL, #{planName}, #{userId}, #{startDate}, #{endDate}, #{dateCount}, #{eventColor})
 	<selectKey resultType="int" keyProperty="planNum" order="AFTER">
 		SELECT plan_mst_seq.currVal from dual
 	</selectKey>
@@ -20,6 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	SELECT * 
 	FROM plan_Mst 
 	WHERE planNum = #{planNum}
+	AND userId = #{userId}
 </select>
 
 
@@ -27,6 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	SELECT * 
 	FROM plan_dt 
 	WHERE planNum = #{planNum}
+	AND userId = #{userId}
 	ORDER BY planDay, startTime ASC
 </select>
 
@@ -37,7 +39,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	VALUES
 		(plan_dt_seq.NEXTVAL,
-		 #{dt.planNum}, 
+		 #{dt.planNum},
+		 #{dt.userId},
 		 #{dt.placeName},
 		 #{dt.placeCount},
 		 #{dt.planDay},
@@ -60,7 +63,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	(planDtNum, planNum, placeCount, planDay, planDate, theme)
 	VALUES
 		(plan_dt_seq.NEXTVAL,
-		 #{dt.planNum}, 
+		 #{dt.planNum},
+		 #{dt.userId},
 		 #{dt.placeCount},
 		 #{dt.planDay},
 		 #{dt.planDate},
@@ -81,6 +85,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		eventColor = #{eventColor}
 		
 	WHERE planNum = #{planNum}
+	AND userId = #{userId}
 </update>
 
 <update id="updatePlanDt1" parameterType="java.util.List">
@@ -91,6 +96,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 		WHERE planNum = #{dt.planNum}
 		AND planDay = #{dt.planDay}
+		AND userId = #{userId}
 	</foreach>
 </update>
 
@@ -111,6 +117,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			placeCount = #{dt.placeCount}		 
 			
 		WHERE planDtNum = #{dt.planDtNum}
+		AND userId = #{userId}
 	</foreach>
 </update>
 
@@ -124,17 +131,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<foreach collection="list" item="item" index="index" separator="OR">
 			planDtNum = #{item}
 		</foreach>
+		AND userId = #{userId}
 	</where>
 </delete>
 
 
 
 <delete id="deletePlanMst" parameterType="int">
-	DELETE FROM plan_Mst WHERE planNum = #{planNum}
+	DELETE FROM plan_Mst WHERE planNum = #{planNum} AND userId = #{userId}
 </delete>
 
 <delete id="deletePlanDt" parameterType="int">
-	DELETE FROM plan_dt WHERE planNum = #{planNum}
+	DELETE FROM plan_dt WHERE planNum = #{planNum} AND userId = #{userId}
 </delete>
 
 </mapper>

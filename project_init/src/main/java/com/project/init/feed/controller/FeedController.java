@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.init.feed.dao.IDao;
+import com.project.init.feed.dao.UserDao;
 import com.project.init.feed.dto.PlanDto;
 import com.project.init.feed.dto.PlanDto2;
+import com.project.init.util.Constant;
 
 @Controller
 @RequestMapping("/feed")
@@ -29,17 +31,26 @@ public class FeedController {
 	
 	@Autowired
 	private IDao dao;
+	private UserDao udao;
+	@Autowired
+	public void setUdao(UserDao udao) {
+		this.udao = udao;
+		Constant.udao = udao;
+	}
 	
 	@RequestMapping("")
-	public String feed() {
-		logger.info("feed page >>>>");
+	public String feed(Model model) {
+		logger.info("feed page " + Constant.username + " >>>>");
+		
+		model.addAttribute("id", Constant.username);
+		
 		return "feed/main";
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="getAllPlans.do", produces="application/json; charset=UTF-8")
 	public ArrayList<PlanDto> getAllPlans() {
-		// feed-calendar Á¢¼Ó½Ã ¸ðµç ÀÏÁ¤ °¡Á®¿À±â
+		// feed-calendar ï¿½ï¿½ï¿½Ó½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		logger.info("getAllPlans() >>>>");
 		
 		ArrayList<PlanDto> result = dao.selectAllPlan();
@@ -52,7 +63,7 @@ public class FeedController {
 	@ResponseBody
 	@RequestMapping(value = "modify_modal.do", produces="application/json; charset=UTF-8")
 	public ArrayList<PlanDto2> modifyModal(@RequestBody String planNum) {
-		// event ºí·° Å¬¸¯ÇÏ¿© modalÃ¢ ¶ç¿üÀ» ¶§, planDt ¸ðµç ³»¿ë °¡Á®¿À±â
+		// event ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ï¿ï¿½ modalÃ¢ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, planDt ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		logger.info("modifyModal("+ planNum +") in >>>>");
 		
 		ArrayList<PlanDto2> result= dao.selectPlanDt(planNum);
@@ -66,7 +77,7 @@ public class FeedController {
 	@ResponseBody
 	@RequestMapping(value = "modify_plan.do", produces="application/text; charset=UTF-8")
 	public String modifyPlan(HttpServletRequest request) {
-		// modalÃ¢¿¡¼­ ¼öÁ¤µÈ ³»¿ëÀ¸·Î planMst, planDt ³»¿ë ¼öÁ¤ÇÏ±â
+		// modalÃ¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ planMst, planDt ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
 		logger.info("modifyPlans("+ request.getParameter("planNum") +") in >>>>");
 
 		String result= null;
@@ -79,7 +90,7 @@ public class FeedController {
 	@ResponseBody
 	@RequestMapping(value = "delete_plan.do", produces="application/text; charset=UTF-8")
 	public String deletePlan(@RequestBody String planNum) {
-		// modalÃ¢¿¡¼­ »èÁ¦ÇÏ¸é planMst, planDt ¸ðµÎ »èÁ¦ÇÏ±â
+		// modalÃ¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ planMst, planDt ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
 		logger.info("modifyPlans("+ planNum +") in >>>>");
 		
 		String result = dao.deletePlan(planNum);

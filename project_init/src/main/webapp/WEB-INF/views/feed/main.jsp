@@ -101,6 +101,13 @@
 					<%-- 1- _csrf input --%>			
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					
+					<%-- test- UserId --%>	
+					<div class="form-group">
+						<label for="userId">id</label>
+						<input type="text" name="userId" id="userId" class="form-control" value="${id }" required/>
+					</div>
+					
+					
 					<%-- 2- planName --%>	
 					<div class="form-group">
 						<label for="planName">일정 이름</label>

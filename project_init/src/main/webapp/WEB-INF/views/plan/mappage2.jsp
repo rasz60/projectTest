@@ -85,6 +85,8 @@ pageEncoding="UTF-8"%>
 				<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" readonly/>
 				<%-- [pk] planNum --%>
 				<input type="hidden" class="form-control" name="planNum" value="${plan.planNum}" value="0" readonly/>
+				<%-- userId --%>
+				<input type="hidden" class="form-control" name="userId" value="${id }" value="0" readonly/>
 				<%-- planName --%>
 				<input type="hidden" class="form-control" name="planName" value="${plan.planName}" readonly/>
 				<%-- startDate --%>
