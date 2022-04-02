@@ -1,8 +1,8 @@
 CREATE TABLE plan_dt(
     planDtNum NUMBER(38) NOT NULL PRIMARY KEY,
+    userId VARCHAR2(200) NOT NULL,
     planNum NUMBER(38) NOT NULL,
     placeName VARCHAR2(50), 
-	placeCount VARCHAR2(50), 
     planDay VARCHAR2(100) NOT NULL,
     planDate VARCHAR2(100) NOT NULL,
     startTime  VARCHAR2(100),
@@ -19,6 +19,7 @@ create SEQUENCE plan_dt_seq nocache;
 
 CREATE TABLE plan_mst(
     plannum NUMBER(38) NOT NULL PRIMARY KEY,
+    userId VARCHAR2(200) NOT NULL,
     planName VARCHAR2(200) NOT NULL,
     startDate VARCHAR2(100) NOT NULL,
     endDate VARCHAR2(100) NOT NULL,
