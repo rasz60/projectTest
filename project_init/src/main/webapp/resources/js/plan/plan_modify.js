@@ -11,7 +11,7 @@ $(document).ready(function() {
 		
 		// client에게 보여지는 text에 각 일정 개수와, planDate 입력
 		$('#frm' + i).parent().siblings('p.mt-2').children('.showIndex').text(placeCount);
-		$('#frm' + i).parent().siblings('#date-title').text($('#frm' + i).attr('data-day') + ' : ' + planDate);
+		$('#frm' + i).parent().siblings('#date-title').text('DAY ' + i + ' : ' + planDate);
 		
 		// 세부 일정이 0일 때
 		if ( placeCount == '0' ) {

@@ -24,9 +24,9 @@ pageEncoding="UTF-8"%>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd&libraries=services"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd"></script>
 
-<%-- page custom javascript file
+<%-- page custom javascript file --%>
 <script type="text/javascript" src="js/plan/plan_detail.js"></script>
- --%>
+
  
 <%-- kakaomap css file --%>
 <link rel="stylesheet" type="text/css" href="css/plan/kakaomap/kakaomap.css" />
