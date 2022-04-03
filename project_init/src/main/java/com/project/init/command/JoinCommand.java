@@ -26,13 +26,13 @@ public class JoinCommand implements ICommand {
 		String UAddr2 = request.getParameter("uAddr2");
 		String UAddr = UAddr1+UAddr2;
 		
-		String UPw_org = UPw; //��ȣȭ �Ǳ��� password�� UPw_org�� ����
+		String UPw_org = UPw; //암호화 되기전 password를 UPw_org에 저장
 		UPw = passwordEncoder.encode(UPw_org); //��ȣȭ
 		System.out.println(UPw + " size " + UPw.length());
 		
 		String result = udao.join(UEmail,UPw,UNickName,UBirth,UGender,UPst,UAddr);
 		
-		request.setAttribute("result", result); //controller���� ��� ���
+		request.setAttribute("result", result); //controller에서 결과 사용
 	}
 	
 }

@@ -32,6 +32,7 @@ public class FeedController {
 	@Autowired
 	private IDao dao;
 	private UserDao udao;
+	
 	@Autowired
 	public void setUdao(UserDao udao) {
 		this.udao = udao;
@@ -53,7 +54,7 @@ public class FeedController {
 		// feed-calendar ���ӽ� ��� ���� ��������
 		logger.info("getAllPlans() >>>>");
 		
-		ArrayList<PlanDto> result = dao.selectAllPlan();
+		ArrayList<PlanDto> result = dao.selectAllPlan(Constant.username);
 				
 		logger.info("getAllPlans() result.isEmpty() ? " + result.isEmpty());
 
@@ -66,7 +67,7 @@ public class FeedController {
 		// event �� Ŭ���Ͽ� modalâ ����� ��, planDt ��� ���� ��������
 		logger.info("modifyModal("+ planNum +") in >>>>");
 		
-		ArrayList<PlanDto2> result= dao.selectPlanDt(planNum);
+		ArrayList<PlanDto2> result= dao.selectPlanDt(planNum, Constant.username);
 		
 		logger.info("modifyPlans("+ planNum +") result.isEmpty() ? " + result.isEmpty());
 		
@@ -82,7 +83,7 @@ public class FeedController {
 
 		String result= null;
 		
-		result = dao.modifyPlanMst(request);
+		result = dao.modifyPlanMst(request, Constant.username);
 		
 		return result;
 	}
@@ -93,7 +94,7 @@ public class FeedController {
 		// modalâ���� �����ϸ� planMst, planDt ��� �����ϱ�
 		logger.info("modifyPlans("+ planNum +") in >>>>");
 		
-		String result = dao.deletePlan(planNum);
+		String result = dao.deletePlan(planNum, Constant.username);
 		
 		return result;
 	}

@@ -1,8 +1,9 @@
 CREATE TABLE plan_dt(
     planDtNum NUMBER(38) NOT NULL PRIMARY KEY,
-    userId VARCHAR2(200) NOT NULL,
     planNum NUMBER(38) NOT NULL,
-    placeName VARCHAR2(50), 
+    userId VARCHAR2(200) NOT NULL,
+    placeName VARCHAR2(50),
+    placeCount VARCHAR2(50),
     planDay VARCHAR2(100) NOT NULL,
     planDate VARCHAR2(100) NOT NULL,
     startTime  VARCHAR2(100),
@@ -27,6 +28,12 @@ CREATE TABLE plan_mst(
     eventColor VARCHAR2(100) NOT NULL
 );
 CREATE SEQUENCE plan_mst_seq nocache;
+CREATE OR REPLACE TRIGGER tr_plan_dt
+BEFORE INSERT ON plan_dt
+FOR EACH ROW
+BEGIN
+    SELECT plan_dt_seq.NEXTVAL INTO :new.planDtNum FROM dual;
+END;
 
 SELECT * FROM plan_dt;
 SELECT * FROM plan_mst;
@@ -36,4 +43,7 @@ DROP SEQUENCE plan_mst_seq;
 
 DROP TABLE plan_dt;
 DROP SEQUENCE plan_dt_seq;
+
+DROP TRIGGER tr_plan_dt;
+
 commit;

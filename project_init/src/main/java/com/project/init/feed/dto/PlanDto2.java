@@ -5,6 +5,7 @@ public class PlanDto2 {
 	
 	private int planDtNum;
 	private int planNum;
+	private String userId;
 	private String placeName;
 	private String placeCount;
 	private String planDay;
@@ -22,26 +23,14 @@ public class PlanDto2 {
 	public PlanDto2() {
 		super();
 	}
-	
-	public PlanDto2(int planNum, String planDay) {
-		super();
-		this.planNum = planNum;
-		this.planDay = planDay;
-	}
-	
-	public PlanDto2(int planNum, String planDay, String planDate) {
-		super();
-		this.planNum = planNum;
-		this.planDay = planDay;
-		this.planDate = planDate;
-	}
 
-	public PlanDto2(int planDtNum, int planNum, String placeName, String placeCount, String planDay, String planDate, String startTime,
-			String endTime, String theme, String latitude, String longitude, String address,
-			String category, String transportation, String details) {
+	public PlanDto2(int planDtNum, int planNum, String userId, String placeName, String placeCount, String planDay,
+			String planDate, String startTime, String endTime, String theme, String latitude, String longitude,
+			String address, String category, String transportation, String details) {
 		super();
 		this.planDtNum = planDtNum;
 		this.planNum = planNum;
+		this.userId = userId;
 		this.placeName = placeName;
 		this.placeCount = placeCount;
 		this.planDay = planDay;
@@ -71,6 +60,14 @@ public class PlanDto2 {
 
 	public void setPlanNum(int planNum) {
 		this.planNum = planNum;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getPlaceName() {
@@ -176,6 +173,5 @@ public class PlanDto2 {
 	public void setDetails(String details) {
 		this.details = details;
 	}
-
-		
+	
 }
