@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 
 import com.project.init.feed.dto.PlanDto;
 import com.project.init.feed.dto.PlanDto2;
+import com.project.init.util.Constant;
 
 @Component
 public class PlanDAO implements IDao {
@@ -39,10 +40,10 @@ public class PlanDAO implements IDao {
 
 	// 모든 이벤트 가져오기
 	@Override
-	public ArrayList<PlanDto> selectAllPlan() {
-		logger.info("getCalendarEvent() in >>>");
+	public ArrayList<PlanDto> selectAllPlan(String userId) {
+		logger.info("getCalendarEvent(" + userId + ") in >>>");
 		
-		ArrayList<PlanDto> dtos = (ArrayList)sqlSession.selectList("getCalendarEvent");
+		ArrayList<PlanDto> dtos = (ArrayList)sqlSession.selectList("getCalendarEvent", userId);
 
 		logger.info("getCalendarEvent(" + ") result : dtos.isEmpty() ? " + dtos.isEmpty());
 		return dtos;
@@ -50,10 +51,14 @@ public class PlanDAO implements IDao {
 	
 	// planNum으로 planMst 값 가져오기
 	@Override
-	public PlanDto selectPlanMst(String planNum) {
+	public PlanDto selectPlanMst(String planNum, String userId) {
 		logger.info("selectPlan (" + planNum + ") in >>>");
 		
-		PlanDto dto = sqlSession.selectOne("selectPlanMst", Integer.parseInt(planNum));
+		PlanDto dto = new PlanDto();
+		dto.setPlanNum(Integer.parseInt(planNum));
+		dto.setUserId(userId);
+		
+		dto = sqlSession.selectOne("selectPlanMst", dto);
 		
 		logger.info("selectPlanMst(" + planNum + ") result : " + dto.getPlanNum());
 		
@@ -63,10 +68,14 @@ public class PlanDAO implements IDao {
 	
 	// planNum으로 planDt 값 가져오기
 	@Override
-	public ArrayList<PlanDto2> selectPlanDt(String planNum) {
+	public ArrayList<PlanDto2> selectPlanDt(String planNum, String userId) {
 		logger.info("selectPlanDt (" + planNum + ") in >>> ");
 		
-		ArrayList<PlanDto2> result = (ArrayList)sqlSession.selectList("selectPlanDt", Integer.parseInt(planNum));
+		PlanDto2 dto = new PlanDto2();
+		dto.setPlanNum(Integer.parseInt(planNum));
+		dto.setUserId(userId);
+		
+		ArrayList<PlanDto2> result = (ArrayList)sqlSession.selectList("selectPlanDt", dto);
 
 		logger.info("selectPlanDt (" +planNum + ") result ? " + result.isEmpty());
 		
@@ -76,7 +85,7 @@ public class PlanDAO implements IDao {
 	// modal창에서 수정한 내용 반영 /* 비효율적 = 1.수정 내용 없어도 update처리 */
 	@Override
 	@Transactional
-	public String modifyPlanMst(HttpServletRequest request) {
+	public String modifyPlanMst(HttpServletRequest request, String userId) {
 		logger.info("modifyPlanMst in >>> ");
 		String result = null;
 		
@@ -84,7 +93,7 @@ public class PlanDAO implements IDao {
 		String newDateCount = request.getParameter("newDateCount");
 		
 		// planMst update : [현재] 바뀐 내용이 없더라도 무조건 update 반영
-		PlanDto mstDto = planMstDtoParser(request);
+		PlanDto mstDto = planMstDtoParser(request, userId);
 		mstDto.setDateCount(newDateCount);
 		int res = sqlSession.update("updatePlanMst", mstDto);
 		result = res > 0 ? "success": "failed";
@@ -102,23 +111,27 @@ public class PlanDAO implements IDao {
 		if ( origin > newly ) {
 			// 기존 일정에서 newly+1 일차 일정부터 삭제 ex> origin 5일 , newly 2일 = 3일(newly+1)차부터 끝(origin)까지 planDt삭제
 			for (int i = (newly+1); i <= origin; i++) {
-				PlanDto2 dtDto = new PlanDto2(mstDto.getPlanNum(), "day"+i, "-");
+				PlanDto2 dtDto = new PlanDto2();
+				dtDto.setPlanNum(mstDto.getPlanNum());
+				dtDto.setUserId(userId);
+				dtDto.setPlanDay("day"+i);			
+
 				
 				int resDt = sqlSession.delete("deletePlanDt1", dtDto);
 				result = resDt > 0 ? "success": "failed";
 			}
-			updatePlanDt = getUpdateDtos(mstDto.getPlanNum(), mstDto.getStartDate(), newly);
+			updatePlanDt = getUpdateDtos(mstDto.getPlanNum(), userId, mstDto.getStartDate(), newly);
 		}		
 		
 		// date count가 같으면 각 planDate의 날짜만 바꿔줌
 		else if ( origin == newly ) {
-			updatePlanDt = getUpdateDtos(mstDto.getPlanNum(), mstDto.getStartDate(), newly);				
+			updatePlanDt = getUpdateDtos(mstDto.getPlanNum(), userId, mstDto.getStartDate(), newly);				
 		}
 			
 		// dateCount가 더 커졌으면 원래의 일정 수 만큼은 바꿔주고 나머지 일자는 빈 일정을 생성해서 insert
 		else if ( origin < newly ) {
 			// 새로 생성한 dateCount만큼 생성한 배열을 가져옴
-			updatePlanDt = getUpdateDtos(mstDto.getPlanNum(), mstDto.getStartDate(), newly);
+			updatePlanDt = getUpdateDtos(mstDto.getPlanNum(), userId, mstDto.getStartDate(), newly);
 			
 			//나머지 일자에 넣을 빈 일정을 담을 배열
 			ArrayList<PlanDto2> nullPlanDt = new ArrayList<PlanDto2>();
@@ -138,6 +151,8 @@ public class PlanDAO implements IDao {
 			logger.info("modifyPlanMst result 3 nullDto insert : " + (resDtSub == 0 ? "success": "failed"));
 		}
 		
+		System.out.println(updatePlanDt.get(0).getUserId());
+		
 		int resDt = sqlSession.update("updatePlanDt1", updatePlanDt);
 		result = resDt == 0 ? "success": "failed";
 		
@@ -149,22 +164,25 @@ public class PlanDAO implements IDao {
 	// modal창에서 삭제한 내용 반영 /* 비효율적 = foreign key 연결하면 해결 [ON DELETE CASCADE ENABLE] */
 	@Override
 	@Transactional
-	public String deletePlan(String planNum) {
+	public String deletePlan(String planNum, String userId) {
 		logger.info("deletePlan(" + planNum + ") in >>>");
 
 		String result = null;
 		
+		PlanDto dto = new PlanDto();
+		dto.setPlanNum(Integer.parseInt(planNum));
+		dto.setUserId(userId);
+		
 		// [PlanMst] - delete
-		int res1 = sqlSession.delete("deletePlanMst", Integer.parseInt(planNum));
+		int res1 = sqlSession.delete("deletePlanMst", dto);
 		result = res1 > 0 ? "success": "failed";
 		logger.info("deletePlan(" + planNum + ") result1 : " + result);
 		
 		// [PlanDt] - delete
-		int res2 = sqlSession.delete("deletePlanDt", Integer.parseInt(planNum));
+		int res2 = sqlSession.delete("deletePlanDt", dto);
 		result = res2 > 0 ? "success": "failed";
 		logger.info("deletePlan(" + planNum + ") result2 : " + result);
-		
-		
+
 		return result;
 	}
 	
@@ -172,20 +190,20 @@ public class PlanDAO implements IDao {
 	// planDt insert
 	@Override
 	@Transactional
-	public String insertPlanDtDo(HttpServletRequest request, Model model) {
+	public String insertPlanDtDo(HttpServletRequest request, String userId, Model model) {
 		logger.info("insertPlanDtDo >>> ");
 		
 		String result = null;
 		
 		// request에서 넘어온 parameter를 planMstDto로 파싱하는 메서드 실행
-		PlanDto mstDto = planMstDtoParser(request);
+		PlanDto mstDto = planMstDtoParser(request, userId);
 		
 		int res1 = sqlSession.insert("insertMst", mstDto);
 		result = res1 > 0 ? "success": "failed";
 		logger.info("insertPlanDtDo res1(Mst) : " + result);
 		
 		// request에서 넘어온 parameter를 planDtDto로 파싱하는 메서드 실행
-		ArrayList<PlanDto2> dtDtos = (ArrayList)planDtDtoParser(mstDto.getPlanNum(), request);
+		ArrayList<PlanDto2> dtDtos = (ArrayList)planDtDtoParser(mstDto.getPlanNum(), userId, request);
 		
 		// 배열로 다중행 insert 실행
 		int res2 = sqlSession.insert("insertDt", dtDtos);
@@ -196,10 +214,10 @@ public class PlanDAO implements IDao {
 	}
 	
 	
-	// planDt modify(update, delete, insert 동시 발생) /* 비효율적 1. 수정 내용 없어도 update처리하는 것  2. list 객체로 insert로 개선 */ 
+	// planDt modify(update, delete, insert 동시 발생) /* 비효율적 1. 수정 내용 없어도 update처리하는 것 */ 
 	@Override
 	@Transactional
-	public String detailModifyDo(HttpServletRequest request) {
+	public String detailModifyDo(HttpServletRequest request, String userId) {
 		logger.info("detailModifyDo() in >>> ");
 	
 		String result = null;
@@ -209,11 +227,16 @@ public class PlanDAO implements IDao {
 			logger.info("detailModifyDo deleteNum is exist");
 			// parameter로 넘어온 deleteDtNum을 '/'로 구분하여 배열로 생성
 			String[] deleteDtNum = request.getParameter("deleteDtNum").split("/");
-		
-			List<Integer> deleteDtList = new ArrayList<Integer>();
-		
+			
+			Map<String, Object> deleteDtMap = new HashMap<>();
+			
+			List<Map<String, Object>> deleteDtList = new ArrayList<Map<String, Object>>();
+			
+			
 			for ( int i = 0; i < deleteDtNum.length; i++ ) {
-				deleteDtList.add(Integer.parseInt(deleteDtNum[i]));
+				deleteDtMap.put("userId", userId);
+				deleteDtMap.put("planDtNum", Integer.parseInt(deleteDtNum[i]));
+				deleteDtList.add(deleteDtMap);
 			}
 			// myBatis 구문 실행
 			int res = sqlSession.delete("deleteDt", deleteDtList);
@@ -225,7 +248,7 @@ public class PlanDAO implements IDao {
 		
 		// 수정 페이지에서 넘어온 parameter parsing해서 Dto객체 list 생성
 		int planNum = Integer.parseInt(request.getParameter("planNum"));
-		ArrayList<PlanDto2> dtos = (ArrayList)planDtDtoParser(planNum, request);
+		ArrayList<PlanDto2> dtos = (ArrayList)planDtDtoParser(planNum, userId, request);
 
 		// 처리할 query로 구분해서 담을 list 생성
 		ArrayList<PlanDto2> insertDtos = new ArrayList<PlanDto2>();
@@ -257,7 +280,7 @@ public class PlanDAO implements IDao {
 	}
 	
 	//PlanMstDto를 생성하는 메서드
-	public PlanDto planMstDtoParser(HttpServletRequest request) {
+	public PlanDto planMstDtoParser(HttpServletRequest request, String userId) {
 		int planNum = Integer.parseInt(request.getParameter("planNum"));
 		String planName = request.getParameter("planName");
 		String startDate = request.getParameter("startDate");
@@ -265,13 +288,13 @@ public class PlanDAO implements IDao {
 		String dateCount = request.getParameter("dateCount");
 		String eventColor = request.getParameter("eventColor");
 		
-		PlanDto mstDto = new PlanDto(planNum, planName, startDate, endDate, dateCount, eventColor);
+		PlanDto mstDto = new PlanDto(planNum, userId, planName, startDate, endDate, dateCount, eventColor);
 		
 		return mstDto;
 	}
 	
 	//PlanDtDto를 리스트로 생성하는 메서드
-	public List<PlanDto2> planDtDtoParser(int planNum, HttpServletRequest request) {
+	public List<PlanDto2> planDtDtoParser(int planNum, String userId, HttpServletRequest request) {
 		String[] planDtNum = request.getParameterValues("planDtNum");
 		String[] placeName = request.getParameterValues("placeName");
 		String[] placeCount = request.getParameterValues("placeCount");
@@ -292,6 +315,7 @@ public class PlanDAO implements IDao {
 		for ( int i = 0 ; i < planDtNum.length; i++ ) {
 			PlanDto2 dtDto = new PlanDto2(Integer.parseInt(planDtNum[i]),
 										  planNum,
+										  userId,
 										  placeName[i],
 										  placeCount[i],
 										  planDay[i],
@@ -313,7 +337,7 @@ public class PlanDAO implements IDao {
 	}
 	
 	// modal창에서 수정한 plan을 update할 객체 배열 생성 메서드
-	public List<PlanDto2> getUpdateDtos(int planNum, String startDate, int dateCount) {
+	public List<PlanDto2> getUpdateDtos(int planNum, String userId, String startDate, int dateCount) {
 		List<PlanDto2> dtos = new ArrayList<PlanDto2>();
 		
 		// startDate Calendar 객체로 만들어서 작업
@@ -337,7 +361,11 @@ public class PlanDAO implements IDao {
 			String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
 			
 			// planNum, planDay, planDate 값만 가진 PlanDto2를 만들어서 배열에 저장
-			PlanDto2 dtDto = new PlanDto2(planNum, "day"+(i+1), r);
+			PlanDto2 dtDto = new PlanDto2();
+			dtDto.setUserId(userId);
+			dtDto.setPlanNum(planNum);
+			dtDto.setPlanDay("day"+(i+1));
+			dtDto.setPlanDate(r);
 			
 			dtos.add(dtDto);
 		}

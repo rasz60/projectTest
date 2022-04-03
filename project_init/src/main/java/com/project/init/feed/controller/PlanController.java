@@ -52,7 +52,7 @@ public class PlanController {
 	public String detailDo(HttpServletRequest request, Model model) {
 		logger.info("detail.do() in >>>>");
 		
-		String result = dao.insertPlanDtDo(request, model);
+		String result = dao.insertPlanDtDo(request, Constant.username, model);
 		
 		return result;
 	}
@@ -64,10 +64,10 @@ public class PlanController {
 		logger.info("detail_modify(" + planNum + ") in >>>>");
 		
 		// planNum���� planMst�� planDt�� ������ model�� ��Ƽ� ����
-		PlanDto result1= dao.selectPlanMst(planNum);
+		PlanDto result1= dao.selectPlanMst(planNum, Constant.username);
 		model.addAttribute("plan1", result1);
 				
-		ArrayList<PlanDto2> result2= dao.selectPlanDt(planNum);
+		ArrayList<PlanDto2> result2= dao.selectPlanDt(planNum, Constant.username);
 		model.addAttribute("plan2", result2);
 		
 		return "plan/plan_modify";
@@ -80,7 +80,7 @@ public class PlanController {
 	public String detailModifyDo(HttpServletRequest request) {
 		logger.info("detail_modify(" + request.getParameter("planNum") + ") in >>>>");
 		
-		String result = dao.detailModifyDo(request);
+		String result = dao.detailModifyDo(request, Constant.username);
 		
 		logger.info("detail_modify(" + request.getParameter("planNum") + ") result : " + result);
 		return result;
