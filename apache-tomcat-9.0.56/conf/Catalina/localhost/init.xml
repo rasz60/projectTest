@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context docBase="D:\project_init\apache-tomcat-9.0.56\wtpwebapps\project_init" path="/init" reloadable="true" source="org.eclipse.jst.jee.server:project_init"/>

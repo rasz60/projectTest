@@ -6,6 +6,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
+<meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
 <link rel="stylesheet" type="text/css" href="css/includes/login_modal.css" />
 <title>login</title>
 </head>
@@ -22,17 +23,19 @@
 				</div>
 				
 				<div class="modal-body bg-light d-flex justify-content-center">
-					<form action="#" method="post">
+					<form action="/init/login" method="post">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						<div class="form-group">
-							<label for="userId">아이디</label>
+							<label for="userId">ID</label>
 							<input type="text" class="form-control" id="userId" name="uid" required/>
 						</div>
 						
 						<div class="form-group">
-							<label for="userPwd">비밀번호</label>
-							<input type="text" class="form-control"  id="userPwd" name="upwd" required/>
+							<label for="userPwd">PASSWORD</label>
+							<input type="password" class="form-control"  id="userPwd" name="upw" required/>
 						</div>
-						
+						<div class="form-group" style="visibility:hidden; color:red; font-size:12px;" id="loginError">아이디 혹은 비밀번호가 잘못 입력되었습니다.</div>
+							<a href="user/join_view" class="ml-1 d-block mb-2" id="join">JOIN</a>
 						<input type="submit" value="login" class="btn btn-sm btn-primary"/>
 					</form>
 				</div>

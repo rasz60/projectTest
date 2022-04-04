@@ -18,9 +18,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" type="text/css" href="css/header.css" />
-<link rel="stylesheet" type="text/css" href="css/main/main.css" />
-<link rel="stylesheet" type="text/css" href="css/footer.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/header.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/main/main.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css" />
 <title>Insert title here</title>
 
 </head>
@@ -46,7 +46,7 @@
 							<p class="h5">Nickname</p>
 						</div>
 						
-						<button type="button" class="logx-btn btn btn-primary btn-sm">login</button>
+						<button type="button" class="logx-btn btn btn-primary btn-sm" id="loginBtn">login</button>
 					</s:authorize>
 					
 					<s:authorize access="isAuthenticated()">				
@@ -58,7 +58,10 @@
 							<p class="h5">Nickname</p>
 						</div>
 						
-						<button type="button" class="logx-btn btn btn-danger btn-sm">logout</button>
+						<form method="post" action="logout">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+							<button type="submit" id="logoutBtn" class="logx-btn btn btn-danger btn-sm">logout</button>
+						</form>
 					</s:authorize>
 					
 				</div>
@@ -144,6 +147,7 @@
 	</div>	
 </section>
 
+<%@ include file="login_modal.jsp" %>
 <%@ include file="modalPost.jsp" %>
 <%@ include file="footer.jsp" %>
 
@@ -154,7 +158,20 @@ $(document).ready(function() {
 	$('.post').click(function() {
 		console.log($(this).text());
 		$('#modalBtn').trigger('click');
+	});
+	
+	
+	$('#loginBtn').click(function() {
+		console.log($(this).text());
+		$('#loginModalBtn').trigger('click');
+		//location.href="user/login_view";
 	})
+	
+	<c:if test='${not empty error}'>
+		console.log('error');
+		$('#loginError').css('visibility','visible');
+		$('#loginModalBtn').trigger('click');
+	</c:if>
 });
 
 </script>

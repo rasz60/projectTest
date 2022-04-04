@@ -21,7 +21,7 @@
 <nav class="navbar navbar-default fixed-top border-bottom pt-3 bg-white">
 	<div class="container">
 		<div class="navbar-header">
-			<a href="/" class="navbar-brand">
+			<a href="/init" class="navbar-brand">
 				<i class="menu-icon fa-solid fa-house"></i>
 			</a>
 		</div>
@@ -44,7 +44,7 @@
 		
 		<ul class="nav navbar">
 			<li class="mr-4 feed">
-				<a href="feed">
+				<a href="/init/feed">
 					<i class="menu-icon fa-regular fa-circle-user"></i>
 				</a>
 			</li>

@@ -41,12 +41,20 @@
 		</div>
 		
 		<ul class="nav navbar">
+		<s:authorize access="isAnonymous()">
 			<li class="mr-4 feed">
-				<a href="feed">
+				<a href="feed" id="anFeed">
 					<i class="menu-icon fa-regular fa-circle-user"></i>
 				</a>
 			</li>
-			
+		</s:authorize>
+		<s:authorize access="isAuthenticated()">
+			<li class="mr-4 feed">
+				<a href="feed" id="loginFeed">
+					<i class="menu-icon fa-regular fa-circle-user"></i>
+				</a>
+			</li>
+		</s:authorize>	
 			<li class="mr-4 notice">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i class="menu-icon fa-regular fa-bell"></i>
@@ -68,8 +76,16 @@
 			</li>
 		</ul>
 		
-	</div>		
-
+	</div>
+			
+<script>
+$(document).ready(function(){
+	$('#anFeed').click(function(e){
+		e.preventDefault();
+		$('#loginModalBtn').trigger('click');
+	});
+});
+</script>
 </nav>
 </body>
 </html>

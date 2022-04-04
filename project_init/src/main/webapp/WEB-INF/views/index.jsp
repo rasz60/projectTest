@@ -58,7 +58,10 @@
 							<p class="h5">Nickname</p>
 						</div>
 						
-						<button type="button" id="logoutBtn" class="logx-btn btn btn-danger btn-sm">logout</button>
+						<form method="post" action="logout">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+							<button type="submit" id="logoutBtn" class="logx-btn btn btn-danger btn-sm">logout</button>
+						</form>
 					</s:authorize>
 					
 				</div>
@@ -162,8 +165,11 @@ $(document).ready(function() {
 		$('#loginModalBtn').trigger('click');
 	})
 	
-	
-	
+	<c:if test='${not empty error}'>
+		console.log('error');
+		$('#loginError').css('visibility','visible');
+		$('#loginModalBtn').trigger('click');
+	</c:if>
 });
 
 </script>
