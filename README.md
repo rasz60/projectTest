@@ -1,7 +1,3 @@
-# project_init v.1.3.3.BETA (2022/04/04 13:20)
-#### Join / Login 관련 업데이트 완료 (상세 spread-sheet 확인)
-
-
 # project_init v.1.2.2.BETA (2022/03/23 14:42)
 #### controller 추가 외 업데이트 완료 (상세 spread-sheet 확인)
 
