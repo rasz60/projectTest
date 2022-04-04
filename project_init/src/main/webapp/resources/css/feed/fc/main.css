@@ -20,14 +20,15 @@
   /* layout of immediate children */
   display: flex;
   flex-direction: column;
-
-  font-size: 1em
+  min-width: 75%;
+  max-width: 100%;
+  font-size: 1em;
 }
 .fc,
   .fc *,
   .fc *:before,
   .fc *:after {
-    box-sizing: border-box;
+    box-sizing: content-box;
   }
 .fc table {
     border-collapse: collapse;
@@ -820,8 +821,9 @@ A HORIZONTAL event
 }
 .fc .fc-daygrid-day-bottom {
     font-size: .85em;
-    padding: 2px 3px 0
-  }
+    padding: 2px 3px 0;
+
+ }
 .fc .fc-daygrid-day-bottom:before {
   content: "";
   clear: both;
@@ -1147,6 +1149,7 @@ A VERTICAL event
     position: relative;
   }
 .fc-media-screen.fc-liquid-hack .fc-timegrid-col-frame {
+  width: 100%;
   height: auto;
   position: absolute;
   top: 0;

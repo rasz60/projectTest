@@ -105,8 +105,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	DELETE FROM plan_dt
 	<where>
 		<foreach collection="list" item="item" index="index" separator="OR">
-			planDtNum = #{item.planDtNum}
-			AND userId = #{item.userId}
+			(planDtNum = #{item.planDtNum}
+			AND userId = #{item.userId})
 		</foreach>
 	</where>
 </delete>

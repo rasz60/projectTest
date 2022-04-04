@@ -22,6 +22,12 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
+<%-- kakaomap javascript CDN --%>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd"></script>
+
+<%-- kakaomap css file --%>
+<link rel="stylesheet" type="text/css" href="css/feed/kakaomap.css" />
+
 <%-- fullcalendar javascript files --%>
 <script src="js/feed/fc/main.js"></script>
 <script src="js/feed/fc/locales/ko.js"></script>
@@ -156,7 +162,7 @@
 				</form>
 			</div>
 			<%-- fullcalendar div  --%>
-			<div id="calendar" class="container"></div>
+			<div id="calendar"></div>
 		</div>
 	</div>
 	<%-- modal button : 이미 생성한 이벤트 블럭을 클릭하면 열리는 모달창 버튼 --%>

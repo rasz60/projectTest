@@ -11,7 +11,7 @@ $(document).ready(function() {
 	
 	// calendar 초기 세팅
 	var calendar = new Calendar(calendarEl, {
-		
+
 		// 국가(언어) 설정
 		locale: 'ko',
 		
@@ -24,7 +24,16 @@ $(document).ready(function() {
 
 		// 월별 달력 생성
 	  	initialView: 'dayGridMonth',
-
+		dayMaxEventRows: true,
+		dayMaxEvents: true,
+		
+		views: {
+			dayGrid: {
+				dayMaxEventRows: 3,
+				dayMaxEvents: 3
+			}
+		},
+	
 		// 달력 날짜 클릭시
 		dateClick: function(info) {
 			// 클릭이 일어나면 count++
@@ -282,7 +291,17 @@ $(document).ready(function() {
 			}
 		});
 	});
-
+	
+	// modal창이 보여지게 설정된 이후, map을 생성하는 로직
+	$('#detailModal').on('shown.bs.modal', function() {
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+			mapOption = {
+			    center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+			    level: 3 // 지도의 확대 레벨
+			};
+		var map = new kakao.maps.Map(mapContainer, mapOption);
+	});
+	
 	/* ---------------------------- Feed Calendar Page Use Method ---------------------------- */
 	
 	// DB에 저장된 일정 불러와 달력에 표시하는 메서드

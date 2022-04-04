@@ -23,17 +23,17 @@ public class CustomUserDetailsService implements UserDetailsService {
 		if(dto == null) {
 			System.out.println("null");
 			throw new UsernameNotFoundException("No user found with username");
-			//ìŠ¤í”„ë§ ì‹œíë¦¬í‹°ì—ì„œ ì˜ˆì™¸ë¥¼ ì²˜ë¦¬í•˜ì—¬ ë¡œê·¸ì¸ ì‹¤íŒ¨ ì²˜ë¦¬
+			//½ºÇÁ¸µ ½ÃÅ¥¸®Æ¼¿¡¼­ ¿¹¿Ü¸¦ Ã³¸®ÇÏ¿© ·Î±×ÀÎ ½ÇÆĞ Ã³¸®
 		}
-		String pw = dto.getUserPw(); // ì•”í˜¸í™”ëœ íŒ¨ìŠ¤ì›Œë“œ
+		String pw = dto.getUserPw(); // ¾ÏÈ£È­µÈ ÆĞ½º¿öµå
 		Collection<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
-		//roleê°’(ê¶Œí•œ êµ¬ë¶„ ê°’, ROLE_USER,ROLE_ADMIN,ROLE_MANAGE ë“±)ì„ ì €ì¥í•˜ëŠ” ë¦¬ìŠ¤íŠ¸ ê°ì²´
-		//dbì— authorityì»¬ëŸ¼ì„ ì£¼ê³  ì €ì¥í–ˆë‹¤ë©´ dto.getAuthority()ë¡œ ì–»ì€ ê°’ì„ new SimpleGrantedAuthority("ì–»ì€ ê°’");
+		//role°ª(±ÇÇÑ ±¸ºĞ °ª, ROLE_USER,ROLE_ADMIN,ROLE_MANAGE µî)À» ÀúÀåÇÏ´Â ¸®½ºÆ® °´Ã¼
+		//db¿¡ authorityÄÃ·³À» ÁÖ°í ÀúÀåÇß´Ù¸é dto.getAuthority()·Î ¾òÀº °ªÀ» new SimpleGrantedAuthority("¾òÀº °ª");
 		roles.add(new SimpleGrantedAuthority("ROLE_USER"));
 		UserDetails user = new User(username, pw, roles);
-		//ì–»ì€ id,pw,rolesë¥¼ ì´ìš©í•˜ì—¬ UserDetailsê°ì²´ë¥¼ ë§Œë“¤ì–´ ë°˜í™˜í•´ì¤Œ
+		//¾òÀº id,pw,roles¸¦ ÀÌ¿ëÇÏ¿© UserDetails°´Ã¼¸¦ ¸¸µé¾î ¹İÈ¯ÇØÁÜ
 		
-		return user; //springì—ì„œ pwì¼ì¹˜ ì—¬ë¶€ ì²´í¬í•˜ê³  ê¶Œí•œ ì„¤ì • ë“±ì˜ ì‘ì—… í•´ì¤Œ
+		return user; //spring¿¡¼­ pwÀÏÄ¡ ¿©ºÎ Ã¼Å©ÇÏ°í ±ÇÇÑ ¼³Á¤ µîÀÇ ÀÛ¾÷ ÇØÁÜ
 	}
 
 }

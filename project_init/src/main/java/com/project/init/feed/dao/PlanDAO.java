@@ -228,15 +228,17 @@ public class PlanDAO implements IDao {
 			// parameter로 넘어온 deleteDtNum을 '/'로 구분하여 배열로 생성
 			String[] deleteDtNum = request.getParameter("deleteDtNum").split("/");
 			
-			Map<String, Object> deleteDtMap = new HashMap<>();
-			
-			List<Map<String, Object>> deleteDtList = new ArrayList<Map<String, Object>>();
+			List<PlanDto2> deleteDtList = new ArrayList<PlanDto2>();
 			
 			
 			for ( int i = 0; i < deleteDtNum.length; i++ ) {
-				deleteDtMap.put("userId", userId);
-				deleteDtMap.put("planDtNum", Integer.parseInt(deleteDtNum[i]));
-				deleteDtList.add(deleteDtMap);
+				System.out.println(deleteDtNum[i]);
+				
+				PlanDto2 dto = new PlanDto2();
+				dto.setUserId(userId);
+				dto.setPlanDtNum(Integer.parseInt(deleteDtNum[i]));
+				
+				deleteDtList.add(dto);
 			}
 			// myBatis 구문 실행
 			int res = sqlSession.delete("deleteDt", deleteDtList);
