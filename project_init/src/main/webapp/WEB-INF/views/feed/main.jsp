@@ -47,7 +47,7 @@
 	<%-- section-header --%>
 	<div class="body-container">
 		<%-- 1. 유저 프로필 (프로필 이미지, 정보)--%>
-		<div id="feed-header" class="d-flex justify-content-start  border-bottom row mx-0 flex-nowrap">
+		<div id="feed-header" class="d-flex justify-content-start border-bottom row mx-0 flex-nowrap">
 			<%-- 1- 유저정보1 =  --%>
 			<div id="profile-left" class="p-3 mb-5 bg-body col-5"></div>
 			
@@ -58,38 +58,38 @@
 			
 			<%-- 3- 유저정보2 =  --%>
 			<div id="profile-right" class="p-3 mb-5 bg-body col-5"></div>
-			
-			<%-- 2. 피드 탭 메뉴 --%>		
-			<ul class="feed-tabs ml-3">
-				<%-- 1- 캘린더 피드 버튼 --%>
-				<li id="feed-calendar" class='nav-item active' data-tab=''>
-					<a href="feed" class="nav-link mb-1">
-						<i class="fa-regular fa-calendar-check"></i>
-					</a>
-				</li>
-				
-				<%-- 2- 맵 피드 버튼 --%>
-				<li id="feed-map" class='nav-item' data-tab=''>
-					<a href="feed/feedMap" class="nav-link mb-1">
-						<i class="fa-solid fa-map-location-dot"></i>
-					</a>
-				</li>
-			
-				<%-- 3- 포스트 피드 버튼 --%>			
-				<li id="feed-post" class='nav-item' data-tab=''>
-					<a href="feed/feedPost" class="nav-link mb-1">
-						<i class="fa-solid fa-images"></i>
-					</a>
-				</li>
-				
-				<%-- 4- 유저 정보 피드 버튼 --%>			
-				<li id="feed-info" class='nav-item' data-tab=''>
-					<a href="feed/feedInfo" class="nav-link mb-1">
-						<i class="fa-solid fa-gear"></i>
-					</a>
-				</li>
-			</ul>
 		</div>
+
+		<%-- 2. 피드 탭 메뉴 --%>		
+		<ul class="feed-tabs row mx-0 flex-nowrap">
+			<%-- 1- 캘린더 피드 버튼 --%>
+			<li id="feed-calendar" class='nav-item active col-3' data-tab=''>
+				<a href="feed" class="nav-link">
+					<i class="fa-regular fa-calendar-check"></i>
+				</a>
+			</li>
+			
+			<%-- 2- 맵 피드 버튼 --%>
+			<li id="feed-map" class='nav-item col-3' data-tab=''>
+				<a href="feed/feedMap" class="nav-link">
+					<i class="fa-solid fa-map-location-dot"></i>
+				</a>
+			</li>
+		
+			<%-- 3- 포스트 피드 버튼 --%>			
+			<li id="feed-post" class='nav-item col-3' data-tab=''>
+				<a href="feed/feedPost" class="nav-link">
+					<i class="fa-solid fa-images"></i>
+				</a>
+			</li>
+			
+			<%-- 4- 유저 정보 피드 버튼 --%>			
+			<li id="feed-info" class='nav-item col-3' data-tab=''>
+				<a href="feed/feedInfo" class="nav-link">
+					<i class="fa-solid fa-gear"></i>
+				</a>
+			</li>
+		</ul>
 
 		<%-- section-body --%>
 		<div class="d-flex justify-content-between mt-5" id="main-body">
@@ -159,18 +159,34 @@
 <%@ include file="../footer.jsp" %>
 
 <script>
+
+// feed tab 메뉴 각각의 요소 클릭했을 때,
 $('.nav-link').click(function(e) {
+	// feed일 때는 feed 페이지로 재진입, 아닐때는 get방식 ajax호출해서 #main-body에 html 뿌림
 	if ( $(this).attr('href') != 'feed' ) {
 		e.preventDefault();
+		
+		// 현재 active로 되어있는 tab menu의 active 클래스를 삭제
 		$(this).parent().siblings('.active').removeClass('active');
+		
+		// 클릭된 요소에 active 클래스 부여
 		$(this).parent().addClass('active');
 		
+		
+		// 해당되는 페이지 jsp 파일을 #main-body에 뿌려주는 ajax
 		$.ajax({
 			url: $(this).attr('href'),
 			type: 'get',
 			success: function(data) {
+				// post에서 더보기 버튼으로 늘어났을 때, main-body의 height를 초기화
+				var height = $('#main-body').height(1000);
+				
+				if ( Number(height) > 1000 ) {
+					$('#main-body').height(1000);
+				};
+				
 				$('#main-body').html(data);
-				$('#main-body').height(1000);
+				
 			},
 			error: function(data) {
 				console.log(data);

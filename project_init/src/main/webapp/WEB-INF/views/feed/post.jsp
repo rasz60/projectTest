@@ -11,7 +11,6 @@
 <style>
 #feedPost {
 	width: 100%;
-	text-align: center;
 }
 
 #feedPost #postBox .posts {
@@ -64,8 +63,13 @@ img {
 <%@ include file="../modalPost.jsp" %>
 
 <script>
+
+// 더보기 버튼을 눌렀을 때,
 $('#moreBtn').click(function() {
+	// 현재 #main-body의 높이를 구함
 	var bodyHeight = $('#main-body').height();
+	
+	// 추가될 포스트 박스 html[임시]
 	var postRow = '<c:forEach begin="1" end="2" var="i">'
 				+ '<div class="posts d-flex justify-content-between mt-2">'			
 				+ '<c:forEach begin="1" end="4" var="i">'
@@ -76,16 +80,16 @@ $('#moreBtn').click(function() {
 				+ '</div>'
 				+ '</c:forEach>';
 	
+	// postBox에 html append 시킴
 	$('#postBox').append(postRow);
+	
+	// main-body의 높이를 +660px해서 늘림
 	$('#main-body').height(Number(bodyHeight)+660);
-	
-	
-	console.log($('#main-body').innerHeight());
 	
 })
 
-
-$('.post').click(function() {
+// post 클릭하면 modal창 열림 (더보기 버튼 눌러서 동적으로 생긴 post도 클릭 이벤트 실행되게끔 document.on 사용)
+$(document).on('click', '.post', function() {
 	console.log($(this).text());
 	$('#modalBtn').trigger('click');
 });

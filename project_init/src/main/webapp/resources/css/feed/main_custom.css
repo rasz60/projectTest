@@ -32,16 +32,15 @@ section.container {
 
 /* feed tab 박스 설정 */
 .feed-tabs {
-	width: 2rem;
+	flex-wrap: nowarp;
 	list-style: none;
 	padding: 0;
 }
 
 .feed-tabs .nav-item {
-	width: 4rem;
 	margin-bottom: 3px;
-	border: 1px solid #D8D8D8;
-	border-radius: 10px;
+	border: none;
+	border-radius: 0 0 5px 5px;
 	align-items: center;
 	font-size: 1.5rem;
 	text-align: center;
@@ -54,8 +53,8 @@ section.container {
 .feed-tabs .nav-item.active,
 .feed-tabs .nav-item.active:hover {
 	border: 1px solid #298DF9;
-	border-radius: 10px;
 	background-color: #298DF9;
+	color: white;
 }
 
 .feed-tabs .active .nav-link,

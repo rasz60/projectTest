@@ -24,6 +24,8 @@
 	<div id="map" class="border rounded p-3"></div>
 
 <script>
+
+// 문서가 불러와지면 맵을 생성
 $(document).ready(function() {
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 	mapOption = {

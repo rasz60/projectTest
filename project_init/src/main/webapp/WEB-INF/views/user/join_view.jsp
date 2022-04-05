@@ -117,7 +117,11 @@ input[id^=userAddr] {
 	<form id="joinForm" action="join" method="post" name="joinForm">
 		<div id="agreements" class="mb-5">
 			<div class="conditions border px-2">
-				<strong>WAYG 개인정보 수집 동의 요청서</strong>
+				<h5><strong>WAYG 개인정보 수집 동의 요청서</strong></h5><br/>
+				&nbsp;1. 위치를 기반으로 한 서비스 사용시 현재 위치를 설정하여 원하는 데이터를 제공하기 위한 목적으로 회원님의 현재 실시간 위치 정보를 요청할 수 있으며,
+				  이는 위에 언급된 기능 이외에 다른 목적으로는 사용되지 않습니다.<br/><br/>
+				&nbsp;2. 타 사이트 계정 사용한 소셜 로그인시 WAYG 서비스 이용을 위한 추가 정보를 별도로 기입하여야 합니다.<br/><br/>
+				&nbsp;3. 
 			</div>
 			
 			<div class="checkBox d-flex justify-content-end">
