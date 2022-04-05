@@ -348,7 +348,7 @@ function inputdata(marker, target1, value, title, category, address) {
 	
 	
 	//클릭한 마커에 임의로 지정한 마커 생성
-	var imageSrc = 'images/marker.png', // 마커이미지의 경로    
+	var imageSrc = '../images/marker.png', // 마커이미지의 경로    
     imageSize = new kakao.maps.Size(50, 50), // 마커이미지의 크기입니다
     imageOption = {offset: new kakao.maps.Point(10, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 	

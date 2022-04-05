@@ -79,6 +79,10 @@ input[id^=userAddr] {
 	background-color: #F4F4F4;
 }
 
+#userinfo {
+	display: none;
+}
+
 </style>
 
 </head>
@@ -119,123 +123,124 @@ input[id^=userAddr] {
 			<div class="checkBox d-flex justify-content-end">
 				<p class="font-italic mt-3 mr-5">WAYG에서 요청하는 개인정보 수집에 동의하시겠습니까?</p>
 				<div class="form-check-inline">
-					<input type="radio" name="agreements" class="form-check-input" value="agree" />
+					<input type="radio" name="agreements" class="form-check-input" value="agree" id="agree" />
 					<label class="form-check-label" for="flexCheckChecked">
 						동의
 					</label>
 				</div>
 				
 				<div class="form-check-inline">
-					<input type="radio" name="agreements" class="form-check-input" value="agree" checked/>
+					<input type="radio" name="agreements" class="form-check-input" value="disagree" id="disagree" checked/>
 					<label class="form-check-label" for="flexCheckChecked">
 						비동의
 					</label>
 				</div>
 			</div>
 		</div>
-	
-	    <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" />
-	
-		<h1 class="mb-4 d-inline display-4" id="form-title">USER INFO</h1><p class="ml-2 d-inline font-italic text-secondary"><span class="required">*</span>로 표시된 부분은 필수 입력 사항입니다.</p>
+		<div id="userinfo">
+		    <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" />
 		
-		<hr />
-	
-		<div class="form-group row mx-0">
-			<label for="userEmail" class="mt-2 col-2 border-right">E-mail <span class="required">*</span></label>
-			<div class="col-10">
-				<input type="text" class="userEmail form-control" id="userEmail" name="uEmail" placeholder="EMAIL" onkeyup="checkEmail()" autocomplete="off" maxlength="30">
-				<div class="userEmail-validation validation mt-1">
-				</div>
-			</div>
-		</div>
-		
-		<hr />
-		
-		<div class="form-group row mx-0">
-			<label for="userPw1" class="mt-2 col-2 border-right">Password <span class="required">*</span></label>
-			<div class="col-10">
-				<input type="password" class="userPw1 form-control" id="userPw1" name="uPw1" placeholder="PASSWORD" maxlength="16">
-				<div class="userPw1-validation validation">
-				</div>
-			</div>
-		</div>	
-		
-		<div class="form-group row mx-0">
-			<label for="userPw2" class="mt-2 col-2"></label>
-			<div class="col-10">
-				<input type="password" class="userPw2 form-control" id="userPw2" name="uPw2" placeholder="CONFIRRM PASSWORD" maxlength="16" readonly="readonly">
-				<div class="userPw2-validation validation">
-				</div>
-			</div>
-		</div>	
-		
-		<hr />
-		
-		<div class="form-group row mx-0">
-			<label for="userNickName" class="mt-2 col-2 border-right">Nickname <span class="required">*</span></label>
-			<div class="col-10">
-				<input type="text" class="userNickName form-control" id="userNickName" name="uNickName" placeholder="NICKNAME" onkeyup="checkNickName()" autocomplete="off" maxlength="20">
-  				<div class="userNickName-validation validation">
-	  			</div>		
-	  		</div>
-		</div>	
-		
-		<hr />
-		
-		<div class="form-group row mx-0">
-			<label for="userBirth" class="mt-2 col-2 border-right">Birth <span class="required">*</span></label>
-			<div class="col-10">
-				<input type="text" class="userBirth form-control" id="userBirth" name="uBirth" placeholder="EX:19970501" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" autocomplete="off" maxlength="8">
-				<div class="userBirth-validation validation">
-				</div>
-			</div>
-		</div>
-		
-		<hr />
-		
-		<div class="form-group row mx-0">
-			<label for="btn-group" class="mt-2 col-2 border-right">Gender <span class="required">*</span></label>
+			<h1 class="mb-4 d-inline display-4" id="form-title">USER INFO</h1><p class="ml-2 d-inline font-italic text-secondary"><span class="required">*</span>로 표시된 부분은 필수 입력 사항입니다.</p>
 			
-			<div class="btn-group btn-group-toggle col-3 row mx-0" data-toggle="buttons">
-				<label id="male" class="btn btn-outline-defalut border-white active">
-					<input type="radio" name="uGender" autocomplete="off" value="MALE" checked><i class="fa-solid fa-mars"></i>
-				</label>
-				<label id="female" class="btn btn-outline-defalut border-white ">
-					<input type="radio" name="uGender" autocomplete="off" value="FEMALE"><i class="fa-solid fa-venus"></i>
-				</label>
-			</div>
-		</div>	
+			<hr />
 		
-		<hr />
-		
-		<div class="form-group row mx-0">
-			<label for="userAddr1" class="mt-2 col-2 border-right">Post-code <span class="required">*</span></label>
-				<div class="form-inline mb-2 ml-2">
-					<div class="input-group">
-						<input type="text" class="form-control bg-white mr-2" id="userPst" name="uPst" placeholder="POSTCODE" onfocus="clickSerachPst()" readonly>
-						<span class="input-group-btn">
-							<button type="button" id="searchPst" class="btn btn-sm btn-dark" onclick="serchPostCode()"><i class="fa-brands fa-sistrix"></i></button>
-						</span>
+			<div class="form-group row mx-0">
+				<label for="userEmail" class="mt-2 col-2 border-right">E-mail <span class="required">*</span></label>
+				<div class="col-10">
+					<input type="text" class="userEmail form-control" id="userEmail" name="uEmail" placeholder="EMAIL" onkeyup="checkEmail()" autocomplete="off" maxlength="30">
+					<div class="userEmail-validation validation mt-1">
 					</div>
 				</div>
-			<span id="guide" style="color:#999;display:none"></span>
-		</div>
-		
-		<div class="form-group row mx-0">
-			<label for="userAddr1" class="mt-2 col-2 border-right">Address <span class="required">*</span></label>
-			<input type="text" class="form-control bg-white ml-2" id="userAddr1" name="uAddr1" placeholder="ADDRESS1" onfocus="clickSerachPst()" readonly>
-		</div>
+			</div>
 			
-		<div class="form-group row mx-0 pb-3">
-			<label for="userAddr2" class="mt-2 col-2 border-right">ADDRESS2</label>
-			<input type="text" class="form-control ml-2" id="userAddr2" name="uAddr2" placeholder="ADDRESS2" maxlength="50">
-		</div>		
-	
-		<hr />
-	
-		<div class="d-flex justify-content-end">
-			<button type="submit" class="btn btn-primary border-white">가입</button>
-			<button type="button" id="goback" class="btn btn-danger border-white">취소</button>
+			<hr />
+			
+			<div class="form-group row mx-0">
+				<label for="userPw1" class="mt-2 col-2 border-right">Password <span class="required">*</span></label>
+				<div class="col-10">
+					<input type="password" class="userPw1 form-control" id="userPw1" name="uPw1" placeholder="PASSWORD" maxlength="16">
+					<div class="userPw1-validation validation">
+					</div>
+				</div>
+			</div>	
+			
+			<div class="form-group row mx-0">
+				<label for="userPw2" class="mt-2 col-2"></label>
+				<div class="col-10">
+					<input type="password" class="userPw2 form-control" id="userPw2" name="uPw2" placeholder="CONFIRRM PASSWORD" maxlength="16" readonly="readonly">
+					<div class="userPw2-validation validation">
+					</div>
+				</div>
+			</div>	
+			
+			<hr />
+			
+			<div class="form-group row mx-0">
+				<label for="userNickName" class="mt-2 col-2 border-right">Nickname <span class="required">*</span></label>
+				<div class="col-10">
+					<input type="text" class="userNickName form-control" id="userNickName" name="uNickName" placeholder="NICKNAME" onkeyup="checkNickName()" autocomplete="off" maxlength="20">
+	  				<div class="userNickName-validation validation">
+		  			</div>		
+		  		</div>
+			</div>	
+			
+			<hr />
+			
+			<div class="form-group row mx-0">
+				<label for="userBirth" class="mt-2 col-2 border-right">Birth <span class="required">*</span></label>
+				<div class="col-10">
+					<input type="text" class="userBirth form-control" id="userBirth" name="uBirth" placeholder="EX:19970501" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" autocomplete="off" maxlength="8">
+					<div class="userBirth-validation validation">
+					</div>
+				</div>
+			</div>
+			
+			<hr />
+			
+			<div class="form-group row mx-0">
+				<label for="btn-group" class="mt-2 col-2 border-right">Gender <span class="required">*</span></label>
+				
+				<div class="btn-group btn-group-toggle col-3 row mx-0" data-toggle="buttons">
+					<label id="male" class="btn btn-outline-defalut border-white active">
+						<input type="radio" name="uGender" autocomplete="off" value="MALE" checked><i class="fa-solid fa-mars"></i>
+					</label>
+					<label id="female" class="btn btn-outline-defalut border-white ">
+						<input type="radio" name="uGender" autocomplete="off" value="FEMALE"><i class="fa-solid fa-venus"></i>
+					</label>
+				</div>
+			</div>	
+			
+			<hr />
+			
+			<div class="form-group row mx-0">
+				<label for="userAddr1" class="mt-2 col-2 border-right">Post-code <span class="required">*</span></label>
+					<div class="form-inline mb-2 ml-2">
+						<div class="input-group">
+							<input type="text" class="form-control bg-white mr-2" id="userPst" name="uPst" placeholder="POSTCODE" onfocus="clickSerachPst()" readonly>
+							<span class="input-group-btn">
+								<button type="button" id="searchPst" class="btn btn-sm btn-dark" onclick="serchPostCode()"><i class="fa-brands fa-sistrix"></i></button>
+							</span>
+						</div>
+					</div>
+				<span id="guide" style="color:#999;display:none"></span>
+			</div>
+			
+			<div class="form-group row mx-0">
+				<label for="userAddr1" class="mt-2 col-2 border-right">Address <span class="required">*</span></label>
+				<input type="text" class="form-control bg-white ml-2" id="userAddr1" name="uAddr1" placeholder="ADDRESS1" onfocus="clickSerachPst()" readonly>
+			</div>
+				
+			<div class="form-group row mx-0 pb-3">
+				<label for="userAddr2" class="mt-2 col-2 border-right">ADDRESS2</label>
+				<input type="text" class="form-control ml-2" id="userAddr2" name="uAddr2" placeholder="ADDRESS2" maxlength="50">
+			</div>		
+		
+			<hr />
+		
+			<div class="d-flex justify-content-end">
+				<button type="submit" class="btn btn-primary border-white">가입</button>
+				<button type="button" id="goback" class="btn btn-danger border-white">취소</button>
+			</div>
 		</div>
 	</form>
 </div>
@@ -243,6 +248,21 @@ input[id^=userAddr] {
 <%@ include file="../footer.jsp" %>
 
 <script type="text/javascript">
+
+$('input[name=agreements]').change(function() {
+	if( $('input[name=agreements]:checked').val() == "disagree" ) {
+		$('#userinfo').css('display', 'none');
+	} else {
+		$('#userinfo').css('display', 'block');
+		// scroll을 부드럽게 이동시키는 메서드
+		window.scrollTo({top: 450, left: 0, behavior:'smooth'});
+		$('#userEmail').focus();
+	}
+});
+
+
+
+
 //유효성 검사 통과유무 변수
 var chkEmail = false;
 var chkPw1 = false;

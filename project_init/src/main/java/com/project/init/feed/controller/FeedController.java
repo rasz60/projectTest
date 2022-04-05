@@ -51,7 +51,7 @@ public class FeedController {
 	@ResponseBody
 	@RequestMapping(value="getAllPlans.do", produces="application/json; charset=UTF-8")
 	public ArrayList<PlanDto> getAllPlans() {
-		// feed-calendar ���ӽ� ��� ���� ��������
+		// feed-calendar 占쏙옙占쌈쏙옙 占쏙옙占� 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙
 		logger.info("getAllPlans() >>>>");
 		
 		ArrayList<PlanDto> result = dao.selectAllPlan(Constant.username);
@@ -64,7 +64,7 @@ public class FeedController {
 	@ResponseBody
 	@RequestMapping(value = "modify_modal.do", produces="application/json; charset=UTF-8")
 	public ArrayList<PlanDto2> modifyModal(@RequestBody String planNum) {
-		// event �� Ŭ���Ͽ� modalâ ����� ��, planDt ��� ���� ��������
+		// event 占쏙옙 클占쏙옙占싹울옙 modal창 占쏙옙占쏙옙占� 占쏙옙, planDt 占쏙옙占� 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙
 		logger.info("modifyModal("+ planNum +") in >>>>");
 		
 		ArrayList<PlanDto2> result= dao.selectPlanDt(planNum, Constant.username);
@@ -78,7 +78,7 @@ public class FeedController {
 	@ResponseBody
 	@RequestMapping(value = "modify_plan.do", produces="application/text; charset=UTF-8")
 	public String modifyPlan(HttpServletRequest request) {
-		// modalâ���� ������ �������� planMst, planDt ���� �����ϱ�
+		// modal창占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙 planMst, planDt 占쏙옙占쏙옙 占쏙옙占쏙옙占싹깍옙
 		logger.info("modifyPlans("+ request.getParameter("planNum") +") in >>>>");
 
 		String result= null;
@@ -91,12 +91,32 @@ public class FeedController {
 	@ResponseBody
 	@RequestMapping(value = "delete_plan.do", produces="application/text; charset=UTF-8")
 	public String deletePlan(@RequestBody String planNum) {
-		// modalâ���� �����ϸ� planMst, planDt ��� �����ϱ�
+		// modal창占쏙옙占쏙옙 占쏙옙占쏙옙占싹몌옙 planMst, planDt 占쏙옙占� 占쏙옙占쏙옙占싹깍옙
 		logger.info("modifyPlans("+ planNum +") in >>>>");
 		
 		String result = dao.deletePlan(planNum, Constant.username);
 		
 		return result;
 	}
-
+	
+	@RequestMapping("feedMap")
+	public String feedMap() {
+		logger.info("feedMap() in >>>>");
+		return "feed/map";
+	}
+	
+	@RequestMapping("feedPost")
+	public String feedPost() {
+		logger.info("feedPost() in >>>>");
+		return "feed/post";
+	}
+	
+	@RequestMapping("feedInfo")
+	public String feedInfo() {
+		logger.info("feedMap() in >>>>");
+		return "feed/user_info";
+	}
+	
+	
+	
 }

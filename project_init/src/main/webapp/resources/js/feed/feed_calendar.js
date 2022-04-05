@@ -302,6 +302,9 @@ $(document).ready(function() {
 		var map = new kakao.maps.Map(mapContainer, mapOption);
 	});
 	
+	
+	
+	
 	/* ---------------------------- Feed Calendar Page Use Method ---------------------------- */
 	
 	// DB에 저장된 일정 불러와 달력에 표시하는 메서드

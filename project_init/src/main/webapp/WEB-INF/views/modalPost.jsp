@@ -30,7 +30,26 @@
 		<button type="button" id="modalCloseBtn" class="btn btn-lg btn-default text-white text-weight-bold display-1 float-right" data-dismiss="modal">&times;</button>
 		<div class="modal-content">
 			<div class="modal-body bg-light d-flex justify-content-between">
-				<div class="post-img border rounded mr-2"><i class="modal-icon fa-regular fa-images"></i></div>
+				<div class="post-img border rounded mr-2">
+					<div id="demo" class="carousel slide" data-ride="carousel">
+                    	<!-- The slideshow -->
+                        <div class="carousel-inner Citem">
+	                        <div class="carousel-item active">
+                        		<img src="images/5.jpg" alt="" />
+                        	</div>
+                        	<div class="carousel-item">
+                        		<img src="images/marker.png" alt="" />
+                        	</div>
+                        </div>
+                        <!-- Left and right controls -->
+                        <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#demo" data-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </a>
+                    </div>
+				</div>
 				<ul class="list-group d-block">
 					<li class="list-group-item mb-1"><i class="modal-icon fa-regular fa-circle-user"></i></li>
 					<li class="list-group-item mb-1"><i class="modal-icon fa-regular fa-rectangle-list"></i></li>

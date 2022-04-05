@@ -22,12 +22,6 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
-<%-- kakaomap javascript CDN --%>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd"></script>
-
-<%-- kakaomap css file --%>
-<link rel="stylesheet" type="text/css" href="css/feed/kakaomap.css" />
-
 <%-- fullcalendar javascript files --%>
 <script src="js/feed/fc/main.js"></script>
 <script src="js/feed/fc/locales/ko.js"></script>
@@ -50,55 +44,53 @@
 <%@ include file="../header.jsp" %>
 
 <section class="container mb-5">
-	
 	<%-- section-header --%>
 	<div class="body-container">
 		<%-- 1. 유저 프로필 (프로필 이미지, 정보)--%>
-		<div id="feed-header" class="d-flex justify-content-around">
+		<div id="feed-header" class="d-flex justify-content-start  border-bottom row mx-0 flex-nowrap">
 			<%-- 1- 유저정보1 =  --%>
-			<div id="profile-left" class="p-3 mb-5 bg-body"></div>
+			<div id="profile-left" class="p-3 mb-5 bg-body col-5"></div>
 			
 			<%-- 2- 프로필 이미지 --%>
-			<div id="profile-img" class="p-3 mb-5 bg-body">
+			<div id="profile-img" class="p-3 mb-5 bg-body col-2 text-center">
 				<i class="profile-img fa-regular fa-circle-user"></i>
 			</div>
 			
 			<%-- 3- 유저정보2 =  --%>
-			<div id="profile-right" class="p-3 mb-5 bg-body"></div>
+			<div id="profile-right" class="p-3 mb-5 bg-body col-5"></div>
+			
+			<%-- 2. 피드 탭 메뉴 --%>		
+			<ul class="feed-tabs ml-3">
+				<%-- 1- 캘린더 피드 버튼 --%>
+				<li id="feed-calendar" class='nav-item active' data-tab=''>
+					<a href="feed" class="nav-link mb-1">
+						<i class="fa-regular fa-calendar-check"></i>
+					</a>
+				</li>
+				
+				<%-- 2- 맵 피드 버튼 --%>
+				<li id="feed-map" class='nav-item' data-tab=''>
+					<a href="feed/feedMap" class="nav-link mb-1">
+						<i class="fa-solid fa-map-location-dot"></i>
+					</a>
+				</li>
+			
+				<%-- 3- 포스트 피드 버튼 --%>			
+				<li id="feed-post" class='nav-item' data-tab=''>
+					<a href="feed/feedPost" class="nav-link mb-1">
+						<i class="fa-solid fa-images"></i>
+					</a>
+				</li>
+				
+				<%-- 4- 유저 정보 피드 버튼 --%>			
+				<li id="feed-info" class='nav-item' data-tab=''>
+					<a href="feed/feedInfo" class="nav-link mb-1">
+						<i class="fa-solid fa-gear"></i>
+					</a>
+				</li>
+			</ul>
 		</div>
-		
-		<%-- 2. 피드 탭 메뉴 --%>		
-		<ul class="nav nav-tabs feed-tabs row mx-0">
-			
-			<%-- 1- 캘린더 피드 버튼 --%>
-			<li class='nav-item col-3 active' data-tab=''>
-				<a href="" class="nav-link mb-1">
-					<i class="fa-regular fa-calendar-check"></i>
-				</a>
-			</li>
-			
-			<%-- 2- 맵 피드 버튼 --%>
-			<li class='nav-item col-3' data-tab=''>
-				<a href="" class="nav-link mb-1">
-					<i class="fa-solid fa-map-location-dot"></i>
-				</a>
-			</li>
 
-			<%-- 3- 포스트 피드 버튼 --%>			
-			<li class='nav-item col-3' data-tab=''>
-				<a href="" class="nav-link mb-1">
-					<i class="fa-solid fa-images"></i>
-				</a>
-			</li>
-			
-			<%-- 4- 유저 정보 피드 버튼 --%>			
-			<li class='nav-item col-3' data-tab=''>
-				<a href="" class="nav-link mb-1">
-					<i class="fa-solid fa-gear"></i>
-				</a>
-			</li>
-		</ul>
-		
 		<%-- section-body --%>
 		<div class="d-flex justify-content-between mt-5" id="main-body">
 			<%-- 1. PlanMst 생성 inputBox --%>
@@ -106,14 +98,7 @@
 				<form action="plan" id="frm" method="post">
 					<%-- 1- _csrf input --%>			
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-					
-					<%-- test- UserId --%>	
-					<div class="form-group">
-						<label for="userId">id</label>
-						<input type="text" name="userId" id="userId" class="form-control" value="${id }" required/>
-					</div>
-					
-					
+
 					<%-- 2- planName --%>	
 					<div class="form-group">
 						<label for="planName">일정 이름</label>
@@ -163,14 +148,39 @@
 			</div>
 			<%-- fullcalendar div  --%>
 			<div id="calendar"></div>
+			<%-- modal button : 이미 생성한 이벤트 블럭을 클릭하면 열리는 모달창 버튼 --%>
+			<input type="hidden" id="modalBtn" data-toggle="modal" data-target="#detailModal" value="modal" />
+			<%@ include file="../feed/modal2.jsp" %>
 		</div>
 	</div>
-	<%-- modal button : 이미 생성한 이벤트 블럭을 클릭하면 열리는 모달창 버튼 --%>
-	<input type="hidden" id="modalBtn" data-toggle="modal" data-target="#detailModal" value="modal" />
+	
 </section>
 
-
-<%@ include file="../feed/modal2.jsp" %>
 <%@ include file="../footer.jsp" %>
+
+<script>
+$('.nav-link').click(function(e) {
+	if ( $(this).attr('href') != 'feed' ) {
+		e.preventDefault();
+		$(this).parent().siblings('.active').removeClass('active');
+		$(this).parent().addClass('active');
+		
+		$.ajax({
+			url: $(this).attr('href'),
+			type: 'get',
+			success: function(data) {
+				$('#main-body').html(data);
+				$('#main-body').height(1000);
+			},
+			error: function(data) {
+				console.log(data);
+				alert('ajax 실패');
+			}
+		})
+	}
+});
+
+</script>
+
 </body>
 </html>
