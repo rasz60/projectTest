@@ -1,5 +1,4 @@
 $(document).ready(function() {
-	
 	// 동적으로 생성된 tabdiv의 설정 값을 바꿔 줌
 	for(var i = 1; i <= dateCount; i++ ) {
 		var placeCount = $('#frm'+i+'>.detail0>.inputbox>input[name=placeCount]').val();
@@ -23,18 +22,45 @@ $(document).ready(function() {
 		} else {
 			// placeCount 만큼 반복하면서 인덱스를 바꿔 줌
 			for ( var j = 1; j <= placeCount; j++ ) {
-				$('#frm' + i + '>div:nth-child(' + j + ')').addClass('detail' + j);
-				$('#frm' + i + '>div:nth-child(' + j + ')').removeClass('detail0');
+				var target = $('#frm' + i + '>div:nth-child(' + j + ')');
+				
+				target.addClass('detail' + j);
+				target.removeClass('detail0');
+				
+				var planDay = target.children('.inputbox').children('input[name=planDay]').val();
+				var lat = target.children('.inputbox').children('input[name=latitude]').val();
+				var lng = target.children('.inputbox').children('input[name=longitude]').val();
+				
+				// db에서 불러온 값으로 marker를 생성
+				var imageSrc = '../images/marker.png', // 마커이미지의 경로    
+			    imageSize = new kakao.maps.Size(50, 50), // 마커이미지의 크기입니다
+			    imageOption = {offset: new kakao.maps.Point(10, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+				
+				var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption), //마커 이미지 옵션을 markerImage객체에 담기
+			    markerPosition = new kakao.maps.LatLng(lat, lng); // 마커가 표시될 위치입니다
+				
+				var marker = new kakao.maps.Marker({ //설정한 좌표와 이미지 마커 객체에 담기
+					position: markerPosition, //마커 좌표 설정
+					image: markerImage, // 마커이미지 설정	 
+				});
+				
+				planObject = {
+					day : planDay,
+					mapMarker : marker
+				};
+				
+				markers2.push(planObject);
 			}
-			
 		}
 	}
 
+	setDayMap('day1');
+	
 	// 상세 일정 표시 부분에 previous 버튼 클릭 시
 	$('#prev-btn').click(function() {
 		// 버튼에 부여한 data-index 값(= .active인 탭 박스에 index - 1) 을 가져옴
 		var index = $(this).attr('data-index');
-		
+		var planday = 'day'+index;
 		// index < 1  ==  첫 번째 탭 박스가 active일 경우 작동하지 않음
 		if ( index < 1 ) {
 			return false;
@@ -47,6 +73,7 @@ $(document).ready(function() {
 			$('#tab-' + index).addClass('active');
 			$(this).attr('data-index', Number(index)-1);
 			$('#next-btn').attr('data-index', Number(index)+1);
+			setDayMap(planday);
 		}
 	});
 
@@ -54,7 +81,7 @@ $(document).ready(function() {
 	$('#next-btn').click(function() {
 		// 버튼에 부여한 data-index 값(= .active인 탭 박스에 index + 1) 을 가져옴
 		var index = Number($(this).attr('data-index'));
-		
+		var planday = 'day'+index;
 		// index < 2  ==  첫 번째 탭 박스가 .active || index가 총 상세 일정의 개수보다 클 경우 == 마지막 탭 박스가 .active
 		if ( index < 2 || index > $(this).parent().attr('data-count')) {
 			return false;
@@ -66,7 +93,9 @@ $(document).ready(function() {
 			// data-index 변경 : prev = .active 탭 박스 인덱스의 -1 // next = .active 탭 박스 인덱스의 +1 
 			$(this).attr('data-index', Number(index)+1);
 			$('#prev-btn').attr('data-index', Number(index)-1);
+			setDayMap(planday);
 		}
+		
 	});
 	
 	
@@ -107,22 +136,8 @@ $(document).ready(function() {
 		})
 	});
 	
-	// 상세 일정 박스 삭제시	
+	// 상세 일정에 마이너스 버튼 클릭시 이벤트
 	$(document).on('click', '.deleteBtn', function() {
-		// 삭제된 상세일정의 planDtNum을 '/'를 구분자로 input에 쌓아둔다.
-		let deleteDtNum = $(this).siblings('.inputbox').children('input[name=planDtNum]').val();
-		let dtInputValue = $('#frm0 input[name=deleteDtNum]').val();
-		
-		// input에 value가 없으면 구분자 없이 입력하고 아니면 prefix '/'를 덧붙인다.
-		if ( dtInputValue == "" ) {
-			$('#frm0 input[name=deleteDtNum]').val(deleteDtNum);
-		} 
-		
-		// 수정페이지 작성시 새로 추가한 일정은 planDtNum이 0이기 때문에 db를 조작할 필요 없음
-		if ( dtInputValue != "" && deleteDtNum != 0 ) {
-			$('#frm0 input[name=deleteDtNum]').val(dtInputValue + '/' + deleteDtNum);
-		}
-		
 		let target = $(this).parent().parent('form');
 		
 		// 현재 상세 일정의 개수를 변수로 선언
@@ -133,17 +148,22 @@ $(document).ready(function() {
 		
 		// 지우려고 하는 박스가 몇번째 child인지 구해서+1 시킴
 		let index = Number($(this).parent().index())+1;
-
+		
+		// 현재 작성중인 일정의 planDay를 변수로 저장
+		let planDay = target.attr('data-day');
+		
 		// 현재 value가 0인 경우, return false
 		if ( delValue < 0 ) {
 			alert('최소 1개 이상의 일정이 필요합니다');
 			return false;
-			
+		
+		// 현재 value가 1인 경우 박스를 지우지 않고 박스안에 값을 전부 초기화	
 		} else if ( delValue < 1 ) {
 			$(this).siblings('input[name=placeName]').val('');
-			
+
 			var inputBox = $(this).siblings('.inputbox');
-			
+			// 해당되는 마커를 삭제
+			removeMarkerArray(planDay, (Number(index)-1));
 			inputBox.children('input[name=planDtNum]').val('0');
 			inputBox.children('input[name=placeName]').val('');
 			inputBox.children('input[name=latitude]').val('');
@@ -165,6 +185,8 @@ $(document).ready(function() {
 			for ( var i = Number(index); i <= currValue; i++ ) {
 				// 자기 자신의 박스를 삭제
 				if ( i == Number(index) ) {
+					// 해당되는 마커를 삭제					
+					removeMarkerArray(planDay, (Number(index)-1));
 					// 버튼을 누른 상세일정 박스를 삭제
 					$(this).parent().remove();
 					
@@ -175,7 +197,8 @@ $(document).ready(function() {
 					box.removeClass('detail' + i);
 					box.addClass('detail' + (i-1));
 				}
-			}	
+			}
+			
 			// form에 data-count와 표시되는 현재 일정 개수를 0으로 바꿔줌
 			target.attr('data-count', delValue);
 			target.parent().siblings('p.mt-2').children('.showIndex').text(delValue);

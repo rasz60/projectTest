@@ -38,7 +38,7 @@ $(document).ready(function() {
 	$('#prev-btn').click(function() {
 		// 버튼에 부여한 data-index 값(= .active인 탭 박스에 index - 1) 을 가져옴
 		var index = $(this).attr('data-index');
-		
+		var planday = 'day'+index;
 		// index < 1  ==  첫 번째 탭 박스가 active일 경우 작동하지 않음
 		if ( index < 1 ) {
 			return false;
@@ -51,6 +51,7 @@ $(document).ready(function() {
 			$('#tab-' + index).addClass('active');
 			$(this).attr('data-index', Number(index)-1);
 			$('#next-btn').attr('data-index', Number(index)+1);
+			setDayMap(planday);
 		}
 	});
 
@@ -58,7 +59,7 @@ $(document).ready(function() {
 	$('#next-btn').click(function() {
 		// 버튼에 부여한 data-index 값(= .active인 탭 박스에 index + 1) 을 가져옴
 		var index = $(this).attr('data-index');
-		
+		var planday = 'day'+index;
 		// index < 2  ==  첫 번째 탭 박스가 .active || index가 총 상세 일정의 개수보다 클 경우 == 마지막 탭 박스가 .active
 		if ( index < 2 || index > $(this).parent().attr('data-count')) {
 			return false;
@@ -70,6 +71,7 @@ $(document).ready(function() {
 			// data-index 변경 : prev = .active 탭 박스 인덱스의 -1 // next = .active 탭 박스 인덱스의 +1 
 			$(this).attr('data-index', Number(index)+1);
 			$('#prev-btn').attr('data-index', Number(index)-1);
+			setDayMap(planday);
 		}
 	});
 	

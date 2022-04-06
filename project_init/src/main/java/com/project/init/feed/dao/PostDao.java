@@ -106,13 +106,18 @@ public class PostDao implements PostIDao{
 	}
 
 	@Override
-	public void addLike(PostLikeDto dto) {
-		int tmp =sqlSession.selectOne("like", dto);
-		if(tmp ==0) {
-			sqlSession.insert("addLike", dto);			
-		}else {
+	public String addLike(PostLikeDto dto) {
+		String result = null;
+		int tmp = sqlSession.selectOne("like", dto);
+		if(tmp == 0) {
+			sqlSession.insert("addLike", dto);
+			result = "add";
+		} else {
 			sqlSession.delete("deleteLike", dto);
+			result = "delete";
 		}
+		
+		return result;
 	}
 
 	@Override

@@ -18,7 +18,11 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/modalPost.css" />
-
+<style>
+ul {
+	list-style: none;	
+}
+</style>
 </head>
 <body>
 <!-- modal button -->
@@ -61,21 +65,27 @@
 					</li>
 					
 					<li class="list-group-item mb-1 d-flex row mx-0">
-						<div class="col-6"><i class="modal-icon fa-regular fa-heart"></i></div>
-						<div class="col-3"><i class="modal-icon fa-regular fa-bookmark"></i></div>
-						<div class="col-3"><i class="modal-icon fa-regular fa-comment-dots"></i></div>
+						<div class="col-4"><i class="modal-icon fa-regular fa-heart"></i></div>
+						<div class="col-4"><i class="modal-icon fa-regular fa-bookmark"></i></div>
+						<div class="col-4"><i class="modal-icon fa-regular fa-comment-dots"></i></div>
 					</li>
 					
 					
-					<li class="list-group-item"><i class="modal-icon fa-regular fa-comment-dots"></i>
+					<li class="list-group-item">
+                        <div class="row ml-1">
+                        	<input type="text" class="form-control col-9 comment grpl" data-value="0">
+                        	<button type="button" class="btn btn-outline-success addcomment ml-2" role="button">전송</button>
+                        </div>
+
 					
+						<ul class="comments">
+							<li>
+							</li>
+						</ul>
 					</li>
 					
 					<li>
-                        <div class="row">
-                        	<input type="text" class="col-sm-10 comment grpl" data-value="0">
-                        	<button type="button" class="btn btn-outline-success addcomment" role="button">전송</button>
-                        </div>
+
                     </li>
 				</ul>
 			</div>

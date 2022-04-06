@@ -1,24 +1,35 @@
+
+
+
 $(document).ready(function() {
-	
+
 	let postNo = "";
 	let email = $('#user').attr('value');
 	
-	$(".like").on('click',function () {
+	$('.like').on('click', function () {
+		var element = $(this);
 		postNo = $(this).attr('data-postno');
 		
 		$.ajax({
 			url :'addLike.do',
 			data : {
-				postNo : postNo,
-				email : email},
+					postNo : postNo,
+					email : email
+				},
 			type : 'post',
 			beforeSend: function(xhr){
 		 	   	var token = $("meta[name='_csrf']").attr('content');
 		 		var header = $("meta[name='_csrf_header']").attr('content');
 	 		    xhr.setRequestHeader(header, token);
 	 		},
-			success : function () {
-				getPost();
+			success : function(info) {
+				if ( info == 'add' ) {
+					element.addClass('active');
+					element.siblings('.likeCount').text(Number(element.siblings('.likeCount').text())+1);
+				} else {
+					element.removeClass('active');
+					element.siblings('.likeCount').text(Number(element.siblings('.likeCount').text())-1);
+				}
 				console.log('하트날리기 성공');	
 			},
 			error : function () {
@@ -26,27 +37,6 @@ $(document).ready(function() {
 			}
 		});
 	});
-	
-	function getPost(){
-		$.ajax({
-			url :'getPost.do',
-			type : 'get',
-			beforeSend: function(xhr){
-		 	   	var token = $("meta[name='_csrf']").attr('content');
-		 		var header = $("meta[name='_csrf_header']").attr('content');
-	 		    xhr.setRequestHeader(header, token);
-	 		},
-			success : function (data) {
-				$('#main-body').html(data);
-				console.log('JSP뿌리기 성공');	
-			},
-			error : function () {
-				console.log('JSP뿌리기 실패');
-			}
-		});
-	}
-	
-	
 	
 	$(".titleimg").click(function(){
         postNo = $(this).attr("data-value");
@@ -155,7 +145,6 @@ $(document).ready(function() {
 		           		
 		           		comments += '<span style="font-size:15px;">'+data[i].content+'</span>&nbsp;&nbsp;&nbsp;';
 						comments += '<span class ="replyClick" style="font-size:5px; cursor : pointer;">답글달기</span>&nbsp;';
-						comments += '<i class="fa-solid fa-heart" style="font-size:5px; color:red; cursor : pointer;"></i>&nbsp;';
 						comments += '<span class ="addHeart" style="font-size:5px;">'+data[i].likes+'</span>&nbsp;';
 						comments += '<i class="fa-solid fa-x deleteRe" style="font-size:5px; color:red; cursor : pointer;" data-no="'+data[i].commentNo+'" ></i><br/>';
 						comments += '<div class="row">';

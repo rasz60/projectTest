@@ -13,7 +13,7 @@ public interface PostIDao {
 	public ArrayList<PostDto> list(String email);
 	public ArrayList<PostDto> getlist(String boardNum);
 	public void deleteBoard(String boardNum);
-	public void addLike(PostLikeDto dto);
+	public String addLike(PostLikeDto dto);
 	public void deleteLike(PostLikeDto dto);
 	public ArrayList<PostDto> modifyList(String boardNum);
 	public void modifyExcute(PostDto dto);

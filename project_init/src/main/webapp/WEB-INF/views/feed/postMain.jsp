@@ -36,7 +36,6 @@ ul{
 <input type="hidden" value = "${user}" id="user">
 <div id ="main-body">
 	<section class="container mb-4">
-		
 		<div class="result_posts">
 			<div class="posts d-flex flex-wrap justify-content-start mt-2">
 			<a href="addPost">추가 ㄱ</a>

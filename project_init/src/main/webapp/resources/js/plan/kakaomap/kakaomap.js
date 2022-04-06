@@ -1,8 +1,6 @@
 //마커를 담을 배열입니다
 var markers = [];
-
-var clickedMarkers1 = [], clickedMarkers2 = [], clickedMarkers3 = [], clickedMarkers4 = [], clickedMarkers5 = [], 
-	clickedMarkers6 = [], clickedMarkers7 = [], clickedMarkers8 = [], clickedMarkers9 = [], clickedMarkers10 = [];
+var markers2 = [];
 
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 	mapOption = {
@@ -118,7 +116,15 @@ function displayPlaces(places) {
 				
 				// 타겟의 data-count(상세 일정 개수) value 변수 선언
 				var value = target1.attr('data-count');
-
+				
+				var day = target1.attr('data-day');
+				
+				if ( markerValidation(day, marker) == false ) {
+					if ( confirm('같은 날짜에 중복되는 장소로 생성된 일정이 있습니다. 중복으로 생성할까요?') == false ) {
+						return false;							
+					}
+				}
+				
 				// inputdata()에서 처리
 				inputdata(marker, target1, value, title, category, address);
 	        });
@@ -187,6 +193,8 @@ var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_
         position: position, // 마커의 위치
         image: markerImage
     });
+marker.setZIndex(1);
+
 marker.setMap(map); // 지도 위에 마커를 표출합니다
 markers.push(marker);  // 배열에 생성된 마커를 추가합니다
 
@@ -361,17 +369,17 @@ function inputdata(marker, target1, value, title, category, address) {
 	});
 
 	marker.setMap(map); // 마커를 맵에 생성
-	
+
 	// 현재 작성중인 planDay를 변수로 선언
 	var planDay = target1.attr('data-day');
 	
 	// 현재 작성중인 planDay에 맞는 배열에 marker를 저장
 	addMarkerArray(planDay, marker);
-
+	
 }
 
 // 검색결과 목록의 자식 Element를 제거하는 함수입니다
-function removeAllChildNods(el) {   
+function removeAllChildNods(el) {
 	while (el.hasChildNodes()) {
 	    el.removeChild (el.lastChild);
 	}
@@ -379,100 +387,63 @@ function removeAllChildNods(el) {
 
 // 마커를 각 일정에 맞는 배열에 저장하는 메서드
 function addMarkerArray(planDay, marker) {
-	
-	if ( planDay == 'day1' ) {
-		clickedMarkers1.push(marker);
-		
-	} else if ( planDay == 'day2' ) {
-		clickedMarkers2.push(marker);
-		
-	} else if ( planDay == 'day3' ) {
-		clickedMarkers3.push(marker);
-		
-	} else if ( planDay == 'day4' ) {
-		clickedMarkers4.push(marker);
-		
-	} else if ( planDay == 'day5' ) {
-		clickedMarkers5.push(marker);
-		
-	} else if ( planDay == 'day6' ) {
-		clickedMarkers6.push(marker);
-		
-	} else if ( planDay == 'day7' ) {
-		clickedMarkers7.push(marker);
-		
-	} else if ( planDay == 'day8' ) {
-		clickedMarkers8.push(marker);
-		
-	} else if ( planDay == 'day9' ) {
-		clickedMarkers9.push(marker);
-		
-	} else if ( planDay == 'day10' ) {
-		clickedMarkers10.push(marker);
+	// {planDay , marker}로 구성된 객체로 생성하여 markers2 배열에 저장
+	var planObject = {
+		day : planDay,
+		mapMarker : marker
 	}
+	markers2.push(planObject);
 };
 
-
-// 마커를 삭제하는 메서드
+// 마커를 개별적으로 삭제하는 메서드
 function removeMarkerArray(planDay, index) {
-	if ( planDay == 'day1' ) {
-		if ( index >= 0 ) {
-			clickedMarkers1[index].setMap(null);
-			clickedMarkers1.splice(index, 1);
+	var dayMarker = [];
+	
+	// planDay가 같은 마커를 dayMarker 배열에 따로 push
+	for ( var i = 0; i < markers2.length; i++ ) {
+		if ( markers2[i].day == planDay ) {
+			dayMarker.push(markers2[i]);
 		}
-	} else if ( planDay == 'day2' ) {
-		if ( index >= 0 ) {
-			clickedMarkers2[index].setMap(null);
-			clickedMarkers2.splice(index, 1);
-		}
-		
-	} else if ( planDay == 'day3' ) {
-		if ( index >= 0 ) {
-			clickedMarkers3[index].setMap(null);
-			clickedMarkers3.splice(index, 1);
-		}
-		
-	} else if ( planDay == 'day4' ) {
-		if ( index >= 0 ) {
-			clickedMarkers4[index].setMap(null);
-			clickedMarkers4.splice(index, 1);
-		}
-		
-	} else if ( planDay == 'day5' ) {
-		if ( index >= 0 ) {
-			clickedMarkers5[index].setMap(null);
-			clickedMarkers5.splice(index, 1);
-		}
-		
-	} else if ( planDay == 'day6' ) {
-		if ( index >= 0 ) {
-			clickedMarkers6[index].setMap(null);
-			clickedMarkers6.splice(index, 1);
-		}
-		
-	} else if ( planDay == 'day7' ) {
-		if ( index >= 0 ) {
-			clickedMarkers7[index].setMap(null);
-			clickedMarkers7.splice(index, 1);
-		}
-		
-	} else if ( planDay == 'day8' ) {
-		if ( index >= 0 ) {
-			clickedMarkers8[index].setMap(null);
-			clickedMarkers8.splice(index, 1);
-		}
-		
-	} else if ( planDay == 'day9' ) {
-		if ( index >= 0 ) {
-			clickedMarkers9[index].setMap(null);
-			clickedMarkers9.splice(index, 1);
-		}
-		
-	} else if ( planDay == 'day10' ) {
-		if ( index >= 0 ) {
-			clickedMarkers10[index].setMap(null);
-			clickedMarkers10.splice(index, 1);
+	}
+	// planDay가 같은 마커 중 해당하는 index번째에 마커를 map에서 지움
+	dayMarker[index].mapMarker.setMap(null);
+	
+	var count = 0;
+	// markers2에서 다시 planDay가 같은 마커를 찾음
+	for ( var i = 0; i < markers2.length; i++ ) { 
+		if( markers2[i].day == planDay ) {
+			// planDay가 같은 걸 찾았을 때, index번째 인지 확인
+			if ( count == index ) {
+				// 맞으면 지우고 반복문을 더 이상 수행하지 않고 나감
+				markers2.splice(i, 1);
+				break;
+			}
+			// index 번째가 아니면 count를 ++하고 반복문 수행
+			count++;
 		}
 	}
 };
 
+// 맵에 각 일정에 맞는 마커만 표시하는 메서드
+function setDayMap(planday) {
+	for ( var i = 0; i < markers2.length; i++ ) {
+		if( markers2[i].day == planday ) {
+			markers2[i].mapMarker.setMap(map);
+		} else {
+			markers2[i].mapMarker.setMap(null);
+		}
+	}
+}
+
+// 같은 날짜에 동일한 장소로 일정 생성 확인
+function markerValidation(day, marker) {
+	var validation = true;
+	for ( var i = 0; i < markers2.length; i++ ) {
+		if ( markers2[i].day == day && 
+			 markers2[i].mapMarker.getPosition().getLat() == marker.getPosition().getLat() && 
+			 markers2[i].mapMarker.getPosition().getLng() == marker.getPosition().getLng()) {
+			validation = false;
+		}					
+	}
+	return validation;
+}

@@ -8,6 +8,8 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.project.init.controller.HomeController;
 import com.project.init.feed.dao.PostDao;
 import com.project.init.feed.dto.CommentsDto;
 import com.project.init.feed.dto.PostDto;
@@ -28,6 +31,9 @@ import com.project.init.util.Constant;
 @Controller
 @RequestMapping("/post")
 public class PostController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(PostController.class);
+	
 	@Autowired
 	private PostDao dao;
 	
@@ -38,7 +44,7 @@ public class PostController {
 		model.addAttribute("list", list);
 		model.addAttribute("user",Constant.username);
 		System.out.println(Constant.username);
-		return "feed/postMain";
+		return "search";
 	}
 	
 	@RequestMapping("getPost")
@@ -194,12 +200,14 @@ public class PostController {
 		return "feed/postMain";
 	}
 
-	@RequestMapping("addLike.do")
+	@ResponseBody
+	@RequestMapping(value="addLike.do", produces="application/text; charset=UTF-8")
 	public String addLike(@RequestParam("postNo") String postNo,@RequestParam("email") String email) {
-		
+		logger.info(postNo + "/" + email);
 		PostLikeDto dto = new PostLikeDto(postNo, email);
-		dao.addLike(dto);
-		return "redirect:postMain";
+		String result = dao.addLike(dto);
+		
+		return result;
 	}
 
 	@RequestMapping("deleteLike.do")
