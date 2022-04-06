@@ -8,6 +8,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
@@ -71,5 +74,12 @@ public class DaoTests {
 		logger.info(deleteDtList.get(0).entrySet());
 
 		sqlSession.delete("deleteDt", deleteDtList);
+	}
+	
+	@Test
+	public void test4(HttpServletRequest request) {
+		Set path = request.getSession().getServletContext().getResourcePaths("/");
+		
+		System.out.println(path);
 	}
 }

@@ -137,19 +137,21 @@ $(document).ready(function() {
 	         success:function(data){
 	        	 console.log(data);
 		           	for(var i=0; i<data.length; i++){
-		           		comments += '<div>';
-						
 		           		for(var y=0; y<data[i].grpl; y++){
-		           		comments += '&nbsp;&nbsp;';
+		           			comments += '&nbsp;&nbsp;';
 						}
-		           		
+		           		comments += '<div class="coment-block d-flex">';
+						comments +=	'<div class="profile-img-xxs col-1 px-0">';
+						comments +=	'<div class="img-xxs border"></div>';
+						comments +=	'</div>&nbsp;&nbsp;';
+						comments +=	'<span style="font-size:15px;">nini</span>&nbsp;&nbsp;&nbsp;';
 		           		comments += '<span style="font-size:15px;">'+data[i].content+'</span>&nbsp;&nbsp;&nbsp;';
 						comments += '<span class ="replyClick" style="font-size:5px; cursor : pointer;">답글달기</span>&nbsp;';
-						comments += '<span class ="addHeart" style="font-size:5px;">'+data[i].likes+'</span>&nbsp;';
 						comments += '<i class="fa-solid fa-x deleteRe" style="font-size:5px; color:red; cursor : pointer;" data-no="'+data[i].commentNo+'" ></i><br/>';
 						comments += '<div class="row">';
 						comments += '<input type="hidden" class="col-xs-10 replyComment" data-grp="'+data[i].grp+'" data-grpl="'+data[i].grpl+'" " data-grps="'+data[i].grps+'">';
 						comments += '<input type="hidden" class="btn btn-outline-success addreplyComment" role="button" value="전송"></input>';
+						comments += '</div>';
 						comments += '</div>';
 						comments += '</div>';
 		           	}

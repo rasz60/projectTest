@@ -90,7 +90,6 @@ $('#moreBtn').click(function() {
 
 // post 클릭하면 modal창 열림 (더보기 버튼 눌러서 동적으로 생긴 post도 클릭 이벤트 실행되게끔 document.on 사용)
 $(document).on('click', '.post', function() {
-	console.log($(this).text());
 	$('#modalBtn').trigger('click');
 });
 

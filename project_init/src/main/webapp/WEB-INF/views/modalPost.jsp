@@ -22,11 +22,43 @@
 ul {
 	list-style: none;	
 }
+
+.profile-img-s {
+	height: 100%;
+}
+
+.img-s {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
+
+input.comment,
+input.comment:focus {
+	width: 85%;
+	border: none;
+	border-bottom: 1px solid #dee2e6;
+}
+
+profile-img-xxs {
+	height: 100%;
+}
+
+.img-xxs {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+}
+
+.comments {
+	height: 90%;
+	overflow : auto;
+}
 </style>
 </head>
 <body>
 <!-- modal button -->
-<input type="hidden" id="modalBtn" data-toggle="modal" data-target="#myModal" value="modal" />
+<input type="hidden" id="modalBtn" data-toggle="modal" data-target="#modal-reg" value="modal" />
 
 <!-- modal 창 -->
 <div class="modal fade" id="modal-reg" role="dialog">
@@ -50,19 +82,24 @@ ul {
                     </div>
 				</div>
 				<ul class="list-group d-block">
-					<li class="list-group-item mb-1">
-						<i class="modal-icon fa-regular fa-circle-user"></i>
-					    <ul class="userNickname">
-                        	
-                        </ul>
+					<li class="list-group-item d-flex row mx-0 mb-1">
+						<div class="profile-img-s col-2 px-0">
+							<div class="img-s border"></div>
+						</div>
+						
+						<div class="col-10">
+							<div class="">
+								<b>nickname</b>
+							</div>
+							
+							<div class="">
+								location
+							</div>
+						</div>
 					</li>
 					
 					
-					<li class="list-group-item mb-1">
-						<ul class="postContent">
-                    	
-                    	</ul>
-					</li>
+					<li class="list-group-item mb-1"></li>
 					
 					<li class="list-group-item mb-1 d-flex row mx-0">
 						<div class="col-4"><i class="modal-icon fa-regular fa-heart"></i></div>
@@ -72,16 +109,16 @@ ul {
 					
 					
 					<li class="list-group-item">
-                        <div class="row ml-1">
-                        	<input type="text" class="form-control col-9 comment grpl" data-value="0">
-                        	<button type="button" class="btn btn-outline-success addcomment ml-2" role="button">전송</button>
-                        </div>
-
+                       	<input type="text" class="comment grpl" placeholder="comment" data-value="0">
+                       	<button type="button" class="btn btn-sm btn-outline-success addcomment ml-1" role="button">전송</button>
 					
-						<ul class="comments">
-							<li>
-							</li>
-						</ul>
+						<div class="comments">
+							<div class="coment-block d-flex">
+								<div class="profile-img-xxs col-1 px-0">
+									<div class="img-xxs border"></div>
+								</div>
+							</div>
+						</div>
 					</li>
 					
 					<li>
@@ -89,16 +126,6 @@ ul {
                     </li>
 				</ul>
 			</div>
-			
-			<!-- 동작 test 필요 -->
-			<!-- Modal footer -->
-            <c:if test="${user == post.email}">
-        	<div class="modal-footer">
-        		<a class="btn btn-outline-success modify" href="#" role="button">Modify</a>
-                <a class="btn btn-outline-danger delete" href="#" role="button" onclick="deleteCheck()">Delete</a>
-        	</div>
-        	</c:if>
-			
 		</div>
 	</div>
 </div>

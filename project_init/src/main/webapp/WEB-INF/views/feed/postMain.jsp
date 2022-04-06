@@ -26,14 +26,14 @@
 <link rel="stylesheet" type="text/css" href="../css/footer.css" />
 <title>List</title>
 <style>
-ul{
+ul {
    list-style:none;
-   }
+}
 </style>
 </head>
 <body>
 <%@ include file="../header.jsp" %>
-<input type="hidden" value = "${user}" id="user">
+<input type="hidden" value="${user}" id="user">
 <div id ="main-body">
 	<section class="container mb-4">
 		<div class="result_posts">

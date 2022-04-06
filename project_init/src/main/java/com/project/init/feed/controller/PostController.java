@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.project.init.controller.HomeController;
 import com.project.init.feed.dao.PostDao;
 import com.project.init.feed.dto.CommentsDto;
 import com.project.init.feed.dto.PostDto;
@@ -65,15 +65,15 @@ public class PostController {
 	}
 	
 	@RequestMapping(value = "uploadMulti", method = { RequestMethod.POST })
-	public String uploadMulti(MultipartHttpServletRequest multi, Model model) {
+	public String uploadMulti(MultipartHttpServletRequest multi, Model model, HttpServletRequest request) {
 		System.out.println("ddddddd");
 		String images = "";
 		String titleImage="";
 		String tmp="";
 		int views =0;
 		List<MultipartFile> fileList = multi.getFiles("img");
-				
-		String path = "D:/project/project_init_test/project_init/src/main/webapp/resources/images/";
+		
+		String path = "F:/project/projectTest/project_init/src/main/webapp/resources/images/";
 		
 		for (MultipartFile mf : fileList) {
 			String originalFileName = mf.getOriginalFilename();
@@ -133,7 +133,7 @@ public class PostController {
 		
 		List<MultipartFile> fileList = multi.getFiles("img");
 		
-		String path = "D:/project/project_init_test/project_init/src/main/webapp/resources/images/";
+		String path = "F:/project/projectTest/project_init/src/main/webapp/resources/images/";
 		
 		for (MultipartFile mf : fileList) {
 			String originalFileName = mf.getOriginalFilename();

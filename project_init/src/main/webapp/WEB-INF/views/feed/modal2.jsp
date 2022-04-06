@@ -10,9 +10,6 @@
 <%-- kakaomap javascript CDN --%>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd"></script>
 
-<%-- kakaomap css file --%>
-<link rel="stylesheet" type="text/css" href="css/feed/kakaomap.css" />
-
 </head>
 <body>
 	<%-- modal 창 --%>
