@@ -17,7 +17,7 @@
 <script src="https://kit.fontawesome.com/b4e02812b5.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" type="text/css" href="css/modalPost.css" />
+<link rel="stylesheet" type="text/css" href="../css/modalPost.css" />
 
 </head>
 <body>
@@ -25,7 +25,7 @@
 <input type="hidden" id="modalBtn" data-toggle="modal" data-target="#myModal" value="modal" />
 
 <!-- modal 창 -->
-<div class="modal fade" id="myModal" role="dialog">
+<div class="modal fade" id="modal-reg" role="dialog">
 	<div class="modal-dialog modal-dialog-centered modal-xl d-block">
 		<button type="button" id="modalCloseBtn" class="btn btn-lg btn-default text-white text-weight-bold display-1 float-right" data-dismiss="modal">&times;</button>
 		<div class="modal-content">
@@ -34,12 +34,7 @@
 					<div id="demo" class="carousel slide" data-ride="carousel">
                     	<!-- The slideshow -->
                         <div class="carousel-inner Citem">
-	                        <div class="carousel-item active">
-                        		<img src="images/5.jpg" alt="" />
-                        	</div>
-                        	<div class="carousel-item">
-                        		<img src="images/marker.png" alt="" />
-                        	</div>
+                        	<!-- 이미지 등록 -->
                         </div>
                         <!-- Left and right controls -->
                         <a class="carousel-control-prev" href="#demo" data-slide="prev">
@@ -51,16 +46,49 @@
                     </div>
 				</div>
 				<ul class="list-group d-block">
-					<li class="list-group-item mb-1"><i class="modal-icon fa-regular fa-circle-user"></i></li>
-					<li class="list-group-item mb-1"><i class="modal-icon fa-regular fa-rectangle-list"></i></li>
+					<li class="list-group-item mb-1">
+						<i class="modal-icon fa-regular fa-circle-user"></i>
+					    <ul class="userNickname">
+                        	
+                        </ul>
+					</li>
+					
+					
+					<li class="list-group-item mb-1">
+						<ul class="postContent">
+                    	
+                    	</ul>
+					</li>
+					
 					<li class="list-group-item mb-1 d-flex row mx-0">
 						<div class="col-6"><i class="modal-icon fa-regular fa-heart"></i></div>
 						<div class="col-3"><i class="modal-icon fa-regular fa-bookmark"></i></div>
 						<div class="col-3"><i class="modal-icon fa-regular fa-comment-dots"></i></div>
 					</li>
-					<li class="list-group-item"><i class="modal-icon fa-regular fa-comment-dots"></i></li>
+					
+					
+					<li class="list-group-item"><i class="modal-icon fa-regular fa-comment-dots"></i>
+					
+					</li>
+					
+					<li>
+                        <div class="row">
+                        	<input type="text" class="col-sm-10 comment grpl" data-value="0">
+                        	<button type="button" class="btn btn-outline-success addcomment" role="button">전송</button>
+                        </div>
+                    </li>
 				</ul>
 			</div>
+			
+			<!-- 동작 test 필요 -->
+			<!-- Modal footer -->
+            <c:if test="${user == post.email}">
+        	<div class="modal-footer">
+        		<a class="btn btn-outline-success modify" href="#" role="button">Modify</a>
+                <a class="btn btn-outline-danger delete" href="#" role="button" onclick="deleteCheck()">Delete</a>
+        	</div>
+        	</c:if>
+			
 		</div>
 	</div>
 </div>

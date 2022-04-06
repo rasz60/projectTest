@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.project.init.feed.dao.PostIDao">      
+
+
+	<!-- 게시글 작성 -->
+   <insert id="write" parameterType="com.project.init.feed.dto.PostDto"> 
+      Insert into POST(EMAIL,POSTNO,CONTENT,HASHTAG,LOCATION,TITLEIMAGE,IMAGES,views)
+       values (#{email},POST_NO_SEQ.NEXTVAL,#{content},#{hashtag},#{location},#{titleImage},#{images},#{views})
+   </insert>
+   
+	<!-- 게시글 불러오기 -->
+   <select id="list" parameterType="String" resultType="com.project.init.feed.dto.PostDto" >
+      SELECT 
+        POSTNO,
+      	EMAIL,
+      	PLAN,
+      	TITLEIMAGE,
+	    IMAGES,
+	    CONTENT,
+	    HASHTAG,
+	    REGDATE,
+	    LOCATION,
+	    VIEWS,
+	    AUTHORITY,
+	 	(SELECT count(*) from COMMENTS where comments.postno = POST.postno)comments, 
+		(SELECT count(*) from POST_LIKE where POST_LIKE.postno = POST.postno) likes,
+		(SELECT LIKES FROM POST_LIKE WHERE email = #{email,jdbcType=VARCHAR} AND POST_LIKE.postno=POST.postno) heart
+	 FROM POST ORDER BY POSTNO DESC
+   </select>
+
+   
+   
+	<!-- 게시글 하나 불러오기 -->
+   <select id="getlist" parameterType="String" resultType="com.project.init.feed.dto.PostDto">
+      SELECT * FROM POST where POSTNO= #{postNo} ORDER BY POSTNO 
+   </select>
+   
+   	<!-- 게시글 삭제 -->
+   <select id="deleteBoard" parameterType="String" >
+      DELETE FROM COMMENTS WHERE POSTNO = #{postNo}
+   </select>
+
+	<!--게시글을 삭제 하면 댓글 또한 삭제 -->
+   <select id="deleteComments" parameterType="String" >
+      DELETE FROM POST WHERE POSTNO = #{postNo}
+   </select>
+   
+	<!-- 게시글 수정을 위한 데이터 불러오기 -->
+   <select id="modifyList" parameterType="String" resultType="com.project.init.feed.dto.PostDto">
+      SELECT * FROM POST where POSTNO= #{postNo}
+   </select>
+   
+   	<!-- 게시글 수정 -->
+   <update id="modifyExcute" parameterType="String" >
+      UPDATE POST SET CONTENT = #{content}, HASHTAG = #{hashtag}, LOCATION = #{location}, TITLEIMAGE = #{titleImage}, IMAGES = #{images} WHERE POSTNO = #{postNo}
+   </update>
+
+	<!-- 댓글 달기 -->
+   <insert id="addcomments" parameterType="com.project.init.feed.dto.CommentsDto">
+      <![CDATA[
+      INSERT INTO COMMENTS (COMMENTNO,POSTNO,CONTENT,grp,grpl,grps)
+       VALUES (COMMENTS_SEQ.nextval,#{postNo},#{content},COMMENTS_SEQ.CURRVAL,#{grpl},0)
+       ]]>
+   </insert>
+   
+   	<!-- 댓글 가져오기 -->
+   <select id="getcomments" parameterType="String" resultType="com.project.init.feed.dto.CommentsDto">
+      SELECT * FROM COMMENTS WHERE POSTNO= #{postNo} ORDER BY GRP DESC, GRPS ASC
+   </select>
+
+	<!-- 검색어 필터 /작성자 -->
+   <select id="searchWriter" parameterType="String" resultType="com.project.init.feed.dto.PostDto">
+      SELECT * FROM POST WHERE EMAIL LIKE '%'||#{keyword}||'%'   
+   </select>
+   
+	<!-- 검색어 필터 /내용 -->
+   <select id="searchContent" parameterType="String" resultType="com.project.init.feed.dto.PostDto">
+      SELECT * FROM POST WHERE CONTENT LIKE '%'||#{keyword}||'%'       
+   </select>
+
+	<!-- 검색어 필터 /장소 -->
+   <select id="searchLocation" parameterType="String" resultType="com.project.init.feed.dto.PostDto">      
+      SELECT * FROM POST WHERE LOCATION LIKE '%'||#{keyword}||'%'
+   </select>
+	<!-- 검색어 필터 /해시태그 -->
+   <select id="searchHashtag" parameterType="String" resultType="com.project.init.feed.dto.PostDto">
+      SELECT * FROM POST WHERE HASHTAG LIKE '%'||#{keyword}||'%' 
+   </select>
+   
+   <update id="beforeAddReply" parameterType="com.project.init.feed.dto.CommentsDto" >
+      <![CDATA[
+         UPDATE COMMENTS SET grps = grps + 1 
+          WHERE grp = #{grp} AND grps >#{grps}
+       ]]>
+   </update>
+   
+   <!-- 대 댓글 작성 -->
+   <insert id="addReplyComments" parameterType="com.project.init.feed.dto.CommentsDto">
+      <![CDATA[
+      INSERT INTO COMMENTS (COMMENTNO,POSTNO,CONTENT,grp,grpl,grps) 
+       VALUES
+         (COMMENTS_SEQ.nextval,
+         #{postNo},
+         #{content},
+         #{grp},
+         (#{grpl}+1),
+         (#{grps}+1))
+       ]]>
+   </insert>
+   
+   <!-- 대 댓글 삭제 -->
+   <update id="deleteReplyComments" parameterType="String" >
+      <![CDATA[
+         UPDATE COMMENTS SET CONTENT = '(삭제된 댓글입니다.)'
+          WHERE COMMENTNO = #{commentNo} 
+       ]]>
+   </update>
+   
+   <!-- 좋아요 추가 -->
+   <insert id="addLike" parameterType="com.project.init.feed.dto.PostLikeDto">
+  	
+  	 INSERT INTO post_like(POSTLIKENO,POSTNO,EMAIL,LIKES) VALUES (POST_LIKE_SEQ.NEXTVAL,#{postNo},#{email},1)
+   
+   </insert>
+   
+    <delete id="deleteLike" parameterType="com.project.init.feed.dto.PostLikeDto"> 
+   
+   	DELETE FROM post_like WHERE POSTNO=#{postNo} AND EMAIL =#{email}
+   </delete> 
+
+   <select id="like" resultType="_int" parameterType="com.project.init.feed.dto.PostLikeDto">
+  	
+  	 SELECT count(*) FROM post_like WHERE POSTNO=#{postNo} AND EMAIL =#{email}
+   
+   </select>
+</mapper>

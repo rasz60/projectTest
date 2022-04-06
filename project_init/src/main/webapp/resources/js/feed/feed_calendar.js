@@ -6,6 +6,8 @@ $(document).ready(function() {
 	// calendar를 보여줄 domElement
 	var calendarEl = document.getElementById('calendar');
 
+	var events = [];
+
 	// dateclick에서 쓰일 count 변수
 	var count = 0;
 	
@@ -36,9 +38,9 @@ $(document).ready(function() {
 	
 		// 달력 날짜 클릭시
 		dateClick: function(info) {
-			// 클릭이 일어나면 count++
+			// validation 문제 없을 시 클릭카운트++
 			count++;
-			
+
 			if ( count == 1 ) {
 				// 첫번째 클릭시 startDate로 입력
 				$('#startDate').val(info.dateStr);
@@ -125,15 +127,16 @@ $(document).ready(function() {
 		var planName = $('#planName').val();
 		var startDate = $('#startDate').val();
 		var endDate = $('#endDate').val();
-				
+		
 		// startDate와 endDate의 차이를 구해서 dataCount 값을 input에 추가
 		var start = strToDate(startDate);
 		var end = strToDate(endDate);
 		var dateCount = ((end - start) / (1000*60*60*24)) + 1;
 		$('#dateCount').val(dateCount);
+		
 		// validation method 실행
  		var validation = planMstValidations(planName, startDate, endDate, dateCount);
-		
+		console.log(validation);
 		// validation 결과가 참이면 최종 컨펌 후 submit
 		if ( validation == true ) {
 			if( confirm('선택한 일자로 일정을 만들까요?') == true ) {
@@ -335,6 +338,8 @@ $(document).ready(function() {
 							dateCount: data[i].dateCount
 	 					})
 	 				}
+					events.length = 0;
+					events = calendar.getEvents();
 	 			},
 	 			error : function(data) {
 	 				console.log(data);
@@ -361,13 +366,58 @@ $(document).ready(function() {
 		if ( m < 10 ) { m = "0" + m;	}
 		
 		if ( d < 10 ) { d = "0" + d; }
-		console.log(d);
+
 		return y+"-"+m+"-"+d;
+	};
+	
+	// 이미 생성된 이벤트를 확인하여 같은 날짜에 3개 이상의 이벤트가 있는 경우 false
+	function duplicateEventsValidation(startDate, dateCount) {
+		var check = true;
+		
+		var start = strToDate(startDate);
+		var duplicateEventsCount = 0;
+
+		// startdate 부터 하루씩 증가
+		for ( var i = 0; i < Number(dateCount); i++ ) {
+			if ( i != 0 ) {
+				start.setDate(start.getDate() + 1);
+			}
+			// for문을 돌면서 startDate 부터 i만큼 증가된 날짜
+			var planDate = dateToStr(start);
+			
+			// 전체 이벤트를 가지고 있는 events 배열만큼 for문
+			for ( var j = 0; j < events.length; j++ ) {
+				// calendar eventEndDate가 allday속성으로 인해 +1일이 되므로 다시 -1시켜서 비교 
+				var eventEnd = events[j].end;
+				eventEnd.setDate(eventEnd.getDate() - 1);
+				eventEnd = dateToStr(eventEnd);
+				
+				// 이미 생성된 이벤트 중에 planDate 날짜를 포함한 일정이 있으면 duplicateEventsCount++시킴
+				if ( events[j].startStr <= planDate && eventEnd >= planDate ) {
+					duplicateEventsCount++;
+				}
+			}
+			
+			// 하루라도 이벤트가 3개 이상인 날이 있으면 return 값을 false로 바꾸고 반복문 종료
+			if ( duplicateEventsCount >= 3 ) {
+				check = false;
+				break;
+			}
+			// 다음 날짜 확인을 위해 duplicateEventsCount을 다시 0으로 초기화
+			duplicateEventsCount = 0;
+		}
+
+		return check;
 	};
 	
 	// planMst 생성, 수정시 공통 validation method
 	function planMstValidations(planName, startDate, endDate, dateCount) {
 		var validation = true;
+		// 이미 생성된 이벤트를 확인하여 같은 날짜에 3개 이상의 이벤트가 있는 경우 false
+		if ( duplicateEventsValidation(startDate, dateCount) == false ) {
+			alert('같은 날짜에 3개 이상의 일정을 생성할 수 업습니다.');
+			validation = false;
+		}
 		
 		// 1st Validation : input null check
 		if( planName == "" ) {
@@ -377,19 +427,23 @@ $(document).ready(function() {
 		} else if( startDate =="" || endDate =="" ) {
 			alert('일자를 선택해주세요.');
 			validation = false;
-			
+		}
+		
+		 
 		// 2nd Validation : 종료일자가 시작일자보다 빠르면 폼을 return = false / submit 되지 않게 함.
-		} else if ( startDate > endDate ) {
+		if ( startDate > endDate ) {
 			alert("종료일자가 시작일자보다 빠를 수 없습니다.");
 			validation = false;
+		} 
+		
 		
 		// 3rd Validation : 10일 초과 일정 생성 불가
-		} else if ( dateCount > 10 ) {
+		if ( dateCount > 10 ) {
 			alert("10일을 초과한 일정을 생성할 수 없습니다.");
 			$('.mp_btn #reset').trigger('click');
 			validation = false;
 		}
-		
+
 		return validation;
 	};
 	
@@ -438,9 +492,7 @@ $(document).ready(function() {
 					if ( data[j].endTime == null ) {
 						data[j].endTime = '- - : - - ';
 					}
-					
-					
-					
+
 					// 각각의 위치에 텍스트 입력
 					target2.children('.planDt' + count).children('h4').text(data[j].placeName);
 					target2.children('.planDt' + count).children('.startTime').text('start : ' + data[j].startTime);
