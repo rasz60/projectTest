@@ -22,7 +22,7 @@ public class PlanMstInsertCommand implements ICommand {
 		
 		PlanMstDto dto = (PlanMstDto)request.getAttribute("mstDto");
 		
-		planDao.insertPlanMst(dto);
+		
 
 	}
 

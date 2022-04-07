@@ -4,24 +4,29 @@ public class PlanMstDto {
 	
 	
 	private int planNum;
+	private String userId;
 	private String planName;
 	private String startDate;
 	private String endDate;
-	private String theme;
+	private String dateCount;
+	private String eventColor;
 
 	public PlanMstDto() {
 		super();
 	}
 
-	public PlanMstDto(int planNum, String planName, String startDate, String endDate, String theme) {
+	public PlanMstDto(int planNum, String userId, String planName, String startDate, String endDate, String dateCount,
+			String eventColor) {
 		super();
 		this.planNum = planNum;
+		this.userId = userId;
 		this.planName = planName;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.theme = theme;
+		this.dateCount = dateCount;
+		this.eventColor = eventColor;
 	}
-	
+
 	public int getPlanNum() {
 		return planNum;
 	}
@@ -30,22 +35,30 @@ public class PlanMstDto {
 		this.planNum = planNum;
 	}
 
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
 	public String getPlanName() {
 		return planName;
 	}
-	
+
 	public void setPlanName(String planName) {
 		this.planName = planName;
 	}
-	
+
 	public String getStartDate() {
 		return startDate;
 	}
-	
+
 	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
-	
+
 	public String getEndDate() {
 		return endDate;
 	}
@@ -54,12 +67,20 @@ public class PlanMstDto {
 		this.endDate = endDate;
 	}
 
-	public String getTheme() {
-		return theme;
+	public String getDateCount() {
+		return dateCount;
 	}
 
-	public void setTheme(String theme) {
-		this.theme = theme;
+	public void setDateCount(String dateCount) {
+		this.dateCount = dateCount;
 	}
-	
+
+	public String getEventColor() {
+		return eventColor;
+	}
+
+	public void setEventColor(String eventColor) {
+		this.eventColor = eventColor;
+	}
+
 }

@@ -7,6 +7,9 @@
 <head>
 <meta charset="UTF-8" />
 <title>Insert title here</title>
+<%-- kakaomap javascript CDN --%>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd"></script>
+
 </head>
 <body>
 	<%-- modal 창 --%>
@@ -103,7 +106,7 @@
 					<%-- 4- 상세 일정 출력 박스 --%>
 					<div class="plan-details mt-2 d-flex row mx-0">
 						<%-- 4-1- 생성한 위치의 마커와 마커를 순서대로 선으로 연결하여 출력 --%>
-						<div id="map" class="col-8"></div>
+						<div id="map" class="col-8 border"></div>
 						
 						<%-- 4-2- 상세 일정의 장소 이름, 시작/종료 시간을 출력 --%>
 						<div id="details1" class="col-4 px-0">
@@ -121,6 +124,5 @@
 		</div>
 	</div>
 </div>
-	
 </body>
 </html>

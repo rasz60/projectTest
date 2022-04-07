@@ -6,6 +6,7 @@
   cursor: not-allowed;
 }
 
+
 /* TODO: not attached to body. attached to specific els. move */
 .fc-unselectable {
   -webkit-user-select: none;
@@ -19,14 +20,15 @@
   /* layout of immediate children */
   display: flex;
   flex-direction: column;
-
-  font-size: 1em
+  min-width: 75%;
+  max-width: 100%;
+  font-size: 1em;
 }
 .fc,
   .fc *,
   .fc *:before,
   .fc *:after {
-    box-sizing: border-box;
+    box-sizing: content-box;
   }
 .fc table {
     border-collapse: collapse;
@@ -59,6 +61,7 @@
   .fc-theme-standard th {
     border: 1px solid #ddd;
     border: 1px solid var(--fc-border-color, #ddd);
+	
 }
 /* for FF, which doesn't expand a 100% div within a table cell. use absolute positioning */
 /* inner-wrappers are responsible for being absolute */
@@ -138,6 +141,8 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
   /* reset */
 
 }
+
+/* �썡 �씠�룞 踰꾪듉 �뵒�옄�씤 */
 .fc .fc-button {
     border-radius: 0;
     overflow: visible;
@@ -177,7 +182,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
             user-select: none;
     background-color: transparent;
     border: 1px solid transparent;
-    padding: 0.3em 0.5em;
+    padding: 0.2em 0.3em;
     font-size: 1em;
     line-height: 1;
     border-radius: 0.25em;
@@ -187,31 +192,31 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
   }
 .fc .fc-button:focus {
     outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.25);
+    box-shadow: 0 0 0 0.2rem #757575;
   }
 .fc .fc-button:disabled {
     opacity: 0.65;
   }
 .fc {
 
-  /* "primary" coloring */
+/* "primary" coloring */
 
 }
 .fc .fc-button-primary {
     color: #fff;
     color: var(--fc-button-text-color, #fff);
-    background-color: #0A0773;
-    background-color: var(--fc-button-bg-color, #0A0773);
-    border-color: #0A0773;
-    border-color: var(--fc-button-border-color, #0A0773);
+    background-color: #403D3D;
+    background-color: var(--fc-button-bg-color, #403D3D);
+    border-color: #403D3D;
+    border-color: var(--fc-button-border-color, #403D3D);
   }
 .fc .fc-button-primary:hover {
     color: #fff;
     color: var(--fc-button-text-color, #fff);
-    background-color: #5350AA;
-    background-color: var(--fc-button-hover-bg-color, #5350AA);
-    border-color: #5350AA;
-    border-color: var(--fc-button-hover-border-color, #5350AA);
+    background-color: #757575;
+    background-color: var(--fc-button-hover-bg-color, #757575);
+    border-color: #757575;
+    border-color: var(--fc-button-hover-border-color, #757575);
   }
 .fc .fc-button-primary:disabled { /* not DRY */
     color: #fff;
@@ -321,7 +326,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
   }
 .fc .fc-scroller-harness {
     position: relative;
-    overflow: hidden ;
+    overflow: hidden;
     direction: ltr;
       /* hack for chrome computing the scroller's right/left wrong for rtl. undone below... */
       /* TODO: demonstrate in codepen */
@@ -660,9 +665,11 @@ A HORIZONTAL event
   right: calc(-0.5 * var(--fc-event-resizer-dot-total-width, 8px));
 }
 .fc .fc-popover {
+	margin-top: 2rem;
     position: absolute;
     z-index: 9999;
     box-shadow: 0 2px 6px rgba(0,0,0,.15);
+    border-radius: 10px;
   }
 .fc .fc-popover-header {
     display: flex;
@@ -670,13 +677,18 @@ A HORIZONTAL event
     justify-content: space-between;
     align-items: center;
     padding: 3px 4px;
+    border-radius: 5px;
   }
 .fc .fc-popover-title {
-    margin: 0 2px;
+    margin: 0 0;
+    color: white;
+    font-style: italic;
+    font-weight: 600;
+   
   }
 .fc .fc-popover-close {
     cursor: pointer;
-    opacity: 0.65;
+    color: white;
     font-size: 1.1em;
   }
 .fc-theme-standard .fc-popover {
@@ -687,7 +699,7 @@ A HORIZONTAL event
   }
 .fc-theme-standard .fc-popover-header {
     background: rgba(208, 208, 208, 0.3);
-    background: var(--fc-neutral-bg-color, rgba(208, 208, 208, 0.3));
+    background: var(--fc-neutral-bg-color, #43B2AA);
   }
 
 
@@ -711,13 +723,15 @@ A HORIZONTAL event
     position: relative;
     z-index: 1; /* container inner z-index's because <tr>s can't do it */
   }
+
+/* �삤�뒛 �궇吏� 諛곌꼍�깋 */
 .fc .fc-daygrid-day.fc-day-today {
-      background-color: rgba(255, 220, 40, 0.15);
-      background-color: var(--fc-today-bg-color, rgba(255, 220, 40, 0.15));
+      background-color: #FDFFE8;
+      background-color: var(--fc-today-bg-color, #FDFFE8);
     }
 .fc .fc-daygrid-day-frame {
     position: relative;
-    min-height: 100%; /* seems to work better than `height` because sets height after rows/cells naturally do it */
+    max-height: 40px; /* seems to work better than `height` because sets height after rows/cells naturally do it */
   }
 .fc {
 
@@ -814,8 +828,9 @@ A HORIZONTAL event
 }
 .fc .fc-daygrid-day-bottom {
     font-size: .85em;
-    padding: 2px 3px 0
-  }
+    padding: 2px 3px 0;
+
+ }
 .fc .fc-daygrid-day-bottom:before {
   content: "";
   clear: both;
@@ -1141,6 +1156,7 @@ A VERTICAL event
     position: relative;
   }
 .fc-media-screen.fc-liquid-hack .fc-timegrid-col-frame {
+  width: 100%;
   height: auto;
   position: absolute;
   top: 0;

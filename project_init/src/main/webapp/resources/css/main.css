@@ -1,3 +1,18 @@
+body::-webkit-scrollbar {
+    width: 10px; 
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #A0A0A0 ; 
+    border-radius: 15px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #CCCCCC;
+}
+
+
+
 section.container {
 	margin-top: 5em;
 }

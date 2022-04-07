@@ -21,9 +21,9 @@ public class PlanMstSelectCommand implements ICommand {
 	public void execute(HttpServletRequest request, Model model) {
 		logger.info("execute() in >>> ");
 		
-		PlanMstDto dto = planDao.selectPlanMst((Integer)request.getAttribute("planNum"));
+		//PlanMstDto dto = planDao.selectPlanMst((Integer)request.getAttribute("planNum"));
 		
-		model.addAttribute("mstDto", dto);
+		//model.addAttribute("mstDto", dto);
 	}
 
 }

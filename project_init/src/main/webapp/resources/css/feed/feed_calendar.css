@@ -1,60 +1,164 @@
+/* 페이지 스크롤 세팅 */
+body::-webkit-scrollbar {
+    width: 10px;
+}
+body::-webkit-scrollbar-thumb {
+    background: #A0A0A0 ;
+    border-radius: 15px;
+}
+body::-webkit-scrollbar-track {
+    background: #CCCCCC;
+}
+
+
+/* section과 nav 메뉴 간에 margin 설정 */
 section.container {
 	margin-top: 5em;
+}
+
+/* feed-header setting */
+.body-container #feed-header {
+	width: 100%;
+	height : 200px;
+}
+.body-container #feed-header #profile-img {
+	width: 180px;
+	height: 180px;
+}
+.body-container #feed-header #profile-img .profile-img {
+	font-size: 150px;
+	color: darkblue;
+}
+
+/* feed tab 박스 설정 */
+.feed-tabs {
+	flex-wrap: nowarp;
+	list-style: none;
+	padding: 0;
+}
+
+.feed-tabs .nav-item {
+	margin-bottom: 3px;
+	border: none;
+	border-radius: 0 0 5px 5px;
+	align-items: center;
+	font-size: 1.5rem;
+	text-align: center;
+}
+
+.feed-tabs .nav-item .nav-link {
+	color: #D8D8D8;
+}
+
+.feed-tabs .nav-item.active,
+.feed-tabs .nav-item.active:hover {
+	border: 1px solid #298DF9;
+	background-color: #298DF9;
+	color: white;
+}
+
+.feed-tabs .active .nav-link,
+.feed-tabs .active .nav-link:hover {
+	color: white;
+}
+
+.feed-tabs .nav-item:hover {
+	background-color: #D8D8D8;
+}
+
+
+.feed-tabs .nav-item:hover .nav-link {
+	color: white;
+}
+
+#main-body {
+	height: 1000px;
+}
+
+/* calendar관련 custom setting */
+/* event 블럭 테두리 색상 */
+.fc-event {
+	border-color: white;
+}
+
+/* 토요일, 일요일 글씨색 지정 */
+.fc-day-sat>div, .fc-day-sat>div>div {
+	color : blue;
+}
+.fc-day-sun>div, .fc-day-sun>div>div {
+	color : red;
+}
+
+
+
+
+
+
+
+/* PlanMst 수정 및 상세 일정 조회 modal */
+#detailModal {
+	z-index: 99999;
 }
 
 .modal-dialog {
 	height : 100%;
 }
-
 .modal-content {
 	height : 40%;
 }
-
 #modalCloseBtn {
-	font-size: 4rem;
+	font-size: 3rem;
 	cursor: pointer;
 }
-
-.modal-header #plan-date {
-	line-height : 100%;
-}
-
-
-.modal-body #map-container {
-	width : 40%;
-	height : 100%;
-}
-
-.modal-body #map-container #map {
-	height : 65%;
-}
-
-.modal-body #map-container #locations {
-	height : 30%;
-}
-
-.modal-body #plan_container {
-	width : 55%;
-	height : 100%;
-}
-
-
-.modal-body #plan_container .time_box .form-group {
-	width: 30%;
-}
-
-
-.body-container #feed-header {
+.modal-body #modify_form {
 	width: 100%;
-	height : 200px;
+}
+.modal-body .detail-days #plan-day {
+	font-size: 30px;
+	font-weight: 600;
 }
 
-.body-container #feed-header #profile-img {
-	width: 180px;
-	height: 180px;
+.modal-body .plan-details {
+	height: 700px;
+}
+.modal-body .plan-details #map {
+  	max-width: 100%;
+	height: 100%;
+}
+/* modal창 .plan-details scroll setting */
+.plan-details > #details::-webkit-scrollbar {
+    width: 5px;
+}
+.plan-details > #details::-webkit-scrollbar-thumb {
+    background: #A0A0A0 ;
+    border-radius: 15px;
+}
+.plan-details > #details::-webkit-scrollbar-track {
+    background: #CCCCCC;
 }
 
-.body-container #feed-header #profile-img .profile-img {
-	font-size: 150px;
-	color: darkblue;
+.modal-body .plan-details div[id^=details] {
+	height: 100%;
+	overflow : auto;
+	display: none;
+}
+
+.modal-body .plan-details div[id^=details].active {
+	display: block;
+}
+
+.modal-body .plan-details div[id^=details] .list-group-item {
+	height: 10%;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.modal-body .plan-details div[id^=details] .list-group-item h4 {
+	display: inline;
+	width:100%;
+}
+
+.modal-body .plan-details div[id^=details] .list-group-item h6 {
+	font-weight: 400;
+	width: 50%;
 }

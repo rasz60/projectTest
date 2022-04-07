@@ -19,32 +19,91 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" type="text/css" href="css/header.css" />
-<link rel="stylesheet" type="text/css" href="css/search/main.css" />
-<link rel="stylesheet" type="text/css" href="css/footer.css" />
+<script src="../js/feed/postMain.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/header.css" />
+<link rel="stylesheet" type="text/css" href="../css/search/main.css" />
+<link rel="stylesheet" type="text/css" href="../css/footer.css" />
 <title>Insert title here</title>
+<style>
+.like.active {
+	color: red;
+}
 
+.profile-img-xs {
+	display: flex;
+	align-items: center;
+	padding-top: 0.5px;
+}
+
+.post-nickname, bottom-likes, bottom-comments, bottom-views {
+	height: 50%;
+}
+
+.img-xs {
+	width: 100%;
+	height: 90%;
+	border-radius: 50%;
+}
+
+.userinfo, .status {
+	height: 50%;
+}
+
+</style>
 </head>
 
 <body>
 <%@ include file="header.jsp" %>
-
+<input type="hidden" value = "${user}" id="user">
 <section class="container mb-4">
 	<input type="hidden" id="modalBtn" data-toggle="modal" data-target="#myModal" value="modal" />
 
 	<div class="result_posts">
 		<div class="posts d-flex flex-wrap justify-content-start mt-2">
-			<c:forEach begin="1" end="20" var="i">
+			<c:forEach items="${list}" var="post" >
 				<div class="post mr-2">
 					<div class="post-top border rounded">
-						<img src="images/5.jpg" alt="test"/>
+						<img class="titleimg" style="cursor : pointer;" width="280px" src="../images/${post.titleImage}" data-value="${post.postNo}" data-toggle="modal" data-target="#modal-reg">
 					</div>
-					<div class="post-bottom border">${ i}</div>
+					<div class="post-bottom border row mx-0">
+						<div class="profile-img-xs col-3 px-0">
+							<div class="img-xs border"></div>
+						</div>
+						
+						<div class="info col-9 row mx-0 flex-wrap">
+							<div class="post-nickname col-12 px-0 pt-2">${post.email}</div>
+						
+							<div class="bottom-likes col-4 px-0">
+								<c:choose>
+									<c:when test ="${empty user}">
+										<i class="fa-solid fa-heart" data-postno="${post.postNo}"></i>
+									</c:when>
+		
+									<c:when test="${post.heart == 1}">
+										<i class="fa-solid fa-heart like active" data-postno="${post.postNo}"></i>
+									</c:when>
+									
+									<c:otherwise>
+										<i class="fa-solid fa-heart like" data-postno="${post.postNo}"></i>						
+									</c:otherwise>
+								</c:choose>
+								<span id="likeCount">${post.likes}</span>
+							</div>
+								
+							<div class="bottom-comments col-4 px-0">		  
+								<i class="fa-solid fa-comment-dots"></i>
+								<span id="commentCount">${post.comments}</span>
+							</div>
+							<div class="bottom-views col-4 px-0">
+								<i class="fa-solid fa-eye"></i>
+								<span id="viewCount">${post.views}</span>
+							</div>
+						</div>
+					</div>
 				</div>
 			</c:forEach>
 		</div>
 	</div>
-
 </section>
 
 <nav class="container my-5" aria-label="Page navigation example">
@@ -83,7 +142,7 @@
 
 
 <script>
-
+/*
 $(document).ready(function() {
 	$('.post').click(function() {
 		console.log($(this).text());
@@ -150,7 +209,7 @@ $(document).ready(function() {
 	
 	
 });
-
+*/
 </script>
 </body>
 </html>

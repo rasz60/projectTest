@@ -14,7 +14,7 @@ FullCalendar.globalLocales.push(function () {
     },
     weekText: '주',
     allDayText: '종일',
-    moreLinkText: '개',
+    moreLinkText: 'more',
     noEventsText: '일정이 없습니다',
   };
 

@@ -11,7 +11,6 @@ body::-webkit-scrollbar-track {
 }
 
 
-
 /* section과 nav 메뉴 간에 margin 설정 */
 section.container {
 	margin-top: 5em;
@@ -31,42 +30,50 @@ section.container {
 	color: darkblue;
 }
 
-
-
 /* feed tab 박스 설정 */
 .feed-tabs {
-	border-top: 1px solid #dee2e6;
-	border-bottom: none;
+	flex-wrap: nowarp;
+	list-style: none;
+	padding: 0;
 }
+
 .feed-tabs .nav-item {
+	margin-bottom: 3px;
+	border: none;
+	border-radius: 0 0 5px 5px;
+	align-items: center;
 	font-size: 1.5rem;
 	text-align: center;
 }
 
-/* 현재 선택된 nav-item 설정 */
-.feed-tabs .nav-item.active {
-	background-color: #403D3D;
-}
-.feed-tabs .nav-item.active:hover,
-.feed-tabs .nav-item.active .nav-link,
-.feed-tabs .nav-item.active .nav-link:hover {
-	background-color: #403D3D;	
-	color: white;
-	text-decoration : none;
-}
-
-/* 선택되지 않은 nav-item 설정 */
 .feed-tabs .nav-item .nav-link {
-	color: #ABABAB;
-	border : none;
+	color: #D8D8D8;
 }
-.feed-tabs .nav-item:hover,
-.feed-tabs .nav-item .nav-link:hover {
+
+.feed-tabs .nav-item.active,
+.feed-tabs .nav-item.active:hover {
+	border: 1px solid #298DF9;
+	background-color: #298DF9;
 	color: white;
-	background-color: #D6D6D6 ;
+}
+
+.feed-tabs .active .nav-link,
+.feed-tabs .active .nav-link:hover {
+	color: white;
+}
+
+.feed-tabs .nav-item:hover {
+	background-color: #D8D8D8;
 }
 
 
+.feed-tabs .nav-item:hover .nav-link {
+	color: white;
+}
+
+#main-body {
+	height: 1000px;
+}
 
 /* calendar관련 custom setting */
 /* event 블럭 테두리 색상 */
@@ -84,7 +91,15 @@ section.container {
 
 
 
+
+
+
+
 /* PlanMst 수정 및 상세 일정 조회 modal */
+#detailModal {
+	z-index: 99999;
+}
+
 .modal-dialog {
 	height : 100%;
 }
@@ -107,6 +122,7 @@ section.container {
 	height: 700px;
 }
 .modal-body .plan-details #map {
+  	max-width: 100%;
 	height: 100%;
 }
 /* modal창 .plan-details scroll setting */
