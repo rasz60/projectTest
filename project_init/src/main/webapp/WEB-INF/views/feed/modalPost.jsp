@@ -17,7 +17,8 @@
 <script src="https://kit.fontawesome.com/b4e02812b5.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" type="text/css" href="css/feed/modalPost.css" />
+<script src="js/feed/postMain.js"></script>
+<link rel="stylesheet" type="text/css" href="css/modalPost.css" />
 <style>
 ul {
 	list-style: none;	
@@ -31,6 +32,10 @@ ul {
 	width: 50px;
 	height: 50px;
 	border-radius: 50%;
+}
+
+.list-group-item:nth-child(3) {
+	align-items: center;
 }
 
 input.comment,
@@ -56,7 +61,7 @@ profile-img-xxs {
 }
 
 .comments .coment-block {
-align-items: center;
+	align-items: center;
 }
 
 span.comment-text {
@@ -112,8 +117,6 @@ span.comment-text {
 					</li>
 					
 					
-					
-					
 					<li class="list-group-item mb-1"></li>
 					
 					<li class="list-group-item mb-1 d-flex row mx-0">
@@ -128,43 +131,9 @@ span.comment-text {
                        	<button type="button" class="btn btn-sm btn-outline-success addcomment ml-1" role="button">전송</button>
 					
 						<div class="comments">
-							<div class="coment-block row mx-0 d-flex">
-								<div class="profile-img-xxs col-1 px-0">
-									<div class="img-xxs border"></div>
-								</div>
-								<span class="col-3 pl-1" style="font-size: 14px; font-weight: 600;">ni</span>
-								<span class="col-6 px-0 comment-text" style="font-size: 13px;">adsfjlaksdfjalksdfjalksdjflkasdflaskdnflaksdnltknalksdnf</span>
-								<span class="replyClick col-1 px-0" data-count="0" style="font-size: 5px; cursor : pointer;">답글</span>
-								<i class="fa-solid fa-x deleteRe" style="font-size:5px; color:red; cursor : pointer;" data-no="3"></i>
-								<br>
-								
-								<div class="form-group col-12 row mx-0">
-									<input type="text" class="col-10 recomment" data-grp="2" data-grpl="1" data-grps="1">
-									<input type="button" class="btn btn-sm btn-outline-success addreplyComment ml-1" role="button" value="전송">
-								</div>
-							</div>
-							
-							<div class="coment-block row mx-0 d-flex">
-								<span>&nbsp;</span>
-								<div class="profile-img-xxs col-1 px-0">
-									<div class="img-xxs border"></div>
-								</div>
-								<span class="col-3 pl-1" style="font-size: 14px; font-weight: 600;">ni</span>
-								<span class="col-6 px-0 comment-text" style="font-size: 13px;">adsfjlaksdfjalksdfjalksdjflkasdflaskdnflaksdnltknalksdnf</span>
-								<span class="replyClick col-1 px-0" data-count="0" style="font-size: 5px; cursor : pointer;">답글</span>
-								<i class="fa-solid fa-x deleteRe" style="font-size:5px; color:red; cursor : pointer;" data-no="3"></i>
-								<br>
-								
-								<div class="form-group col-12 row mx-0">
-									<input type="text" class="col-10 recomment" data-grp="2" data-grpl="1" data-grps="1">
-									<input type="button" class="btn btn-xs btn-outline-success addreplyComment ml-1" role="button" value="전송">
-								</div>
-							</div>
-							
-							
 						</div>
 					</li>
-					
+
 					<li>
 
                     </li>
@@ -173,21 +142,6 @@ span.comment-text {
 		</div>
 	</div>
 </div>
-
-<script>
-$('.replyClick').click(function() {
-	var count = $(this).attr('data-count');
-	
-	if ( count == 0 ) {
-		$(this).siblings('.form-group').css('display', 'flex');
-		$(this).attr('data-count', Number(count)+1);
-	} else {
-		$(this).siblings('.form-group').css('display', 'none');
-		$(this).attr('data-count', 0);
-	}
-});
-
-</script>
 
 </body>
 </html>

@@ -64,7 +64,6 @@
 </section>
 <%@ include file="../footer.jsp" %>
 
-
 <script type="text/javascript">
 
 
@@ -127,5 +126,6 @@ new daum.Postcode({
 }
 
 </script>
+
 </body>
 </html>

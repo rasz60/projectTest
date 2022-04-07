@@ -29,6 +29,11 @@
 <%-- custom javascript files --%>
 <script src="js/feed/feed_calendar.js"></script>
 
+<!-- KAKAO API -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=94ef81dc370b9f961476a1859364f709&libraries=services"></script>
+
+
 <%-- fullcalendar css files --%>
 <link href="css/feed/fc/main.css" rel="stylesheet"></link>
 
@@ -36,6 +41,7 @@
 <link rel="stylesheet" type="text/css" href="css/header.css" />
 <link rel="stylesheet" type="text/css" href="css/feed/main_custom.css" />
 <link rel="stylesheet" type="text/css" href="css/footer.css" />
+
 <title>Insert title here</title>
 
 </head>

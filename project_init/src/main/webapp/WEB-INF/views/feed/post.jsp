@@ -43,8 +43,7 @@ img {
 </style>
 </head>
 
-
-<div id="feedPost">
+<div id="feedPost" class="col-12">
 	<div id="postBox">
 		<c:forEach begin="1" end="3" var="i">
 			<div class="posts d-flex justify-content-between mt-2">			
@@ -60,8 +59,12 @@ img {
 </div>
 
 
-<%@ include file="modalPost.jsp" %>
+<div class="quickmenu">
+	<button type="button" class="btn btn-sm btn-dark" id="new-post">New</button>
+</div>
 
+<%@ include file="modalPost.jsp" %>
+<%@ include file="modalPost2.jsp" %>
 <script>
 
 // 더보기 버튼을 눌렀을 때,
@@ -93,6 +96,25 @@ $(document).on('click', '.post', function() {
 	$('#modalBtn').trigger('click');
 });
 
+
+$('#new-post').click(function() {
+	$('#modalBtn2').trigger('click');
+});
+
+
+
+/*
+$(document).ready(function() { 
+	var currentPosition = parseInt($(".quickmenu").css("top")); 
+	
+	console.log(currentPosition);
+	
+	$(window).scroll(function() { 
+		var position = $(window).scrollTop(); 
+		$(".quickmenu").stop().animate({"top":position+currentPosition+"px"},1000);
+	});
+});
+*/
 
 </script>
 </body>
