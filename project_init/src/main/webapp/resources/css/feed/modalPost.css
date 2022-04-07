@@ -1,0 +1,54 @@
+
+#modalCloseBtn {
+	font-size: 3rem;
+}
+
+.modal-dialog {
+	height: 100%;	
+}
+
+.modal-content {
+	height: 80%;
+}
+
+.modal-content .post-img {
+	width: 60%;
+}
+.modal-content .post-img > .carousel > .Citem > .carousel-item {
+	background-color: #fff;
+	height: 800px;
+	text-align: center;
+	line-height:800px;
+}
+
+
+.modal-content .post-img > .carousel > .Citem > .carousel-item > img {
+	max-width: 100%;
+	max-height: 800px;
+}
+
+
+.modal-content .list-group {
+	width: 40%;
+}
+
+.modal-content .list-group .list-group-item:nth-child(1) {
+	height: 10%;
+}
+
+.modal-content .list-group .list-group-item:nth-child(2) {
+	height: 38.35%;
+}
+
+.modal-content .list-group .list-group-item:nth-child(3) {
+	height: 10%;
+}
+
+.modal-content .list-group .list-group-item:nth-child(4) {
+	height: 40%;
+}
+
+.modal-icon {
+	font-size: 1.5rem;
+}
+

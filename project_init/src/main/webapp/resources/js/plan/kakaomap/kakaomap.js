@@ -1,6 +1,6 @@
 //마커를 담을 배열입니다
-var markers = [];
-var markers2 = [];
+var markers = []; // 검색 결과 마커
+var markers2 = []; // 사용자 생성 마커
 
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 	mapOption = {
@@ -23,40 +23,40 @@ searchPlaces();
 
 //키워드 검색을 요청하는 함수입니다
 function searchPlaces() {
-
-var keyword = document.getElementById('keyword').value;
-
-if (!keyword.replace(/^\s+|\s+$/g, '')) {
-    alert('키워드를 입력해주세요!');
-    return false;
-}
-
-// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-ps.keywordSearch( keyword, placesSearchCB); 
+	
+	var keyword = document.getElementById('keyword').value;
+	
+	if (!keyword.replace(/^\s+|\s+$/g, '')) {
+		    alert('키워드를 입력해주세요!');
+		    return false;
+		}
+		
+	// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+	ps.keywordSearch( keyword, placesSearchCB); 
 }
 
 //장소검색이 완료됐을 때 호출되는 콜백함수 입니다
 function placesSearchCB(data, status, pagination) {
-if (status === kakao.maps.services.Status.OK) {
-	  	
-    // 정상적으로 검색이 완료됐으면
-    // 검색 목록과 마커를 표출합니다
-    displayPlaces(data);
+	if (status === kakao.maps.services.Status.OK) {
+		  	
+	    // 정상적으로 검색이 완료됐으면
+	    // 검색 목록과 마커를 표출합니다
+	    displayPlaces(data);
+		
+	    // 페이지 번호를 표출합니다
+	    displayPagination(pagination);
 	
-    // 페이지 번호를 표출합니다
-    displayPagination(pagination);
-
-} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-
-    alert('검색 결과가 존재하지 않습니다.');
-    return;
-
-} else if (status === kakao.maps.services.Status.ERROR) {
-
-    alert('검색 결과 중 오류가 발생했습니다.');
-    return;
-
-}
+	} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+	
+	    alert('검색 결과가 존재하지 않습니다.');
+	    return;
+	
+	} else if (status === kakao.maps.services.Status.ERROR) {
+	
+	    alert('검색 결과 중 오류가 발생했습니다.');
+	    return;
+	
+	}
 }
 
 //검색 결과 목록과 마커를 표출하는 함수입니다
@@ -119,6 +119,7 @@ function displayPlaces(places) {
 				
 				var day = target1.attr('data-day');
 				
+				// 같은 날짜 상세일정 중에 중복되는 장소가 있을 때 confirm 
 				if ( markerValidation(day, marker) == false ) {
 					if ( confirm('같은 날짜에 중복되는 장소로 생성된 일정이 있습니다. 중복으로 생성할까요?') == false ) {
 						return false;							
@@ -135,6 +136,14 @@ function displayPlaces(places) {
 				
 				// 타겟의 data-count(상세 일정 개수) value 변수 선언
 				var value = target1.attr('data-count');
+				
+				var day = target1.attr('data-day');
+				
+				if ( markerValidation(day, marker) == false ) {
+					if ( confirm('같은 날짜에 중복되는 장소로 생성된 일정이 있습니다. 중복으로 생성할까요?') == false ) {
+						return false;							
+					}
+				}
 				
 				// inputdata()에서 처리
 				inputdata(marker, target1, value, title, category, address);           
@@ -156,97 +165,97 @@ function displayPlaces(places) {
 
 //검색결과 항목을 Element로 반환하는 함수입니다
 function getListItem(index, places) {
-
-var el = document.createElement('li'),
-itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
-            '<div class="info">' +
-            '   <h5>' + places.place_name + '</h5>';
-
-        	             
-            
-if (places.road_address_name) {
-    itemStr += '    <span>' + places.road_address_name + '</span>' +
-                '   <span class="jibun gray">' +  places.address_name  + '</span>';
-} else {
-    itemStr += '    <span>' +  places.address_name  + '</span>'; 
-}                 
-  itemStr += '  <span class="tel">' + places.phone  + '</span>' +
-            '</div>';       
-            
-el.innerHTML = itemStr;
-el.className = 'item';
-
-return el;
+	
+	var el = document.createElement('li'),
+	itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
+	            '<div class="info">' +
+	            '   <h5>' + places.place_name + '</h5>';
+	
+	        	             
+	            
+	if (places.road_address_name) {
+	    itemStr += '    <span>' + places.road_address_name + '</span>' +
+	                '   <span class="jibun gray">' +  places.address_name  + '</span>';
+	} else {
+	    itemStr += '    <span>' +  places.address_name  + '</span>'; 
+	}                 
+	  itemStr += '  <span class="tel">' + places.phone  + '</span>' +
+	            '</div>';       
+	            
+	el.innerHTML = itemStr;
+	el.className = 'item';
+	
+	return el;	
 }
 
 //마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
 function addMarker(position, idx, title) {
-var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
-    imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
-    imgOptions =  {
-        spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-        spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-        offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
-    },
-    markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
-        marker = new kakao.maps.Marker({
-        position: position, // 마커의 위치
-        image: markerImage
-    });
-marker.setZIndex(1);
-
-marker.setMap(map); // 지도 위에 마커를 표출합니다
-markers.push(marker);  // 배열에 생성된 마커를 추가합니다
-
-return marker;
+	var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+	    imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
+	    imgOptions =  {
+	        spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+	        spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+	        offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+	    },
+	    markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+	        marker = new kakao.maps.Marker({
+	        position: position, // 마커의 위치
+	        image: markerImage
+	    });
+	marker.setZIndex(1);
+	
+	marker.setMap(map); // 지도 위에 마커를 표출합니다
+	markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+	
+	return marker;
 }
 
 //지도 위에 표시되고 있는 마커를 모두 제거합니다
 function removeMarker() {
-for ( var i = 0; i < markers.length; i++ ) {
-    markers[i].setMap(null);
-}   
-markers = [];
+	for ( var i = 0; i < markers.length; i++ ) {
+	    markers[i].setMap(null);
+	}   
+	markers = [];
 }
 
 //검색결과 목록 하단에 페이지번호를 표시는 함수입니다
 function displayPagination(pagination) {
-var paginationEl = document.getElementById('pagination'),
-    fragment = document.createDocumentFragment(),
-    i; 
-
-// 기존에 추가된 페이지번호를 삭제합니다
-while (paginationEl.hasChildNodes()) { //Node.hasChildNodes() - 현재 노드(Node)에게 자식노드(child nodes)가 있는지를 Boolean 값으로 반환
-    paginationEl.removeChild (paginationEl.lastChild); //removeChild() - DOM에서 자식 노드를 제거하고 제거된 노드를 반환
-}
-
-for (i=1; i<=pagination.last; i++) {
-    var el = document.createElement('a');
-    el.href = "#";
-    el.innerHTML = i;
-
-    if (i===pagination.current) {
-        el.className = 'on';
-    } else {
-        el.onclick = (function(i) {
-            return function() {
-                pagination.gotoPage(i);
-            }
-        })(i);
-    }
-
-    fragment.appendChild(el);
-}
-paginationEl.appendChild(fragment);
+	var paginationEl = document.getElementById('pagination'),
+	    fragment = document.createDocumentFragment(),
+	    i; 
+	
+	// 기존에 추가된 페이지번호를 삭제합니다
+	while (paginationEl.hasChildNodes()) { //Node.hasChildNodes() - 현재 노드(Node)에게 자식노드(child nodes)가 있는지를 Boolean 값으로 반환
+	    paginationEl.removeChild (paginationEl.lastChild); //removeChild() - DOM에서 자식 노드를 제거하고 제거된 노드를 반환
+	}
+	
+	for (i=1; i<=pagination.last; i++) {
+	    var el = document.createElement('a');
+	    el.href = "#";
+	    el.innerHTML = i;
+	
+	    if (i===pagination.current) {
+	        el.className = 'on';
+	    } else {
+	        el.onclick = (function(i) {
+	            return function() {
+	                pagination.gotoPage(i);
+	            }
+	        })(i);
+	    }
+	
+	    fragment.appendChild(el);
+	}
+	paginationEl.appendChild(fragment);
 }
 
 //검색결과 목록 또는 마커에 마우스 올렸을 때 호출되는 함수입니다
 //인포윈도우에 장소명을 표시합니다
 function displayInfowindow(marker, title) {
-var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
-
-infowindow.setContent(content);
-infowindow.open(map, marker);
+	var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+	
+	infowindow.setContent(content);
+	infowindow.open(map, marker);
 }
 
 //마커와 검색결과 목록 클릭 시 input에 data 입력
@@ -355,11 +364,22 @@ function inputdata(marker, target1, value, title, category, address) {
 	target1.parent().siblings('p.mt-2').children('.showIndex').text(plusVal);
 	
 	
-	//클릭한 마커에 임의로 지정한 마커 생성
-	var imageSrc = '../images/marker.png', // 마커이미지의 경로    
-    imageSize = new kakao.maps.Size(50, 50), // 마커이미지의 크기입니다
-    imageOption = {offset: new kakao.maps.Point(10, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+	// 클릭한 마커에 임의로 지정한 마커 생성
+	var url = window.location.href;
 	
+	// 현재 url을 가져와서 상세 수정 페이지일때는 마커 이미지 경로를 다르게 지정
+	if ( url.includes("plan/detail_modify") ) {
+		var imageSrc = '../images/marker.png', // 마커이미지의 경로   
+    	imageSize = new kakao.maps.Size(50, 50), // 마커이미지의 크기입니다
+    	imageOption = {offset: new kakao.maps.Point(10, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+	} else { 
+		var imageSrc = 'images/marker.png', // 마커이미지의 경로   
+    	imageSize = new kakao.maps.Size(50, 50), // 마커이미지의 크기입니다
+    	imageOption = {offset: new kakao.maps.Point(10, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+	}
+
 	var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption), //마커 이미지 옵션을 markerImage객체에 담기
     markerPosition = new kakao.maps.LatLng(marker.getPosition().getLat(), marker.getPosition().getLng()); // 마커가 표시될 위치입니다
 	
@@ -372,10 +392,9 @@ function inputdata(marker, target1, value, title, category, address) {
 
 	// 현재 작성중인 planDay를 변수로 선언
 	var planDay = target1.attr('data-day');
-	
-	// 현재 작성중인 planDay에 맞는 배열에 marker를 저장
+
+	// 현재 작성중인 planDay에 맞는 객체로 생성하여 배열에 저장
 	addMarkerArray(planDay, marker);
-	
 }
 
 // 검색결과 목록의 자식 Element를 제거하는 함수입니다
@@ -389,36 +408,26 @@ function removeAllChildNods(el) {
 function addMarkerArray(planDay, marker) {
 	// {planDay , marker}로 구성된 객체로 생성하여 markers2 배열에 저장
 	var planObject = {
-		day : planDay,
-		mapMarker : marker
-	}
+						day : planDay,
+						mapMarker : marker
+					};
 	markers2.push(planObject);
 };
 
 // 마커를 개별적으로 삭제하는 메서드
 function removeMarkerArray(planDay, index) {
-	var dayMarker = [];
-	
-	// planDay가 같은 마커를 dayMarker 배열에 따로 push
-	for ( var i = 0; i < markers2.length; i++ ) {
-		if ( markers2[i].day == planDay ) {
-			dayMarker.push(markers2[i]);
-		}
-	}
-	// planDay가 같은 마커 중 해당하는 index번째에 마커를 map에서 지움
-	dayMarker[index].mapMarker.setMap(null);
-	
 	var count = 0;
-	// markers2에서 다시 planDay가 같은 마커를 찾음
 	for ( var i = 0; i < markers2.length; i++ ) { 
+		// markers2에서 planDay가 같은 마커를 찾음
 		if( markers2[i].day == planDay ) {
 			// planDay가 같은 걸 찾았을 때, index번째 인지 확인
 			if ( count == index ) {
-				// 맞으면 지우고 반복문을 더 이상 수행하지 않고 나감
+				// 맞으면 맵과 markers2 배열에서 지우고 반복문을 더 이상 수행하지 않고 나감
+				markers2[i].mapMarker.setMap(null);
 				markers2.splice(i, 1);
 				break;
 			}
-			// index 번째가 아니면 count를 ++하고 반복문 수행
+			// index 번째가 아니면 count++하고 다시 반복문 수행
 			count++;
 		}
 	}
@@ -426,10 +435,22 @@ function removeMarkerArray(planDay, index) {
 
 // 맵에 각 일정에 맞는 마커만 표시하는 메서드
 function setDayMap(planday) {
+	var count = 0;
 	for ( var i = 0; i < markers2.length; i++ ) {
+		// markers2에서 planday가 같은 객체를 찾음
 		if( markers2[i].day == planday ) {
+			// 같은 planDay로 찾은 첫번째 마커일 때
+			if ( count == 0 ) {
+				// 맵의 중심 좌표를 해당 마커의 위치로 이동시킴
+				var moveLatlon = new kakao.maps.LatLng(markers2[i].mapMarker.getPosition().getLat(), markers2[i].mapMarker.getPosition().getLng());
+				map.panTo(moveLatlon);
+			}
+			// 맵에 마커를 생성하고 count++
 			markers2[i].mapMarker.setMap(map);
+			count++;
+			
 		} else {
+			// planDay가 같지 않은 마커는 보이지 않게 함
 			markers2[i].mapMarker.setMap(null);
 		}
 	}

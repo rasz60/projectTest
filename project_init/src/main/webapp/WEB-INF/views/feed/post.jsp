@@ -60,7 +60,7 @@ img {
 </div>
 
 
-<%@ include file="../modalPost.jsp" %>
+<%@ include file="modalPost.jsp" %>
 
 <script>
 
