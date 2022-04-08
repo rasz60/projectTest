@@ -41,22 +41,29 @@
 		</div>
 		
 		<ul class="nav navbar">
+		<li class="mr-4 notice_board">
+			<a href="/init/notice_board">
+				<i class="menu-icon fa-regular fa-rectangle-list"></i>
+			</a>
+		</li>
+		
+		
 		<s:authorize access="isAnonymous()">
-			<li class="mr-4 feed">
+			<li class="mr-4 /init/feed">
 				<a href="feed" id="anFeed">
 					<i class="menu-icon fa-regular fa-circle-user"></i>
 				</a>
 			</li>
 		</s:authorize>
 		<s:authorize access="isAuthenticated()">
-			<li class="mr-4 feed">
+			<li class="mr-4 /init/feed">
 				<a href="feed" id="loginFeed">
 					<i class="menu-icon fa-regular fa-circle-user"></i>
 				</a>
 			</li>
 		</s:authorize>	
 			<li class="mr-4 notice">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<a href="" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i class="menu-icon fa-regular fa-bell"></i>
 				</a>
 	        	<ul class="dropdown-menu">

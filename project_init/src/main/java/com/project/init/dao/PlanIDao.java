@@ -2,6 +2,8 @@ package com.project.init.dao;
 
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,26 +13,31 @@ import com.project.init.dto.PlanDtDto;
 import com.project.init.dto.PlanMstDto;
 
 public interface PlanIDao {
-
-	// 紐⑤�� �대깽�� 媛��몄�ㅺ린
+	// main map에 모든 일정 불러오기
+	ArrayList<PlanDtDto> selectPlanList();
+	
+	// main map filter 처리
+	ArrayList<PlanDtDto> filter(Map<String, String> map);
+	
+	// userId로 planMst 불러오기
 	ArrayList<PlanMstDto> selectAllPlan(String userId);
 
-	// planNum�쇰� planDt 媛� 媛��몄�ㅺ린
+	// planNum으로 planDt 불러오기
 	ArrayList<PlanDtDto> selectPlanDt(String planNum, String userId);
 	
-	// modal李쎌���� ������ �댁�� 諛���
-	String modifyPlanMst(HttpServletRequest request, String userId);
+	// modal에서 수정한 planMst 처리
+	String modifyPlanMst(PlanMstDto mstDto, List<PlanDtDto> updatePlanDt, List<PlanDtDto> deletePlanDt, List<PlanDtDto> insertPlanDt, String userId);
 	
-	// modal李쎌���� ������ �댁�� 諛��� /*鍮��⑥�⑥��*/
-	String deletePlan(String planNum, String userId);
+	// modal창에서 planMst를 삭제했을 때 처리
+	String deletePlanMst(String planNum, String userId);
 	
-	// planNum�쇰� planMst 媛� 媛��몄�ㅺ린
+	// planNum으로 PlanMst 불러오기
 	PlanMstDto selectPlanMst(String planNum, String userId);	
 	
 	// planDt insert
-	String insertPlanDtDo(HttpServletRequest request, String userId, Model model);
+	String insertPlanDtDo(PlanMstDto mstDto, ArrayList<PlanDtDto> dtDtos);
 	
 	// planDt modify (update, insert, delete)
-	String detailModifyDo(HttpServletRequest request, String userId);
+	String detailModifyDo(ArrayList<PlanDtDto> deleteDtDtos, ArrayList<PlanDtDto> insertDtDtos, ArrayList<PlanDtDto> updateDtDtos);
 	
 }

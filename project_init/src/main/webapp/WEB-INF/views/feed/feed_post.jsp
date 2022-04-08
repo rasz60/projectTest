@@ -58,11 +58,6 @@ img {
 	<button type="button" class="btn btn-outline-secondary mt-3" id="moreBtn">더보기 ()</button>
 </div>
 
-
-<div class="quickmenu">
-	<button type="button" class="btn btn-sm btn-dark" id="new-post">New</button>
-</div>
-
 <script>
 
 // 더보기 버튼을 눌렀을 때,
@@ -93,26 +88,6 @@ $('#moreBtn').click(function() {
 $(document).on('click', '.post', function() {
 	$('#modalBtn').trigger('click');
 });
-
-
-$('#new-post').click(function() {
-	$('#modalBtn2').trigger('click');
-});
-
-
-
-/*
-$(document).ready(function() { 
-	var currentPosition = parseInt($(".quickmenu").css("top")); 
-	
-	console.log(currentPosition);
-	
-	$(window).scroll(function() { 
-		var position = $(window).scrollTop(); 
-		$(".quickmenu").stop().animate({"top":position+currentPosition+"px"},1000);
-	});
-});
-*/
 
 </script>
 </body>

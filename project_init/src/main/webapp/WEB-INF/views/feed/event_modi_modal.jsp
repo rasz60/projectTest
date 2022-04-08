@@ -6,8 +6,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<%-- kakaomap javascript CDN --%>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd&libraries=services,clusterer,drawing"></script>
 
 </head>
 <body>
@@ -84,8 +83,14 @@
 						
 						<%-- 2-3- PlanDt 수정 페이지로 이동 --%>
 						<a href="" id="btn-detail" class="btn btn-sm btn-dark mx-1">상세 수정</a>
-					</div>
-				
+						
+						<%-- 2-4- 포스팅 작성 페이지로 이동 --%>
+						<a href="" id="btn-posting" class="btn btn-sm btn-info mx-1">후기 작성</a>
+					
+						<%-- 마커와 폴리라인 표시 버튼 --%>
+    	                <button type="button" class="btn btn-primary" id="mbtn" style="display:none">marker</button>
+               		</div>
+					
 					<%-- 3- planDay tab button 박스 --%>
 					<div class="detail-days d-flex" data-count="">
 						<%-- 3-1- 이전 planDay 이동 버튼 --%>
@@ -114,6 +119,9 @@
 									<h4 class="placeName col-12 font-italic"></h4>
 									<h6 class="font-italic col-6 startTime"></h6>
 									<h6 class="font-italic col-6 endTime"></h6>
+									<input type="hidden" id="latitude"/>
+		                            <input type="hidden" id="longitude"/>
+		                            <input type="hidden" id="planDay"/>	
 								</div>
 							</c:forEach>
 						</div>

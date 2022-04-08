@@ -20,9 +20,4 @@ public class InitTests {
 	@Autowired
 	public PlanDao pdao;
 	
-	@Test
-	public void test1 () {
-		PlanMstDto dto = new PlanMstDto(0, "test", "1231", "1233", "123124");		
-		pdao.insertPlanMst(dto);
-	}
 }

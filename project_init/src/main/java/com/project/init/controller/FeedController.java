@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.init.command.ICommand;
+import com.project.init.command.PlanMstModifyCommand;
 import com.project.init.dao.PlanIDao;
 import com.project.init.dao.UserDao;
 import com.project.init.dto.PlanDtDto;
@@ -40,9 +41,7 @@ public class FeedController {
 	@RequestMapping("")
 	public String feed(Model model) {
 		logger.info("feed page " + Constant.username + " >>>>");
-		
-		model.addAttribute("id", Constant.username);
-		
+
 		return "feed/feed_calendar";
 	}
 	
@@ -50,7 +49,7 @@ public class FeedController {
 	@RequestMapping(value="getAllPlans.do", produces="application/json; charset=UTF-8")
 	public ArrayList<PlanMstDto> getAllPlans() {
 		logger.info("getAllPlans() >>>>");
-		
+		// 유저의 아이디로 등록된 일정을 모두 가져옴
 		ArrayList<PlanMstDto> result = dao.selectAllPlan(Constant.username);
 				
 		logger.info("getAllPlans() result.isEmpty() ? " + result.isEmpty());
@@ -62,10 +61,10 @@ public class FeedController {
 	@RequestMapping(value = "modify_modal.do", produces="application/json; charset=UTF-8")
 	public ArrayList<PlanDtDto> modifyModal(@RequestBody String planNum, Model model) {
 		logger.info("modifyModal("+ planNum +") in >>>>");
-		
+
 		ArrayList<PlanDtDto> result= dao.selectPlanDt(planNum, Constant.username);
 		
-		logger.info("modifyPlans("+ planNum +") result.isEmpty() ? " + result.isEmpty());
+		logger.info("modifyModal("+ planNum +") result.isEmpty() ? " + result.isEmpty());
 		
 		return result;
 	}
@@ -74,21 +73,26 @@ public class FeedController {
 	@ResponseBody
 	@RequestMapping(value = "modify_plan.do", produces="application/text; charset=UTF-8")
 	public String modifyPlan(HttpServletRequest request) {
-		logger.info("modifyPlans("+ request.getParameter("planNum") +") in >>>>");
+		logger.info("modifyPlan("+ request.getParameter("planNum") +") in >>>>");
 
 		String result= null;
 		
-		result = dao.modifyPlanMst(request, Constant.username);
+		comm = new PlanMstModifyCommand();
 		
+		comm.execute(request, null);
+		
+		result = (String)request.getAttribute("result");
+		
+		logger.info("modifyPlan("+ request.getParameter("planNum") +") result : " + result);
 		return result;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "delete_plan.do", produces="application/text; charset=UTF-8")
-	public String deletePlan(@RequestBody String planNum) {
-		logger.info("modifyPlans("+ planNum +") in >>>>");
+	public String deleteMstPlan(@RequestBody String planNum) {
+		logger.info("deletePlans("+ planNum +") in >>>>");
 		
-		String result = dao.deletePlan(planNum, Constant.username);
+		String result = dao.deletePlanMst(planNum, Constant.username);
 		
 		return result;
 	}
@@ -107,7 +111,7 @@ public class FeedController {
 	
 	@RequestMapping("feedInfo")
 	public String feedInfo() {
-		logger.info("feedMap() in >>>>");
+		logger.info("feedInfo() in >>>>");
 		return "feed/feed_user_info";
 	}
 	

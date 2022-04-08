@@ -12,6 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.project.init.command.ICommand;
+import com.project.init.command.PlanDtInsertCommand;
+import com.project.init.command.PlanDtModifyCommand;
 import com.project.init.dao.PlanIDao;
 import com.project.init.dao.UserDao;
 import com.project.init.dto.PlanDtDto;
@@ -27,6 +30,7 @@ public class PlanController {
 	
 	@Autowired
 	private PlanIDao dao;
+	private ICommand comm;
 	private UserDao udao;
 	@Autowired
 	public void setUdao(UserDao udao) {
@@ -37,34 +41,37 @@ public class PlanController {
 	@RequestMapping("")
 	public String planmstDo(PlanMstDto dto, Model model) {
 		logger.info("planmst.do(" + dto.getPlanName() + ") in >>>>");
-
+		// 상세 일정 생성페이지로 넘어갈 때, feed_calendar에서 생성한 planMst 정보 model에 싣어서 보냄
 		model.addAttribute("plan", dto);
 		model.addAttribute("id", Constant.username);
 
 		return "plan/plan_detail";
 	}
 	
-	// planDt 占쏙옙占쏙옙占쏙옙 占쏙옙치占쏙옙 db占쏙옙 insert
+	// 상세일정 생성 완료시 db 저장
 	@ResponseBody
 	@RequestMapping(value = "detail.do", produces = "application/text; charset=UTF-8")
 	public String detailDo(HttpServletRequest request, Model model) {
 		logger.info("detail.do() in >>>>");
-		
-		String result = dao.insertPlanDtDo(request, Constant.username, model);
+		comm = new PlanDtInsertCommand();
+		comm.execute(request, model);
+
+		String result = (String)request.getAttribute("result");
 		
 		return result;
 	}
 
 	
-	// modal창占쏙옙占쏙옙 占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙
+	// modal창에서 상세일정 수정 페이지로 이동
 	@RequestMapping("detail_modify")
 	public String detail_modify(String planNum, Model model) {
 		logger.info("detail_modify(" + planNum + ") in >>>>");
 		
-		// planNum占쏙옙占쏙옙 planMst占쏙옙 planDt占쏙옙 占쏙옙占쏙옙占쏙옙 model占쏙옙 占쏙옙티占� 占쏙옙占쏙옙
+		// planNum이 일치하는 planMst 정보를 가져와서 model에 담음
 		PlanMstDto result1= dao.selectPlanMst(planNum, Constant.username);
 		model.addAttribute("plan1", result1);
-				
+		
+		// planNum이 일치하는 planDt 정보를 가져와서 model에 담음
 		ArrayList<PlanDtDto> result2= dao.selectPlanDt(planNum, Constant.username);
 		model.addAttribute("plan2", result2);
 		
@@ -72,15 +79,19 @@ public class PlanController {
 	}
 	
 	
-	// modal창占쏙옙占쏙옙 占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙치占쏙옙 db insert
+	// 상세 수정 페이지에서 수정한 내용 db insert
 	@ResponseBody
 	@RequestMapping(value="detail_modify.do", produces="application/text; charset=UTF-8")
 	public String detailModifyDo(HttpServletRequest request) {
 		logger.info("detail_modify(" + request.getParameter("planNum") + ") in >>>>");
 		
-		String result = dao.detailModifyDo(request, Constant.username);
+		comm = new PlanDtModifyCommand();
+		comm.execute(request, null);
+		
+		String result = (String)request.getAttribute("result");
 		
 		logger.info("detail_modify(" + request.getParameter("planNum") + ") result : " + result);
+
 		return result;
 	}
 	

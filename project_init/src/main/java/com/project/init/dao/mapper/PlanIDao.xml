@@ -3,7 +3,15 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.init.dao.PlanIDao" >
- 
+
+<select id="selectPlanList" resultType="com.project.init.dto.PlanDtDto">
+	SELECT * FROM plan_dt
+</select>
+
+<select id="filter" resultType="com.project.init.dto.PlanDtDto">
+	SELECT * FROM plan_dt WHERE ${value1} = #{value2} and ${value3} like '%'||#{value4}||'%'
+</select>
+
  
 <select id="getCalendarEvent" parameterType="string" resultType="com.project.init.dto.PlanMstDto">
 	SELECT * FROM plan_mst WHERE userId = #{userId}
@@ -57,7 +65,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 <delete id="deletePlanDt1" parameterType="com.project.init.dto.PlanDtDto">
-	DELETE FROM plan_dt WHERE planNum = #{planNum} AND planDay = #{planDay}
+	DELETE FROM plan_dt WHERE 
+	<foreach collection="list" item="dt" index="index" separator="OR">
+		(planNum = #{dt.planNum} AND planDay = #{dt.planDay} AND userId = #{dt.userId})
+	</foreach>
 </delete>
 
 

@@ -61,7 +61,7 @@ function placesSearchCB(data, status, pagination) {
 
 //검색 결과 목록과 마커를 표출하는 함수입니다
 function displayPlaces(places) {
-	
+	console.log(places);
 	var listEl = document.getElementById('placesList'), 
 	menuEl = document.getElementById('menu_wrap'),
 	fragment = document.createDocumentFragment(), //새로운 빈 DocumentFragment 를 생성합니다. DocumentFragment 인터페이스는 부모가 없는 아주 작은 document 객체를 나타냅니다. 
@@ -81,21 +81,19 @@ function displayPlaces(places) {
 	    var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x), //LatLng - WGS84 좌표 정보를 가지고 있는 객체를 생성한다.
 	        marker = addMarker(placePosition, i), 
 	        itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
-			
-			console.log(places[i]);
-			
+		 	
 	    // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
 	    // LatLngBounds 객체에 좌표를 추가합니다
 	    bounds.extend(placePosition); //extend() - 다수의 객체를 하나의 객체로 합치는 merge기능을 수행
 
 	    // 마커와 검색결과 항목에 click 했을때
 	    // 해당 장소에 인포윈도우에 장소명을 표시합니다
-	    (function(marker, title, category, address) {
+	    (function(marker, title,  address, category) {
 	    	//addListener(target, type, handler) - 다음 지도 API 객체에 이벤트를 등록한다. 
 	    	//target : 이벤트를 지원하는 다음 지도 API 객체, type : 이벤트 이름, handler : 이벤트를 처리할 함수
 	    	
 	    	kakao.maps.event.addListener(marker, 'mouseover', function() { //마커에 마우스 올렸을 때
-	            displayInfowindow(marker, title); // displayInfowindow()에서 처리
+	            displayInfowindow(marker, title,  address, category); // displayInfowindow()에서 처리
 	        });
 	
 	        kakao.maps.event.addListener(marker, 'mouseout', function() { // 마커에 마우스 치웠을 때 인포창 닫기
@@ -103,7 +101,7 @@ function displayPlaces(places) {
 	        });
 	        
 	        itemEl.onmouseover =  function () { //검색목록에 마우스 올렸을 때
-	            displayInfowindow(marker, title); // displayInfowindow()에서 처리
+	            displayInfowindow(marker, title,  address, category); // displayInfowindow()에서 처리
 	        };
 	
 	        itemEl.onmouseout =  function () { // 검색목록에 마우스 치웠을 때 인포창 닫기
@@ -119,7 +117,6 @@ function displayPlaces(places) {
 				
 				var day = target1.attr('data-day');
 				
-				// 같은 날짜 상세일정 중에 중복되는 장소가 있을 때 confirm 
 				if ( markerValidation(day, marker) == false ) {
 					if ( confirm('같은 날짜에 중복되는 장소로 생성된 일정이 있습니다. 중복으로 생성할까요?') == false ) {
 						return false;							
@@ -127,7 +124,7 @@ function displayPlaces(places) {
 				}
 				
 				// inputdata()에서 처리
-				inputdata(marker, target1, value, title, category, address);
+				inputdata(marker, target1, value, title,  address, category);
 	        });
 	    	                     
 	        itemEl.onclick =  function () { // 검색 목록창 클릭 시
@@ -137,8 +134,6 @@ function displayPlaces(places) {
 				// 타겟의 data-count(상세 일정 개수) value 변수 선언
 				var value = target1.attr('data-count');
 				
-				var day = target1.attr('data-day');
-				
 				if ( markerValidation(day, marker) == false ) {
 					if ( confirm('같은 날짜에 중복되는 장소로 생성된 일정이 있습니다. 중복으로 생성할까요?') == false ) {
 						return false;							
@@ -146,9 +141,9 @@ function displayPlaces(places) {
 				}
 				
 				// inputdata()에서 처리
-				inputdata(marker, target1, value, title, category, address);           
+				inputdata(marker, target1, value, title,  address, category);         
 	        }; 
-	    })(marker, places[i].place_name, places[i].category_group_code, places[i].address_name);
+	    })(marker, places[i].place_name, places[i].address_name, places[i].category_name);
 	
 	    fragment.appendChild(itemEl); //appendChild() - 새로운 노드를 해당 노드의 자식 노드 리스트(child node list)의 맨 마지막에 추가        
 	}
@@ -160,6 +155,7 @@ function displayPlaces(places) {
 	// 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
 	map.setBounds(bounds); //setBounds() - 주어진 영역이 화면 안에 전부 나타날 수 있도록 지도의 중심 좌표와 확대 수준을 설정한다.
 }
+
 
 
 
@@ -251,15 +247,33 @@ function displayPagination(pagination) {
 
 //검색결과 목록 또는 마커에 마우스 올렸을 때 호출되는 함수입니다
 //인포윈도우에 장소명을 표시합니다
-function displayInfowindow(marker, title) {
-	var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
-	
-	infowindow.setContent(content);
-	infowindow.open(map, marker);
+function displayInfowindow(marker, title, address, category) {
+
+ var content = '<div class="wrap">' + 
+	     	     '<div class="info">' + 
+		             '<div class="title">' + 
+		     				'<img src="images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;' + 
+		     				title + 
+		             '</div>' + 
+		             '<div class="body">' + 
+		                 '<div class="img">' +
+		                     '<img src="images/dcfa90e9-aa6d-4faf-b3a7-02da8588dba0christmastree.png" width="73" height="70">' +
+		                '</div>' + 
+		                 '<div class="content">' + 
+		                     '<div class="address">' + '주소 : ' + address + '</div>' +
+		                     '<div class="theme cont">' + '장소 : ' + category + '</div>' +
+		                 '</div>' + 
+		             '</div>' + 
+		         '</div>' +    
+		       '</div>'; 
+
+infowindow.setContent(content);
+infowindow.open(map, marker);
 }
 
+
 //마커와 검색결과 목록 클릭 시 input에 data 입력
-function inputdata(marker, target1, value, title, category, address) {
+function inputdata(marker, target1, value, title, address, category) {
 	// 현재 상세 일정에 추가할 것이므로 일정 개수(value) + 1한 값을 변수로 선언
 	var plusVal = Number(value)+1;
 	
@@ -395,6 +409,48 @@ function inputdata(marker, target1, value, title, category, address) {
 
 	// 현재 작성중인 planDay에 맞는 객체로 생성하여 배열에 저장
 	addMarkerArray(planDay, marker);
+	
+	//사용자가 임의로 만든 마커의 인포윈도우 생성 이벤트 등록
+	kakao.maps.event.addListener(marker, 'mouseover', function() { //마커에 마우스 올렸을 때
+        displayInfowindow(marker, title, address, category); // displayInfowindow()에서 처리
+    });
+
+        kakao.maps.event.addListener(marker, 'mouseout', function() { // 마커에 마우스 치웠을 때 인포창 닫기
+        infowindow.close();
+    }); 	
+}
+
+//사용자가 임의로 만든 마커의 인포윈도우
+function displayInfowindow(marker, title, address, category) { //인포윈도우 생성
+	var url = window.location.href;
+
+	var content = '<div class="wrap">' + 
+			   	     '<div class="info">' + 
+				            '<div class="title">';
+
+	if ( url.includes("plan/detail_modify") ) {
+		content += '<img src="../images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;';
+
+	} else { 
+		content += '<img src="images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;';
+	}
+	
+	content += title + 
+	            '</div>' + 
+	            '<div class="body">' + 
+	                '<div class="img">' +
+	                    '<img src="" width="65px" height="55px">' +
+	               '</div>' + 
+	               '<div class="content">' + 
+	                    '<div class="address">' + '주소 : ' + address + '</div>' +
+	                    '<div class="category">' + '장소 : ' + category + '</div>' +
+	                '</div>' + 
+	            '</div>' + 
+	        '</div>' +    
+	      '</div>';
+
+	 infowindow.setContent(content);
+	 infowindow.open(map, marker); 
 }
 
 // 검색결과 목록의 자식 Element를 제거하는 함수입니다
