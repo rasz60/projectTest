@@ -1,0 +1,48 @@
+body::-webkit-scrollbar {
+    width: 10px;  /* 스크롤바의 너비 */
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #A0A0A0 ; /* 스크롤바의 색상 */
+    border-radius: 15px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #CCCCCC;  /*스크롤바 뒷 배경 색상*/
+}
+
+
+section.container {
+	margin-top: 5em;
+	height: 2000px;
+}
+
+.result_posts {
+	width: 100%;
+	height: 25%;
+}
+
+.result_posts .posts {
+	height: 80%;
+}
+
+.result_posts .posts .post {
+	width : 24%;
+	height: 100%;
+}
+
+.result_posts .posts .post-top {
+	height: 80%;
+	margin-bottom: 2%;
+	overflow: hidden;
+}
+
+.result_posts .posts .post-top img {
+	max-width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.result_posts .posts .post-bottom {
+	height: 18%;
+}

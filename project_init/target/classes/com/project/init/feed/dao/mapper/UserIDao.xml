@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.init.feed.dao.UserIDao">
+	<select id="emailCheck" parameterType="String" resultType="int">
+		select count(useremail) from userinfo where useremail = #{id}
+	</select>
+
+	<select id="nickCheck" parameterType="String" resultType="int">
+		select count(usernick) from userinfo where usernick = #{nick}
+	</select>
+
+	<insert id="join" parameterType="com.project.init.feed.dto.UserDto">
+		insert into userinfo(useremail,userpw,usernick,userbirth,userage,usergender,userpst,useraddress,userjoindate) 
+		values(#{userEmail},#{userPw},#{userNick},#{userBirth},#{userAge},#{userGender},#{userPst},#{userAddress},sysdate)
+	</insert> <!-- values값 dto랑 맞춰서 -->
+	
+	<select id="login" parameterType="String" resultType="com.project.init.feed.dto.UserDto">
+		select * from userinfo where useremail = #{userEmail}
+	</select>
+
+	<select id="userVisit" parameterType="String">
+		update userinfo set uservisitdate = sysdate where useremail = #{uId}
+	</select>	
+	
+</mapper>
