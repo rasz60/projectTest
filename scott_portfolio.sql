@@ -20,3 +20,15 @@ alter table userinfo
  add constraint user_nick_uk unique(usernick);
  
 commit;
+
+--1차 추가
+alter table userinfo
+ modify userProfileMsg varchar2(900); --한글 300자까지 입력됨
+
+alter table userinfo
+ rename column userAddress to userAddress1; 
+
+alter table userinfo
+ add userAddress2 varchar2(200);
+
+commit;
