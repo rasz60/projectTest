@@ -25,11 +25,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException("No user found with username");
 			//스프링 시큐리티에서 예외를 처리하여 로그인 실패 처리
 		}
+		
 		String pw = dto.getUserPw(); // 암호화된 패스워드
+		
 		Collection<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
+		
 		//role값(권한 구분 값, ROLE_USER,ROLE_ADMIN,ROLE_MANAGE 등)을 저장하는 리스트 객체
 		//db에 authority컬럼을 주고 저장했다면 dto.getAuthority()로 얻은 값을 new SimpleGrantedAuthority("얻은 값");
-		roles.add(new SimpleGrantedAuthority("ROLE_USER"));
+		roles.add(new SimpleGrantedAuthority(dto.getUserAuthority()));
+		
 		UserDetails user = new User(username, pw, roles);
 		//얻은 id,pw,roles를 이용하여 UserDetails객체를 만들어 반환해줌
 		

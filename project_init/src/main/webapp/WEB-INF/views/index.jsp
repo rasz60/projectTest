@@ -23,7 +23,24 @@
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 <link rel="stylesheet" type="text/css" href="css/includes/footer.css" />
 <title>Index</title>
+<style>
+.labels {
+	font-style: italic;
+	font-weight: 500;
+}
 
+#filter-title {
+	font-size: 40px;
+	font-weight: 400;
+}
+
+span.required {
+	color: orange;
+	font-weight: 400;
+}
+
+
+</style>
 </head>
 
 <body>
@@ -44,7 +61,9 @@
 							<p class="h5">Nickname</p>
 						</div>
 						
-						<button type="button" id="loginBtn" class="logx-btn btn btn-primary btn-sm">login</button>
+						<button type="button" id="loginBtn" class="logx-btn btn btn-primary btn-sm">
+							<i class="fa-solid fa-key"></i>
+						</button>
 					</s:authorize>
 					
 					<s:authorize access="isAuthenticated()">				
@@ -64,29 +83,46 @@
 					
 				</div>
 			</div>
-			<div class="map-filter border rounded p-1">
+			<div class="map-filter border rounded p-2 bg-light">
+			
+				<h6 id="filter-title" class="display-4">&nbsp;WAYG Filter</h6>
+				<hr />
+			
 				<form id="frm" name="frm" action="insertFilter" method="post">
 					<div class="form-group">
-						<!-- <label for="plandate">날짜</label> -->
-						<div class="input-group-append">	
-							<span class="input-group-text">날짜</span>		
-						<input type="date" class="form-control" id="plandate" name="value2" value=""/> <!-- 날짜 선택 input 생성 -->
-						</div>
-					</div>
-					<div class="form-group"> 
-						<select id="selbox" class="main-filter custom-select my-1 mr-sm-2" name="value3"> <!-- 메인 필터 select창 생성 -->
+						<label for="selbox" class="labels">&nbsp;Filter 1 <span class="required">*</span></label>
+						<select id="selbox" class="main-filter custom-select my-1 mr-sm-2 labels" name="value3"> <!-- 메인 필터 select창 생성 -->
 							<option>Select Filter</option>
 							<option value="1">모두보기</option>
 							<option value="category">장소</option>
 							<option value="address">지역</option>
 							<option value="transportation">이동수단</option>
 							<option value="theme">테마</option>
-						</select><br/>		
-						<select class="sub-filter custom-select my-1 mr-sm-2" name="value4"> <!-- 서브 필터 select창 생성, option은 script에서 생성 -->
+						</select>
+					</div>
+					
+					<div class="form-group">
+						<label for="subSelBox" class="mt-2 labels">&nbsp;Filter 2 <span class="required">*</span></label>
+						<select id="subSelBox" class="sub-filter custom-select my-1 mr-sm-2 labels" name="value4"> <!-- 서브 필터 select창 생성, option은 script에서 생성 -->
 							<option>Select Detail Filter</option>
 						</select>			 
-					</div>					
-					<button type="submit" id="filterbtn" class="btn btn-success" style="float: right;">Filter</button> <!-- 필터 제출 버튼 -->
+					</div>	
+							
+					<div class="form-group">
+						<!-- <label for="plandate">날짜</label> -->
+						<label for="plandate" class="labels">&nbsp;Date</label>
+						<input type="date" class="form-control labels" id="plandate" name="value2" value=""/> <!-- 날짜 선택 input 생성 -->
+					</div>
+					
+					<div class="form-group d-flex justify-content-end row mx-0">
+						<button type="submit" id="filterbtn" class="btn btn-success col-2 mr-2">
+							<i class="fa-solid fa-magnifying-glass"></i>
+						</button> <!-- 필터 제출 버튼 -->
+						
+						<button type="reset" id="filterResetbtn" class="btn btn-danger col-2" >
+							<i class="fa-solid fa-delete-left"></i>
+						</button> <!-- 필터 초기화 버튼 -->
+					</div>
 				</form>
 			</div>
 		</div>

@@ -18,5 +18,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUES(notice_board_seq.nextVal, #{bName}, #{bTitle}, #{bContent})
 	</insert>
 
+	<select id="contentView" parameterType="int" resultType="com.project.init.dto.NoticeBoardDto">
+		SELECT * FROM notice_board WHERE bid = #{bid}
+	</select>
+
+
 </mapper>
 

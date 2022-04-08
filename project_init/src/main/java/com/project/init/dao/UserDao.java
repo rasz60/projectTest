@@ -26,13 +26,17 @@ public class UserDao implements UserIDao {
 	}
 	
 	@Override
-	public String join(String UEmail, String UPw, String UNickName, String UBirth, String UGender, String UPst, String UAddr) {
+	public String join(String UEmail, String UPw, String UNickName, String UBirth, String UGender, String UPst, String uAddr1, String uAddr2) {
 		int UAgeNum = getAgeByBirthDay(UBirth);
 		int UPstNum = Integer.parseInt(UPst);
-		UserDto dto = new UserDto(UEmail,UPw,UNickName,UBirth,UAgeNum,UGender,UPstNum,UAddr,null,null,null,null,null,null,null);
+		
+		UserDto dto = new UserDto(UEmail,UPw,UNickName,UBirth,UAgeNum,UGender,UPstNum,uAddr1,null,null,null,null,"ROLE_USER",null,null,uAddr2);
+		
+		
 		int res = sqlSession.insert("join",dto);
-		System.out.println(res);
+		
 		String result = null;
+		
 		if(res > 0)
 			result = "success";
 		else
@@ -72,5 +76,75 @@ public class UserDao implements UserIDao {
 	public void userVisit(String uId) {
 		sqlSession.insert("userVisit",uId);
 	}
+	
+	@Override
+	public UserDto myPage(String uId) {
+		System.out.println("UserDao_myPage");
+		
+		UserDto result = sqlSession.selectOne("myPage",uId);
+		
+		return result;
+	}
+	
+	@Override
+	public String getolduPrfImg(String uId) {
+		String result = sqlSession.selectOne("getolduPrfImg",uId);
+		return result;
+	}
+	
+	@Override
+	public String addPrfImg(UserDto udto) {
+		System.out.println("addPrfImg");
+		String res;
+		int result = sqlSession.update("addPrfImg",udto);
+		if(result == 1 )
+			res = "success";
+		else
+			res= "failed";
+		return res;
+	}
+	
+	@Override
+	public void deletePrfImg(String uId) {
+		sqlSession.update("deletePrfImg",uId);
+	}
 
+	@Override
+	public String mdfMyPage(UserDto udto) {
+		System.out.println("UserDao_mdfMyPage");
+		String res;
+		int result = sqlSession.update("mdfMyPage",udto);
+		if(result == 1)
+			res = "success";
+		else
+			res = "failed";
+		return res;
+	}
+
+	@Override
+	public String pwcheck(String uId) {
+		System.out.println("UserDao_pwcheck");
+		String upw = sqlSession.selectOne("pwcheck",uId);
+		return upw;
+	}
+
+	@Override
+	public String modifyPw(String Npw, String uId) {
+		UserDto udto = new UserDto(uId,Npw,null,null,0,null,0,null,null,null,null,null,null,null,null,null);
+		int res = sqlSession.update("modifyPw",udto);
+		System.out.println(res);
+		String result = null;
+		if(res > 0)
+			result = "success";
+		else
+			result = "failed";
+		
+		return result;
+	}
+
+	@Override
+	public void resign(String uId) {
+		sqlSession.delete("resign",uId);
+	}
+	
 }

@@ -49,7 +49,10 @@ thead tr {
 
 	<div class="d-flex justify-content-between">
 		<h3 class="display-4 font-italic">Board</h3>
-			<a href="write_view" id="write" class="btn btn-sm btn-dark float-right mt-5">글작성</a>
+		<s:authorize access="hasRole('ROLE_ADMIN')">
+		<a href="write_view" id="write" class="btn btn-sm btn-dark float-right mt-5">글작성</a>
+		</s:authorize>
+
 	</div>
 	<hr />
 	
@@ -70,7 +73,7 @@ thead tr {
 					<td id="bid" class="col-1">${dto.bId}</td>
 					<td class="col-2">${dto.bName}</td>
 					<td class="col-4">
-						<a href="content_view?bId=${dto.bId}" class="content_view text-dark">${dto.bTitle}</a>
+						<a href="contentView?bId=${dto.bId}" class="content_view text-dark">${dto.bTitle}</a>
 					</td>
 					<td class="col-3">
 						<fmt:formatDate var="bDate" pattern="yyyy-MM-dd hh:mm:ss" value="${dto.bDate}" />

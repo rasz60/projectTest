@@ -18,8 +18,15 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/includes/header.css" />
+<link rel="stylesheet" type="text/css" href="css/includes/footer.css" />
 <title>Write View</title>
 <style>
+#main {
+	margin-top: 5rem;
+	height: auto;
+}
+
 #content {
 	resize: none;
 }
@@ -37,7 +44,9 @@
 
 <body>
 
-<div class="container">
+<%@ include file="includes/header.jsp" %>
+
+<div id="main" class="container">
 	<h3 class="display-4 font-italic">Content View</h3>
 	<hr />
 	
@@ -69,12 +78,13 @@
 			<textarea class="form-control" id="content" name="bContent" rows="10">${content_view.bContent }</textarea>
 		</div>
 		
-		<a href="notice_board" id="goback" class="btn btn-sm btn-secondary float-right">목록</a>	
+		<a href="notice_board" id="goback" class="btn btn-sm btn-secondary">목록</a>	
 		<a href="delete?bId=${content_view.bId}" id="delBtn" class="btn btn-sm btn-danger float-right mr-2">삭제</a>
 		<button type="submit" id="modBtn" class="btn btn-sm btn-success float-right mr-2">수정</button>
-		<a href="reply_view?bId=${content_view.bId}" id="rv" class="btn btn-sm btn-primary float-right mr-2">댓글</a>
 	</form>
 </div>
+
+<%@ include file="includes/footer.jsp" %>
 
 <script>
 $(document).ready(function() {

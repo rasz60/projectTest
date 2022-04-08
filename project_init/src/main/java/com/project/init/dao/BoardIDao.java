@@ -9,4 +9,7 @@ public interface BoardIDao {
 	ArrayList<NoticeBoardDto> getBoardList();
 	
 	public void write(String bName, String bTitle, String bContent);
+	
+	NoticeBoardDto contentView(String bid);
+
 }

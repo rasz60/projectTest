@@ -10,22 +10,23 @@ public class UserDto {
 	private int userAge;
 	private String userGender;
 	private int userPst;
-	private String userAddress;
+	private String userAddress1;
 	private String userProfileImg;
 	private String userProfileMsg;
 	private String userFollower;
 	private String userFollowing;
 	private String userAuthority;
-	private Timestamp visitDate;
-	private Timestamp joinDate;
+	private Timestamp userJoinDate;
+	private Timestamp userVisitDate;
+	private String userAddress2;
 	
 	public UserDto() {
 		super();
 	}
-
+	
 	public UserDto(String userEmail, String userPw, String userNick, String userBirth, int userAge, String userGender,
-			int userPst, String userAddress, String userProfileImg, String userProfileMsg, String userFollower,
-			String userFollowing, String userAuthority, Timestamp visitDate, Timestamp joinDate) {
+			int userPst, String userAddress1, String userProfileImg, String userProfileMsg, String userFollower,
+			String userFollowing, String userAuthority, Timestamp userJoinDate, Timestamp userVisitDate, String userAddress2) {
 		super();
 		this.userEmail = userEmail;
 		this.userPw = userPw;
@@ -34,14 +35,15 @@ public class UserDto {
 		this.userAge = userAge;
 		this.userGender = userGender;
 		this.userPst = userPst;
-		this.userAddress = userAddress;
+		this.userAddress1 = userAddress1;
 		this.userProfileImg = userProfileImg;
 		this.userProfileMsg = userProfileMsg;
 		this.userFollower = userFollower;
 		this.userFollowing = userFollowing;
 		this.userAuthority = userAuthority;
-		this.visitDate = visitDate;
-		this.joinDate = joinDate;
+		this.userJoinDate = userJoinDate;
+		this.userVisitDate = userVisitDate;
+		this.userAddress2 = userAddress2;
 	}
 
 	public String getUserEmail() {
@@ -100,12 +102,12 @@ public class UserDto {
 		this.userPst = userPst;
 	}
 
-	public String getUserAddress() {
-		return userAddress;
+	public String getUserAddress1() {
+		return userAddress1;
 	}
 
-	public void setUserAddress(String userAddress) {
-		this.userAddress = userAddress;
+	public void setUserAddress1(String userAddress1) {
+		this.userAddress1 = userAddress1;
 	}
 
 	public String getUserProfileImg() {
@@ -147,23 +149,28 @@ public class UserDto {
 	public void setUserAuthority(String userAuthority) {
 		this.userAuthority = userAuthority;
 	}
-
-	public Timestamp getVisitDate() {
-		return visitDate;
+	
+	public Timestamp getUserJoinDate() {
+		return userJoinDate;
 	}
 
-	public void setVisitDate(Timestamp visitDate) {
-		this.visitDate = visitDate;
-	}
-
-	public Timestamp getJoinDate() {
-		return joinDate;
-	}
-
-	public void setJoinDate(Timestamp joinDate) {
-		this.joinDate = joinDate;
+	public void setUserJoinDate(Timestamp userJoinDate) {
+		this.userJoinDate = userJoinDate;
 	}
 	
-	
+	public Timestamp getUserVisitDate() {
+		return userVisitDate;
+	}
 
+	public void setUserVisitDate(Timestamp userVisitDate) {
+		this.userVisitDate = userVisitDate;
+	}
+
+	public String getUserAddress2() {
+		return userAddress2;
+	}
+
+	public void setUserAddress2(String userAddress2) {
+		this.userAddress2 = userAddress2;
+	}
 }

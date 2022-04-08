@@ -51,4 +51,14 @@ public class BoardDao implements BoardIDao {
 		logger.info("write() result : " + (res > 0 ? "success" : "failed"));
 	}
 	
+	public NoticeBoardDto contentView(String bid) {
+		logger.info("contentView(" + bid + ") in >>>>");
+		
+		NoticeBoardDto dto = sqlSession.selectOne("contentView", Integer.parseInt(bid));
+		
+		logger.info("contentView result : " + dto.getbName());
+		
+		return dto;
+	}
+	
 }

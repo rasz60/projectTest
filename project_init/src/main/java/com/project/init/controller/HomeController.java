@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.project.init.command.BoardContentCommand;
 import com.project.init.command.BoardWriteCommand;
 import com.project.init.command.ICommand;
 import com.project.init.command.MainMapFilterCommand;
@@ -54,7 +55,7 @@ public class HomeController {
 	
 	@RequestMapping("/join")
 	public String join() {
-		logger.info("index() in >>>>");
+		logger.info("join() in >>>>");
 		return "join/join";
 	}
 	
@@ -118,17 +119,19 @@ public class HomeController {
 	@RequestMapping("/contentView")
 	public String content_view(HttpServletRequest request, HttpServletResponse response, Model model) {
 		logger.info("content_view in >>>>");
+
 		String result = "failed";
 		
-
+		comm = new BoardContentCommand();
+		comm.execute(request, model);
 		
 		if ( model.containsAttribute("content_view") ) {
 			result = "success";
 		}
-		model.addAttribute("username", Constant.username);
-		logger.info("content_view result 1 : " + result);
-		logger.info("content_view result 2 : username ? " + Constant.username);
-		return "content_view";
+
+		logger.info("content_view result : " + result);
+		
+		return "notice_board_content";
 	}
 	
 }
