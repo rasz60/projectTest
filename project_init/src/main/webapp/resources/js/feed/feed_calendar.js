@@ -181,7 +181,7 @@ $(document).ready(function() {
 			var value4 = $('#details'+i).children('div').children('#planDay').val();
 
 			console.log(value1 + "," + value2 + "," + value3 + "," + value4);
-			$.ajax({
+			var xhr = $.ajax({
 				url : 'filter',
 				type: 'get',
 				data: {"value1" : value1, "value2" : value2, "value3" : value3, "value4" : value4},
@@ -191,7 +191,6 @@ $(document).ready(function() {
 				        xhr.setRequestHeader(header, token);
 				},
 				success: function(data) {
-					
 					// 이동할 위도 경도 위치를 생성합니다 
 					var moveLatLon = new kakao.maps.LatLng(data[0].latitude, data[0].longitude);
 					// 지도 중심을 부드럽게 이동시킵니다
@@ -278,17 +277,19 @@ $(document).ready(function() {
 							kakao.maps.event.addListener(marker, 'mouseover', function() { //마커에 마우스 올렸을 때
 					            displayInfowindow(marker, placeName, address, theme, category, transportation); // displayInfowindow()에서 처리
 					        });		
-/*						        kakao.maps.event.addListener(marker, 'mouseout', function() { // 마커에 마우스 치웠을 때 인포창 닫기
+						        kakao.maps.event.addListener(marker, 'mouseout', function() { // 마커에 마우스 치웠을 때 인포창 닫기
 					            infowindow.close();
-					        }); */	
+					        }); 	
 						})(marker, placeName, address, theme, category, transportation);						
 							
 					 };
 				polyline.setMap(map);
 				polylines.push(polyline);
-				clusterer.addMarkers(markers);			
+				clusterer.addMarkers(markers);
+			
 				},
-				error: function(data) {			
+				error: function(data) {
+					alert("'일시적인 오류로 일정 불러오기에 실패하였습니다. 문제가 지속될 시 게시판으로 문의해주시면 감사하겠습니다.'")			
 				}
 			});				
 		});
