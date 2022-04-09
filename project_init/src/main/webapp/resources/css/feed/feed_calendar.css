@@ -1,4 +1,4 @@
-/* 페이지 스크롤 세팅 */
+/*  */
 body::-webkit-scrollbar {
     width: 10px;
 }
@@ -11,7 +11,7 @@ body::-webkit-scrollbar-track {
 }
 
 
-/* section과 nav 메뉴 간에 margin 설정 */
+/* section */
 section.container {
 	margin-top: 5em;
 }
@@ -30,7 +30,7 @@ section.container {
 	color: darkblue;
 }
 
-/* feed tab 박스 설정 */
+/* feed tab*/
 .feed-tabs {
 	flex-wrap: nowarp;
 	list-style: none;
@@ -75,13 +75,13 @@ section.container {
 	height: 1000px;
 }
 
-/* calendar관련 custom setting */
-/* event 블럭 테두리 색상 */
+/* calendarcustom setting */
+/* event */
 .fc-event {
 	border-color: white;
 }
 
-/* 토요일, 일요일 글씨색 지정 */
+/*  */
 .fc-day-sat>div, .fc-day-sat>div>div {
 	color : blue;
 }
@@ -95,7 +95,7 @@ section.container {
 
 
 
-/* PlanMst 수정 및 상세 일정 조회 modal */
+/* PlanMst  modal */
 #detailModal {
 	z-index: 99999;
 }
@@ -125,7 +125,8 @@ section.container {
   	max-width: 100%;
 	height: 100%;
 }
-/* modal창 .plan-details scroll setting */
+
+/* modal .plan-details scroll setting */
 .plan-details > #details::-webkit-scrollbar {
     width: 5px;
 }
@@ -154,6 +155,7 @@ section.container {
 }
 
 .modal-body .plan-details div[id^=details] .list-group-item h4 {
+	text-overflow: ellipsis;
 	display: inline;
 	width:100%;
 }
@@ -164,7 +166,7 @@ section.container {
 }
 
 
-/* 인포윈도우 CSS */
+/* 카카오 맵 CSS */
 .wrap * {padding: 0;margin: 0;} 
 .wrap .info {width: 350px;height: 130px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
 .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}

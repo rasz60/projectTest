@@ -22,6 +22,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT * FROM notice_board WHERE bid = #{bid}
 	</select>
 
+	<update id="upHit" parameterType="int">
+		UPDATE notice_board SET bHit = bHit + 1 WHERE bId = #{bId}
+	</update>
 
 </mapper>
 

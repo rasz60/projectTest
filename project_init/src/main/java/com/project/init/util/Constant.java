@@ -24,9 +24,6 @@ public class Constant {
 	public static String username;
 	public static BoardDao bdao;
 	
-	
-	
-	
 	//PlanMstDto를 생성하는 메서드
 	public static PlanMstDto planMstDtoParser(HttpServletRequest request, String userId) {
 		int planNum = Integer.parseInt(request.getParameter("planNum"));

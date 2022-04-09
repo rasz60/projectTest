@@ -1,4 +1,209 @@
+var markers = [];
+var plans = [];
+var polylines=[];
+var clusterer;
+
+// 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
+var mapContainer = document.getElementById('map'), 
+	mapOption = { 
+	    center : new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표 
+	    level : 4 // 지도의 확대 레벨 
+	};
+
+function makeMarker(data, map) {
+	
+	var imageSrc = 'images/marker.png', // 마커이미지의 경로    
+	    imageSize = new kakao.maps.Size(50, 50), // 마커이미지의 크기입니다
+		imageOption = {offset: new kakao.maps.Point(10, 50)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+		
+	var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption); //마커 이미지 옵션을 markerImage객체에 담기
+	
+	for (var i = 0; i < data.length; i++ ) {
+		var placeName = data[i].placeName;
+		var address= data[i].address;
+		var theme = data[i].theme;
+		var category = parseCategory(data[i].category);
+		var transportation = data[i].transportation;
+		var position;
+		
+		var marker = new kakao.maps.Marker({
+							image: markerImage,
+		            		position: new kakao.maps.LatLng(data[i].latitude, data[i].longitude) // 마커를 표시할 위치
+		        		});
+		
+		(function(marker, placeName, address, theme, category, transportation) { //이벤트 등록
+			kakao.maps.event.addListener(marker, 'mouseover', function() { //마커에 마우스 올렸을 때
+	        	displayInfowindow(marker, placeName, address, theme, category, transportation, map); // displayInfowindow()에서 처리
+	    	});
+	
+	    	kakao.maps.event.addListener(marker, 'mouseout', function() { // 마커에 마우스 치웠을 때 인포창 닫기
+	        	infowindow.close();
+	    	});
+		})(marker, placeName, address, theme, category, transportation);
+
+		// planDay, marker, polyline으로 이루어진 planObject 생성
+		var planObject = {
+			day: data[i].planDay,
+			mapMarker: marker,
+		};
+	
+		// planObject를 markers 배열에 담음
+		markers.push(planObject);
+	}
+	
+}
+
+
+function parseCategory(category) {
+	
+	switch(category) { // DB에는 카테고리의 code값이 들어가므로 code를 카테고리 명으로 변경
+		case "MT1" : category = "대형마트";
+		break;
+		case "CS2" : category = "편의점";
+		break;
+		case "PS3" : category = "어린이집, 유치원";
+		break;
+		case "SC4" : category = "학교";
+		break;
+		case "AC5" : category = "학원";
+		break;
+		case "PK6" : category = "주차장";
+		break;
+		case "OL7" : category = "주유소, 충전소";
+		break;
+		case "SW8" : category = "지하철역";
+		break;
+		case "BK9" : category = "은행";
+		break;
+		case "CT1" : category = "문화시설";
+		break;
+		case "AG2" : category = "중개업소";
+		break;
+		case "PO3" : category = "공공기관";
+		break;
+		case "AT4" : category = "관광명소";
+		break;
+		case "PO3" : category = "숙박";
+		break;
+		case "FD6" : category = "음식점";
+		break;
+		case "CE7" : category = "카페";
+		break;
+		case "HP8" : category = "병원";
+		break;
+		case "PM9" : category = "약국";
+		break;
+	};
+	
+	return category;
+}
+
+//마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+function dayMap(planDay, map, clusterer) {
+	
+	// 클러스터를 초기화시킴
+	clusterer.clear();
+	
+	// 생성된 polyline이 있는 경우 초기화
+	if ( polylines.length != 0 ) {
+		polylines[0].setMap(null);
+		polylines.splice(0, 1);
+	}
+	
+	var linePath = [];
+	var dayMarkers = [];
+	var count = 0;
+	
+	for ( var i = 0; i < markers.length; i++ ) {
+		// markers2에서 planday가 같은 객체를 찾음
+		if( markers[i].day == planDay ) {
+			// 같은 planDay로 찾은 첫번째 마커일 때
+			if ( count == 0 ) {
+				var moveLatlon;
+				
+				// marker의 좌표가 0(null)인 경우 맵 중심 좌표 지정
+				if ( markers[i].mapMarker.getPosition().getLat() == 0 ) {
+					moveLatlon = new kakao.maps.LatLng(37.566826, 126.9786567);
+				
+				// 맵의 중심 좌표를 제일 첫번째 마커의 위치로 지정
+				} else {
+					moveLatlon = new kakao.maps.LatLng(markers[i].mapMarker.getPosition().getLat(), markers[i].mapMarker.getPosition().getLng());
+				}
+				
+				// 위에서 지정된 좌표로 맵 중심 이동
+				map.panTo(moveLatlon);
+			}
+			// 맵에 마커를 생성
+			markers[i].mapMarker.setMap(map);
+			
+			// 선으로 연결할 마커를 순서대로 linePath 배열에 추가
+			linePath.push(new kakao.maps.LatLng(markers[i].mapMarker.getPosition().getLat(), markers[i].mapMarker.getPosition().getLng()));
+			
+			// 클러스터를 표시할 배열에 마커 추가
+			dayMarkers.push(markers[i].mapMarker);
+			
+			// count++
+			count++;
+		} else {
+			
+			// planDay가 같지 않은 마커는 보이지 않게 함
+			markers[i].mapMarker.setMap(null);
+		}
+	}
+	
+	// linePath 배열 순서대로 선으로 연결
+    var polyline = new kakao.maps.Polyline({
+		path : linePath,
+		strokeWeight : 3,
+		strokeColor : 'blue',
+		strokeStyle : 'solid'
+	});
+	
+	// polyline 생성 후 polylines에 추가
+	polylines.push(polyline);
+	
+	// polyline을 맵에 생성
+	polyline.setMap(map);
+	
+	// 클러스터로 표시할 마커를 추가
+	clusterer.addMarkers(dayMarkers);
+}
+
+function displayInfowindow(marker, placeName, address, theme, category, transportation, map) { //인포윈도우 생성
+
+	var content = '<div class="wrap">' + 
+    	 	     '<div class="info">' + 
+	             '<div class="title">' + 
+	     				'<img src="images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;' + 
+	     				placeName + 
+	             '</div>' + 
+	             '<div class="body">' + 
+	                 '<div class="img">' +
+	                     '<img src="" width="75" height="85">' +
+	                '</div>' + 
+	                 '<div class="content">' + 
+	                     '<div class="address">' + '주소 : ' + address + '</div>' +
+	                     '<div class="theme cont">' + '목적 : ' + theme + '</div>' +
+	                     '<div class="theme cont">' + '장소 : ' + category + '</div>' +
+	                     '<div class="transportation">' + '이동수단 : ' + transportation + '</div>' +
+	                 '</div>' + 
+	             '</div>' + 
+	         '</div>' +    
+	       '</div>';
+	     
+	infowindow.setContent(content);
+	infowindow.open(map, marker);
+}
+
+
 $(document).ready(function() {
+
+	
+	// 맵을 생성하기 전에 빈 객체로 생성
+	var map;
+
 	/* ---------------------------- Feed Calendar Page Init ---------------------------- */
 	// fullcalendar load
 	var Calendar = FullCalendar.Calendar;
@@ -61,21 +266,6 @@ $(document).ready(function() {
 			var eventEndDate = strToDate(info.event.endStr);
 			eventEndDate.setDate(eventEndDate.getDate() - 1);
 			eventEndDate = dateToStr(eventEndDate);
-			
-			// modal창을 띄우기 전에 직전에 클릭한 event의 정보를 초기화 시킴
-			if( $('.modal-header #planName').val() != "" ) {
-				$('.plan-details div[id^=details]:nth-child(n+3)').remove();
-						
-				for(var i = 1; i <= 10; i++ ) {
-					$('.planDt' + i + ' .placeName').text('');
-					$('.planDt' + i + ' .startTime').text('');
-					$('.planDt' + i + ' .endTime').text('');
-				}
-				
-				$('#plan-day').text('day 1');
-				$('#prev-btn').attr('data-index', 0);
-				$('#next-btn').attr('data-index', 2);
-			}
 			
 			// 해당 일정의 db를 가져옴
 			$.ajax({
@@ -148,20 +338,13 @@ $(document).ready(function() {
 		
 	});
 	
-	
-	var i=1;
 	$('#detailModal').on('shown.bs.modal', function() { //모달 창이 켜지면 지도 생성
-		if( $('#map div').length == 0 ) {
-			var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
-			    center : new kakao.maps.LatLng($('#latitude').val(), $('#longitude').val()), // 지도의 중심좌표 
-			    level : 4 // 지도의 확대 레벨 
-			});
-		} 
+		$('#plan-day').text('DAY 1');
 		
-		//검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성
-		var infowindow = new kakao.maps.InfoWindow({zIndex:1});
-
-		var clusterer = new kakao.maps.MarkerClusterer({
+		// 이미 생성된 지도가 있으면 생성하지 않음
+		map = new kakao.maps.Map(mapContainer, mapOption);
+		
+		clusterer = new kakao.maps.MarkerClusterer({
 		    map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
 		    averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
 		    minLevel: 10, // 클러스터 할 최소 지도 레벨
@@ -205,172 +388,43 @@ $(document).ready(function() {
 		    }
 			]
 		});
-			
-		var polylines=[]; //polyline을 담을 객체
 
-		$('#mbtn').click(function(e){
-			e.preventDefault();
-			for(j=0; j<polylines.length; j++){ // polyline 제거
-				polylines[j].setMap(null);
-			}
-			
-			clusterer.clear(); //마커 제거
-			
-			//planNum과 planDay을 받아서 DB값 select
-			var value1 = 'planNum';
-			var value2 = $('#modal-planNum').val();
-			var value3 = 'planDay';
-			var value4 = $('#details'+i).children('div').children('#planDay').val();
-
-			console.log(value1 + "," + value2 + "," + value3 + "," + value4);
-			$.ajax({
-				url : 'filter',
-				type: 'get',
-				data: {"value1" : value1, "value2" : value2, "value3" : value3, "value4" : value4},
-				beforeSend: function(xhr){
-				   	var token = $("meta[name='_csrf']").attr('content');
-					var header = $("meta[name='_csrf_header']").attr('content');
-				        xhr.setRequestHeader(header, token);
-				},
-				success: function(data) {
-					
-					// 이동할 위도 경도 위치를 생성합니다 
-					var moveLatLon = new kakao.maps.LatLng(data[0].latitude, data[0].longitude);
-					// 지도 중심을 부드럽게 이동시킵니다
-					// 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
-					map.panTo(moveLatLon);
-					 
-					var linePath = [];  
-					var markers =[];
-
-					var imageSrc = 'images/marker.png', // 마커이미지의 경로    
-				    imageSize = new kakao.maps.Size(50, 50), // 마커이미지의 크기입니다
-				    imageOption = {offset: new kakao.maps.Point(10, 50)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-					
-					var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption); //마커 이미지 옵션을 markerImage객체에 담기	
-							
-					for (var i = 0; i < data.length; i++ ) {
-						
-						var marker = new kakao.maps.Marker({
-							image: markerImage,
-				            position: new kakao.maps.LatLng(data[i].latitude, data[i].longitude) // 마커를 표시할 위치
-				        });
-				       
-				        linePath.push(new kakao.maps.LatLng(data[i].latitude, data[i].longitude));
-				        
-				        var polyline = new kakao.maps.Polyline({
-							path : linePath,
-							strokeWeight : 3,
-							strokeColor : 'blue',
-							strokeStyle : 'solid'
-						});	     
-						markers.push(marker);
-						
-						var placeName = []; //장소 이름
-						placeName.push(data[i].placeName);
-						var address=[]; //주소
-						address.push(data[i].address);
-						var theme = []; //테마
-						theme.push(data[i].theme);
-						var category = []; //카테고리
-						
-						switch(data[i].category){ // DB에는 카테고리의 code값이 들어가므로 code를 카테고리 명으로 변경
-							case "MT1" : category.push("대형마트");
-							break;
-							case "CS2" : category.push("편의점");
-							break;
-							case "PS3" : category.push("어린이집, 유치원");
-							break;
-							case "SC4" : category.push("학교");
-							break;
-							case "AC5" : category.push("학원");
-							break;
-							case "PK6" : category.push("주차장");
-							break;
-							case "OL7" : category.push("주유소, 충전소");
-							break;
-							case "SW8" : category.push("지하철역");
-							break;
-							case "BK9" : category.push("은행");
-							break;
-							case "CT1" : category.push("문화시설");
-							break;
-							case "AG2" : category.push("중개업소");
-							break;
-							case "PO3" : category.push("공공기관");
-							break;
-							case "AT4" : category.push("관광명소");
-							break;
-							case "PO3" : category.push("숙박");
-							break;
-							case "FD6" : category.push("음식점");
-							break;
-							case "CE7" : category.push("카페");
-							break;
-							case "HP8" : category.push("병원");
-							break;
-							case "PM9" : category.push("약국");
-							break;
-						}
-						
-						var transportation = []; //이동수단
-						transportation.push(data[i].transportation);
-						
-						(function(marker, placeName, address, theme, category, transportation) { //이벤트 등록
-							kakao.maps.event.addListener(marker, 'mouseover', function() { //마커에 마우스 올렸을 때
-					            displayInfowindow(marker, placeName, address, theme, category, transportation); // displayInfowindow()에서 처리
-					        });		
-						        kakao.maps.event.addListener(marker, 'mouseout', function() { // 마커에 마우스 치웠을 때 인포창 닫기
-					            infowindow.close();
-					        }); 	
-						})(marker, placeName, address, theme, category, transportation);						
-							
-					 };
-				;
-
-				clusterer.addMarkers(markers);
-				
-				polylines.push(polyline);
-				polyline.setMap(map)
-					
-				},
-				error: function(data) {			
-				}
-			});				
-		});
-		$('#mbtn').trigger('click');
+		var planDay = 'day1';
 		
-		function displayInfowindow(marker, placeName, address, theme, category, transportation) { //인포윈도우 생성
+		makeMarker(plans, map);
 		
-		 var content = '<div class="wrap">' + 
-		     	     '<div class="info">' + 
-			             '<div class="title">' + 
-			     				'<img src="images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;' + 
-			     				placeName + 
-			             '</div>' + 
-			             '<div class="body">' + 
-			                 '<div class="img">' +
-			                     '<img src="images/dcfa90e9-aa6d-4faf-b3a7-02da8588dba0christmastree.png" width="75" height="85">' +
-			                '</div>' + 
-			                 '<div class="content">' + 
-			                     '<div class="address">' + '주소 : ' + address + '</div>' +
-			                     '<div class="theme cont">' + '목적 : ' + theme + '</div>' +
-			                     '<div class="theme cont">' + '장소 : ' + category + '</div>' +
-			                     '<div class="transportation">' + '이동수단 : ' + transportation + '</div>' +
-			                 '</div>' + 
-			             '</div>' + 
-			         '</div>' +    
-			       '</div>'; 
-			     
-		 infowindow.setContent(content);
-		 infowindow.open(map, marker);
-	 	}
-	});	
-
-	$('#detailModal').on('hidden.bs.modal', function() {
-		
+		if ( plans[0].latitude != null ) { 		
+			
+			dayMap(planDay, map, clusterer);
+		}
 	});
 
+	
+	$('#detailModal').on('hidden.bs.modal', function() {
+		// modal창을 띄우기 전에 직전에 클릭한 event의 정보를 초기화 시킴
+		if( $('.modal-header #planName').val() != "" ) {
+			$('.plan-details div[id^=details]:nth-child(n+3)').remove();
+					
+			for(var i = 1; i <= 10; i++ ) {
+				$('.planDt' + i + ' .placeName').text('');
+				$('.planDt' + i + ' .startTime').text('');
+				$('.planDt' + i + ' .endTime').text('');
+			}
+			
+			$('#plan-day').text('DAY 1');
+			$('#prev-btn').attr('data-index', 0);
+			$('#next-btn').attr('data-index', 2);
+		}
+		
+		$('#map').children('div').remove();
+		$('#map').removeAttr('style');
+		
+		markers = [];
+		plans = [];
+		polylines= [];
+		clusterer = null;
+
+	});
 	
 	
 	// modal창에 상세일정 표시 부분에 previous 버튼 클릭 시
@@ -390,20 +444,20 @@ $(document).ready(function() {
 			// 다음에 보여질 탭 박스의 .active 추가
 			$('#details' + index).addClass('active');
 			// planDay가 몇인지 표시 
-			$('#plan-day').text('day ' + index);
+			$('#plan-day').text('DAY ' + index);
 			// data-index 변경 : prev = .active 탭 박스 인덱스의 -1 // next = .active 탭 박스 인덱스의 +1 
 			$(this).attr('data-index', Number(index)-1);
 			$('#next-btn').attr('data-index', Number(index)+1);
 		}
-		i--;
-		$('#mbtn').trigger('click');
+		
+		dayMap('day'+index, map, clusterer);
+		
 	});
-
+	
 	// modal창에 상세일정 표시 부분에 next 버튼 클릭 시
 	$('#next-btn').click(function() {
 		// 버튼에 부여한 data-index 값(= .active인 탭 박스에 index - 1) 을 가져옴
 		var index = Number($(this).attr('data-index'));
-		
 		// index < 2  ==  첫 번째 탭 박스가 .active, index가 총 상세 일정의 개수보다 클 경우 == 마지막 탭 박스가 .active
 		if ( index < 2 || index > $(this).parent().attr('data-count')) {
 			return false;
@@ -413,15 +467,18 @@ $(document).ready(function() {
 			// 다음에 보여질 탭 박스의 .active 추가
 			$('#details' + index).addClass('active');
 			// planDay가 몇인지 표시 
-			$('#plan-day').text('day ' + index);
+			$('#plan-day').text('DAY ' + index);
 			// data-index 변경 : prev = .active 탭 박스 인덱스의 -1 // next = .active 탭 박스 인덱스의 +1 
 			$(this).attr('data-index', Number(index)+1);
 			$('#prev-btn').attr('data-index', Number(index)-1);
+			
 		}
-		
-		i++;
-		$('#mbtn').trigger('click');
+	
+		dayMap('day'+index, map, clusterer);
 	});
+	
+	
+
 
 	// planMst 수정버튼 (modal창)	
 	$('#btn-modify').click(function(e) {
@@ -733,6 +790,9 @@ $(document).ready(function() {
 			// 일자 안에 상세 일정 개수만큼 반복
 			for ( var j = 0; j < data.length; j++ ) {
 				if ( data[j].planDay == "day" + i ) {
+										
+					plans.push(data[j]);
+					
 					// PlaceName이 null인 경우
 					if ( data[j].placeName == null ) {
 						data[j].placeName = 'Place';

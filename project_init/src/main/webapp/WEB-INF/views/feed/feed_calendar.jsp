@@ -26,12 +26,6 @@
 <script src="js/feed/fc/main.js"></script>
 <script src="js/feed/fc/locales/ko.js"></script>
 
-<%-- custom javascript files --%>
-<script src="js/feed/feed_calendar.js"></script>
-
-<!-- KAKAO API -->
-
-
 <%-- fullcalendar css files --%>
 <link href="css/feed/fc/main.css" rel="stylesheet"></link>
 
@@ -161,5 +155,9 @@
 
 <%@ include file="event_modi_modal.jsp" %>
 <%@ include file="../includes/footer.jsp" %>
+
+<%-- custom javascript files --%>
+<script src="js/feed/feed_calendar.js"></script>
+
 </body>
 </html>

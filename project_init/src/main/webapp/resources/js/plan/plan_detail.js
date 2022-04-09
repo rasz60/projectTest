@@ -76,15 +76,10 @@ $(document).ready(function() {
 	});
 	
 	// 전체 일정을 submit하는 버튼 클릭 시
-	$('#submitAll').click(function(e) {
+	$('#submitAll').on('click', function(e) {
 		e.preventDefault();
-		
-		// modal창으로 저장 여부 체크
-		$('.modal-body').text('모든 일정 작성을 완료하고 피드로 이동할까요?');
-		$('#modalBtn').trigger('click');
-		
-		$('#trueBtn').click(function(e) {
-			e.preventDefault();
+
+		if ( confirm('모든 일정을 저장하고 피드로 돌아갈까요?') ) {
 			
 			// id가 frm으로 시작하는 form을 배열로 모두 선택
 			var form = $('form[id^=frm]').get();
@@ -115,7 +110,11 @@ $(document).ready(function() {
 					console.log('error');				
 				}
 			})
-		})
+		} else {
+			return false;
+		}
+		
+		
 	});
 	
 	/* 동적으로 생성한 엘리먼트까지 이벤트를 부여할 때, $(document).on 사용 */
