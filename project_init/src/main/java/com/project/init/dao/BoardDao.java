@@ -17,7 +17,7 @@ public class BoardDao implements BoardIDao {
 	
 	private final SqlSession sqlSession;
 
-	// sqlSession »ý¼ºÀÚ ÁÖÀÔ
+	// sqlSession ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@Autowired
 	public BoardDao (SqlSession sqlSession) {
 		logger.info("PlanDao Const in >>>");
@@ -27,7 +27,7 @@ public class BoardDao implements BoardIDao {
 		logger.info("PlanDao Const result : sqlSession getConn success ? " + sqlSession.toString());
 	}
 	
-	// °øÁö»çÇ× °Ô½ÃÆÇ ¸®½ºÆ® ºÒ·¯¿À±â
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public ArrayList<NoticeBoardDto> getBoardList() {
 		logger.info("getBoardList() in >>>>");
@@ -39,7 +39,7 @@ public class BoardDao implements BoardIDao {
 		return result;
 	}
 
-	// °øÁö»çÇ× °Ô½ÃÆÇ ±Û ÀÛ¼º
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Û¼ï¿½
 	@Override
 	public void write(String bName, String bTitle, String bContent) {
 		logger.info("write() in >>>>");
@@ -49,11 +49,11 @@ public class BoardDao implements BoardIDao {
 		dto.setbTitle(bTitle);
 		dto.setbContent(bContent);
 		
-		int res = sqlSession.insert("write", dto);
+		int res = sqlSession.insert("writeNotice", dto);
 		logger.info("write() result : " + (res > 0 ? "success" : "failed"));
 	}
 	
-	// °øÁö»çÇ× °Ô½ÃÆÇ ±Û ³»¿ë ÆäÀÌÁö º¸±â
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public NoticeBoardDto contentView(String bid) {
 		logger.info("contentView(" + bid + ") in >>>>");
 		
@@ -66,7 +66,7 @@ public class BoardDao implements BoardIDao {
 		return dto;
 	}
 	
-	// Á¶È¸¼ö ¿Ã·ÁÁÖ´Â ¸Þ¼­µå
+	// ï¿½ï¿½È¸ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ö´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
 	public void upHit(String bId) {
 		logger.info("upHit(" + bId + ") in >>> ");	
 		

@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		]]>
 	</select>
 
-	<insert id="write" parameterType="com.project.init.dto.NoticeBoardDto">
+	<insert id="writeNotice" parameterType="com.project.init.dto.NoticeBoardDto">
 		INSERT INTO notice_board(bId, bName, bTitle, bContent) 
 		VALUES(notice_board_seq.nextVal, #{bName}, #{bTitle}, #{bContent})
 	</insert>

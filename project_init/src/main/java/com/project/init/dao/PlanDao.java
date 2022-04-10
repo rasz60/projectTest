@@ -21,7 +21,7 @@ public class PlanDao implements PlanIDao {
 	
 	private final SqlSession sqlSession;
 
-	// sqlSession »ý¼ºÀÚ ÁÖÀÔ
+	// sqlSession ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@Autowired
 	public PlanDao (SqlSession sqlSession) {
 		logger.info("PlanDao Const in >>>");
@@ -32,7 +32,7 @@ public class PlanDao implements PlanIDao {
 	}
 	
 	
-	// ¸ðµç PlanDt¸¦ ºÒ·¯¿È
+	// ï¿½ï¿½ï¿½ PlanDtï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½
 	@Override
 	public ArrayList<PlanDtDto> selectPlanList() {
 		logger.info("selectPlanList() in >>>");
@@ -44,7 +44,7 @@ public class PlanDao implements PlanIDao {
 	}
 	
 	
-	// ¸ðµç PlanDt¸¦ ºÒ·¯¿È
+	// ï¿½ï¿½ï¿½ PlanDtï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½
 	@Override
 	public ArrayList<PlanDtDto> filter(Map<String, String> map) {
 		logger.info("filter() in >>> ");
@@ -58,7 +58,7 @@ public class PlanDao implements PlanIDao {
 	
 	
 	
-	// ¸ðµç ÀÌº¥Æ® °¡Á®¿À±â
+	// ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public ArrayList<PlanMstDto> selectAllPlan(String userId) {
 		logger.info("getCalendarEvent(" + userId + ") in >>>");
@@ -69,7 +69,7 @@ public class PlanDao implements PlanIDao {
 		return dtos;
 	}
 	
-	// planNumÀ¸·Î planMst °ª °¡Á®¿À±â
+	// planNumï¿½ï¿½ï¿½ï¿½ planMst ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public PlanMstDto selectPlanMst(String planNum, String userId) {
 		logger.info("selectPlan (" + planNum + ") in >>>");
@@ -86,7 +86,7 @@ public class PlanDao implements PlanIDao {
 	}
 
 	
-	// planNumÀ¸·Î planDt °ª °¡Á®¿À±â
+	// planNumï¿½ï¿½ï¿½ï¿½ planDt ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public ArrayList<PlanDtDto> selectPlanDt(String planNum, String userId) {
 		logger.info("selectPlanDt (" + planNum + ") in >>> ");
@@ -96,7 +96,7 @@ public class PlanDao implements PlanIDao {
 		dto.setUserId(userId);
 		
 		ArrayList<PlanDtDto> result = (ArrayList)sqlSession.selectList("selectPlanDt", dto);
-
+		
 		logger.info("selectPlanDt (" +planNum + ") result ? " + result.isEmpty());
 		
 		return result;
@@ -104,7 +104,7 @@ public class PlanDao implements PlanIDao {
 	
 	
 	
-	// modalÃ¢¿¡¼­ ¼öÁ¤ÇÑ ³»¿ë ¹Ý¿µ
+	// modalÃ¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ý¿ï¿½
 	@Override
 	@Transactional
 	public String modifyPlanMst(PlanMstDto mstDto, List<PlanDtDto> updatePlanDt, List<PlanDtDto> deletePlanDt, List<PlanDtDto> insertPlanDt, String userId) {
@@ -142,7 +142,7 @@ public class PlanDao implements PlanIDao {
 		return result;
 	}
 	
-	// modalÃ¢¿¡¼­ »èÁ¦ÇÑ ³»¿ë ¹Ý¿µ
+	// modalÃ¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ý¿ï¿½
 	@Override
 	@Transactional
 	public String deletePlanMst(String planNum, String userId) {
@@ -184,7 +184,7 @@ public class PlanDao implements PlanIDao {
 			dtDtos.get(i).setPlanNum(mstDto.getPlanNum());
 		}
 		
-		// ¹è¿­·Î ´ÙÁßÇà insert ½ÇÇà
+		// ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ insert ï¿½ï¿½ï¿½ï¿½
 		int res2 = sqlSession.insert("insertDt", dtDtos);
 		result = res2 > 0 ? "success": "failed";
 		logger.trace("insertPlanDtDo res2(Dt) : " + result);
@@ -193,7 +193,7 @@ public class PlanDao implements PlanIDao {
 	}
 	
 	
-	// planDt modify(update, delete, insert µ¿½Ã ¹ß»ý)
+	// planDt modify(update, delete, insert ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½)
 	@Override
 	@Transactional
 	public String detailModifyDo(ArrayList<PlanDtDto> deleteDtDtos, ArrayList<PlanDtDto> insertDtDtos, ArrayList<PlanDtDto> updateDtDtos) {

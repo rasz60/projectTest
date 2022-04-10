@@ -10,21 +10,23 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.project.init.dao.BoardDao;
+import com.project.init.dao.PlanDao;
+import com.project.init.dao.PostDao;
 import com.project.init.dao.UserDao;
 import com.project.init.dto.PlanDtDto;
 import com.project.init.dto.PlanMstDto;
-import com.project.init.dao.BoardDao;
-import com.project.init.dao.PlanDao;
 
 public class Constant {
 	
 	public static PlanDao pdao;
-	public static BCryptPasswordEncoder passwordEncoder;
+	public static PostDao postDao;
 	public static UserDao udao;
+	public static BCryptPasswordEncoder passwordEncoder;
 	public static String username;
 	public static BoardDao bdao;
 	
-	//PlanMstDto¸¦ »ý¼ºÇÏ´Â ¸Þ¼­µå
+	//PlanMstDtoï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
 	public static PlanMstDto planMstDtoParser(HttpServletRequest request, String userId) {
 		int planNum = Integer.parseInt(request.getParameter("planNum"));
 		String planName = request.getParameter("planName");
@@ -38,7 +40,7 @@ public class Constant {
 		return mstDto;
 	}
 	
-	//PlanDtDto¸¦ ¸®½ºÆ®·Î »ý¼ºÇÏ´Â ¸Þ¼­µå
+	//PlanDtDtoï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
 	public static List<PlanDtDto> planDtDtoParser(int planNum, String userId, HttpServletRequest request) {
 		String[] planDtNum = request.getParameterValues("planDtNum");
 		String[] placeName = request.getParameterValues("placeName");
@@ -81,11 +83,11 @@ public class Constant {
 		return planDtDtos;
 	}
 	
-	// modalÃ¢¿¡¼­ ¼öÁ¤ÇÑ planÀ» updateÇÒ °´Ã¼ ¹è¿­ »ý¼º ¸Þ¼­µå
+	// modalÃ¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ planï¿½ï¿½ updateï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½è¿­ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
 	public static List<PlanDtDto> getUpdateDtos(int planNum, String userId, String startDate, int dateCount) {
 		List<PlanDtDto> dtos = new ArrayList<PlanDtDto>();
 		
-		// startDate Calendar °´Ã¼·Î ¸¸µé¾î¼­ ÀÛ¾÷
+		// startDate Calendar ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½î¼­ ï¿½Û¾ï¿½
 		int y = Integer.parseInt(startDate.substring(0, 4));
 		int m = Integer.parseInt(startDate.substring(5, 7)) - 1;;
 		int d = Integer.parseInt(startDate.substring(8));
@@ -96,16 +98,16 @@ public class Constant {
 		
 		for ( int i = 0; i < dateCount; i++ ) {
 			if ( i == 0 ) {
-				// Calendar °´Ã¼·Î µÈ startDateºÎÅÍ ÇÏ·ç¾¿ ´Ã·Á°¡¸é¼­ planDate »ý¼º
+				// Calendar ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ startDateï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ç¾¿ ï¿½Ã·ï¿½ï¿½ï¿½ï¿½é¼­ planDate ï¿½ï¿½ï¿½ï¿½
 				cal.add(Calendar.DATE, i);
 			}
-			// Calendar °´Ã¼·Î µÈ startDateºÎÅÍ ÇÏ·ç¾¿ ´Ã·Á°¡¸é¼­ planDate »ý¼º
+			// Calendar ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ startDateï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ç¾¿ ï¿½Ã·ï¿½ï¿½ï¿½ï¿½é¼­ planDate ï¿½ï¿½ï¿½ï¿½
 			cal.add(Calendar.DATE, 1);
 			
-			// planDate¸¦ db Æ÷¸Ë¿¡ ¸Â°Ô º¯°æ
+			// planDateï¿½ï¿½ db ï¿½ï¿½ï¿½Ë¿ï¿½ ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½
 			String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
 			
-			// planNum, planDay, planDate °ª¸¸ °¡Áø PlanDtDto¸¦ ¸¸µé¾î¼­ ¹è¿­¿¡ ÀúÀå
+			// planNum, planDay, planDate ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ PlanDtDtoï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½î¼­ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			PlanDtDto dtDto = new PlanDtDto();
 			dtDto.setUserId(userId);
 			dtDto.setPlanNum(planNum);
