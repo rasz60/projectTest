@@ -62,7 +62,7 @@ span.required {
 						</div>
 						
 						<button type="button" id="loginBtn" class="logx-btn btn btn-primary btn-sm">
-							<i class="fa-solid fa-key"></i>
+							<i class="fa-solid fa-lock"></i>
 						</button>
 					</s:authorize>
 					
@@ -77,7 +77,7 @@ span.required {
 						
 						<form method="post" action="logout">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-							<button type="submit" id="logoutBtn" class="logx-btn btn btn-danger btn-sm">logout</button>
+							<button type="submit" id="logoutBtn" class="logx-btn btn btn-danger btn-sm"><i class="fa-solid fa-lock-open"></i></button>
 						</form>
 					</s:authorize>
 					

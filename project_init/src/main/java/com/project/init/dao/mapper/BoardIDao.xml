@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.init.dao.BoardIDao" >
 
-	<select id="list" resultType="com.project.init.dto.NoticeBoardDto">
+	<select id="listNotice" resultType="com.project.init.dto.NoticeBoardDto">
 		<![CDATA[
 			SELECT * 
 			FROM (SELECT A.*, rownum rnum 
@@ -18,11 +18,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUES(notice_board_seq.nextVal, #{bName}, #{bTitle}, #{bContent})
 	</insert>
 
-	<select id="contentView" parameterType="int" resultType="com.project.init.dto.NoticeBoardDto">
+	<select id="contentViewNotice" parameterType="int" resultType="com.project.init.dto.NoticeBoardDto">
 		SELECT * FROM notice_board WHERE bid = #{bid}
 	</select>
 
-	<update id="upHit" parameterType="int">
+	<update id="upHitNotice" parameterType="int">
 		UPDATE notice_board SET bHit = bHit + 1 WHERE bId = #{bId}
 	</update>
 

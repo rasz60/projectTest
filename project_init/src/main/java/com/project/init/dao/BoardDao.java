@@ -32,7 +32,7 @@ public class BoardDao implements BoardIDao {
 	public ArrayList<NoticeBoardDto> getBoardList() {
 		logger.info("getBoardList() in >>>>");
 		
-		ArrayList<NoticeBoardDto> result = (ArrayList)sqlSession.selectList("list");
+		ArrayList<NoticeBoardDto> result = (ArrayList)sqlSession.selectList("listNotice");
 		
 		logger.info("list() result.isEmpty() ? " + result.isEmpty());
 		
@@ -59,7 +59,7 @@ public class BoardDao implements BoardIDao {
 		
 		upHit(bid);
 		
-		NoticeBoardDto dto = sqlSession.selectOne("contentView", Integer.parseInt(bid));
+		NoticeBoardDto dto = sqlSession.selectOne("contentViewNotice", Integer.parseInt(bid));
 		
 		logger.info("contentView result : " + dto.getbName());
 		
@@ -70,7 +70,7 @@ public class BoardDao implements BoardIDao {
 	public void upHit(String bId) {
 		logger.info("upHit(" + bId + ") in >>> ");	
 		
-		int res = sqlSession.update("upHit", Integer.parseInt(bId));
+		int res = sqlSession.update("upHitNotice", Integer.parseInt(bId));
 		
 		logger.info("upHit result : " + res);
 	}

@@ -24,6 +24,40 @@
 	height:20px;
 	font-size:14px; 
 }
+
+textarea {
+	resize: none;
+}
+
+#userProfileMsg {
+	border: 1px solid #ced4da;
+}
+
+label#male.active, label#male:hover, label#male:focus {
+	background-color: #4E77FF;
+	color: white;
+}
+
+label#female.active, label#female:hover, label#female:focus {
+	background-color: #FF5C5C;
+	color: white
+}
+
+.form-group label {
+	font-weight: 500;
+}
+
+.form-group .form-control {
+	border: none;
+	border-radius: 0;
+	border-bottom: 1px solid #ced4da;
+}
+
+#userinfo {
+	display: none;
+}
+
+
 </style>
 </head>
 
@@ -68,9 +102,6 @@
 						<input type="submit" value="비밀번호 변경" class="btn btn-sm btn-primary"/>
 					</form>
 				</div>
-				<div class="modal-footer bg-light">
-					<button id="closeBtn" type="button" class="btn btn-default btn-success" data-dismiss="modal">Close</button>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -104,6 +135,8 @@
 		</div>
 	</div>
 	
+	
+	
 	<form action="/init/feed/add_PrfImg?${_csrf.parameterName}=${_csrf.token}" method="POST" enctype="multipart/form-data">
 		<div class="d-flex justify-content-center">
 			<c:choose>
@@ -132,52 +165,79 @@
 		<input type="file" class="form-control" id="prfImg" name="pImg" accept="image/*" onchange="clicksubmit()" style="display:none;">
 		<button id="submitImg" type="submit" class="btn btn-primary" style="display:none;">submit</button>
 	</form>
-	<div class="form-group">
-		<label for="userProfileMsg">BIO</label>
-		<textarea class="form-control border border-dark" id="userProfileMsg" name="uPrfMsg" rows="5" maxlength="300" disabled>${myPageInfo.userProfileMsg}</textarea>
+	
+	<hr />
+	
+	<div class="form-group row mx-0">
+		<label for="userProfileMsg" class="mt-2 col-2 border-right">BIO</label>
+		<textarea class="form-control rounded ml-5 col-9" id="userProfileMsg" name="uPrfMsg" rows="5" maxlength="300" readonly>${myPageInfo.userProfileMsg}</textarea>
 	</div>
-	<div class="form-group">
-		<label for="userEmail">EMAIL</label>
-		<input type="text" class="form-control border border-dark" id="userEmail" name="uEmail" value="${myPageInfo.userEmail}" disabled>
+	
+	<hr />
+	
+	<div class="form-group row mx-0">
+		<label for="userEmail" class="mt-2 col-2 border-right">E-mail</label>
+		<input type="text" class="form-control ml-5 col-9" id="userEmail" name="uEmail" value="${myPageInfo.userEmail}" readonly>
 	</div>
-	<div class="form-group">
-		<label for="userBirth">BIRTH</label>
-		<input type="text" class="form-control border border-dark" id="userBirth" name="uBirth" value="${myPageInfo.userBirth}" disabled>
+	
+	<hr />
+	
+	<div class="form-group row mx-0">
+		<label for="userBirth" class="mt-2 col-2 border-right">Birth</label>
+		<input type="text" class="form-control  ml-5 col-9" id="userBirth" name="uBirth" value="${myPageInfo.userBirth}" readonly>
 	</div>
-	<div class="form-group" style="text-align:center; margin:0 auto;">
-		<div class="btn-group btn-group-toggle" data-toggle="buttons">
-			<label class="btn btn-outline-primary">
-				<input type="radio" id="male" name="uGender" autocomplete="off" value="MALE">&nbsp;MALE&nbsp;
+	
+	<hr />
+	
+	<div class="form-group row mx-0">
+		<label for="btn-group" class="mt-2 col-2 border-right">Gender</label>
+		
+		<div class="btn-group btn-group-toggle ml-5 col-3 row mx-0" data-toggle="buttons">
+			<label id="male" class="btn btn-outline-defalut border-white">
+				<input type="radio" id="male" name="uGender" autocomplete="off" value="MALE" disabled><i class="fa-solid fa-mars"></i>
 			</label>
-			<label class="btn btn-outline-primary">
-				<input type="radio" id="female" name="uGender" autocomplete="off" value="FEMALE">FEMALE
+			<label id="female" class="btn btn-outline-defalut border-white">
+				<input type="radio" id="female" name="uGender" autocomplete="off" value="FEMALE" disabled><i class="fa-solid fa-venus"></i>
 			</label>
 		</div>
 	</div>
-	<div class="form-group">
-		<label for="userAddr1">ADDRESS1</label>
+		
+	<hr />
+		
+	<div class="form-group row mx-0">
+		<label for="userAddr1" class="mt-2 col-2 border-right">Post-code</label>
 			<div class="form-inline mb-2">
-				<div class="input-group border border-dark rounded">
-					<input type="text" class="form-control" id="userPst" name="uPst" value="${myPageInfo.userPst}" onfocus="clickSerachPst()" disabled> <!-- readonly속성은 onfocus가 먹힘 -->
+				<div class="input-group rounded">
+					<input type="text" class="form-control ml-5" id="userPst" name="uPst" value="${myPageInfo.userPst}" onfocus="clickSerachPst()" readonly> <!-- readonly속성은 onfocus가 먹힘 -->
 					<span class="input-group-btn">
-						<button type="button" id="searchPst" class="btn btn-primary" onclick="serchPostCode()" style="display:none;">SERACH</button>
+						<button type="button" id="searchPst" class="btn btn-sm btn-dark" onclick="serchPostCode()" style="display:none;"><i class="fa-brands fa-sistrix"></i></button>
 					</span>
 				</div>
 			</div>
 		<span id="guide" style="color:#999;display:none"></span>
-		<input type="text" class="form-control border border-dark" id="userAddr1" name="uAddr1" onfocus="clickSerachPst()" value="${myPageInfo.userAddress1}" disabled>
 	</div>
-	<div class="form-group">
-		<label for="userAddr2">ADDRESS2</label>
-		<input type="text" class="form-control border border-dark" id="userAddr2" name="uAddr2" value= "${myPageInfo.userAddress2}" maxlength="50" disabled>
+	
+	<hr />
+	
+	<div class="form-group row mx-0">
+		<label for="userAddr1" class="mt-2 col-2 border-right">Address</label>
+		<input type="text" class="form-control ml-5 col-9" id="userAddr1" name="uAddr1" onfocus="clickSerachPst()" value="${myPageInfo.userAddress1}" readonly>
+	</div>	
+	
+	<hr />
+	
+	<div class="form-group row mx-0">
+		<label for="userAddr2" class="mt-2 col-2 border-right">Address2</label>
+		<input type="text" class="form-control ml-5 col-9" id="userAddr2" name="uAddr2" value= "${myPageInfo.userAddress2}" maxlength="50" readonly>
 	</div>
-	<div class="d-flex justify-content-center">
-		<div>
-			<button type="button" id="modifyInfo" class="btn btn-secondary">회원정보 수정</button>
-			<button type="button" id="modified" class="btn btn-success" style="display:none">수정 완료</button>
-			<button type="button" id="modifyPw" class="btn btn-secondary">비밀번호 변경</button>
-			<button type="button" id="resigBtn" class="btn btn-danger">회원 탈퇴</button>
-		</div>
+	
+	<hr />
+	
+	<div class="d-flex justify-content-end">
+		<button type="button" id="modifyInfo" class="btn btn-primary border-white"><i class="fa-solid fa-user-plus"></i></button>
+		<button type="button" id="modified" class="btn btn-success border-white" style="display:none"><i class="fa-solid fa-user-check"></i></button>
+		<button type="button" id="modifyPw" class="btn btn-warning border-white"><i class="fa-solid fa-key text-white"></i></button>
+		<button type="button" id="resigBtn" class="btn btn-danger border-white"><i class="fa-solid fa-user-xmark"></i></button>
 	</div>
 </div>
 
@@ -237,13 +297,17 @@ function checkNickName() {
 	}
 	}
 $(document).ready(function(){
+	var gender = "${myPageInfo.userGender}";
+	
+	console.log(gender);
+	
 	//DB성별로 자동 고정
 	if("${myPageInfo.userGender}" == "MALE") {
-		$("#male").click();
+		$("#male").addClass('active');
 		$("#female").prop("disabled",true);
 	}
 	else {
-		$("#female").click();
+		$("#female").addClass('active');
 		$("#male").prop("disabled",true);
 	}
 	
@@ -256,10 +320,10 @@ $(document).ready(function(){
 		//회원정보 수정가능하게 바뀜
 		$("#userNick").css("display","none");
 		$("#inputUserNick").css("display","inline");
-		$("textarea[name='uPrfMsg']").attr("disabled",false);
-		$("input[name='uPst']").attr("disabled",false);
-		$("input[name='uAddr1']").attr("disabled",false);
-		$("input[name='uAddr2']").attr("disabled",false);
+		$("textarea[name='uPrfMsg']").attr("readonly",false);
+		$("input[name='uPst']").attr("readonly",false);
+		$("input[name='uAddr1']").attr("readonly",false);
+		$("input[name='uAddr2']").attr("readonly",false);
 		$("#searchPst").css("display","inline");
 		$("#imgBtn").css("display","none");
 		
