@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.init.feed.dao.DashBoardIDao" >
+	
+	<select id="selectDashBoardPlaces" resultType="com.project.init.feed.dto.PlanDto2">
+		<![CDATA[
+			select * from(select placename, latitude, longitude, category, count(*) as count from plan_dt group by placename, latitude, longitude, category order by count(*) desc) where ${value1} = #{value2} and rownum <=5
+		]]>
+	</select>
+	
+   	<select id="selectDashBoardUser" resultType="com.project.init.feed.dto.UserDto">
+		select to_char(userjoindate, ${value1}) as userdate,count(*) as count from userinfo where to_char(userjoindate, #{value2}) between #{value3} and #{value4} group by to_char(userjoindate, ${value1}) order by to_char(userjoindate, ${value1}) asc
+	</select>  
+	
+	
+<!--  	<select id="selectDashBoardUser" resultType="com.project.init.feed.dto.UserDto">
+			select to_char(userjoindate, #{value1}) as userdate,count(*) as count from userinfo where to_char(userjoindate, #{value2}) between #{value3} and #{value4} 
+			<choose>
+				<when test = "value1 == 'YYYY'">
+					group by to_char(userjoindate, 'YYYY')
+				</when> 
+				<when test = "value1 == 'MM'">
+					group by to_char(userjoindate, 'MM')
+				</when>
+				<otherwise>
+					group by to_char(userjoindate, 'DD')
+				</otherwise>
+			</choose>	
+				order by to_char(userjoindate, #{value1}) asc
+	</select>  -->
+</mapper>

@@ -29,7 +29,7 @@ public class UserDao implements UserIDao {
 	public String join(String UEmail, String UPw, String UNickName, String UBirth, String UGender, String UPst, String UAddr) {
 		int UAgeNum = getAgeByBirthDay(UBirth);
 		int UPstNum = Integer.parseInt(UPst);
-		UserDto dto = new UserDto(UEmail,UPw,UNickName,UBirth,UAgeNum,UGender,UPstNum,UAddr,null,null,null,null,null,null,null);
+		UserDto dto = new UserDto(UEmail,UPw,UNickName,UBirth,UAgeNum,UGender,UPstNum,UAddr,null,null,null,null,null,null,null, null, null);
 		int res = sqlSession.insert("join",dto);
 		System.out.println(res);
 		String result = null;
@@ -41,19 +41,19 @@ public class UserDao implements UserIDao {
 		return result;
 	}
 	
-	//생년월일로 만나이 구하기
+	//�깮�뀈�썡�씪濡� 留뚮굹�씠 援ы븯湲�
 	private int getAgeByBirthDay(String UBirth) {
-		//년,월,일 자르기
+		//�뀈,�썡,�씪 �옄瑜닿린
 		int bir_year = Integer.parseInt(UBirth.substring(0,4));
 		int bir_month = Integer.parseInt(UBirth.substring(4,6));
 		int bir_day = Integer.parseInt(UBirth.substring(6));
-		//현재년,월,일 get	
+		//�쁽�옱�뀈,�썡,�씪 get	
 		Calendar current = Calendar.getInstance();
 		int cur_year = current.get(Calendar.YEAR);
 		int cur_month = current.get(Calendar.MONTH);
 		int cur_day = current.get(Calendar.DAY_OF_MONTH);
 		int age = cur_year - bir_year;
-		//만나이
+		//留뚮굹�씠
 		if(bir_month*100+bir_day>cur_month*100+cur_day) {
 			age--;
 		}

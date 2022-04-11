@@ -311,6 +311,7 @@ public class PlanDAO implements IDao {
 		String[] category = request.getParameterValues("category");
 		String[] transportation = request.getParameterValues("transportation");
 		String[] details = request.getParameterValues("details");
+		String[] place_count = request.getParameterValues("place_count");
 
 		List<PlanDto2> planDtDtos = new ArrayList<PlanDto2>();
 		
@@ -330,7 +331,8 @@ public class PlanDAO implements IDao {
 										  address[i],
 										  category[i],
 										  transportation[i],
-										  details[i]);
+										  details[i],
+										  place_count[i]);
 			
 			planDtDtos.add(dtDto);
 		};

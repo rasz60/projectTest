@@ -18,14 +18,17 @@ public class UserDto {
 	private String userAuthority;
 	private Timestamp visitDate;
 	private Timestamp joinDate;
+	private String count;
+	private String userDate;
 	
 	public UserDto() {
 		super();
 	}
-
+	
 	public UserDto(String userEmail, String userPw, String userNick, String userBirth, int userAge, String userGender,
 			int userPst, String userAddress, String userProfileImg, String userProfileMsg, String userFollower,
-			String userFollowing, String userAuthority, Timestamp visitDate, Timestamp joinDate) {
+			String userFollowing, String userAuthority, Timestamp visitDate, Timestamp joinDate, String count,
+			String userDate) {
 		super();
 		this.userEmail = userEmail;
 		this.userPw = userPw;
@@ -42,127 +45,114 @@ public class UserDto {
 		this.userAuthority = userAuthority;
 		this.visitDate = visitDate;
 		this.joinDate = joinDate;
+		this.count = count;
+		this.userDate = userDate;
 	}
-
+	
 	public String getUserEmail() {
 		return userEmail;
 	}
-
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
 	}
-
 	public String getUserPw() {
 		return userPw;
 	}
-
 	public void setUserPw(String userPw) {
 		this.userPw = userPw;
 	}
-
 	public String getUserNick() {
 		return userNick;
 	}
-
 	public void setUserNick(String userNick) {
 		this.userNick = userNick;
 	}
-
 	public String getUserBirth() {
 		return userBirth;
 	}
-
 	public void setUserBirth(String userBirth) {
 		this.userBirth = userBirth;
 	}
-
 	public int getUserAge() {
 		return userAge;
 	}
-
 	public void setUserAge(int userAge) {
 		this.userAge = userAge;
 	}
-
 	public String getUserGender() {
 		return userGender;
 	}
-
 	public void setUserGender(String userGender) {
 		this.userGender = userGender;
 	}
-
 	public int getUserPst() {
 		return userPst;
 	}
-
 	public void setUserPst(int userPst) {
 		this.userPst = userPst;
 	}
-
 	public String getUserAddress() {
 		return userAddress;
 	}
-
 	public void setUserAddress(String userAddress) {
 		this.userAddress = userAddress;
 	}
-
 	public String getUserProfileImg() {
 		return userProfileImg;
 	}
-
 	public void setUserProfileImg(String userProfileImg) {
 		this.userProfileImg = userProfileImg;
 	}
-
 	public String getUserProfileMsg() {
 		return userProfileMsg;
 	}
-
 	public void setUserProfileMsg(String userProfileMsg) {
 		this.userProfileMsg = userProfileMsg;
 	}
-
 	public String getUserFollower() {
 		return userFollower;
 	}
-
 	public void setUserFollower(String userFollower) {
 		this.userFollower = userFollower;
 	}
-
 	public String getUserFollowing() {
 		return userFollowing;
 	}
-
 	public void setUserFollowing(String userFollowing) {
 		this.userFollowing = userFollowing;
 	}
-
 	public String getUserAuthority() {
 		return userAuthority;
 	}
-
 	public void setUserAuthority(String userAuthority) {
 		this.userAuthority = userAuthority;
 	}
-
 	public Timestamp getVisitDate() {
 		return visitDate;
 	}
-
 	public void setVisitDate(Timestamp visitDate) {
 		this.visitDate = visitDate;
 	}
-
 	public Timestamp getJoinDate() {
 		return joinDate;
 	}
-
 	public void setJoinDate(Timestamp joinDate) {
 		this.joinDate = joinDate;
 	}
+	public String getCount() {
+		return count;
+	}
+	public void setCount(String count) {
+		this.count = count;
+	}
+	public String getUserDate() {
+		return userDate;
+	}
+	public void setUserDate(String userDate) {
+		this.userDate = userDate;
+	}
+	
+
 	
 	
 

@@ -2,6 +2,7 @@ eclipse.preferences.version=1
 encoding//src/main/java/com/project/init/feed/controller/FeedController.java=UTF-8
 encoding//src/main/java/com/project/init/feed/dao/IDao.java=UTF-8
 encoding//src/main/java/com/project/init/feed/dao/PlanDAO.java=UTF-8
+encoding//src/main/java/com/project/init/feed/dao/UserDao.java=UTF-8
 encoding//src/main/webapp/WEB-INF/views/main.jsp=UTF-8
 encoding//src/main/webapp/resources/css/feed/fc/main.css=UTF-8
 encoding//src/main/webapp/resources/css/feed/main_custom.css=UTF-8

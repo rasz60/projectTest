@@ -89,7 +89,6 @@ public class HomeController {
 		return selectPlanList;
 	}
 	
-	
 	@ResponseBody //main ∏  « ≈Õ
 	@RequestMapping(value = "/filter", produces="application/json; charset=UTF-8")
 	public ArrayList<PlanDto2> filter(HttpServletRequest request, Model model){

@@ -88,12 +88,12 @@ function displayPlaces(places) {
 
 	    // 마커와 검색결과 항목에 click 했을때
 	    // 해당 장소에 인포윈도우에 장소명을 표시합니다
-	    (function(marker, title, category, address) {
+	    (function(marker, title, address, category, category_code) {
 	    	//addListener(target, type, handler) - 다음 지도 API 객체에 이벤트를 등록한다. 
 	    	//target : 이벤트를 지원하는 다음 지도 API 객체, type : 이벤트 이름, handler : 이벤트를 처리할 함수
 	    	
 	    	kakao.maps.event.addListener(marker, 'mouseover', function() { //마커에 마우스 올렸을 때
-	            displayInfowindow(marker, title, category, address); // displayInfowindow()에서 처리
+	            displayInfowindow(marker, title, address, category); // displayInfowindow()에서 처리
 	        });
 	
 	        kakao.maps.event.addListener(marker, 'mouseout', function() { // 마커에 마우스 치웠을 때 인포창 닫기
@@ -101,7 +101,7 @@ function displayPlaces(places) {
 	        });
 	        
 	        itemEl.onmouseover =  function () { //검색목록에 마우스 올렸을 때
-	            displayInfowindow(marker, title, category, address); // displayInfowindow()에서 처리
+	            displayInfowindow(marker, title, address, category); // displayInfowindow()에서 처리
 	        };
 	
 	        itemEl.onmouseout =  function () { // 검색목록에 마우스 치웠을 때 인포창 닫기
@@ -124,7 +124,7 @@ function displayPlaces(places) {
 				}
 				
 				// inputdata()에서 처리
-				inputdata(marker, target1, value, title, category, address);
+				inputdata(marker, target1, value, title, address, category);
 	        });
 	    	                     
 	        itemEl.onclick =  function () { // 검색 목록창 클릭 시
@@ -135,9 +135,9 @@ function displayPlaces(places) {
 				var value = target1.attr('data-count');
 				
 				// inputdata()에서 처리
-				inputdata(marker, target1, value, title, category, address);           
+				inputdata(marker, target1, value, title, address, category, category_code);           
 	        }; 
-	    })(marker, places[i].place_name, places[i].address_name, places[i].category_name);
+	    })(marker, places[i].place_name, places[i].address_name, places[i].category_name, places[i].category_group_code);
 	
 	    fragment.appendChild(itemEl); //appendChild() - 새로운 노드를 해당 노드의 자식 노드 리스트(child node list)의 맨 마지막에 추가        
 	}
@@ -265,7 +265,7 @@ infowindow.open(map, marker);
 }
 
 //마커와 검색결과 목록 클릭 시 input에 data 입력
-function inputdata(marker, target1, value, title, category, address) {
+function inputdata(marker, target1, value, title, address, category, category_code) {
 	// 현재 상세 일정에 추가할 것이므로 일정 개수(value) + 1한 값을 변수로 선언
 	var plusVal = Number(value)+1;
 	
@@ -359,7 +359,7 @@ function inputdata(marker, target1, value, title, category, address) {
 	target3.children('input[name=longitude]').val(marker.getPosition().getLng());
 	
 	target3.children('input[name=address]').val(address);
-	target3.children('input[name=category]').val(category);
+	target3.children('input[name=category]').val(category_code);
 
 	// form에 attr를 이용하여 planDay, planDate 입력
 	target3.children('input[name=planDay]').val(target1.attr('data-day'));

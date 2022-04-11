@@ -77,6 +77,12 @@
 					<i class="menu-icon fa-regular fa-comment-dots"></i>
 				</a>
 			</li>
+
+			<li class="mr-4 feed">
+				<a href="admin" id="admin_main">
+					<i class="menu-icon fa-solid fa-screwdriver-wrench"></i>
+				</a>
+			</li>
 		</ul>
 		
 	</div>		
