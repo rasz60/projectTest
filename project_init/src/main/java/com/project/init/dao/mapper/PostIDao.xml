@@ -3,11 +3,11 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace = "com.project.init.dao.PostIDao">      
-
+	
 	<!-- 게시글 작성 -->
    <insert id="write" parameterType="com.project.init.dto.PostDto"> 
-      Insert into POST(EMAIL,POSTNO,CONTENT,HASHTAG,LOCATION,TITLEIMAGE,IMAGES,views)
-       values (#{email},POST_NO_SEQ.NEXTVAL,#{content},#{hashtag},#{location},#{titleImage},#{images},#{views})
+      Insert into POST(EMAIL,POSTNO,CONTENT,HASHTAG,PLAN,TITLEIMAGE,IMAGES,views)
+       values (#{email},POST_NO_SEQ.NEXTVAL,#{content},#{hashtag},#{plan},#{titleImage},#{images},#{views})
    </insert>
    
 	<!-- 게시글 불러오기 -->
@@ -30,6 +30,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(SELECT count(*) from POST_LIKE where POST_LIKE.postno = POST.postno) likes,
 		(SELECT LIKES FROM POST_LIKE WHERE email = #{email,jdbcType=VARCHAR} AND POST_LIKE.postno=POST.postno) heart
 	 FROM POST ORDER BY POSTNO DESC
+   </select>
+   
+   	<!-- 게시글 불러오기 -->
+   <select id="mylist" parameterType="String" resultType="com.project.init.dto.PostDto" >
+      SELECT 
+        POSTNO,
+ 	    titleImage
+	 FROM POST 
+	 WHERE email = #{email}
+	 ORDER BY POSTNO DESC
+   </select>
+   
+   <select id="locationList" parameterType="java.util.List" resultType="com.project.init.dto.PlanDtDto">
+   		SELECT placeName FROM plan_dt WHERE
+   		<foreach collection="list" separator="OR" item="dt">
+   			 planDtNum = #{dt.planDtNum}
+   		</foreach>
    </select>
 
 	<!-- 게시글 불러오기 -->
@@ -86,8 +103,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    <select id="getlist" parameterType="com.project.init.dto.PostDto" resultType="com.project.init.dto.PostDto">
       <![CDATA[
       SELECT 
-      POSTNO,
+     	POSTNO,
       	EMAIL,
+      	PLAN,
       	TITLEIMAGE,
 	    IMAGES,
 	    CONTENT,

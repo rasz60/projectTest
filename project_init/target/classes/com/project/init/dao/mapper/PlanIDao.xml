@@ -171,7 +171,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			category = #{dt.category}, 
 			transportation = #{dt.transportation}, 
 			details = #{dt.details}, 
-			placeCount = #{dt.placeCount}		 
+			placeCount = #{dt.placeCount}
 			
 		WHERE planDtNum = #{dt.planDtNum}
 		AND userId = #{dt.userId}

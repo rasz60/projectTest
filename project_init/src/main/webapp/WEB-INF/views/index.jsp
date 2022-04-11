@@ -204,7 +204,7 @@ span.required {
 </section>
 
 <%@ include file="includes/login_modal.jsp" %>
-<%@ include file="includes/post_details.jsp" %>
+<%@ include file="includes/modalPost.jsp" %>
 <%@ include file="includes/footer.jsp" %>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd&libraries=clusterer"></script>
 <script>

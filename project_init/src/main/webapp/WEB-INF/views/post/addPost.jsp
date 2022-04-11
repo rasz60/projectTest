@@ -19,9 +19,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-<!-- KAKAO API -->
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=94ef81dc370b9f961476a1859364f709&libraries=services"></script>
 
 <link rel="stylesheet" type="text/css" href="../css/includes/header.css" />
 <link rel="stylesheet" type="text/css" href="../css/includes/footer.css" />
@@ -259,6 +256,7 @@ span.delLocBtn {
 			<input type="hidden" name="email" value="${user}"/>		
 
 			<input type="hidden" name="planDtNum" class="planDtNum" value="" />
+			<input type="hidden" name="location" class="location" value="" />
 			<div class="list-group-item py-1 mb-1">
 				<input type="hidden" />
 				<h4 class="px-0">Location</h4>
@@ -424,6 +422,11 @@ $(document).ready(function() {
 	
 	
 	$(document).on('click', '.addLocBtn', function() {
+		var addLocBtn = $(this);
+		var placeName = addLocBtn.siblings('h4.placeName').text();
+		var planDtNum = $(this).attr('data-index');
+		
+		
 		if ( $('.locations-box').children('.location-item').length == 0 ) {
 			$('.locations-box').css('height', '28px');
 			$('.locations-box').css('display', 'flex');
@@ -435,11 +438,7 @@ $(document).ready(function() {
 			alert('장소는 10개까지 추가할 수 있습니다.');
 			return false;
 		}
-		
-		var addLocBtn = $(this);
-		var placeName = addLocBtn.siblings('h4.placeName').text();
-		var planDtNum = $(this).attr('data-index');
-		
+
 		var item = '<div class="mr-1 px-1 location-item border bg-light rounded">' + placeName + '&nbsp;<span class="text-danger delLocBtn" data-index="' + planDtNum + '">&times;</span></div>';
 		
 		$('.locations-box').append(item);
@@ -525,8 +524,12 @@ $(document).ready(function() {
 		for(var i=0; i<changeData.length; i++){
 			imgView +='<img src="'+URL.createObjectURL(changeData[i])+'" style="width :23%">'
 			imgView +='<i class="fa-solid fa-x reimg" index="'+i+'"></i>';
-			imgView +='<br/>'
+			imgView +='<br/>';
 		}
+			
+			//동일 이미지 등록 가능 (추가)
+			$('.addImg').val('');
+			
 		$('.imgView').html(imgView);	
 		
 	});
@@ -534,22 +537,32 @@ $(document).ready(function() {
 	$('.addImg').change(function(){ //파일 추가
 		const dataTransfer = new DataTransfer(); 
 		let arr = $('.img')[0].files;
-		let arr2 = $('.addImg')[0].files;
+		let arr2 =$('.addImg')[0].files;
 		
-
-		if(arr.length + arr2.length > 10){
+		let totalSize = 0;
+		
+		console.log(totalSize);
+		
+		if(arr.length+arr2.length>10){
 			alert('10장 이상 등록할수 없습니다.\n다시 선택해주세요');
 			//파일값 초기화
-			return false;
-		} else {
-			let fileArray = Array.from(arr); //변수에 할당된 파일을 배열로 변환(FileList -> Array) 
-			for(var i=0; i<arr2.length; i++){
-				if(arr2[i].size>5242880){
-					alert(arr2[i].name+'의 용량이 5MB를 초과합니다.\n 다른 이미지를 올려주세요');
-				} else {
-					fileArray.push(arr2[i]);				
-				}
+			for(var i=0; i<arr.length; i++){
+				totalSize+=arr[i].size;
 			}
+			for(var i=0; i<arr2.length; i++){
+				totalSize+=arr2[i].size;		
+			}
+			
+			if(totalSize>100000000-1){
+				alert('이미지의 총 용량이 10MB를 초과합니다.\n 다른 이미지를 올려주세요');
+			}
+			
+		}else {
+			let fileArray = Array.from(arr); //변수에 할당된 파일을 배열로 변환(FileList -> Array) 
+			for(var i=0; i<arr2.length; i++){				
+				fileArray.push(arr2[i]);				
+			}
+			
 			fileArray.forEach(file => { dataTransfer.items.add(file); }); //남은 배열을 dataTransfer로 처리(Array -> FileList) 
 			$('.img')[0].files = dataTransfer.files; 
 			arr = $('.img')[0].files;
@@ -560,14 +573,14 @@ $(document).ready(function() {
 		let imgView='';
 		
 		for(var i=0; i<arr.length; i++){
-			imgView += '<div class="px-0 py-1 col-3">'
-			imgView += '<img src="'+URL.createObjectURL(arr[i])+'" style="width :85%">'
-			imgView += '<i class="fa-solid fa-x reimg" index="'+i+'"></i>';
-			imgView += '<br/>'
-			imgView += '</div>'
+			
+			imgView +='<img src="'+URL.createObjectURL(arr[i])+'" style="width :23%">'
+			imgView +='<i class="fa-solid fa-x reimg" index="'+i+'"></i>';
+			imgView +='<br/>'
 		}
 
-		$('.imgView').html(imgView);	
+		$('.imgView').html(imgView);
+		$('.addImg').val('');	
 	});
 	
 	$(document).on('click','.addImgBtn',function(){
@@ -582,16 +595,19 @@ function checkfrm() {
 		return false;
 	} else {
 		var	dtNums = $('.delLocBtn').length;
-		var target = $('input.planDtNum');
-		console.log(dtNums);
+		var target1 = $('input.planDtNum');
+		var target2 = $('input.location');
+
 		if ( dtNums != 0 ) {
 			for(var i = 0; i < Number(dtNums); i++ ) {
 				var dtNum = $('.delLocBtn').eq(i).attr('data-index');
 				
 				if ( i == 0 ) {
-					target.val(dtNum);
+					target1.val(dtNum);
+					console.log($('.location-item').eq(i).text());
 				} else {
-					target.val(target.val() + '/' + dtNum);
+					target1.val(target1.val() + '/' + dtNum);
+					console.log($('>' + '.location-item').eq(i).text());
 				}
 			}
 		}

@@ -45,7 +45,7 @@
 
 </section>
 
-<%@ include file="../includes/post_details.jsp" %>
+<%@ include file="../includes/modalPost.jsp" %>
 <%@ include file="../includes/footer.jsp" %>
 
 <script>

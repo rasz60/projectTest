@@ -12,9 +12,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="_csrf" content="${_csrf.token}" />
-
 <%-- csrf beforesend 이용을 위한 header setting --%>
+<meta name="_csrf" content="${_csrf.token}" />
 <meta name="_csrf_header" content="${_csrf.headerName}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 <script src="https://kit.fontawesome.com/b4e02812b5.js" crossorigin="anonymous"></script>

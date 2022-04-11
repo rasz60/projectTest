@@ -67,11 +67,11 @@
 	<!-- Commons-FileIO Bean Setting -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	       <!-- max upload size in bytes --> 
-	       <beans:property name="maxUploadSize" value="5242880" /> 
+	       <beans:property name="maxUploadSize" value="10000000" /> 
 	       <!-- 5MB -->
 	       
 	       <!-- max size of file in memory (in bytes)  disk저장전 memory저장 용량 -->  	
-	       <beans:property name="maxInMemorySize" value="1048576" /> 
+	       <beans:property name="maxInMemorySize" value="10000000" /> 
 	       <!-- 1MB --> 
 	</beans:bean>
 	

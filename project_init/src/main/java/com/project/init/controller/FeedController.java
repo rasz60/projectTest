@@ -119,18 +119,37 @@ public class FeedController {
 		return result;
 	}
 	
+	@RequestMapping("feedMap.do")
+	public String feedMapDo() {
+		logger.info("feedMap.do() in >>>>");
+		return "redirect:/feed/feedMap";
+	}
+	
 	@RequestMapping("feedMap")
 	public String feedMap() {
 		logger.info("feedMap() in >>>>");
 		return "feed/feed_map";
 	}
 	
-	@RequestMapping("feedPost")
-	public String feedPost() {
-		logger.info("feedPost() in >>>>");
-		return "feed/feed_post";
+	
+	@RequestMapping("feedPost.do")
+	public String feedPostDo() {
+		logger.info("feedPost.do() in >>>>");
+		return "redirect:/post/mypost";
 	}
 
+	@RequestMapping("feedInfo.do")
+	public String feedInfoDo(HttpServletRequest request, HttpServletResponse response, Model model) {
+		logger.info("feedInfo.do() in >>>>");
+		
+		comm = new MypageCommand();
+		comm.execute(request, model);
+		
+		logger.info("feedInfo out");
+		
+		return "redirect:/feed/feedInfo";
+	}
+	
 	@RequestMapping("feedInfo")
 	public String feedInfo(HttpServletRequest request, HttpServletResponse response, Model model) {
 		logger.info("feedInfo() in >>>>");
@@ -142,6 +161,9 @@ public class FeedController {
 		
 		return "feed/feed_user_info";
 	}
+	
+	
+	
 	
 	//프로필사진 등록
 	@RequestMapping("add_PrfImg")

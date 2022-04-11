@@ -78,7 +78,7 @@
 
     <Connector SSLEnabled="true" maxThreads="150" port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol">
         <SSLHostConfig>
-            <Certificate certificateKeystoreFile="d:/project_init/apache-tomcat-9.0.56/conf/step1_keystore.jks" certificateKeystorePassword="123456" type="RSA"/>
+            <Certificate certificateKeystoreFile="d:/EzenClass/05_Spring-workspace/apache-tomcat-9.0.56/conf/step1_keystore.jks" certificateKeystorePassword="123456" type="RSA"/>
         </SSLHostConfig>
     </Connector>
 
@@ -150,6 +150,7 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
+      
       <Context docBase="project_init" path="/init" reloadable="true" source="org.eclipse.jst.jee.server:project_init"/></Host>
     </Engine>
   </Service>

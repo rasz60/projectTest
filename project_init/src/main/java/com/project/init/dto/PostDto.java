@@ -1,6 +1,7 @@
 package com.project.init.dto;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class PostDto {
 
@@ -14,7 +15,7 @@ public class PostDto {
 	private String userProfileImg;
 	private String hashtag;
 	private Timestamp regDate;
-	private String location;
+	private ArrayList<PlanDtDto> location;
 	private int views;
 	private int comments;
 	private int likes;
@@ -27,19 +28,36 @@ public class PostDto {
 	}
 	
 	//addPost
-	public PostDto(String email, String content,String hashtag, String location,String titleImage,String images,int views) {
+	public PostDto(String email, String plan, String content,String hashtag, String titleImage,String images,int views) {
 		super();
 		this.email = email;
+		this.plan = plan;
+		this.content = content;
 		this.hashtag = hashtag;
 		this.titleImage = titleImage;
 		this.images = images;
-		this.content = content;
-		this.location = location;
 		this.views = views;
 		
 	}
+	
+	//mypost
+	public PostDto(String postNo, String email, String titleImage) {
+		super();
+		this.postNo = postNo;
+		this.titleImage = titleImage;
+	}
+	
+	public PostDto(String postNo, String email) {
+		super();
+		this.postNo = postNo;
+		this.email = email;
+	}
+	
+	
 
-	public PostDto(String postNo,String content,String hashtag,String location,String titleImage,String images) {
+
+	/*
+	public PostDto(String postNo,String content,String hashtag,ArrayList<PlanDtDto> location,String titleImage,String images) {
 		super();
 		this.postNo = postNo;
 		this.titleImage = titleImage;
@@ -49,7 +67,8 @@ public class PostDto {
 		this.hashtag = hashtag;
 		
 	}
-
+	*/
+	
 	public String getUserProfileImg() {
 		return userProfileImg;
 	}
@@ -66,11 +85,7 @@ public class PostDto {
 		this.userNick = userNick;
 	}
 
-	public PostDto(String postNo, String email) {
-		super();
-		this.postNo = postNo;
-		this.email = email;
-	}
+
 
 	public int getHeartCheck() {
 		return heartCheck;
@@ -173,11 +188,11 @@ public class PostDto {
 		this.regDate = regDate;
 	}
 
-	public String getLocation() {
+	public ArrayList<PlanDtDto> getLocation() {
 		return location;
 	}
 
-	public void setLocation(String location) {
+	public void setLocation(ArrayList<PlanDtDto> location) {
 		this.location = location;
 	}
 

@@ -208,7 +208,7 @@ label#female.active, label#female:hover, label#female:focus {
 		<label for="userAddr1" class="mt-2 col-2 border-right">Post-code</label>
 			<div class="form-inline mb-2">
 				<div class="input-group rounded">
-					<input type="text" class="form-control ml-5" id="userPst" name="uPst" value="${myPageInfo.userPst}" onfocus="clickSerachPst()" readonly> <!-- readonly속성은 onfocus가 먹힘 -->
+					<input type="text" class="form-control ml-5" id="userPst" name="uPst" value="${myPageInfo.userPst}" onfocus="clickSerachPst()" disabled> <!-- readonly속성은 onfocus가 먹힘 -->
 					<span class="input-group-btn">
 						<button type="button" id="searchPst" class="btn btn-sm btn-dark" onclick="serchPostCode()" style="display:none;"><i class="fa-brands fa-sistrix"></i></button>
 					</span>
@@ -221,7 +221,7 @@ label#female.active, label#female:hover, label#female:focus {
 	
 	<div class="form-group row mx-0">
 		<label for="userAddr1" class="mt-2 col-2 border-right">Address</label>
-		<input type="text" class="form-control ml-5 col-9" id="userAddr1" name="uAddr1" onfocus="clickSerachPst()" value="${myPageInfo.userAddress1}" readonly>
+		<input type="text" class="form-control ml-5 col-9" id="userAddr1" name="uAddr1" onfocus="clickSerachPst()" value="${myPageInfo.userAddress1}" disabled>
 	</div>	
 	
 	<hr />
@@ -321,8 +321,8 @@ $(document).ready(function(){
 		$("#userNick").css("display","none");
 		$("#inputUserNick").css("display","inline");
 		$("textarea[name='uPrfMsg']").attr("readonly",false);
-		$("input[name='uPst']").attr("readonly",false);
-		$("input[name='uAddr1']").attr("readonly",false);
+		$("input[name='uPst']").attr("disabled",false);
+		$("input[name='uAddr1']").attr("disabled",false);
 		$("input[name='uAddr2']").attr("readonly",false);
 		$("#searchPst").css("display","inline");
 		$("#imgBtn").css("display","none");

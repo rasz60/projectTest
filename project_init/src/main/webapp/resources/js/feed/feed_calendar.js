@@ -583,10 +583,9 @@ $(document).ready(function() {
 	//feed tab 메뉴 각각의 요소 클릭했을 때,
 	$('.nav-link').click(function(e) {
 		// feed일 때는 feed 페이지로 재진입, 아닐때는 get방식 ajax호출해서 #main-body에 html 뿌림
-		if ( $(this).attr('href') != 'feed' ) {		
+		if ( $(this).attr('href') != 'feed' ) {
 			e.preventDefault();
-			var currUrl = 'https://localhost:8443/init/';
-			var url = $(this).attr('href');
+			var url = $(this).attr('href')+'.do';
 
 			// 현재 active로 되어있는 tab menu의 active 클래스를 삭제
 			$(this).parent().siblings('.active').removeClass('active');
