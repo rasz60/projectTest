@@ -20,24 +20,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/includes/header.css" />
 <link rel="stylesheet" type="text/css" href="css/includes/footer.css" />
-<title>Board</title>
-<style>
-html, body {
-	height: 100%;
-	margin: 0;
-	padding: 0;
-}
-#main {
-	margin-top: 5rem;
-	height: 800px;
-}
-thead tr {
-	background-color: #F9F9F9;
-}
-#write {
-	height: 40%;
-}
-</style>
+<link rel="stylesheet" type="text/css" href="css/notice_board.css" />
+<title>WAYG</title>
 
 </head>
 
@@ -48,7 +32,7 @@ thead tr {
 <div id="main" class="container">
 
 	<div class="d-flex justify-content-between">
-		<h3 class="display-4 font-italic">Board</h3>
+		<h3 class="display-4 font-italic"><i class="fa-solid fa-bullhorn"></i></h3>
 		<s:authorize access="hasRole('ROLE_ADMIN')">
 		<a href="write_view" id="write" class="btn btn-sm btn-dark float-right mt-5">글작성</a>
 		</s:authorize>
@@ -71,7 +55,7 @@ thead tr {
 			<c:forEach items="${boardList}" var="dto">
 				<tr class="row mx-0">
 					<td id="bid" class="col-1">${dto.bId}</td>
-					<td class="col-2">${dto.bName}</td>
+					<td class="col-2">WAYG SUPER ADMIN</td>
 					<td class="col-4">
 						<a href="contentView?bId=${dto.bId}" class="content_view text-dark">${dto.bTitle}</a>
 					</td>

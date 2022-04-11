@@ -20,25 +20,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/includes/header.css" />
 <link rel="stylesheet" type="text/css" href="css/includes/footer.css" />
-
-<title>Write View</title>
-<style>
-html, body {
-	height: 100%;
-	margin: 0;
-	padding: 0;
-}
-#main {
-	margin-top: 5rem;
-	height: 800px;
-}
-
-
-#content {
-	resize: none;
-}
-
-</style>
+<link rel="stylesheet" type="text/css" href="css/notice_board.css" />
+<title>WAYG</title>
 
 </head>
 
@@ -47,7 +30,7 @@ html, body {
 <%@ include file="includes/header.jsp" %>
 
 <div id="main" class="container">
-	<h3 class="display-4 font-italic">Board Write</h3>
+	<h3 class="display-4 font-italic"><i class="fa-solid fa-bullhorn"></i></h3>
 	<hr />
 	
 	<form action="write" method="post" class="mb-4">

@@ -32,6 +32,22 @@ section.container {
 	color: #FFC300;
 }
 
+.labels {
+	font-style: italic;
+	font-weight: 500;
+}
+
+#filter-title {
+	font-size: 40px;
+	font-weight: 400;
+}
+
+span.required {
+	color: orange;
+	font-weight: 400;
+}
+
+
 
 
 .main-body-top .right {
@@ -119,7 +135,7 @@ img {
 }
 
 
-/* ÀÎÆ÷À©µµ¿ì CSS */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ CSS */
 .wrap * {padding: 0;margin: 0;} 
 .wrap .info {width: 350px;height: 100px;overflow: hidden;background: #fff;}
 .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 2px 3px #888;}

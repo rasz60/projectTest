@@ -1,10 +1,8 @@
 package com.project.init.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.project.init.command.ICommand;
+import com.project.init.command.PostWriteCommand;
 import com.project.init.dao.PlanIDao;
 import com.project.init.dao.PostIDao;
 import com.project.init.dao.UserDao;
@@ -105,40 +103,15 @@ public class PostController {
 	
 	@RequestMapping(value = "uploadMulti", method = { RequestMethod.POST })
 	public String uploadMulti(MultipartHttpServletRequest multi, Model model) {
-		String images = "";
-		String titleImage="";
-		String tmp="";
-		int views =0;
-		List<MultipartFile> fileList = multi.getFiles("img");
-		String path = "C:/Users/310-08/git/projectTest/project_init/src/main/webapp/resources/images/";
-		for (MultipartFile mf : fileList) {
-			String originalFileName = mf.getOriginalFilename();
-			UUID prefix = UUID.randomUUID();
-			
-			try {
-				mf.transferTo(new File(path + prefix + originalFileName));
-				tmp+=prefix + originalFileName+"/";
-			
-			} catch (IllegalStateException | IOException e) {
-				e.getMessage(); 
-				System.out.println(e.getMessage());
-			}
-		}
+		logger.info("uploadMulti() in");		
 		
-		images = tmp;
-		String[] test = images.split("/");
-		titleImage = test[0];
-		PostDto dto = new PostDto(Constant.username,
-								  multi.getParameter("planDtNum"),
-								  multi.getParameter("content"),
-								  multi.getParameter("hashtag"),
-								  titleImage,
-								  images,
-								  views);
+		comm = new PostWriteCommand();
 		
-		postDao.write(dto);
+		comm.execute(multi, model);
 		
-		return "redirect:/feed/feedPost.do";
+		logger.info("uploadMulti result : " + multi.getAttribute("result").toString());
+		
+		return "redirect:/feed";
 	}
 	
 	@RequestMapping("mypost")
@@ -267,13 +240,7 @@ public class PostController {
 		dao.modifyExcute(dto);
 		return "redirect:list";
 	}
-	
 
-	
-
-	
-
-	
 	@RequestMapping("searchPage")
 	public String searchPage(HttpServletRequest request, Model model) {
 		String keyword = request.getParameter("keyword");

@@ -20,26 +20,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/includes/header.css" />
 <link rel="stylesheet" type="text/css" href="css/includes/footer.css" />
-<title>Write View</title>
-<style>
-#main {
-	margin-top: 5rem;
-	height: auto;
-}
-
-#content {
-	resize: none;
-}
-#frm input, #content {
-	background-color: #F6FAFF;
-}
-
-#frm input[readonly], #content[readonly] {
-	background-color: transparent;
-}
-
-</style>
-
+<link rel="stylesheet" type="text/css" href="css/notice_board.css" />
+<script src="js/notice_board.js"></script>
+<title>WAYG</title>
 </head>
 
 <body>
@@ -47,36 +30,46 @@
 <%@ include file="includes/header.jsp" %>
 
 <div id="main" class="container">
-	<h3 class="display-4 font-italic">Content View</h3>
+	<h3 class="display-4 font-italic"><i class="fa-solid fa-bullhorn"></i></h3>
 	<hr />
 	
 	<form action="modify" method="post" class="mb-4" id="frm">
 		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
 		
-		<div class="form-group">
+		<div class="form-group d-none">
 			<label for="uId">content#</label>
-			<input type="text" class="form-control" id="uId" name="bId" value="${content_view.bId}" readonly/>
+			<input type="text" class="form-control col-9 ml-3" id="uId" name="bId" value="${content_view.bId}" readonly/>
+		</div>
+
+		<hr />
+
+		<div class="form-group row mx-0">
+			<label for="title"  class="col-2 mt-2"><strong>Title</strong></label>
+			<input type="text" class="form-control col-9 ml-3" id="title" name="bTitle" value="${content_view.bTitle }"/>
 		</div>
 		
-		<div class="form-group">
-			<label for="hit">hits</label>
-			<input type="text" class="form-control" id="hit" name="bHit" value="${content_view.bHit}" readonly/>
+		<hr />
+		
+		<div class="form-group row mx-0">
+			<label for="uname" class="col-2 mt-2"><strong>Writer</strong></label>
+			<input type="text" class="form-control col-9 ml-3" id="uname" name="bName" value="WAYG SUPER ADMIN" readonly/>
 		</div>
 		
-		<div class="form-group">
-			<label for="uname">User ID</label>
-			<input type="text" class="form-control" id="uname" name="bName" value="${content_view.bName}" readonly/>
+		<hr />
+		
+		<div class="form-group row mx-0">
+			<label for="hit" class="col-2 mt-2"><strong>Views</strong></label>
+			<input type="text" class="form-control col-9 ml-3" id="hit" name="bHit" value="${content_view.bHit}" readonly/>
+		</div>
+
+		<hr />
+
+		<div class="form-group row mx-0">
+			<label for="content" class="col-2 mt-2 mb-4"><strong>Content</strong></label>
+			<textarea class="form-control col-9 ml-3" id="content" name="bContent" rows="10">${content_view.bContent }</textarea>
 		</div>
 		
-		<div class="form-group">
-			<label for="title">Title</label>
-			<input type="text" class="form-control" id="title" name="bTitle" value="${content_view.bTitle }"/>
-		</div>
-		
-		<div class="form-group">
-			<label for="content">Content</label>
-			<textarea class="form-control" id="content" name="bContent" rows="10">${content_view.bContent }</textarea>
-		</div>
+		<hr />
 		
 		<a href="notice_board" id="goback" class="btn btn-sm btn-secondary">목록</a>	
 		<a href="delete?bId=${content_view.bId}" id="delBtn" class="btn btn-sm btn-danger float-right mr-2">삭제</a>
@@ -87,61 +80,7 @@
 <%@ include file="includes/footer.jsp" %>
 
 <script>
-$(document).ready(function() {
-	 
-	let username = "<c:out value='${username}'/>";
-	let bName = $('#uname').val();
-	
-	
-	if ( username == "" || username != bName ) {
-		$('#title').attr('readonly',true);
-		$('#content').attr('readonly',true);
-		
-		$('#modBtn').css('display','none');
-		$('#delBtn').css('display','none');
-	}
-	
-	
-	$('#modBtn').click(function(e) {
-		e.preventDefault();
-		
-		if ( confirm('게시글을 수정할까요?') == true ) {
-			$('#frm').submit();
-		} else {
-			return false;
-		}
-	});
 
-	$('#delBtn').click(function(e) {
-		e.preventDefault();
-		
-		if ( confirm('게시글을 삭제할까요?') == true ) {
-			location.href = $(this).attr('href');			
-			
-		} else {
-			return false;
-		}
-	});
-	
-
-	$('#rv').click(function(e) {
-		e.preventDefault();
-		
-		$.ajax({
-			url: $(this).attr('href'),
-			type: 'get',
-			success: function(data) {
-				$('#main').html(data);
-				
-			},
-			error: function(data) {
-				console.log(data);
-			}
-		});
-	});
-	
-	
-});
 </script>
 
 </body>

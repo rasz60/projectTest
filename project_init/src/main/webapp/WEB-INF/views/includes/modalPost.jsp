@@ -18,89 +18,6 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/includes/modalPost.css" />
-<style>
-ul {
-	list-style: none;	
-}
-
-.profile-img-s {
-	height: 100%;
-}
-
-.img-s {
-	width: 50px;
-	height: 50px;
-	border-radius: 50%;
-}
-
-.list-group-item:nth-child(3) {
-	align-items: center;
-}
-
-input.comment,
-input.recomment {
-	width: 85%;
-	border: none;
-	border-bottom: 1px solid #dee2e6;
-}
-
-profile-img-xxs {
-	height: 100%;
-}
-
-.img-xxs {
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-}
-
-.comments {
-	height: 90%;
-	overflow : auto;
-}
-
-.comments .comment-block {
-	align-items: center;
-}
-
-span.comment-text {
-	overflow-wrap: break-word;
-}
-
-.comment-block .form-group {
-	display: none;
-}
-
-.location {
-	width: auto;
-	height: 30px;
-	overflow-x: auto;
-	display: none;
-}
-.comments::-webkit-scrollbar,
-.location::-webkit-scrollbar{
-    width: 2px;
-    height: 4px;
-}
-.comments::-webkit-scrollbar-thumb,
-.location::-webkit-scrollbar-thumb {
-    background: #A0A0A0 ;
-    border-radius: 5px;
-}
-.comments::-webkit-scrollbar-track,
-.location::-webkit-scrollbar-track {
-    background: #CCCCCC;
-}
-
-
-.location-item {
-	height: 90%;
-	font-size: 13px;
-	font-style: italic;
-	white-space: pre;
-}
-
-</style>
 </head>
 <body>
 <!-- modal button -->
@@ -145,6 +62,7 @@ span.comment-text {
 					
 					<li class="list-group-item mb-1">
 						<pre class="content"></pre>
+						<div class="hashtag d-flex flex-wrap"></div>
 					</li>
 					
 					<li class="list-group-item mb-1 d-flex row mx-0">
@@ -173,7 +91,9 @@ span.comment-text {
 					
 					<li class="list-group-item">
                        	<input type="text" class="comment grpl" placeholder="comment" data-value="0">
-                       	<button type="button" class="btn btn-sm btn-outline-success addcomment ml-1" data-num="" role="button">전송</button>
+                       	<button type="button" class="btn btn-sm btn-success addcomment ml-1 px-1 py-0" data-num="" role="button">
+							<i class="fa-solid fa-reply"></i>
+						</button>
 					
 						<div class="comments">
 						</div>

@@ -71,7 +71,7 @@ public class FeedController {
 	@RequestMapping(value="getAllPlans.do", produces="application/json; charset=UTF-8")
 	public ArrayList<PlanMstDto> getAllPlans() {
 		logger.info("getAllPlans() >>>>");
-		// À¯ÀúÀÇ ¾ÆÀÌµð·Î µî·ÏµÈ ÀÏÁ¤À» ¸ðµÎ °¡Á®¿È
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ï¿½ ï¿½ï¿½Ïµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		ArrayList<PlanMstDto> result = dao.selectAllPlan(Constant.username);
 				
 		logger.info("getAllPlans() result.isEmpty() ? " + result.isEmpty());
@@ -165,13 +165,13 @@ public class FeedController {
 	
 	
 	
-	//ÇÁ·ÎÇÊ»çÁø µî·Ï
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ê»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	@RequestMapping("add_PrfImg")
 	public String add_PrfImg(MultipartHttpServletRequest mtpRequest, HttpServletRequest request, Model model) {
 		System.out.println("add_PrfImg");
 		
-		String olduPrfImg = udao.getolduPrfImg(Constant.username); //ÀÌ¹Ì DB¿¡ ÀúÀåµÅÀÖ´Â ÀÌ¹ÌÁö»çÁø ÀÌ¸§ °¡Á®¿À±â
-		String uPrfImg = null; //DBÀúÀå¿ë ÆÄÀÏ¸í
+		String olduPrfImg = udao.getolduPrfImg(Constant.username); //ï¿½Ì¹ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		String uPrfImg = null; //DBï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½
 		
 		MultipartFile mf = mtpRequest.getFile("pImg");
 		
@@ -205,7 +205,7 @@ public class FeedController {
 				mf.transferTo(new File(safeFile));
 				mf.transferTo(new File(safeFile1));
 				
-				//±âÁ¸ ÀúÀåµÅÀÖ´ø »çÁø »èÁ¦
+				//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 				File file = new File(path + olduPrfImg);
 				File file1 = new File(path1 + olduPrfImg);
 				if(file.exists()) {
@@ -218,10 +218,10 @@ public class FeedController {
 			catch(Exception e) {
 				e.getMessage();
 			}
-			return "redirect:/feed/feedInfo";
+			return "redirect:/feed/feedInfo.do";
 		}
 		else {
-			return "redirect:/feed/feedInfo";
+			return "redirect:/feed/feedInfo.do";
 		}
 	}
 	
@@ -231,7 +231,7 @@ public class FeedController {
 		String olduPrfImg = udao.getolduPrfImg(Constant.username);
 		udao.deletePrfImg(Constant.username);
 		
-		//±âÁ¸ ÀúÀåµÅÀÖ´ø »çÁø »èÁ¦
+		//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		String path = "C:/ecl/workspaceWEB/WAYGprj/src/main/webapp/resources/profileImg/";
 		String path1 = "C:/ecl/apache-tomcat-9.0.56/wtpwebapps/WAYGprj/resources/profileImg/";
 		File file = new File(path + olduPrfImg);
@@ -243,10 +243,10 @@ public class FeedController {
 			file1.delete();
 		}
 		
-		return "redirect:/feed/feedInfo";
+		return "redirect:/feed/feedInfo.do";
 	}
 	
-	//¸¶ÀÌÆäÀÌÁö ¼öÁ¤
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@RequestMapping("modifyMyPage")
 	@ResponseBody
 	public String modifyMyPage(@RequestParam(value="userNick") String userNick, @RequestParam(value="userBio") String userProfileMsg, @RequestParam(value="userPst") String userPst, @RequestParam(value="userAddr1") String userAddress1, @RequestParam(value="userAddr2") String userAddress2, HttpServletRequest request, Model model) {
@@ -264,7 +264,7 @@ public class FeedController {
 			return "not-modified";
 	}
 	
-	//ºñ¹Ð¹øÈ£ º¯°æ Àü ºñ¹Ð¹øÈ£ È®ÀÎ
+	//ï¿½ï¿½Ð¹ï¿½È£ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ð¹ï¿½È£ È®ï¿½ï¿½
 	@RequestMapping(value="chkPwForMdf", method=RequestMethod.POST, produces = "application/text; charset=UTF8")
 	@ResponseBody
 	public String chkPwForMdf(HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -280,7 +280,7 @@ public class FeedController {
 			
 	}
 	
-	//ºñ¹Ð¹øÈ£ º¯°æ
+	//ï¿½ï¿½Ð¹ï¿½È£ ï¿½ï¿½ï¿½ï¿½
 	@RequestMapping(value="modifyPw", method=RequestMethod.POST, produces = "application/text; charset=UTF8")
 	@ResponseBody
 	public String modifyPw(HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -295,7 +295,7 @@ public class FeedController {
 				return "pw-not-modified";
 	}
 	
-	//È¸¿øÅ»Åð½Ã ºñ¹Ð¹øÈ£ È®ÀÎ
+	//È¸ï¿½ï¿½Å»ï¿½ï¿½ï¿½ ï¿½ï¿½Ð¹ï¿½È£ È®ï¿½ï¿½
 	@RequestMapping(value="chkPwForResig", method=RequestMethod.POST, produces = "application/text; charset=UTF8")
 	@ResponseBody
 	public String chkPwForResig(HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -311,12 +311,12 @@ public class FeedController {
 		
 	}
 	
-	//È¸¿øÅ»Åð
+	//È¸ï¿½ï¿½Å»ï¿½ï¿½
 	@RequestMapping(value="resignation")
 	public String resignation() {
 		System.out.println("resignation");
 		udao.resign(Constant.username);
-		SecurityContextHolder.clearContext(); //È¸¿øÅ»Åð½Ã ·Î±×¾Æ¿ô À§ÇØ
+		SecurityContextHolder.clearContext(); //È¸ï¿½ï¿½Å»ï¿½ï¿½ï¿½ ï¿½Î±×¾Æ¿ï¿½ ï¿½ï¿½ï¿½ï¿½
 		return "redirect:/";
 	}
 

@@ -50,14 +50,14 @@
 		
 		<s:authorize access="isAnonymous()">
 			<li class="mr-4 /init/feed">
-				<a href="feed" id="anFeed">
+				<a href="/init/feed" id="anFeed">
 					<i class="menu-icon fa-regular fa-circle-user"></i>
 				</a>
 			</li>
 		</s:authorize>
 		<s:authorize access="isAuthenticated()">
 			<li class="mr-4 /init/feed">
-				<a href="feed" id="loginFeed">
+				<a href="/init/feed" id="loginFeed">
 					<i class="menu-icon fa-regular fa-circle-user"></i>
 				</a>
 			</li>
@@ -77,7 +77,7 @@
 			</li>
 			
 			<li class="mr-4 msg">
-				<a href="message">
+				<a href="/init/message">
 					<i class="menu-icon fa-regular fa-comment-dots"></i>
 				</a>
 			</li>
