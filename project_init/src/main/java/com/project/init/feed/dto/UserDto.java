@@ -18,17 +18,17 @@ public class UserDto {
 	private String userAuthority;
 	private Timestamp visitDate;
 	private Timestamp joinDate;
-	private String count;
 	private String userDate;
-	
+	private String agegroup;
+	private String count;
 	public UserDto() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
-	
 	public UserDto(String userEmail, String userPw, String userNick, String userBirth, int userAge, String userGender,
 			int userPst, String userAddress, String userProfileImg, String userProfileMsg, String userFollower,
-			String userFollowing, String userAuthority, Timestamp visitDate, Timestamp joinDate, String count,
-			String userDate) {
+			String userFollowing, String userAuthority, Timestamp visitDate, Timestamp joinDate, String userDate,
+			String agegroup, String count) {
 		super();
 		this.userEmail = userEmail;
 		this.userPw = userPw;
@@ -45,10 +45,10 @@ public class UserDto {
 		this.userAuthority = userAuthority;
 		this.visitDate = visitDate;
 		this.joinDate = joinDate;
-		this.count = count;
 		this.userDate = userDate;
+		this.agegroup = agegroup;
+		this.count = count;
 	}
-	
 	public String getUserEmail() {
 		return userEmail;
 	}
@@ -139,21 +139,24 @@ public class UserDto {
 	public void setJoinDate(Timestamp joinDate) {
 		this.joinDate = joinDate;
 	}
-	public String getCount() {
-		return count;
-	}
-	public void setCount(String count) {
-		this.count = count;
-	}
 	public String getUserDate() {
 		return userDate;
 	}
 	public void setUserDate(String userDate) {
 		this.userDate = userDate;
 	}
+	public String getAgegroup() {
+		return agegroup;
+	}
+	public void setAgegroup(String agegroup) {
+		this.agegroup = agegroup;
+	}
+	public String getCount() {
+		return count;
+	}
+	public void setCount(String count) {
+		this.count = count;
+	}
 	
-
 	
-	
-
 }

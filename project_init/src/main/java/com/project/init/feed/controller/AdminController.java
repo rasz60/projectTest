@@ -35,6 +35,7 @@ public class AdminController {
 		return "admin/admin_main"; 
 	}
 	
+	// 장소 별 통계
 	@ResponseBody 
 	@RequestMapping(value = "/placesDashBoard", produces="application/json; charset=UTF-8")
 	public ArrayList<PlanDto2> placesDashBoard(HttpServletRequest request, Model model) {
@@ -54,6 +55,7 @@ public class AdminController {
 		return placesDashBoard;
 	}
 	
+	// 년도, 월, 일 별 회원수 통계
 	@ResponseBody
 	@RequestMapping(value = "/userDashBoard", produces="application/json; charset=UTF-8")
 	public ArrayList<UserDto> userDashBoard(HttpServletRequest request, Model model){
@@ -75,5 +77,29 @@ public class AdminController {
 		System.out.println(userDashBoard);
 		
 		return userDashBoard;
+	}
+	
+	// 회원 성별 통계
+	@ResponseBody
+	@RequestMapping(value = "/userDashBoardGender", produces="application/json; charset=UTF-8")
+	public ArrayList<UserDto> userDashBoardGender(Model model){
+		logger.info("userDashBoardGender() in >>>>");
+		
+		ArrayList<UserDto> userDashBoardGender = dao.selectDashBoardUserGender();
+		model.addAttribute("userGender", userDashBoardGender);
+		
+		return userDashBoardGender;
+	}
+	
+	// 회원 연령별 통계
+	@ResponseBody
+	@RequestMapping(value = "/userDashBoardAge", produces="application/json; charset=UTF-8")
+	public ArrayList<UserDto> userDashBoardAge(Model model){
+		logger.info("userDashBoardAge() in >>>>");
+		
+		ArrayList<UserDto> userDashBoardAge = dao.selectDashBoardUserAge();
+		model.addAttribute("userAge", userDashBoardAge);
+		
+		return userDashBoardAge;
 	}
 }

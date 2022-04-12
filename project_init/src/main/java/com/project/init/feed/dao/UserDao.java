@@ -29,7 +29,7 @@ public class UserDao implements UserIDao {
 	public String join(String UEmail, String UPw, String UNickName, String UBirth, String UGender, String UPst, String UAddr) {
 		int UAgeNum = getAgeByBirthDay(UBirth);
 		int UPstNum = Integer.parseInt(UPst);
-		UserDto dto = new UserDto(UEmail,UPw,UNickName,UBirth,UAgeNum,UGender,UPstNum,UAddr,null,null,null,null,null,null,null, null, null);
+		UserDto dto = new UserDto(UEmail,UPw,UNickName,UBirth,UAgeNum,UGender,UPstNum,UAddr,null,null,null,null,null,null,null,null,null,null);
 		int res = sqlSession.insert("join",dto);
 		System.out.println(res);
 		String result = null;

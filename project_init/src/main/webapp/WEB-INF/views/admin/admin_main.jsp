@@ -21,6 +21,7 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/header.css" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css" />
 <!-- Cart.js API 라이브러리 추가 -->
@@ -90,13 +91,12 @@ body{
 	<nav class="navbar navbar-default bg-white">
 		<ul id="admin_ul">
 		  <li id="admin-li"><a class="active" href="#">DashBoard</a></li>
-		  <li id="admin-li"><a href="#">게시물 관리</a></li>
 		  <li id="admin-li"><a href="#">유저 관리</a></li>
 		</ul>
 	</nav>	
 <div class="container">
 	<div class="DashBoard-filter d-flex"> <!-- 필터 생성 -->
-		<form id="frm" name="frm" action="insertFilter" method="post"> <!-- 필터 form -->
+		<form id="frm" name="frm" action="insertFilter" method="post""> <!-- 필터 form -->
 			<div class="pSelBox_title">인기 장소 통계 : </div>
 			<div class="form-group"> 
 				<select id="pSelBox" class="main-filter custom-select my-1 mr-sm-2" name="value1"> <!-- 메인 필터 select창 생성 -->
@@ -107,10 +107,10 @@ body{
 				</select><br/>		
 				<select id="pSelSubBox" class="sub-filter custom-select my-1 mr-sm-2" name="value2" style="display:none"> <!-- 서브 필터 select창 생성, option은 script에서 생성 --></select>			 
 			</div>					
-			<button type="submit" id="pfilterbtn" class="btn btn-success" style="float: left; margin-top:32px;">Filter</button> <!-- 필터 제출 버튼 -->
+			<button type="submit" id="pfilterbtn" class="btn btn-success" style="float: left; margin-top:32px;">장소 통계</button> <!-- 필터 제출 버튼 -->
 		</form>
 		
-		<form id="frm" name="frm" action="insertFilter" method="post" style="margin-left:20px;"> <!-- 필터 form -->
+		<form id="frm" name="frm" action="insertFilter" method="post" style="margin-left:30%;"> <!-- 필터 form -->
 			<div class="form-group">
 				<div class="uSelBox_title" >회원 통계 : </div> 
 				<select id="uSelBox" class="main-filter custom-select my-1 mr-sm-2" name="value1" style="width:45%;" > <!-- 메인 필터 select창 생성 -->
@@ -123,7 +123,9 @@ body{
 					<input id="uvalue4" type="text" name="value4" placeholder="ex)2022"/>
 				</div>			 
 			</div>					
-			<button type="submit" id="ufilterbtn" class="btn btn-primary" style="float: left;">Filter</button> <!-- 필터 제출 버튼 -->
+			<button type="submit" id="ufilterbtn" class="btn btn-primary" style="float: left; margin-right:95px;">가입자 수</button> <!-- 가입자 수 -->
+			<button type="submit" id="gfilterbtn" class="btn btn-warning" style="float: left;" value="User Gender">가입자 성별</button> <!-- 가입자 성별 -->
+			<button type="submit" id="afilterbtn" class="btn btn-secondary" style="float: left;" value="User Age">가입자 연령</button> <!-- 가입자 연령 -->
 		</form>
 	</div>
 	<hr/>
@@ -181,22 +183,31 @@ $(document).ready(function(){
 		}
 	}
 	
+	
+	/* 년도,월,일 별 회원통계 셀렉 할 때마다 input의 placeholder 바꾸기 */
 	$('#uSelBox').change(function(){
 		console.log($('#uSelBox option:selected').val());
 		if($('#uSelBox option:selected').val() == '년도 별 가입자 수'){
 			$('#uvalue3').attr('placeholder', 'ex)2018');
 			$('#uvalue4').attr('placeholder', 'ex)2022');
+			$('#uvalue3').val('');
+			$('#uvalue4').val('');
 		}
 		else if($('#uSelBox option:selected').val() == '월 별 가입자 수'){
 			$('#uvalue3').attr('placeholder', 'ex)202201');
 			$('#uvalue4').attr('placeholder', 'ex)202212');
+			$('#uvalue3').val('');
+			$('#uvalue4').val('');
 		}
 		else{
 			$('#uvalue3').attr('placeholder', 'ex)20220401');
 			$('#uvalue4').attr('placeholder', 'ex)20220430');
+			$('#uvalue3').val('');
+			$('#uvalue4').val('');
 		}
 	});
 	
+	/* 장소별 통계 */
 	$("#pfilterbtn").click(function(event){
 		event.preventDefault();
 		
@@ -219,12 +230,12 @@ $(document).ready(function(){
 		let pChartData = []; // top.5 장소
 		
 		//그래프를 그릴 수 있도록 가공해둔 변수
-		let lineChartData = {
+		let barChartData = {
 			labels : pChartLabels, //그래프의 기본축인 x에 들어 가는 값
 			fill: false,
 			datasets : [ //그래프에 표시할 데이터 값 charData1
 				{
-					label: "Top 1", //데이터 종류 이름
+					label: "Place", //데이터 종류 이름
 					fillColor : "rgba(220,220,220,0.2)", //채울색
 					strokeColor : "rgba(220,220,220,1)", //선색
 					pointColor : "rgba(220,220,220,1)",
@@ -256,12 +267,12 @@ $(document).ready(function(){
 		
 		
 		function createChart() {
-			if(window.placeChart != undefined){ //이전 차트를 지워서 차트 중복 제거
-				window.placeChart.destroy();
+			if(window.dashBoardChart != undefined){ //이전 차트를 지워서 차트 중복 제거
+				window.dashBoardChart.destroy();
 			}
-			window.placeChart = new Chart(document.getElementById("canvas").getContext("2d"),{
+			window.dashBoardChart = new Chart(document.getElementById("canvas").getContext("2d"),{
 				type: 'bar', //수평막대그래프
-				data: lineChartData,
+				data: barChartData,
 				options: {
 					title:{
 						display : true,
@@ -313,11 +324,12 @@ $(document).ready(function(){
 				createChart();
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('There is an error : method(group)에 에러가 있습니다.');
+				alert('장소 통계를 다시 선택해 주세요');
 			}
 		});
 	});
 	
+	/* 년도,월,일 별 회원수 통계 */
 	$("#ufilterbtn").click(function(event){
 		event.preventDefault();
 		
@@ -357,7 +369,7 @@ $(document).ready(function(){
 			labels : uChartLabels, //그래프의 기본축인 x에 들어 가는 값
 			datasets : [ //그래프에 표시할 데이터 값 uChartData
 				{
-					label: "유저 현황", //데이터 종류 이름
+					label: "User", //데이터 종류 이름
 					fillColor : "rgba(220,220,220,0.2)", //채울색
 					strokeColor : "rgba(220,220,220,1)", //선색
 					pointColor : "rgba(220,220,220,1)",
@@ -385,14 +397,12 @@ $(document).ready(function(){
 				}
 			]
 		};
-		
-		
-		
+			
 		function createChart() {
-			if(window.placeChart != undefined){ //이전 차트를 지워서 차트 중복 제거
-				window.placeChart.destroy();
+			if(window.dashBoardChart != undefined){ //이전 차트를 지워서 차트 중복 제거
+				window.dashBoardChart.destroy();
 			}
-			window.placeChart = new Chart(document.getElementById("canvas").getContext("2d"),{
+			window.dashBoardChart = new Chart(document.getElementById("canvas").getContext("2d"),{
 				type: 'line', //수평막대그래프
 				data: lineChartData,
 				options: {
@@ -445,22 +455,171 @@ $(document).ready(function(){
 				createChart();
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('There is an error : method(group)에 에러가 있습니다.');
+				alert('가입자 통계를 다시 선택해 주세요');
 			}
 		});
 	});
 	
-	
-	$("#pie").click(function(event){
+	/* 회원 성별 통계 */
+	$("#gfilterbtn").click(function(event){
 		event.preventDefault();
+		
+	    document.getElementById('title').innerText //그래프에 맞는 title 생성
+	    = $("#gfilterbtn").val();
+		
+		let gChartLabels = []; //성별 표시 배열 초기화
+		let gChartData = []; // 성별 카운트 수
+		console.log(gChartData);
+		//그래프를 그릴 수 있도록 가공해둔 변수
+		let PieChartData = {
+			labels : gChartLabels,
+			fill: false,
+			datasets : [ //그래프에 표시할 데이터 값
+				{
+					label: "Gender", //데이터 종류 이름
+					fillColor : "rgba(220,220,220,0.2)", //채울색
+					strokeColor : "rgba(220,220,220,1)", //선색
+					pointColor : "rgba(220,220,220,1)",
+					pointStrokeColor : "#fff",
+					pointHighlightFill : "#fff",
+					pointHighlightStroke : "rgba(220,220,220,1)",
+					data : gChartData,
+					backgroundColor: [
+						//색상
+						'rgba(54, 162, 235, 0.2)',
+		                'rgba(255, 99, 132, 0.2)'
+					],
+	                borderColor: [
+	                    //경계선 색상
+	                    'rgba(54, 162, 235, 0.2)',
+		                'rgba(255, 99, 132, 0.2)'
+
+	                ],
+	                borderWidth: 1 //경계선 굵기
+				}
+			]
+		};
+		
+		
+		
+		function createChart() {
+			if(window.dashBoardChart != undefined){ //이전 차트를 지워서 차트 중복 제거
+				window.dashBoardChart.destroy();
+			}
+			window.dashBoardChart = new Chart(document.getElementById("canvas").getContext("2d"),{
+				type:'pie',
+				data: PieChartData,
+				options: {
+					responsive: true
+				}
+			});
+		}
+		
 		$.ajax({
-			url : "pie",
-			type : "get",
-			success : function(data) { //data는 jsp가 변환된 html
-				$("#main").html(data);
+			type : 'POST',
+			url : 'userDashBoardGender', //서버에서 그래프용 데이터 처리 요청
+			beforeSend: function(xhr){
+			   	var token = $("meta[name='_csrf']").attr('content');
+				var header = $("meta[name='_csrf_header']").attr('content');
+		        xhr.setRequestHeader(header, token);
 			},
-			error : function() {
-				alert("bar그래프 에러 발생");
+			success : function(data) { //result는 서버에서 오는 json형태 값
+				console.log(data);
+			
+				for(i=0; i<data.length; i++) {
+					gChartLabels.push(data[i].userGender);
+					gChartData.push(data[i].count);
+				};
+				createChart();
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert('성별 통계를 다시 눌러주세요');
+			}
+		});
+	});
+	
+	/* 회원 연령별 통계 */
+	$("#afilterbtn").click(function(event){
+		event.preventDefault();
+		
+	    document.getElementById('title').innerText //그래프에 맞는 title 생성
+	    = $("#afilterbtn").val();
+		
+		let aChartLabels = []; //연령대 표시 배열 초기화
+		let aChartData = []; // 연령대 별 카운트 수
+		console.log(aChartData);
+		//그래프를 그릴 수 있도록 가공해둔 변수
+		let PieChartData = {
+			labels : aChartLabels,
+			fill: false,
+			datasets : [ //그래프에 표시할 데이터 값
+				{
+					label: "UserAge", //데이터 종류 이름
+					fillColor : "rgba(220,220,220,0.2)", //채울색
+					strokeColor : "rgba(220,220,220,1)", //선색
+					pointColor : "rgba(220,220,220,1)",
+					pointStrokeColor : "#fff",
+					pointHighlightFill : "#fff",
+					pointHighlightStroke : "rgba(220,220,220,1)",
+					data : aChartData,
+					backgroundColor: [
+						//색상
+						   'rgba(15, 255, 10, 0.2)',
+		                   'rgba(255, 99, 132, 0.2)',
+		                   'rgba(54, 162, 235, 0.2)',
+		                   'rgba(255, 206, 86, 0.2)',
+		                   'rgba(75, 192, 192, 0.2)',
+		                   'rgba(153, 102, 255, 0.2)',
+
+
+					],
+	                borderColor: [
+	                    //경계선 색상
+						   'rgba(15, 255, 10, 0.2)',
+		                   'rgba(255, 99, 132, 0.2)',
+		                   'rgba(54, 162, 235, 0.2)',
+		                   'rgba(255, 206, 86, 0.2)',
+		                   'rgba(75, 192, 192, 0.2)',
+		                   'rgba(153, 102, 255, 0.2)',
+
+	                ],
+	                borderWidth: 1 //경계선 굵기
+				}
+			]
+		};	
+		
+		function createChart() {
+			if(window.dashBoardChart != undefined){ //이전 차트를 지워서 차트 중복 제거
+				window.dashBoardChart.destroy();
+			}
+			window.dashBoardChart = new Chart(document.getElementById("canvas").getContext("2d"),{
+				type:'pie',
+				data: PieChartData,
+				options: {
+					responsive: true
+				}
+			});
+		}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'userDashBoardAge', //서버에서 그래프용 데이터 처리 요청
+			beforeSend: function(xhr){
+			   	var token = $("meta[name='_csrf']").attr('content');
+				var header = $("meta[name='_csrf_header']").attr('content');
+		        xhr.setRequestHeader(header, token);
+			},
+			success : function(data) { //result는 서버에서 오는 json형태 값
+				console.log(data);
+				
+				for(i=0; i<data.length; i++) {
+					aChartLabels.push(data[i].agegroup);
+					aChartData.push(data[i].count);
+				};
+				createChart();
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert('가입자 연령 통계를 다시 눌러주세요');
 			}
 		});
 	});
