@@ -5,6 +5,8 @@ import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,6 +28,8 @@ import com.project.init.util.Constant;
 //@RequestMapping("/user")
 public class UserController {
 	
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	
 	private UserDao udao;
 	@Autowired
 	public void setUdao(UserDao udao) {
@@ -44,17 +48,23 @@ public class UserController {
 	
 	@RequestMapping("/user/join_view")
 	public String join() {
+		logger.info("join_view() in >>> ");
 		return "join/join";
 	}
 	
 	@RequestMapping(value = "/user/join", method=RequestMethod.POST, produces = "application/text; charset=UTF8")
 	@ResponseBody
 	public String join(HttpServletRequest request, HttpServletResponse response, Model model) {
-		System.out.println("join");
+		logger.info("join() in >>> ");
+		
 		mcom = new JoinCommand();
 		mcom.execute(request, model);
+		
 		String result = (String) request.getAttribute("result");
 		System.out.println(result);
+		
+		logger.info("join() result : " + result);
+		
 		if(result.equals("success"))
 			return "join-success";
 		else
@@ -64,20 +74,22 @@ public class UserController {
 	@RequestMapping(value="/user/emailCheck")  //왜 포스트 방식은 안돼?
 	@ResponseBody
 	public int emailCheck(@RequestParam("id") String id) {
-		System.out.println("emailCheck");
-		System.out.println(id);
+		logger.info("emailCheck(" + id + ") in >>> ");
+		
 		int res = udao.emailCheck(id);
-		System.out.println(res);
+		
+		logger.info("emailCheck(" + id + ") result : " + (res > 0 ? "success": "false"));
 		return res;
 	}
 	
 	@RequestMapping(value="/user/nickCheck")
 	@ResponseBody
 	public int nickCheck(@RequestParam("nick") String nick) {
-		System.out.println("nickCheck");
-		System.out.println(nick);
+		logger.info("nickCheck(" + nick + ") in >>> ");
+		
 		int res = udao.nickCheck(nick);
-		System.out.println(res);
+		
+		logger.info("emailCheck(" + nick + ") result : " + (res > 0 ? "success": "false"));
 		return res;
 	}
 	
@@ -86,15 +98,18 @@ public class UserController {
 	public String processLogin(@RequestParam(value="error", required = false) String error, 
 							   @RequestParam(value="logout", required = false) String logout, Model model) {
 		
-		System.out.println("processLogin");
+		logger.info("processLogin() in >>> ");
+		
 		if(error != null && error !="") {
 			model.addAttribute("error", "아이디와 비밀번호를 다시 확인해주세요.");
-			System.out.println(error);
+			
+			logger.info("processLogin() result : error");
 		}
 		
 		if(logout != null && logout != "") {
 			Constant.username = "";
-			System.out.println("logged out");
+			
+			logger.info("processLogin() result : logout");
 		}
 		return "/index";
 	}
@@ -102,13 +117,18 @@ public class UserController {
 	//로그인 성공시
 	@RequestMapping(value="/loginSuc")
 	public String loginSuc(Authentication authentication) {
-		System.out.println("loginSuc");
+		logger.info("loginSuc() in >>> ");
+		
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Constant.username = userDetails.getUsername();
+
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		String auth = authorities.toString(); //role을 얻어서 문자열로 변환
-		System.out.println(auth); //[ROLE_USER] 형태
+
 		udao.userVisit(Constant.username); //로그인 날짜 업데이트
+		
+		logger.info("loginSuc() userAuth : " + auth);
+		
 		return "/index";
 	}
 	

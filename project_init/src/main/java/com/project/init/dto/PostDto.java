@@ -53,21 +53,15 @@ public class PostDto {
 		this.email = email;
 	}
 	
-	
 
-
-	/*
-	public PostDto(String postNo,String content,String hashtag,ArrayList<PlanDtDto> location,String titleImage,String images) {
+	public PostDto(String postNo,String content,String hashtag, String titleImage,String images) {
 		super();
 		this.postNo = postNo;
 		this.titleImage = titleImage;
 		this.images = images;
 		this.content = content;
-		this.location = location;
-		this.hashtag = hashtag;
-		
+		this.hashtag = hashtag;	
 	}
-	*/
 	
 	public String getUserProfileImg() {
 		return userProfileImg;

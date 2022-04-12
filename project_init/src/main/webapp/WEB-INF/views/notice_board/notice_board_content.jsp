@@ -18,16 +18,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" type="text/css" href="css/includes/header.css" />
-<link rel="stylesheet" type="text/css" href="css/includes/footer.css" />
-<link rel="stylesheet" type="text/css" href="css/notice_board.css" />
-<script src="js/notice_board.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/includes/header.css" />
+<link rel="stylesheet" type="text/css" href="../css/includes/footer.css" />
+<link rel="stylesheet" type="text/css" href="../css/notice_board.css" />
+<script src="../js/notice_board.js"></script>
 <title>WAYG</title>
 </head>
 
 <body>
 
-<%@ include file="includes/header.jsp" %>
+<%@ include file="../includes/header.jsp" %>
 
 <div id="main" class="container">
 	<h3 class="display-4 font-italic"><i class="fa-solid fa-bullhorn"></i></h3>
@@ -71,13 +71,13 @@
 		
 		<hr />
 		
-		<a href="notice_board" id="goback" class="btn btn-sm btn-secondary">목록</a>	
+		<a href="../notice_board" id="goback" class="btn btn-sm btn-secondary">목록</a>	
 		<a href="delete?bId=${content_view.bId}" id="delBtn" class="btn btn-sm btn-danger float-right mr-2">삭제</a>
 		<button type="submit" id="modBtn" class="btn btn-sm btn-success float-right mr-2">수정</button>
 	</form>
 </div>
 
-<%@ include file="includes/footer.jsp" %>
+<%@ include file="../includes/footer.jsp" %>
 
 <script>
 

@@ -20,9 +20,11 @@ import com.project.init.command.ICommand;
 import com.project.init.command.MainMapFilterCommand;
 import com.project.init.dao.BoardIDao;
 import com.project.init.dao.PlanIDao;
+import com.project.init.dao.PostIDao;
 import com.project.init.dao.UserDao;
 import com.project.init.dto.NoticeBoardDto;
 import com.project.init.dto.PlanDtDto;
+import com.project.init.dto.PostDto;
 import com.project.init.util.Constant;
 
 
@@ -37,6 +39,9 @@ public class HomeController {
 	@Autowired
 	private BoardIDao bdao;
 
+	@Autowired
+	private PostIDao postDao;
+	
 	private ICommand comm;
 	private UserDao udao;
 	
@@ -48,8 +53,20 @@ public class HomeController {
 	
 
 	@RequestMapping("/")
-	public String index() {
+	public String index(Model model) {
 		logger.info("index() in >>>>");
+		String user = Constant.username;
+		
+		ArrayList<PostDto> post = postDao.list(user);
+		model.addAttribute("post", post);
+		
+		ArrayList<PostDto> likeList = postDao.likeList(user);
+		model.addAttribute("likeList", likeList);
+		
+		ArrayList<PostDto> viewList = postDao.viewList(user);
+		model.addAttribute("viewList", viewList);
+		model.addAttribute("user",Constant.username);
+		
 		return "index";
 	}
 	
@@ -93,10 +110,10 @@ public class HomeController {
 		
 		logger.info("noticeBoard() result : bdtos.isEmpty() ? " + bdtos.isEmpty());
 		
-		return "notice_board";
+		return "notice_board/notice_board";
 	}
 	
-	@RequestMapping("/write_view")
+	@RequestMapping("/notice_board/write_view")
 	public String writeView(Model model) {
 		logger.info("writeView() in >>>>");
 		
@@ -104,10 +121,10 @@ public class HomeController {
 		logger.info("write_view result : bName ? " + Constant.username);
 
 		
-		return "notice_board_write";
+		return "notice_board/notice_board_write";
 	}
 	
-	@RequestMapping("/write")
+	@RequestMapping("/notice_board/write")
 	public String write(HttpServletRequest request, HttpServletResponse response, Model model) {
 		logger.info("write in >>>>");
 		comm = new BoardWriteCommand();
@@ -116,7 +133,7 @@ public class HomeController {
 		return "redirect:notice_board";
 	}
 	
-	@RequestMapping("/contentView")
+	@RequestMapping("/notice_board/contentView")
 	public String content_view(HttpServletRequest request, HttpServletResponse response, Model model) {
 		logger.info("content_view in >>>>");
 
@@ -131,7 +148,7 @@ public class HomeController {
 
 		logger.info("content_view result : " + result);
 		
-		return "notice_board_content";
+		return "notice_board/notice_board_content";
 	}
 	
 }

@@ -28,7 +28,6 @@
 	$('#loginError').css('visibility','visible');
 	$('#loginModalBtn').trigger('click');
 </c:if>
-
 </script>
 </head>
 
@@ -61,25 +60,32 @@
 					</s:authorize>
 					
 					<s:authorize access="isAuthenticated()">				
-						<div class="profile-img">
+						<div class="profile-img col-3">
 							<i class="user-info-icon fa-regular fa-circle-user"></i>
 						</div>
-					
-						<div class="nickname">
-							<p class="h5 font-italic ml-2"></p>
+						<div class="d-block col-9">
+							<div class="nickname">
+								<p class="h5 font-italic ml-2">user.nickName</p>
+							</div>
+							<div class="row mx-0">
+								<a href="feed" class="text-dark font-italic col-3 px-1">FEED</a>
+								<a href="post/mypost" class="text-dark font-italic col-3 px-1">POST</a>
+								<a href="feed/feedInfo" class="text-dark font-italic col-3 px-1">INFO</a>
+								<form method="post" action="logout" class="col-2">
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+									<button type="submit" id="logoutBtn" class="logx-btn btn btn-danger btn-sm"><i class="fa-solid fa-lock-open"></i></button>
+								</form>
+							</div>
 						</div>
-						
-						<form method="post" action="logout">
-							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-							<button type="submit" id="logoutBtn" class="logx-btn btn btn-danger btn-sm"><i class="fa-solid fa-lock-open"></i></button>
-						</form>
 					</s:authorize>
 					
 				</div>
 			</div>
 			<div class="map-filter border rounded p-2 bg-light">
 			
-				<h6 id="filter-title" class="display-4">&nbsp;WAYG Filter</h6>
+				<h6 id="filter-title" class="display-4">
+					<img src="images/logo.png" id="logo" class="d-inline"/><i class="fa-solid fa-filter text-info" style="font-size: 25px"></i>
+				</h6>
 				<hr />
 			
 				<form id="frm" name="frm" action="insertFilter" method="post">
@@ -123,36 +129,46 @@
 	</div>
 	
 	<div class="main-body-bottom mb-3">
+			
 		<div class="recommand recommand-1 mb-2">
 			<div class="recommand-icon text-danger d-flex justify-content-between">
-				<i class="btn1 fa-solid fa-location-arrow"></i>
-				<a href="search" class="text-danger">
+				<i class="btn1 fa-brands fa-instagram"></i>
+				<a href="post/addPost" class="text-danger">
 					<i class="btn2 fa-regular fa-circle-right"></i>
 				</a>
 			</div>
-			
 			<div class="posts d-flex justify-content-between mt-2">
-				<c:forEach begin="1" end="4" var="i">
+				<c:forEach items="${post}" var="post" begin="0" end="4" >
 					<div class="post mr-2">
-						<div class="post-top border rounded"></div>
+						<div class="post-top border rounded">
+						post.titleImage = ${post.titleImage}<br/>
+						post.userNick = ${post.userNick}<br/>
+						post.likes = ${post.likes}<br/>
+						post.comments = ${post.comments}<br/>
+						post.views = ${post.views}<br/>
+						</div>
 						<div class="post-bottom border"></div>
 					</div>
 				</c:forEach>
 			</div>
-		</div>
+		</div> 
 		
 		<div class="recommand recommand-2 mb-2">
 			<div class="recommand-icon text-primary d-flex justify-content-between">
 				<i class="btn1 fa-solid fa-users"></i>
-				<a href="search" class="text-primary">
+				<a href="post/postLike" class="text-primary">
 					<i class="btn2 fa-regular fa-circle-right"></i>
 				</a>
-			</div>
-			
+			</div>	
 			<div class="posts d-flex justify-content-between mt-2">
-				<c:forEach begin="1" end="4" var="i">
+				<c:forEach items="${likeList}" var="likeList" begin="0" end="4" >
 					<div class="post mr-2">
-						<div class="post-top border rounded"></div>
+						<div class="post-top border rounded">
+						likeList.titleImage = ${likeList.titleImage}<br/>
+						likeList.userNick = ${likeList.userNick}<br/>
+						likeList.likes = ${likeList.likes}<br/>
+						likeList.comments = ${likeList.comments}<br/>
+						likeList.views = ${likeList.views}<br/></div>
 						<div class="post-bottom border"></div>
 					</div>
 				</c:forEach>
@@ -162,15 +178,19 @@
 		<div class="recommand recommand-3 mb-2">
 			<div class="recommand-icon text-success d-flex justify-content-between">
 				<i class="btn1 fa-solid fa-font-awesome"></i>
-				<a href="search" class="text-success">
+				<a href="post/postView" class="text-success">
 					<i class="btn2 fa-regular fa-circle-right"></i>
 				</a>
 			</div>
-			
 			<div class="posts d-flex justify-content-between mt-2">			
-				<c:forEach begin="1" end="4" var="i">
+				<c:forEach items="${viewList}" var="viewList" begin="0" end="4" >
 					<div class="post mr-2">
-						<div class="post-top border rounded"></div>
+						<div class="post-top border rounded">
+						viewList.titleImage = ${viewList.titleImage}<br/>
+						viewList.userNick = ${viewList.userNick}<br/>
+						viewList.likes = ${viewList.likes}<br/>
+						viewList.comments = ${viewList.comments}<br/>
+						viewList.views = ${viewList.views}<br/></div>
 						<div class="post-bottom border"></div>
 					</div>
 				</c:forEach>
@@ -196,11 +216,12 @@
 		</div>
 	</div>	
 </section>
-
 <%@ include file="includes/login_modal.jsp" %>
 <%@ include file="includes/modalPost.jsp" %>
 <%@ include file="includes/footer.jsp" %>
+
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd&libraries=clusterer"></script>
 <script src="js/index.js"></script>
+
 </body>
 </html>

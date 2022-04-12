@@ -242,26 +242,33 @@ paginationEl.appendChild(fragment);
 //인포윈도우에 장소명을 표시합니다
 function displayInfowindow(marker, title, address, category) {
 
- var content = '<div class="wrap">' + 
-                '<div class="info">' + 
-                   '<div class="title">' + 
-                       '<img src="images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;' + 
-                       title + 
-                   '</div>' + 
-                   '<div class="body">' + 
-                       '<div class="img">' +
-                           '<img src="images/dcfa90e9-aa6d-4faf-b3a7-02da8588dba0christmastree.png" width="73" height="70">' +
-                      '</div>' + 
-                       '<div class="content">' + 
-                           '<div class="address">' + '주소 : ' + address + '</div>' +
-                           '<div class="theme cont">' + '장소 : ' + category + '</div>' +
-                       '</div>' + 
-                   '</div>' + 
-               '</div>' +    
-             '</div>'; 
-
-infowindow.setContent(content);
-infowindow.open(map, marker);
+	var content = '<div class="wrap">' + 
+    	       '<div class="info">' + 
+	           '<div class="title bg-info">' + 
+	     	   '<img src="../images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;' + 
+	     		placeName + 
+	            '</div>' + 
+	            '<div class="body">' + 
+	            '<div class="img">' +
+	            '<img src="../images/infowindow-logo.png">' +
+	            '</div>' + 
+	            '<div class="content">' + 
+	            '<div class="address">' + '주소 : ' + address + '</div>' +
+	            '<div class="theme">' + '목적 : ' + theme + '</div>' +
+	            '<div class="category">' + '장소 : ' + category + '</div>' +
+	            '<div class="transportation">' + '이동수단 : ' + transportation + '</div>' +
+	            '<div class="post">' + 'POST : ' + 
+	            '<a href="feed/feedPost" target="_blank" class="link">post</a>' + 
+	            '</div>' + 
+	            '</div>' + 
+	            '</div>' + 
+	         	'</div>' +    
+	       		'</div>'; 
+	$('div.wrap').parent().parent().css('border', 'none');
+	$('div.wrap').parent().parent().css('background-color', 'transparent');
+	
+	infowindow.setContent(content);
+	infowindow.open(map, marker);
 }
 
 //마커와 검색결과 목록 클릭 시 input에 data 입력
@@ -403,27 +410,32 @@ function inputdata(marker, target1, value, title, address, category, category_co
 }
 
 //사용자가 임의로 만든 마커의 인포윈도우
-function displayInfowindow(marker, title, address, category) { //인포윈도우 생성
-   var content = '<div class="wrap">' + 
-                    '<div class="info">' + 
-                        '<div class="title">' + 
-                         '<img src="images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;' + 
-                          title + 
-                        '</div>' + 
-                        '<div class="body">' + 
-                            '<div class="img">' +
-                                '<img src="images/dcfa90e9-aa6d-4faf-b3a7-02da8588dba0christmastree.png" width="65px" height="55px">' +
-                           '</div>' + 
-                           '<div class="content">' + 
-                                '<div class="address">' + '주소 : ' + address + '</div>' +
-                                '<div class="category">' + '장소 : ' + category + '</div>' +
-                            '</div>' + 
-                        '</div>' + 
-                    '</div>' +    
-                  '</div>';
+function displayInfowindow(marker, placeName, title, address, category) { //인포윈도우 생성
+	var content = '<div class="wrap">' + 
+    	       '<div class="info">' + 
+	           '<div class="title bg-info">' + 
+	     	   '<img src="../images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;' + 
+	     		placeName + 
+	            '</div>' + 
+	            '<div class="body">' + 
+	            '<div class="img">' +
+	            '<img src="../images/infowindow-logo.png">' +
+	            '</div>' + 
+	            '<div class="content">' + 
+	            '<div class="address">' + '주소 : ' + address + '</div>' +
+	            '<div class="category">' + '장소 : ' + category + '</div>' +
+	            '<a href="feed/feedPost" target="_blank" class="link">post</a>' + 
+	            '</div>' + 
+	            '</div>' + 
+	            '</div>' + 
+	         	'</div>' +    
+	       		'</div>'; 
 
-    infowindow.setContent(content);
-    infowindow.open(map, marker); 
+	$('div.wrap').parent().parent().css('border', 'none');
+	$('div.wrap').parent().parent().css('background-color', 'transparent');
+	
+	infowindow.setContent(content);
+	infowindow.open(map, marker);
 }
 
 // 검색결과 목록의 자식 Element를 제거하는 함수입니다

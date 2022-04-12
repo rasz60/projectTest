@@ -220,21 +220,23 @@ $(document).ready(function() {
 		
 		console.log(totalSize);
 		
+					
+		//파일값 초기화
+		for(var i=0; i<arr.length; i++){
+			totalSize+=arr[i].size;
+		}
+		for(var i=0; i<arr2.length; i++){
+			totalSize+=arr2[i].size;		
+		}
+		
+		
 		if(arr.length+arr2.length>10){
 			alert('10장 이상 등록할수 없습니다.\n다시 선택해주세요');
-			//파일값 초기화
-			for(var i=0; i<arr.length; i++){
-				totalSize+=arr[i].size;
-			}
-			for(var i=0; i<arr2.length; i++){
-				totalSize+=arr2[i].size;		
-			}
-			
-			if(totalSize>100000000-1){
+
+		} else if(totalSize>10000000-1){
 				alert('이미지의 총 용량이 10MB를 초과합니다.\n 다른 이미지를 올려주세요');
-			}
 			
-		}else {
+		} else {
 			let fileArray = Array.from(arr); //변수에 할당된 파일을 배열로 변환(FileList -> Array) 
 			for(var i=0; i<arr2.length; i++){				
 				fileArray.push(arr2[i]);				
@@ -267,12 +269,8 @@ $(document).ready(function() {
 });
 
 function checkfrm() { 
-	if($('.img').val()==''){
-		alert('1장 이상의 사진 등록은 필수입니다.');
-		return false;
-	} 
 	
-	else if ($('.content').val() == '') {
+	if ($('.content').val() == '') {
 		alert('포스트 내용을 입력해주세요.');
 		$('.content').focus();
 		return false;

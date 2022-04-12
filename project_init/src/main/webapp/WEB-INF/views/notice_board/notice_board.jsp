@@ -26,32 +26,54 @@
 </head>
 
 <body>
+<%@ include file="../includes/header.jsp" %>
 
-<%@ include file="includes/header.jsp" %>
 
 <div id="main" class="container">
-	<h3 class="display-4 font-italic"><i class="fa-solid fa-bullhorn"></i></h3>
+
+	<div class="d-flex justify-content-between">
+		<h3 class="display-4 font-italic"><i class="fa-solid fa-bullhorn"></i></h3>
+		<s:authorize access="hasRole('ROLE_ADMIN')">
+			<a href="notice_board/write_view" id="write" class="btn btn-sm btn-dark float-right mt-5">글작성</a>
+		</s:authorize>
+
+	</div>
 	<hr />
 	
-	<form action="write" method="post" class="mb-4">
-		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
-		<div class="form-group">
-			<label for="uname">User ID</label>
-			<input type="text" class="form-control" id="uname" name="bName" required value="${bName}" readonly/>
-		</div>
-		<div class="form-group">
-			<label for="title">Title</label>
-			<input type="text" class="form-control" id="title" name="bTitle" placeholder="Enter Title" required/>
-		</div>
-		<div class="form-group">
-			<label for="content">Content</label>
-			<textarea class="form-control" id="content" name="bContent" rows="10" placeholder="Enter Content" required></textarea>
-		</div>
-		<a href="notice_board" id="goback" class="btn btn-sm btn-secondary float-right">목록</a>	
-		<input type="submit" id="complete" class="btn btn-sm btn-primary float-right mr-2" value="작성"/>
-	</form>
+	<table id="searchTable" class="table table-hover text-center">
+		<thead>
+			<tr class="row mx-0">
+				<th class="col-1">번호</th>
+				<th class="col-2">작성자</th>
+				<th class="col-4">제목</th>
+				<th class="col-3">날짜</th>
+				<th class="col-2">조회수</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<c:forEach items="${boardList}" var="dto">
+				<tr class="row mx-0">
+					<td id="bid" class="col-1">${dto.bId}</td>
+					<td class="col-2">WAYG SUPER ADMIN</td>
+					<td class="col-4">
+						<a href="notice_board/contentView?bId=${dto.bId}" class="content_view text-dark">${dto.bTitle}</a>
+					</td>
+					<td class="col-3">
+						<fmt:formatDate var="bDate" pattern="yyyy-MM-dd hh:mm:ss" value="${dto.bDate}" />
+						${bDate}
+					</td>
+					<td class="col-2">${dto.bHit}</td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+	
+	<hr />
+	
 </div>
 
-<%@ include file="includes/footer.jsp" %>
+<%@ include file="../includes/footer.jsp" %>
+
 </body>
 </html>

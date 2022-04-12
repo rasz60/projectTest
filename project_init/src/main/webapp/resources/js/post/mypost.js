@@ -10,7 +10,7 @@ $(document).ready(function() {
 		$('#modalBtn').trigger('click');
 		
 		$.ajax({
-	           url:"post/getlist.do",
+	           url:"getlist.do",
 	           type:"post",
 	           data:{
 	           	postNo : postNo,
@@ -43,9 +43,9 @@ $(document).ready(function() {
 	            // image carousel setting
 	           	for( var i = 0; i < images.length-1 ; i++ ){
 	           	    if ( i == 0 ) {
-	                   	$('.Citem').html('<div class="carousel-item active"><img src="images/'+images[i]+'"></div>');
+	                   	$('.Citem').html('<div class="carousel-item active"><img src="../images/'+images[i]+'"></div>');
 	                } else {
-	                	$('.Citem').append('<div class="carousel-item"><img src="images/'+images[i]+'"></div>');
+	                	$('.Citem').append('<div class="carousel-item"><img src="../images/'+images[i]+'"></div>');
 	                }
 	            }
 
@@ -105,7 +105,7 @@ $(document).ready(function() {
 	});
 });
 
-$('.modal-like').click(function(){
+$(document).on('click', '.modal-like', function(){
 	var element = $(this);
 	postNo = $(this).attr('data-num');
 	modalLike(element, postNo);
@@ -113,7 +113,7 @@ $('.modal-like').click(function(){
 
 function modalLike(element, postNo) {
 	$.ajax({
-    	url :'post/addLike.do',
+    	url :'addLike.do',
      	data : {
         	postNo : postNo,
             email : email
@@ -141,9 +141,11 @@ function modalLike(element, postNo) {
 	});
 };
 
-$('.addcomment').click(function () {
+$(document).on('click', '.addcomment', function () {
+	console.log('진입');
+	
 	postNo = $(this).attr('data-num');
-	let content = $('.comment').val();
+	let content = $('input.comment').val();
 	let grpl = $('.grpl').attr('data-value');
 	
 	if( content == '' ) {
@@ -151,7 +153,7 @@ $('.addcomment').click(function () {
 	}
 	
 	$.ajax({
-		url : 'post/addcomments.do',
+		url : 'addcomments.do',
 		type : 'post',
 		data : {postNo : postNo,
 				content : content,
@@ -182,7 +184,7 @@ $('.addcomment').click(function () {
 function getComments(postNo) {
 	let comments ="";
 	$.ajax({
-        url:"post/getcomments.do",
+        url:"getcomments.do",
         data:{postNo:postNo},
         type:"post",
 		beforeSend: function(xhr){
@@ -191,7 +193,7 @@ function getComments(postNo) {
 		    xhr.setRequestHeader(header, token);
 		},
         success:function(data){
-			console.log('진입');
+
 	       	for(var i=0; i<data.length; i++){
 				comments += '<div class="comment-block row mx-0 my-1 d-flex">';
 	      		for(var y=0; y < data[i].grpl; y++){
@@ -241,7 +243,7 @@ function getComments(postNo) {
 					console.log(email);
 
 					$.ajax({
-						url : 'post/addReplyComments.do',
+						url : 'addReplyComments.do',
 						type : 'post',
 						data : {postNo : postNo,
 								content : content,
@@ -270,7 +272,7 @@ function getComments(postNo) {
 				let commentNo = $(this).attr('data-no');
 			
 				$.ajax({
-					url : 'post/deleteReplyComments.do',
+					url : 'deleteReplyComments.do',
 					type : 'post',
 					data : {commentNo : commentNo},
 					beforeSend: function(xhr){
@@ -295,7 +297,8 @@ function getComments(postNo) {
 	});
 }
 
-$('#modal-reg').on('hidden.bs.modal', function() {
+$(document).on('hidden.bs.modal', '#modal-reg', function() {
+	console.log('진입');
     $(".nickname b").html('');
     $(".content").html('');
     $('.hashtag').children('span').remove();
@@ -306,7 +309,7 @@ $('#modal-reg').on('hidden.bs.modal', function() {
     $(".views span").html('');
     $('i.modal-like').removeClass('active');
     $('.Citem').children('div.carousel-item').remove();
-    $('div.location').html('');
+    $('div.location').children('div.location-item').remove();
     $('div.location').removeAttr('style');
     $('.comments').children('div.comment-block').remove();
     
@@ -345,3 +348,16 @@ function deleteCheck(){
         return false;
     }
 }
+
+
+$('.modifyBtn').click(function() {
+	var postNo = $('.addcomment').attr('data-num');
+	
+	$(this).attr('href', $(this).attr('href') + postNo);
+});
+
+$('.deleteBtn').click(function() {
+	var postNo = $('.addcomment').attr('data-num');
+	
+	$(this).attr('href', $(this).attr('href') + postNo);
+});

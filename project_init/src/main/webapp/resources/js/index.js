@@ -235,7 +235,7 @@ $('#filterbtn').click(function(e){
 			            displayInfowindow(marker, placeName, address, category); // displayInfowindow()에서 처리
 			        });
 			
-				        kakao.maps.event.addListener(marker, 'mouseout', function() { // 마커에 마우스 치웠을 때 인포창 닫기
+				    kakao.maps.event.addListener(marker, 'mouseout', function() { // 마커에 마우스 치웠을 때 인포창 닫기
 			            infowindow.close();
 			        }); 	
 				})(marker, placeName, address, category);
@@ -250,22 +250,27 @@ $('#filterbtn').click(function(e){
 });
 function displayInfowindow(marker, placeName, address, category) { //인포윈도우 생성
 	var content = '<div class="wrap">' + 
-			     	     '<div class="info">' + 
-				             '<div class="title">' + 
-				     				'<img src="images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;' + 
-				     				placeName + 
-				             '</div>' + 
-				             '<div class="body">' + 
-				                 '<div class="img">' +
-				                     '<img src="images/dcfa90e9-aa6d-4faf-b3a7-02da8588dba0christmastree.png" width="65px" height="55px">' +
-				                '</div>' + 
-				                 '<div class="content">' + 
-				                     '<div class="address">' + '주소 : ' + address + '</div>' +
-				                     '<div class="category">' + '장소 : ' + category + '</div>' +
-				                 '</div>' + 
-				             '</div>' + 
-				         '</div>' +    
-				       '</div>'; 
+		       '<div class="info">' + 
+	           '<div class="title bg-info">' + 
+	     	   '<img src="./images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;' + 
+	     		placeName + 
+	            '</div>' + 
+	            '<div class="body">' + 
+	            '<div class="img">' +
+	            '<img src="./images/infowindow-logo.png">' +
+	            '</div>' + 
+	            '<div class="content">' + 
+				'<div class="placeName">' + '이름 : ' + placeName + '</div>' +
+	            '<div class="address">' + '주소 : ' + address + '</div>' +
+	            '<div class="category">' + '장소 : ' + category + '</div>' +
+	            '</div>' + 
+	            '</div>' + 
+	            '</div>' + 
+	         	'</div>' +    
+	       		'</div>'; 
+	
+	$('div.wrap').parent().parent().css('border', 'none');
+	$('div.wrap').parent().parent().css('background-color', 'transparent');
      
 	 infowindow.setContent(content);
 	 infowindow.open(map, marker);

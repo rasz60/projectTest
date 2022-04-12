@@ -4,6 +4,14 @@
 	color: black;
 }
 
+.navbar {
+	max-height: 70px;
+}
+
+#logo {
+	max-height: 50px;
+}
+
 .navbar-form .btn-default {
 	height: 90%;
 }

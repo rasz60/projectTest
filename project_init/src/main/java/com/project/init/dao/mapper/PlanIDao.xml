@@ -178,5 +178,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</foreach>
 </update>
 
+<select id="selectPlanDtMap" resultType="com.project.init.dto.PlanDtDto">
+	SELECT * FROM plan_dt WHERE userId = #{userId} and ${value1} = #{value2} and ${value3} like '%'||#{value4}||'%'
+</select>
+
 </mapper>
 

@@ -1,6 +1,10 @@
 package com.project.init.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.project.init.command.ICommand;
@@ -85,7 +90,7 @@ public class PostController {
 
 	@RequestMapping("posting")
 	public String posting(String planNum, Model model) {
-		logger.info("posting(" + planNum + ") in");
+		logger.info("posting(" + planNum + ") in >>>");
 		
 		PlanMstDto result1= pdao.selectPlanMst(planNum, Constant.username);
 		model.addAttribute("plan1", result1);
@@ -103,7 +108,7 @@ public class PostController {
 	
 	@RequestMapping(value = "uploadMulti", method = { RequestMethod.POST })
 	public String uploadMulti(MultipartHttpServletRequest multi, Model model) {
-		logger.info("uploadMulti() in");		
+		logger.info("uploadMulti() in >>>");		
 		
 		comm = new PostWriteCommand();
 		
@@ -116,7 +121,7 @@ public class PostController {
 	
 	@RequestMapping("mypost")
 	public String mypost(Model model) {
-		logger.info("mypost() in");
+		logger.info("mypost() in >>>");
 		
 		String user = Constant.username;
 		ArrayList<PostDto> list = postDao.mylist(user, model);
@@ -132,8 +137,13 @@ public class PostController {
 	@ResponseBody
 	@RequestMapping("addView.do")
 	public String addView(@RequestParam("postNo") String postNo,@RequestParam("email") String email) {
+		logger.info("addView(" + postNo + ") in >>>");
+		
 		PostViewDto dto = new PostViewDto(postNo, email);
 		String result = postDao.addView(dto);
+		
+		logger.info("addView(" + postNo + ") result : " + result);
+		
 		return result;
 		
 	}
@@ -141,8 +151,11 @@ public class PostController {
 	@ResponseBody
 	@RequestMapping(value="getcomments.do")
 	public ArrayList<CommentsDto> getcomments(@RequestParam("postNo") String postNo) {
+		logger.info("getcomments(" + postNo + ") in >>>");
 		
 		ArrayList<CommentsDto> dto = postDao.getcomments(postNo);
+		
+		logger.info("getcomments(" + dto + ") result : dto.isEmpty() ? " + dto.isEmpty());
 		
 		return dto;
 	}
@@ -151,17 +164,21 @@ public class PostController {
 	@ResponseBody
 	@RequestMapping("addReplyComments.do")
 	public void addReplyComments(@RequestParam("postNo") String postNo,@RequestParam("grp") String grp, @RequestParam("content") String content,@RequestParam("grpl") String grpl,@RequestParam("grps") String grps,@RequestParam("email") String email){
+		logger.info("addReplyComments(" + postNo + ") in >>>");
+		
 		int Igrp = Integer.parseInt(grp);
 		int Igrpl = Integer.parseInt(grpl);
 		int Igrps = Integer.parseInt(grps);
-		CommentsDto dto = new CommentsDto(postNo,Igrp,content,Igrpl,Igrps,email);
+		CommentsDto dto = new CommentsDto(postNo, Igrp, content, Igrpl, Igrps, email);
 		postDao.addReplyComments(dto);
-		
+
 	}
 	
 	@ResponseBody
 	@RequestMapping("deleteReplyComments.do")
 	public void deleteReplyComments(@RequestParam("commentNo") String commentNo){
+		logger.info("deleteReplyComments(" + commentNo + ") in >>>");
+		
 		postDao.deleteReplyComments(commentNo);		
 	}
 	
@@ -169,6 +186,8 @@ public class PostController {
 	@ResponseBody
 	@RequestMapping("addcomments.do")
 	public void addcomments(@RequestParam("postNo") String postNo, @RequestParam("content") String content,@RequestParam("grpl") String grpl,@RequestParam("email") String email){
+		logger.info("addcomments(" + postNo + ") in >>>");
+		
 		int Igrpl = Integer.parseInt(grpl);
 		CommentsDto dto = new CommentsDto(postNo,content,Igrpl,email);
 		postDao.addcomments(dto);
@@ -177,44 +196,45 @@ public class PostController {
 	
 	@ResponseBody
 	@RequestMapping(value="addLike.do",produces = "application/text; charset=UTF-8")
-	public String addLike(@RequestParam("postNo") String postNo,@RequestParam("email") String email) {
+	public String addLike(@RequestParam("postNo") String postNo, @RequestParam("email") String email) {
+		logger.info("addLike(" + postNo + ") in >>>");
+		
 		PostLikeDto dto = new PostLikeDto(postNo, email);
 		String result = postDao.addLike(dto);
+		
+		logger.info("addLike(" + postNo + ") result : " + result);
+		
 		return result;
 	}
 
 	@ResponseBody
 	@RequestMapping("getlist.do")
-	public PostDto getlist(@RequestParam("postNo") String postNo,@RequestParam("email") String email) {
+	public PostDto getlist(@RequestParam("postNo") String postNo, @RequestParam("email") String email) {
+		logger.info("addLike(" + postNo + ") in >>>");
+		
 		PostDto tmp = new PostDto(postNo,email);
 		PostDto dto = postDao.getlist(tmp);
-		System.out.println("dddddddd");
+		
+		logger.info("addLike(" + postNo + ") result : dto.getPostNo() ?" + dto.getPostNo());
+		
 		return dto;
-	}
-	
-	/*
-	@RequestMapping("delete.do")
-	public String delete(HttpServletRequest request,Model model) {
-		String postNo = request.getParameter("postNo");
-		dao.deleteBoard(postNo);
-		return "redirect:list";
 	}
 	
 	@RequestMapping("modify")
 	public String modify(HttpServletRequest request,Model model) {
 		String postNo = request.getParameter("postNo");
-		ArrayList<PostDto> list =dao.modifyList(postNo);
 		
+		ArrayList<PostDto> list = postDao.modifyList(postNo);		
 		model.addAttribute("list", list);
-		return "modify";
+		return "post/modifypost";
 	}
 	
 	@RequestMapping(value = "modifyExcute.do", method = { RequestMethod.POST })
 	public String modifyExcute(MultipartHttpServletRequest multi, Model model) {
-		String images = "";
 		String titleImage="";
 		String tmp="";
-
+		String images = multi.getParameter("images");
+		System.out.println(images);
 		
 		List<MultipartFile> fileList = multi.getFiles("img");
 		
@@ -232,14 +252,28 @@ public class PostController {
 				e.getMessage(); 
 			}
 		}
-		images = tmp;
+		images += tmp;
+		System.out.println(images);
 		String[] test =  images.split("/");
 		titleImage = test[0];
 		
-		PostDto dto = new PostDto(multi.getParameter("postNo"),multi.getParameter("content"),multi.getParameter("hashtag"),multi.getParameter("location"),titleImage,images);
-		dao.modifyExcute(dto);
-		return "redirect:list";
+		PostDto dto = new PostDto(multi.getParameter("postNo"),multi.getParameter("content"),multi.getParameter("hashtag"),titleImage,images);
+		postDao.modifyExcute(dto);
+		return "redirect:/post/mypost";
 	}
+
+	@RequestMapping("delete.do")
+	public String delete(HttpServletRequest request,Model model) {
+		String postNo = request.getParameter("postNo");
+		postDao.deletePost(postNo);
+		return "redirect:/post/mypost";
+	}
+	
+	
+	/*
+
+	
+
 
 	@RequestMapping("searchPage")
 	public String searchPage(HttpServletRequest request, Model model) {

@@ -19,6 +19,7 @@ public class PlanDtDto {
 	private String category;
 	private String transportation;
 	private String details;
+	private String count;
 	
 	public PlanDtDto() {
 		super();
@@ -44,6 +45,30 @@ public class PlanDtDto {
 		this.category = category;
 		this.transportation = transportation;
 		this.details = details;
+	}
+	
+	//useAdmin
+	public PlanDtDto(int planDtNum, int planNum, String userId, String placeName, String placeCount, String planDay,
+			String planDate, String startTime, String endTime, String theme, String latitude, String longitude,
+			String address, String category, String transportation, String details, String count) {
+		super();
+		this.planDtNum = planDtNum;
+		this.planNum = planNum;
+		this.userId = userId;
+		this.placeName = placeName;
+		this.placeCount = placeCount;
+		this.planDay = planDay;
+		this.planDate = planDate;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.theme = theme;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.address = address;
+		this.category = category;
+		this.transportation = transportation;
+		this.details = details;
+		this.count = count;
 	}
 
 	public int getPlanDtNum() {
@@ -172,6 +197,14 @@ public class PlanDtDto {
 
 	public void setDetails(String details) {
 		this.details = details;
+	}
+
+	public String getCount() {
+		return count;
+	}
+
+	public void setCount(String count) {
+		this.count = count;
 	}
 	
 }

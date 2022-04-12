@@ -3,14 +3,15 @@ var plans = [];
 var polylines=[];
 var clusterer;
 
-// 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
-var infowindow = new kakao.maps.InfoWindow({zIndex:1});
-
 var mapContainer = document.getElementById('map'), 
 	mapOption = { 
 	    center : new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표 
 	    level : 4 // 지도의 확대 레벨 
 	};
+
+// 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
 
 function makeMarker(data, map) {
 	
@@ -584,9 +585,9 @@ $(document).ready(function() {
 	$('.nav-link').click(function(e) {
 		// feed일 때는 feed 페이지로 재진입, 아닐때는 get방식 ajax호출해서 #main-body에 html 뿌림
 		if ( $(this).attr('href') != 'feed' ) {
-			e.preventDefault();
-			var url = $(this).attr('href')+'.do';
-
+			//e.preventDefault();
+			var url = $(this).attr('href');
+			console.log(url);
 			// 현재 active로 되어있는 tab menu의 active 클래스를 삭제
 			$(this).parent().siblings('.active').removeClass('active');
 			
@@ -595,17 +596,16 @@ $(document).ready(function() {
 			
 			
 			// 해당되는 페이지 jsp 파일을 #main-body에 뿌려주는 ajax
+			/*
 			$.ajax({
 				url: url,
 				type: 'get',
 				success: function(data) {
 					// post에서 더보기 버튼으로 늘어났을 때, main-body의 height를 초기화
 					var height = $('#main-body').height(1000);
-					
 					if ( Number(height) > 1000 ) {
 						$('#main-body').height(1000);
 					};
-					
 					$('#main-body').html(data);
 					
 				},
@@ -614,6 +614,7 @@ $(document).ready(function() {
 					alert('ajax 실패');
 				}
 			})
+			*/
 		}
 	});
 	

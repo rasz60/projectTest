@@ -45,16 +45,45 @@
 	<div class="body-container">
 		<%-- 1. 유저 프로필 (프로필 이미지, 정보)--%>
 		<div id="feed-header" class="d-flex justify-content-start border-bottom row mx-0 flex-nowrap">
-			<%-- 1- 유저정보1 =  --%>
-			<div id="profile-left" class="p-3 mb-5 bg-body col-5"></div>
-			
-			<%-- 2- 프로필 이미지 --%>
-			<div id="profile-img" class="p-3 mb-5 bg-body col-2 text-center">
+			<%-- 1- 프로필 이미지 --%>
+			<div id="profile-img" class="p-3 ml-4 bg-body col-2 text-center">
 				<i class="profile-img fa-regular fa-circle-user"></i>
 			</div>
 			
-			<%-- 3- 유저정보2 =  --%>
-			<div id="profile-right" class="p-3 mb-5 bg-body col-5"></div>
+			<%-- 2- 유저정보2 =  --%>
+			<div id="profile-right" class="p-3 bg-body col-9 d-block">
+				<div class="row mx-0 d-flex justify-content-around">
+					<div class="col-2 text-center">
+						<b>일정</b>
+						<br />
+						<span id="planCount">2</span>
+					</div>
+					
+					<div class="col-2 text-center">
+						<b>포스트</b>
+						<br />
+						<span id="postCount">2</span>
+					</div>
+					
+					<div class="col-2 text-center">
+						<b>팔로워</b>
+						<br />
+						<span id="followerCount">2</span>
+					</div>
+					
+					<div class="col-2 text-center">
+						<b>팔로잉</b>
+						<br />
+						<span id="followingCount">2</span>
+					</div>
+				</div>
+				
+				<hr />
+							
+				<div class="text-left">
+					<pre class="ml-3">bio</pre>
+				</div>
+			</div>
 		</div>
 
 		<%-- 2. 피드 탭 메뉴 --%>		
@@ -75,7 +104,7 @@
 		
 			<%-- 3- 포스트 피드 버튼 --%>			
 			<li id="feed-post" class='nav-item col-3' data-tab=''>
-				<a href="feed/feedPost" class="nav-link">
+				<a href="post/mypost" class="nav-link">
 					<i class="fa-solid fa-images"></i>
 				</a>
 			</li>
@@ -96,7 +125,7 @@
 					<%-- 1- _csrf input --%>			
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
-					<%-- 2- planName --%>	
+					<%-- 2- planName --%>
 					<div class="form-group">
 						<label for="planName">일정 이름</label>
 						<input type="text" name="planName" id="planName" class="form-control" required/>

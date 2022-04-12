@@ -16,11 +16,11 @@
 </head>
 
 <body>
-<nav class="navbar navbar-default fixed-top border-bottom pt-3 bg-white">
+<nav class="navbar navbar-default fixed-top border-bottom bg-white">
 	<div class="container">
 		<div class="navbar-header">
 			<a href="/init" class="navbar-brand">
-				<i class="menu-icon fa-solid fa-house"></i>
+				<img src="/init/images/logo.png" id="logo" />
 			</a>
 		</div>
 		
@@ -81,6 +81,13 @@
 					<i class="menu-icon fa-regular fa-comment-dots"></i>
 				</a>
 			</li>
+			<s:authorize access="hasRole('ROLE_ADMIN')">
+				<li class="mr-4 msg">
+					<a href="/init/admin">
+						<i class="menu-icon fa-solid fa-screwdriver-wrench"></i>
+					</a>
+				</li>
+			</s:authorize>	
 		</ul>
 		
 	</div>

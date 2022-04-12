@@ -35,10 +35,12 @@
 		
 		<!-- permitAll : 모두에게 허용 -->
 		<intercept-url pattern="/" access="permitAll" />
-		
+	
 		<!-- isAnonymous() : 로그인하지 않은 user -->
 		<intercept-url pattern="/processLogin" access="isAnonymous()" />
 
+		<!-- hasRole('ROLE_ADMIN') : 관리자 계정 -->
+		
 		<!-- hasRole('ROLE_##') : 로그인한 회원 중 'ROLE_##' 권한을 가진 user / requires-channel="" : url에 지정한 값이 포함되어 있어야만 접근 -->
 		<intercept-url pattern="/feed" access="hasRole('ROLE_USER')" requires-channel="https" />
 		

@@ -124,13 +124,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    </select>
    
    	<!-- 게시글 삭제 -->
-   <select id="deleteBoard" parameterType="String" >
-      DELETE FROM COMMENTS WHERE POSTNO = #{postNo}
+   <select id="deletePost" parameterType="String" >
+		DELETE FROM POST WHERE POSTNO = #{postNo}
    </select>
 
 	<!--게시글을 삭제 하면 댓글 또한 삭제 -->
    <select id="deleteComments" parameterType="String" >
-      DELETE FROM POST WHERE POSTNO = #{postNo}
+		DELETE FROM COMMENTS WHERE POSTNO = #{postNo}
    </select>
    
 	<!-- 게시글 수정을 위한 데이터 불러오기 -->
@@ -140,7 +140,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    
    	<!-- 게시글 수정 -->
    <update id="modifyExcute" parameterType="String" >
-      UPDATE POST SET CONTENT = #{content}, HASHTAG = #{hashtag}, LOCATION = #{location}, TITLEIMAGE = #{titleImage}, IMAGES = #{images} WHERE POSTNO = #{postNo}
+      UPDATE POST SET CONTENT = #{content}, HASHTAG = #{hashtag}, TITLEIMAGE = #{titleImage}, IMAGES = #{images} WHERE POSTNO = #{postNo}
    </update>
 
 	<!-- 댓글 달기 -->

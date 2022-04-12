@@ -21,7 +21,7 @@ public class PlanDao implements PlanIDao {
 	
 	private final SqlSession sqlSession;
 
-	// sqlSession ������ ����
+	// sqlSession 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙
 	@Autowired
 	public PlanDao (SqlSession sqlSession) {
 		logger.info("PlanDao Const in >>>");
@@ -32,7 +32,7 @@ public class PlanDao implements PlanIDao {
 	}
 	
 	
-	// ��� PlanDt�� �ҷ���
+	// 占쏙옙占� PlanDt占쏙옙 占쌀뤄옙占쏙옙
 	@Override
 	public ArrayList<PlanDtDto> selectPlanList() {
 		logger.info("selectPlanList() in >>>");
@@ -44,7 +44,7 @@ public class PlanDao implements PlanIDao {
 	}
 	
 	
-	// ��� PlanDt�� �ҷ���
+	// 占쏙옙占� PlanDt占쏙옙 占쌀뤄옙占쏙옙
 	@Override
 	public ArrayList<PlanDtDto> filter(Map<String, String> map) {
 		logger.info("filter() in >>> ");
@@ -58,7 +58,7 @@ public class PlanDao implements PlanIDao {
 	
 	
 	
-	// ��� �̺�Ʈ ��������
+	// 占쏙옙占� 占싱븝옙트 占쏙옙占쏙옙占쏙옙占쏙옙
 	@Override
 	public ArrayList<PlanMstDto> selectAllPlan(String userId) {
 		logger.info("getCalendarEvent(" + userId + ") in >>>");
@@ -69,7 +69,7 @@ public class PlanDao implements PlanIDao {
 		return dtos;
 	}
 	
-	// planNum���� planMst �� ��������
+	// planNum占쏙옙占쏙옙 planMst 占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙
 	@Override
 	public PlanMstDto selectPlanMst(String planNum, String userId) {
 		logger.info("selectPlan (" + planNum + ") in >>>");
@@ -86,7 +86,7 @@ public class PlanDao implements PlanIDao {
 	}
 
 	
-	// planNum���� planDt �� ��������
+	// planNum占쏙옙占쏙옙 planDt 占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙
 	@Override
 	public ArrayList<PlanDtDto> selectPlanDt(String planNum, String userId) {
 		logger.info("selectPlanDt (" + planNum + ") in >>> ");
@@ -104,7 +104,7 @@ public class PlanDao implements PlanIDao {
 	
 	
 	
-	// modalâ���� ������ ���� �ݿ�
+	// modal창占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占쌥울옙
 	@Override
 	@Transactional
 	public String modifyPlanMst(PlanMstDto mstDto, List<PlanDtDto> updatePlanDt, List<PlanDtDto> deletePlanDt, List<PlanDtDto> insertPlanDt, String userId) {
@@ -142,7 +142,7 @@ public class PlanDao implements PlanIDao {
 		return result;
 	}
 	
-	// modalâ���� ������ ���� �ݿ�
+	// modal창占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占쌥울옙
 	@Override
 	@Transactional
 	public String deletePlanMst(String planNum, String userId) {
@@ -184,7 +184,7 @@ public class PlanDao implements PlanIDao {
 			dtDtos.get(i).setPlanNum(mstDto.getPlanNum());
 		}
 		
-		// �迭�� ������ insert ����
+		// 占썼열占쏙옙 占쏙옙占쏙옙占쏙옙 insert 占쏙옙占쏙옙
 		int res2 = sqlSession.insert("insertDt", dtDtos);
 		result = res2 > 0 ? "success": "failed";
 		logger.trace("insertPlanDtDo res2(Dt) : " + result);
@@ -193,7 +193,7 @@ public class PlanDao implements PlanIDao {
 	}
 	
 	
-	// planDt modify(update, delete, insert ���� �߻�)
+	// planDt modify(update, delete, insert 占쏙옙占쏙옙 占쌩삼옙)
 	@Override
 	@Transactional
 	public String detailModifyDo(ArrayList<PlanDtDto> deleteDtDtos, ArrayList<PlanDtDto> insertDtDtos, ArrayList<PlanDtDto> updateDtDtos) {
@@ -222,5 +222,13 @@ public class PlanDao implements PlanIDao {
 		return result;
 	}
 	
-
+	@Override
+	public ArrayList<PlanDtDto> selectPlanDtMap(Map<String, String> map) {
+		logger.info("selectPlanDtMap() in >>>");
+		
+		ArrayList<PlanDtDto> result = (ArrayList)sqlSession.selectList("selectPlanDtMap", map);
+		
+		logger.info("selectPlanDtMap() result : result.isEmpty() ? " + result.isEmpty());
+		return result;
+	}
 }
