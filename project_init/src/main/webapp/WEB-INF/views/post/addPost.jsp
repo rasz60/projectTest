@@ -168,10 +168,9 @@ var planDt = new Array();
 				<input name="hashtag" type="text" class="title form-control mt-2 hashtag" placeholder="#HASHTAG">
 			</div>
 			
-			<div class="list-group-item button-group row mx-0 d-flex justify-content-around">					
-		        <input type="reset" class="btn btn-sm btn-dark col-4 border-white" value="초기화"/>
-		        <input type="button" class="btn btn-sm btn-primary col-4 border-white" onclick="checkfrm()" value="등록"/>
-		        <input type="button" class="btn btn-sm btn-danger col-4 border-white" data-dismiss="modal" value="피드로 가기"/>
+			<div class="list-group-item button-group row mx-0 d-flex justify-content-around">
+		        <input type="button" class="btn btn-sm btn-primary col-6 border-white" onclick="checkfrm()" value="등록"/>
+		        <input type="button" class="btn btn-sm btn-danger col-6 border-white" data-dismiss="modal" value="피드로 가기"/>
 			</div>
 		</form>
 	

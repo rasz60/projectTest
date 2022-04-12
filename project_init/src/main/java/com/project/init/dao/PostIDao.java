@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.ui.Model;
 
 import com.project.init.dto.CommentsDto;
+import com.project.init.dto.PlanDtDto;
 import com.project.init.dto.PostDtDto;
 import com.project.init.dto.PostDto;
 import com.project.init.dto.PostLikeDto;
@@ -32,7 +33,7 @@ public interface PostIDao {
 	
 	public PostDto getlist(PostDto tmp);
 	
-	public void modifyExcute(PostDto dto);
+	public void modifyExcute(PostDto dto, ArrayList<PostDtDto> insertDtDtos, ArrayList<PostDtDto> deleteDtDtos);
 
 	public void deletePost(String postNo);
 	
@@ -40,12 +41,10 @@ public interface PostIDao {
 	
 	public ArrayList<PostDto> viewList(String email);
 	
-	public void selectPostDt(String postNo, Model model);
-	
+	public ArrayList<PostDtDto> getMapPost(ArrayList<PlanDtDto> dtDtos);
 	/* unset
 
-
-	
 	public ArrayList<PostDto> search(String keyword,String searchVal);
+
 	 */
 }

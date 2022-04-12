@@ -32,8 +32,8 @@ $(document).ready(function() {
 	            var likes = data.likes;
 	            var content = data.content;
 	            var comment_total = data.comments;
-	            var location = data.location;
 	            var views = data.views;
+				var postDt = data.postDt;
 	            var images = data.images.split('/');
 	            var postNo = data.postNo;
 	            var heartCheck =data.heartCheck;
@@ -61,12 +61,14 @@ $(document).ready(function() {
 	                	$('.Citem').append('<div class="carousel-item"><img src="../images/'+images[i]+'"></div>');
 	                }
 	            }
-
-	            if ( location != null ) {
-	               	for ( var i = 0; i < location.length; i++ ) {
+								
+	            if ( postDt != null ) {
+	               	for ( var i = 0; i < postDt.length; i++ ) {
+						console.log(postDt[i].location);
+		
 	           			var item = '<div class="mr-1 px-1 location-item border bg-light rounded">'
 								 + '<i class="fa-solid fa-location-dot text-primary"></i>&nbsp;'
-							 	 + location[i].placeName
+							 	 + postDt[i].location
 							 	 + '&nbsp</div>';
 	
 	               		if( i == 0 ) {
@@ -99,8 +101,7 @@ $(document).ready(function() {
 	               		}
 	               	}
 	            }
-	               
-	               
+	            
 	            $(".nickname>b").html(userNick);
 	            $(".content").html(content);
 	            $(".comment_total span").html(comment_total);
@@ -209,13 +210,10 @@ function getComments(postNo) {
 
 	       	for(var i=0; i<data.length; i++){
 				comments += '<div class="comment-block row mx-0 my-1 d-flex">';
-	      		for(var y=0; y < data[i].grpl; y++){
-	       			comments += '<span>&nbsp;</span>';
-				}
 				comments +=	'<div class="profile-img-xxs col-1 px-0">';
 				comments +=	'<div class="img-xxs border"></div>';
 				comments +=	'</div>';
-				comments +=	'<span class="col-3 pl-1" style="font-size: 14px; font-weight: 600;">' + data[i].userNick + '</span>';
+				comments +=	'<span class="col-3 pl-1 nickname" style="font-size: 14px; font-weight: 600;">' + data[i].userNick + '</span>';
 	           	comments += '<span class="col-6 px-0 comment-text" style="font-size: 13px;">'+data[i].content+'</span>';
 					
 				if(email!=="" && email!==null && email!=="null"){
@@ -225,7 +223,7 @@ function getComments(postNo) {
 					comments += '<i class="fa-solid fa-x deleteRe" style="font-size:5px; color:red; cursor : pointer;" data-no="'+data[i].commentNo+'"></i><br/>';
 				}
 
-				comments += '<div class="form-group col-12 row mx-0">';
+				comments += '<div class="form-group replyform col-12 row mx-0">';
 				comments += '<input type="text" class="col-10 recomment" data-grp="'+data[i].grp+'" data-grpl="'+data[i].grpl+'" data-grps="'+data[i].grps+'" placeholder="recomment">';
 				comments += '<button type="button" class="btn btn-sm btn-success addreplyComment ml-1 px-1 py-0" data-num="" role="button">'
 				comments += '<i class="fa-solid fa-reply"></i>'
@@ -240,45 +238,47 @@ function getComments(postNo) {
 			$('.replyClick').click(function () { //re댓글 작성
 				var count = $(this).attr('data-count');
 				if ( count == 0 ) {
-					$(this).siblings('.form-group').css('display', 'flex');
+					$('.replyform').css('display', 'none');
+					$('.replyClick').attr('data-count', 0);
+					$(this).siblings('.replyform').css('display', 'flex');
 					$(this).attr('data-count', Number(count)+1);
 				} else {
 					$(this).siblings('.form-group').css('display', 'none');
 					$(this).attr('data-count', 0);
 				}
+			});
 				
-				
-				$('.addreplyComment').click(function () {
-					let content = $(this).siblings('.recomment').val();
-					let grp = $(this).siblings('.recomment').attr('data-grp');
-					let grpl = $(this).siblings('.recomment').attr('data-grpl');
-					let grps = $(this).siblings('.recomment').attr('data-grps');
-					console.log(email);
+			$('.addreplyComment').click(function () {
+				let content ='<b class="font-italic">@' + $(this).parent().siblings('span.nickname').text() + "</b>&nbsp;&nbsp;" + $(this).siblings('.recomment').val();
+				let grp = $(this).siblings('.recomment').attr('data-grp');
+				let grpl = $(this).siblings('.recomment').attr('data-grpl');
+				let grps = $(this).siblings('.recomment').attr('data-grps');
+				console.log(email);
 
-					$.ajax({
-						url : 'addReplyComments.do',
-						type : 'post',
-						data : {postNo : postNo,
-								content : content,
-								grp : grp,
-								grpl : grpl,
-								grps : grps,
-								email : email},
-						beforeSend: function(xhr){
-					 	  	var token = $("meta[name='_csrf']").attr('content');
-					 		var header = $("meta[name='_csrf_header']").attr('content');
-				 		    xhr.setRequestHeader(header, token);
-				 		},
-				 		success : function () {
-				 			console.log('success');
-				 			getComments(postNo);
-						},
-						error : function () {
-							console.log('ERROR');
-						}
-					});
+				$.ajax({
+					url : 'addReplyComments.do',
+					type : 'post',
+					data : {postNo : postNo,
+							content : content,
+							grp : grp,
+							grpl : grpl,
+							grps : grps,
+							email : email},
+					beforeSend: function(xhr){
+				 	  	var token = $("meta[name='_csrf']").attr('content');
+				 		var header = $("meta[name='_csrf_header']").attr('content');
+			 		    xhr.setRequestHeader(header, token);
+			 		},
+			 		success : function () {
+			 			console.log('success');
+			 			getComments(postNo);
+					},
+					error : function () {
+						console.log('ERROR');
+					}
 				});
 			});
+
 			
 			$('.deleteRe').click(function () { //re댓글 삭제
 				let target = $(this);
@@ -325,7 +325,9 @@ $(document).on('hidden.bs.modal', '#modal-reg', function() {
     $('div.location').children('div.location-item').remove();
     $('div.location').removeAttr('style');
     $('.comments').children('div.comment-block').remove();
-    
+
+	$('a.modifyBtn').attr('href', 'modify?postNo=');
+    $('a.deleteBtn').attr('href', 'delete.do?postNo=');
 });
 
 $('#moreBtn').click(function() {

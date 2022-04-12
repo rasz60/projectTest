@@ -10,13 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
 import com.project.init.dao.PlanIDao;
+import com.project.init.dao.PostIDao;
 import com.project.init.dto.PlanDtDto;
+import com.project.init.dto.PostDtDto;
 import com.project.init.util.Constant;
 
 public class PlanDtGetMapCommand implements ICommand {
 
 	@Autowired
 	private PlanIDao planDao = Constant.pdao;
+	
+	@Autowired
+	private PostIDao postDao = Constant.postDao;
 	
 	@Override
 	public void execute(HttpServletRequest request, Model model) {
@@ -36,8 +41,10 @@ public class PlanDtGetMapCommand implements ICommand {
 		
 		ArrayList<PlanDtDto> result = planDao.selectPlanDtMap(map);
 
+		ArrayList<PostDtDto> result2 = postDao.getMapPost(result);
+		
 		request.setAttribute("selectPlanDtMap", result);
-
+		request.setAttribute("getMapPost", result2);
 	}
 
 }

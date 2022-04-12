@@ -41,6 +41,15 @@ CREATE TABLE POST_VIEW(
 
 CREATE SEQUENCE post_view_seq NOCACHE;
 
+CREATE TABLE post_dt (
+ postNo NUMBER NOT NULL,
+ planNum NUMBER NOT NULL,
+ planDtNum NUMBER NOT NULL,
+ location VARCHAR2(1000) NOT NULL
+);
+
+
+
 /* ÀÛ¾÷¿ë */
 SELECT * FROM COMMENTS;
 
@@ -59,3 +68,6 @@ SELECT location, hashtag, (SELECT count(*)
                            FROM COMMENTS 
                            WHERE POSTNO = 14) cnt 
 FROM POST ;
+
+
+

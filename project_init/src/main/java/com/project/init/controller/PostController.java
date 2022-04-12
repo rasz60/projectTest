@@ -1,10 +1,6 @@
 package com.project.init.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.project.init.command.ICommand;
 import com.project.init.command.PostModifyCommand;
+import com.project.init.command.PostModifyDoCommand;
 import com.project.init.command.PostWriteCommand;
 import com.project.init.dao.PlanIDao;
 import com.project.init.dao.PostIDao;
@@ -212,15 +208,15 @@ public class PostController {
 
 	@ResponseBody
 	@RequestMapping("getlist.do")
-	public PostDto getlist(@RequestParam("postNo") String postNo, @RequestParam("email") String email) {
+	public PostDto getlist(@RequestParam("postNo") String postNo, @RequestParam("email") String email, Model model) {
 		logger.info("addLike(" + postNo + ") in >>>");
 		
 		PostDto tmp = new PostDto(postNo, email);
-		PostDto dto = postDao.getlist(tmp);
+		tmp = postDao.getlist(tmp);
 		
-		logger.info("addLike(" + postNo + ") result : dto.getPostNo() ?" + dto.getPostNo());
+		logger.info("addLike(" + postNo + ") result : tmp.getPostNo() ?" + tmp.getPostNo());
 		
-		return dto;
+		return tmp;
 	}
 	
 	@RequestMapping("modify")
@@ -237,34 +233,8 @@ public class PostController {
 	
 	@RequestMapping(value = "modifyExcute.do", method = { RequestMethod.POST })
 	public String modifyExcute(MultipartHttpServletRequest multi, Model model) {
-		String titleImage="";
-		String tmp="";
-		String images = multi.getParameter("images");
-		System.out.println(images);
-		
-		List<MultipartFile> fileList = multi.getFiles("img");
-		
-		
-		String path = "C:/Users/310-08/git/projectTest/project_init/src/main/webapp/resources/images/";
-
-		for (MultipartFile mf : fileList) {
-			String originalFileName = mf.getOriginalFilename();
-			UUID prefix = UUID.randomUUID();
-			
-			try {
-				mf.transferTo(new File(path + prefix + originalFileName));
-				tmp+=prefix + originalFileName+"/";
-			} catch (IllegalStateException | IOException e) {
-				e.getMessage(); 
-			}
-		}
-		images += tmp;
-		System.out.println(images);
-		String[] test =  images.split("/");
-		titleImage = test[0];
-		
-		PostDto dto = new PostDto(multi.getParameter("postNo"),multi.getParameter("content"),multi.getParameter("hashtag"),titleImage,images);
-		postDao.modifyExcute(dto);
+		comm = new PostModifyDoCommand();
+		comm.execute(multi, model);
 		return "redirect:/post/mypost";
 	}
 
@@ -277,9 +247,6 @@ public class PostController {
 	
 	
 	/*
-
-	
-
 
 	@RequestMapping("searchPage")
 	public String searchPage(HttpServletRequest request, Model model) {

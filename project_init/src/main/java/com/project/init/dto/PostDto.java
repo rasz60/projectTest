@@ -15,14 +15,14 @@ public class PostDto {
 	private String userProfileImg;
 	private String hashtag;
 	private Timestamp regDate;
-	private ArrayList<PlanDtDto> location;
 	private int views;
 	private int comments;
 	private int likes;
 	private int heart;
 	private int heartCheck;
 	private String authority;
-
+	private ArrayList<PostDtDto> postDt;
+	
 	public PostDto() {
 		super();
 	}
@@ -44,6 +44,7 @@ public class PostDto {
 	public PostDto(String postNo, String email, String titleImage) {
 		super();
 		this.postNo = postNo;
+		this.email = email;
 		this.titleImage = titleImage;
 	}
 	
@@ -54,13 +55,15 @@ public class PostDto {
 	}
 	
 
-	public PostDto(String postNo,String content,String hashtag, String titleImage,String images) {
+	public PostDto(String postNo, String email,String content,String hashtag, String titleImage,String images) {
 		super();
 		this.postNo = postNo;
-		this.titleImage = titleImage;
-		this.images = images;
+		this.email = email;
 		this.content = content;
 		this.hashtag = hashtag;	
+		this.titleImage = titleImage;
+		this.images = images;
+
 	}
 	
 	public String getUserProfileImg() {
@@ -182,12 +185,12 @@ public class PostDto {
 		this.regDate = regDate;
 	}
 
-	public ArrayList<PlanDtDto> getLocation() {
-		return location;
+	public ArrayList<PostDtDto> getPostDt() {
+		return postDt;
 	}
 
-	public void setLocation(ArrayList<PlanDtDto> location) {
-		this.location = location;
+	public void setPostDt(ArrayList<PostDtDto> postDt) {
+		this.postDt = postDt;
 	}
 
 	public int getViews() {

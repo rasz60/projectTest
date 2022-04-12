@@ -66,10 +66,11 @@ public class PostDao implements PostIDao {
 	@Override
 	public ArrayList<PostDto> mylist(String email, Model model) {
 		logger.info("mylist(" + email + ") in >>>");
-		
-		ArrayList<PostDto> list =  (ArrayList)sqlSession.selectList("mylist", email);
 
+		ArrayList<PostDto> list =  (ArrayList)sqlSession.selectList("mylist", email);
+		
 		logger.info("PostDao mylist result : list.isEmpty() ? " + list.isEmpty());
+		
 		return list;
 	}
 	
@@ -161,22 +162,28 @@ public class PostDao implements PostIDao {
 		
 		PostDto dto = sqlSession.selectOne("getlist",tmp);
 		
-		logger.info("getlist(" + tmp.getPostNo() + ") result : dto.getViews() ? " + dto.getViews());
+		ArrayList<PostDtDto> dtList = (ArrayList)sqlSession.selectList("selectPostDt", Integer.parseInt(tmp.getPostNo()));
+		if ( dtList.size() != 0 ) {
+			dto.setPostDt(dtList);
+		}
+		
+		logger.info("getlist(" + tmp.getPostNo() + ") result : " + dto.getPlan());
 		
 		return dto;
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void selectPostDt(String postNo, Model model) {
-		ArrayList<PostDtDto> postDtDtos = (ArrayList)sqlSession.selectList("selectPostDt", Integer.parseInt(postNo));
-
-		model.addAttribute("postDtDtos", postDtDtos);
-	}
-
-	@Override
-	public void modifyExcute(PostDto dto) {
+	@Transactional
+	public void modifyExcute(PostDto dto, ArrayList<PostDtDto> insertDtDtos, ArrayList<PostDtDto> deleteDtDtos) {
 		sqlSession.update("modifyExcute", dto);
+		
+		if ( deleteDtDtos.size() != 0 ) {
+			sqlSession.delete("deletePostDt", deleteDtDtos);
+		}
+		
+		if ( insertDtDtos.size() != 0 ) {
+			sqlSession.insert("insertPostDt", insertDtDtos);
+		}		
 	}
 	
 	@Override
@@ -188,7 +195,9 @@ public class PostDao implements PostIDao {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public ArrayList<PostDto> likeList(String email) {
+
 		ArrayList<PostDto> list =  (ArrayList)sqlSession.selectList("likeList",email);
+		
 		return list;
 	}
 	
@@ -198,6 +207,18 @@ public class PostDao implements PostIDao {
 		ArrayList<PostDto> list =  (ArrayList)sqlSession.selectList("viewList",email);
 		return list;
 	}
+	
+	public ArrayList<PostDtDto> getMapPost(ArrayList<PlanDtDto> dtDtos) {
+		logger.info("getMapPost(dtDtos) in >>>");
+		
+		ArrayList<PostDtDto> mapPost = (ArrayList)sqlSession.selectList("getMapPost", dtDtos);
+
+		logger.info("getMapPost(dtDtos) result : mapPost.isEmpty() ? " + mapPost.isEmpty());
+		
+		return mapPost;
+	}
+	
+	
 	
 	
 	

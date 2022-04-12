@@ -23,12 +23,6 @@
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 <link rel="stylesheet" type="text/css" href="css/includes/footer.css" />
 <title>WAYG</title>
-<script>
-<c:if test='${not empty error}'>
-	$('#loginError').css('visibility','visible');
-	$('#loginModalBtn').trigger('click');
-</c:if>
-</script>
 </head>
 
 <body>
@@ -222,6 +216,13 @@
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd&libraries=clusterer"></script>
 <script src="js/index.js"></script>
+
+<script>
+	<c:if test='${not empty error}'>
+		$('#loginError').css('visibility','visible');
+		$('#loginModalBtn').trigger('click');
+	</c:if>
+</script>
 
 </body>
 </html>

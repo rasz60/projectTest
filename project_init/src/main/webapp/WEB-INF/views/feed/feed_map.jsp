@@ -115,6 +115,7 @@ span.required {
 	overflow: hidden;
 }
 </style>
+<script src="../js/post/mypost.js"></script>
 </head>
 
 <body>
@@ -253,6 +254,6 @@ span.required {
 
 
 <script src="../js/feed/feed_map.js"></script>
-
+<%@ include file="../includes/modalPost.jsp" %>
 </body>
 </html>

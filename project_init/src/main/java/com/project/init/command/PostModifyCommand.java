@@ -29,14 +29,11 @@ public class PostModifyCommand implements ICommand {
 		dto = postDao.getlist(dto);
 		model.addAttribute("postDto", dto);
 		
-		// result 2 : PostDtDto
-		postDao.selectPostDt(postNo, model);
-		
-		// result 3 : planMstDto
+		// result 2 : planMstDto
 		PlanMstDto pmst = planDao.selectPlanMst(dto.getPlan(), Constant.username);
 		model.addAttribute("planMstDto", pmst);
 		
-		// result 4 : planDtDto
+		// result 3 : planDtDto
 		ArrayList<PlanDtDto> pdts = planDao.selectPlanDt(dto.getPlan(), Constant.username);
 		model.addAttribute("planDtDtos", pdts);
 	}

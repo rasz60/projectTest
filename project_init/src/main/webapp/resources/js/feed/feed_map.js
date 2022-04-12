@@ -168,106 +168,141 @@ var clusterer = new kakao.maps.MarkerClusterer({
 			        xhr.setRequestHeader(header, token);
 			},
 			success: function(data) {
+				var post = data[0];
 				clusterer.clear(); //이전에 생성된 마커들 제거
-				console.log(data);			
+		
 				var markers =[]; // markers를 배열로 선언
-				for (var i = 0; i < data.length; i++ ) {
+				for (var i = 0; i < data[1].length; i++ ) {
 					var marker = new kakao.maps.Marker({  //반복문에서 생성하는 marker 객체를 markers에 추가
-			            position: new kakao.maps.LatLng(data[i].latitude, data[i].longitude) // 마커를 표시할 위치
+			            position: new kakao.maps.LatLng(data[1][i].latitude, data[1][i].longitude) // 마커를 표시할 위치
 			        })
-					markers.push(marker);	
+					markers.push(marker);
 					
-				var placeName = []; //장소 이름
-				placeName.push(data[i].placeName);
-				var address=[]; //주소
-				address.push(data[i].address);
-				var theme = []; //테마
-				theme.push(data[i].theme);
-				var category = []; //카테고리
-				
-				switch(data[i].category){ // DB에는 카테고리의 code값이 들어가므로 code를 카테고리 명으로 변경
-					case "MT1" : category.push("대형마트");
+				switch(data[1][i].category){ // DB에는 카테고리의 code값이 들어가므로 code를 카테고리 명으로 변경
+					case "MT1" : data[1][i].category = "대형마트";
 					break;
-					case "CS2" : category.push("편의점");
+					case "CS2" : data[1][i].category = "편의점";
 					break;
-					case "PS3" : category.push("어린이집, 유치원");
+					case "PS3" : data[1][i].category = "어린이집, 유치원";
 					break;
-					case "SC4" : category.push("학교");
+					case "SC4" : data[1][i].category = "학교";
 					break;
-					case "AC5" : category.push("학원");
+					case "AC5" : data[1][i].category = "학원";
 					break;
-					case "PK6" : category.push("주차장");
+					case "PK6" : data[1][i].category = "주차장";
 					break;
-					case "OL7" : category.push("주유소, 충전소");
+					case "OL7" : data[1][i].category = "주유소, 충전소";
 					break;
-					case "SW8" : category.push("지하철역");
+					case "SW8" : data[1][i].category = "지하철역";
 					break;
-					case "BK9" : category.push("은행");
+					case "BK9" : data[1][i].category = "은행";
 					break;
-					case "CT1" : category.push("문화시설");
+					case "CT1" : data[1][i].category = "문화시설";
 					break;
-					case "AG2" : category.push("중개업소");
+					case "AG2" : data[1][i].category = "중개업소";
 					break;
-					case "PO3" : category.push("공공기관");
+					case "PO3" : data[1][i].category = "공공기관";
 					break;
-					case "AT4" : category.push("관광명소");
+					case "AT4" : data[1][i].category = "관광명소";
 					break;
-					case "PO3" : category.push("숙박");
+					case "PO3" : data[1][i].category = "숙박";
 					break;
-					case "FD6" : category.push("음식점");
+					case "FD6" : data[1][i].category = "음식점";
 					break;
-					case "CE7" : category.push("카페");
+					case "CE7" : data[1][i].category = "카페";
 					break;
-					case "HP8" : category.push("병원");
+					case "HP8" : data[1][i].category = "병원";
 					break;
-					case "PM9" : category.push("약국");
+					case "PM9" : data[1][i].category = "약국";
 					break;
 				}
 				
-				var transportation = []; //이동수단
-				transportation.push(data[i].transportation);
+				const feedMapObj = {
+					planDtNum : data[1][i].planDtNum,
+					placeName : data[1][i].placeName,
+					address : data[1][i].address,
+					theme : data[1][i].theme,
+					category : data[1][i].category,
+					transportation : data[1][i].transportation,
+					post : ''
+				}
+					
+				for( var j = 0; j < post.length; j++ ) {
+					var postDt = post[j].planDtNum;
+					if ( feedMapObj.planDtNum == postDt) {
+						feedMapObj.post = post[j].postNo;
+					}	
+				}
 				
-				(function(marker, placeName, address, theme, category, transportation) { //이벤트 등록
+				
+				
+				
+												
+				(function(marker, feedMapObj) { //이벤트 등록
 					kakao.maps.event.addListener(marker, 'mouseover', function() { //마커에 마우스 올렸을 때
-			            displayInfowindow(marker, placeName, address, theme, category, transportation); // displayInfowindow()에서 처리
+			            displayInfowindow(marker, feedMapObj); // displayInfowindow()에서 처리
 			        });	
 					
 				    kakao.maps.event.addListener(marker, 'click', function() { // 마커를 클릭했을 때 인포창 닫기
 			            infowindow.close();
 			        }); 	
-				})(marker, placeName, address, theme, category, transportation);
+				})(marker, feedMapObj);
 				};
 				clusterer.addMarkers(markers); // 클러스터러에 마커들을 추가
+				
+				
+
+				
 			},
 			error : function(data) {
 				alert('필터를 다시 설정해주세요.');
 			}
-		});	
+		});
  });
   		
-function displayInfowindow(marker, placeName, address, theme, category, transportation) { //인포윈도우 생성
-	var content = '<div class="wrap">' + 
-    	       '<div class="info">' + 
-	           '<div class="title bg-info">' + 
-	     	   '<img src="../images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;' + 
-	     		placeName + 
-	            '</div>' + 
-	            '<div class="body">' + 
-	            '<div class="img">' +
-	            '<img src="../images/infowindow-logo.png">' +
-	            '</div>' + 
-	            '<div class="content">' + 
-	            '<div class="address">' + '주소 : ' + address + '</div>' +
-	            '<div class="theme">' + '목적 : ' + theme + '</div>' +
-	            '<div class="category">' + '장소 : ' + category + '</div>' +
-	            '<div class="transportation">' + '이동수단 : ' + transportation + '</div>' +
-	            '<div class="post">' + 'POST : ' + 
-	            '<a href="feed/feedPost" target="_blank" class="link">post</a>' + 
-	            '</div>' + 
-	            '</div>' + 
-	            '</div>' + 
-	         	'</div>' +    
-	       		'</div>'; 
+function displayInfowindow(marker, feedMapObj) { //인포윈도우 생성
+	var content ='';
+	
+	content +=  '<div class="wrap">';
+    content += '<div class="info">'; 
+	content += '<div class="title bg-info">';
+	content += '<img src="../images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;';
+	content += feedMapObj.placeName;
+	content += '</div>';
+	content += '<div class="body">';
+	content += '<div class="img">';
+	content += '<img src="../images/infowindow-logo.png">';
+	content += '</div>';
+	content += '<div class="content" style="height: 150px">';
+	
+	if ( feedMapObj.address != null ) {
+		content += '<div class="address">' + '주소 : ' + feedMapObj.address + '</div>';
+	}
+	
+	console.log(feedMapObj.theme);
+	
+	if ( feedMapObj.theme != null ) {
+		content += '<div class="theme">' + '목적 : ' + feedMapObj.theme + '</div>';
+	}
+	
+	if ( feedMapObj.category != null ) {
+		content += '<div class="category">' + '장소 : ' + feedMapObj.category + '</div>';
+	}
+	
+	if ( feedMapObj.transportation != null ) {
+		content += '<div class="transportation">' + '이동수단 : ' + feedMapObj.transportation + '</div>';
+	}
+	
+	if ( feedMapObj.post != '' ) {
+		content += '<div class="post">' + 'POST : ';
+		content += '<button type="button" class="btn btn-sm btn-dark post_link" data-num="'+ feedMapObj.post + '">post</button>';
+		content += '</div>';
+	}
+	content += '</div>';
+	content += '</div>';
+	content += '</div>';
+	content += '</div>';
+
 	$('div.wrap').parent().parent().css('border', 'none');
 	$('div.wrap').parent().parent().css('background-color', 'transparent');
 	
@@ -285,3 +320,228 @@ kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
 // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
  map.setLevel(level, {anchor: cluster.getCenter()});
 });
+
+$(document).on('click', 'button.post_link', function(e) {
+	e.preventDefault();
+	var postNo = $(this).attr('data-num');
+
+	$.ajax({
+		url : 'getMapPost.do',
+		type: 'post',
+		data: {postNo : postNo},
+		beforeSend: function(xhr){
+ 		   	var token = $("meta[name='_csrf']").attr('content');
+ 			var header = $("meta[name='_csrf_header']").attr('content');
+	        xhr.setRequestHeader(header, token);
+	    },
+		success: function(data) {
+			$('#modalBtn').trigger('click');
+	               
+	 			// data parsing
+				var userEmail = data.email;
+	 			var userNick=data.userNick;
+	            var userProfileImg = data.userProfileImg;
+	            var likes = data.likes;
+	            var content = data.content;
+	            var comment_total = data.comments;
+	            var views = data.views;
+				var postDt = data.postDt;
+	            var images = data.images.split('/');
+	            var postNo = data.postNo;
+	            var heartCheck =data.heartCheck;
+	            var hashtag;
+
+				if ( userEmail == email ) {
+					$('.modifyBtn').css('display', 'inline-block');
+					$('.modifyBtn').attr('href', $('.modifyBtn').attr('href')+postNo)
+					$('.deleteBtn').css('display', 'inline-block');
+					$('.deleteBtn').attr('href', $('.deleteBtn').attr('href')+postNo)
+				} else {
+					$('.modifyBtn').css('display', 'none');
+					$('.deleteBtn').css('display', 'none');
+				}
+
+
+	            if (data.hashtag != null) {
+	            	hashtag = data.hashtag.split('#');
+	            }
+	            // image carousel setting
+	           	for( var i = 0; i < images.length-1 ; i++ ){
+	           	    if ( i == 0 ) {
+	                   	$('.Citem').html('<div class="carousel-item active"><img src="../images/'+images[i]+'"></div>');
+	                } else {
+	                	$('.Citem').append('<div class="carousel-item"><img src="../images/'+images[i]+'"></div>');
+	                }
+	            }
+								
+	            if ( postDt != null ) {
+	               	for ( var i = 0; i < postDt.length; i++ ) {
+						console.log(postDt[i].location);
+		
+	           			var item = '<div class="mr-1 px-1 location-item border bg-light rounded">'
+								 + '<i class="fa-solid fa-location-dot text-primary"></i>&nbsp;'
+							 	 + postDt[i].location
+							 	 + '&nbsp</div>';
+	
+	               		if( i == 0 ) {
+				   			$('.location').css('height', '28px');
+				   			$('.location').css('display', 'flex');
+				   			$('.location').css('flex-wrap', 'nowrap');
+	            			$('.location').append(item);
+	               		} else {
+	               			$('.location').append(item);
+	               		}
+	               	}
+	            }
+	               
+	               // heart 확인해서 좋아요 누른 게시물은 active 부여
+	           	if( heartCheck == 1 ) {
+	           		$('i.modal-like').addClass('active');
+	           	}
+	           	
+	            if ( hashtag != null) {
+				   	for ( var i = 1; i < hashtag.length; i++ ) {
+
+						var item = '<div class="mr-1 px-1 hashtag-item border bg-light rounded font-italic">'
+								 + '#&nbsp;' + hashtag[i]
+							 	 + '&nbsp</div>';
+
+	               		if( i == 1 ) {
+	               			$('div.hashtag').html(item);
+	               		} else {
+	               			$('div.hashtag').append(item);
+	               		}
+	               	}
+	            }
+	            
+	            $(".nickname>b").html(userNick);
+	            $(".content").html(content);
+	            $(".comment_total span").html(comment_total);
+	            $('.likes span').html(likes);
+	            $('.likes i.modal-like').attr('data-num', postNo);
+	            $('button.addcomment ').attr('data-num', postNo);
+	            $(".views span").html(views);
+		},
+		error : function() {
+			
+		}
+	});
+	getComments(postNo);
+})
+
+
+function getComments(postNo) {
+	let comments ="";
+	$.ajax({
+        url:"/init/post/getcomments.do",
+        data:{postNo:postNo},
+        type:"post",
+		beforeSend: function(xhr){
+	 	  	var token = $("meta[name='_csrf']").attr('content');
+	 		var header = $("meta[name='_csrf_header']").attr('content');
+		    xhr.setRequestHeader(header, token);
+		},
+        success:function(data){
+
+	       	for(var i=0; i<data.length; i++){
+				comments += '<div class="comment-block row mx-0 my-1 d-flex">';
+				comments +=	'<div class="profile-img-xxs col-1 px-0">';
+				comments +=	'<div class="img-xxs border"></div>';
+				comments +=	'</div>';
+				comments +=	'<span class="col-3 pl-1 nickname" style="font-size: 14px; font-weight: 600;">' + data[i].userNick + '</span>';
+	           	comments += '<span class="col-6 px-0 comment-text" style="font-size: 13px;">'+data[i].content+'</span>';
+					
+				if(email!=="" && email!==null && email!=="null"){
+					comments += '<span class="replyClick col-1 px-0" data-count="0" style="font-size: 5px; cursor : pointer;">답글</span>';
+				}
+				if(email===data[i].email){
+					comments += '<i class="fa-solid fa-x deleteRe" style="font-size:5px; color:red; cursor : pointer;" data-no="'+data[i].commentNo+'"></i><br/>';
+				}
+
+				comments += '<div class="form-group replyform col-12 row mx-0">';
+				comments += '<input type="text" class="col-10 recomment" data-grp="'+data[i].grp+'" data-grpl="'+data[i].grpl+'" data-grps="'+data[i].grps+'" placeholder="recomment">';
+				comments += '<button type="button" class="btn btn-sm btn-success addreplyComment ml-1 px-1 py-0" data-num="" role="button">'
+				comments += '<i class="fa-solid fa-reply"></i>'
+				comments += '</button>';
+				comments += '</div>';
+				comments += '</div>';
+				comments += '</div>';
+	        }
+	           	
+			$('.comments').html(comments);
+	
+			$('.replyClick').click(function () { //re댓글 작성
+				var count = $(this).attr('data-count');
+				if ( count == 0 ) {
+					$('.replyform').css('display', 'none');
+					$('.replyClick').attr('data-count', 0);
+					$(this).siblings('.replyform').css('display', 'flex');
+					$(this).attr('data-count', Number(count)+1);
+				} else {
+					$(this).siblings('.form-group').css('display', 'none');
+					$(this).attr('data-count', 0);
+				}
+			});
+				
+			$('.addreplyComment').click(function () {
+				let content ='<b class="font-italic">@' + $(this).parent().siblings('span.nickname').text() + "</b>&nbsp;&nbsp;" + $(this).siblings('.recomment').val();
+				let grp = $(this).siblings('.recomment').attr('data-grp');
+				let grpl = $(this).siblings('.recomment').attr('data-grpl');
+				let grps = $(this).siblings('.recomment').attr('data-grps');
+				console.log(email);
+
+				$.ajax({
+					url : 'addReplyComments.do',
+					type : 'post',
+					data : {postNo : postNo,
+							content : content,
+							grp : grp,
+							grpl : grpl,
+							grps : grps,
+							email : email},
+					beforeSend: function(xhr){
+				 	  	var token = $("meta[name='_csrf']").attr('content');
+				 		var header = $("meta[name='_csrf_header']").attr('content');
+			 		    xhr.setRequestHeader(header, token);
+			 		},
+			 		success : function () {
+			 			console.log('success');
+			 			getComments(postNo);
+					},
+					error : function () {
+						console.log('ERROR');
+					}
+				});
+			});
+
+			
+			$('.deleteRe').click(function () { //re댓글 삭제
+				let target = $(this);
+				let commentNo = $(this).attr('data-no');
+			
+				$.ajax({
+					url : 'deleteReplyComments.do',
+					type : 'post',
+					data : {commentNo : commentNo},
+					beforeSend: function(xhr){
+				 	  	var token = $("meta[name='_csrf']").attr('content');
+				 		var header = $("meta[name='_csrf_header']").attr('content');
+			 		    xhr.setRequestHeader(header, token);
+			 		},
+			 		success : function () {
+			 			console.log('success');
+			 			getComments(postNo);
+					},
+					error : function () {
+						console.log('ERROR');
+					}
+					
+				});
+			});
+     	},
+     	error:function(){
+        	console.log("ajax 처리 실패");
+     	}
+	});
+}
+

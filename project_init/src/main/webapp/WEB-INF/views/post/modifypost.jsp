@@ -19,59 +19,177 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-<!-- KAKAO API -->
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=94ef81dc370b9f961476a1859364f709&libraries=services"></script>
 
-<script src="../js/post/postModify.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/includes/header.css" />
 <link rel="stylesheet" type="text/css" href="../css/includes/footer.css" />
 <link rel="stylesheet" type="text/css" href="../css/post/addPost.css" />
 <title>List</title>
 </head>
-<body>
-<c:forEach var="list" items="${postDto}">
+
+<script>
+var dateCount = '<c:out value="${planMstDto.dateCount}" />';
+
+var planDt = new Array();
+
+<c:forEach items="${planDtDtos}" var="item">
+
+	<c:choose>
+		<c:when test="${empty item.placeName}">
+			var placeName = "Place";
+		</c:when>
+		
+		<c:otherwise>
+			var placeName = "${item.placeName}";
+		</c:otherwise>
+	</c:choose>
+
+	<c:choose>
+		<c:when test="${empty item.startTime}">
+			var startTime = "- - : - -";
+		</c:when>
+		
+		<c:otherwise>
+			var startTime = "${item.startTime}";
+		</c:otherwise>
+	</c:choose>
+	
+	<c:choose>
+		<c:when test="${empty item.endTime}">
+			var endTime = "- - : - -";
+		</c:when>
+		
+		<c:otherwise>
+			var endTime = "${item.endTime}";
+		</c:otherwise>
+	</c:choose>
+
+
+	var dto = {
+			planDtNum : '${item.planDtNum}',
+			planDay : '${item.planDay}',
+			placeName : placeName,
+			startTime : startTime,
+			endTime : endTime,
+			theme : '${item.theme}'
+	}
+	
+	planDt.push(dto);
+</c:forEach>
+</script>
+
+<body class="bg-light">
 
 <%@ include file="../includes/header.jsp" %>
  <br/><br/>
- <section class="container mt-6 pt-1" style="margin: 200px, 0;">
-	<form action="modifyExcute.do?postNo=${list.postNo}&${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
-		<input type="hidden" name="email" value="${user}"/>		
-		<div class="form-group">
-			<h2>CONTENT</h2>
-			<h4 class="textCount">0/300자</h4>
-			<textarea class="form-control col-sm-5 content" maxlength="300" name="content" rows="10" cols="20" placeholder="content" required>${list.content}</textarea>
-		</div>
-		
-		<div class="form-group">
-			<label for="hashtag">#HASHTAG</label>
-			<input name="hashtag" type="text" class="title form-control hashtag" value="${list.hashtag}" placeholder="#HASHTAG" required>
-		</div>
-		
-		<div class="input-group mb-3" style="display: none;">
-			<div class="custom-file">
-				<input name="img" type="file" class="img custom-file-input" placeholder="img" id="inputGroupFile01" multiple="multiple">
-				<label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+ <section class="container mb-5">
+ 
+ 	<div class="posting-box row mx-0">
+ 		<div class="col-4">
+			<div class="detail-days row mx-0 d-flex" data-count="">
+				<%-- 3-1- 현재 보이는 planDay --%>
+				<h4 id="plan-day" class="display-4 col-9 font-italic">DAY 1</h4>
+
+				<%-- 3-2- 이전 planDay 이동 버튼 --%>
+				<button type="button" class="btn btn-outline-default text-dark col-1" id="prev-btn" data-index="0">
+					<i class="fa-solid fa-angle-left"></i>
+				</button>
+				
+				<%-- 3-3- 다음 planDay 이동 버튼 --%>
+				<button type="button" class="btn btn-outline-default text-dark col-1" id="next-btn" data-index="2">
+					<i class="fa-solid fa-angle-right"></i>
+				</button>
 			</div>
-		</div>
-		
-		<div class="beforeImg" style="display: flex; flex-wrap: wrap;">
-      
-     	</div>
+			
+			<%-- 4- 상세 일정 출력 박스 --%>
+			<div class="plan-details mt-1">
+				<%-- 4-2- 상세 일정의 장소 이름, 시작/종료 시간을 출력 --%>
+				<div id="details1" class="px-0">
+					<c:forEach begin="1" end="10" var="i">
+						<div class="list-group-item planDt${i} row flex-wrap d-flex mx-0 px-1 pt-2">
+							<h4 class="placeName col-10 font-italic"></h4>
+							<button type="button" class="btn btn-sm btn-success col-1 px-0 py-0 addLocBtn">+</button>
+							<h6 class="font-italic col-6 startTime"></h6>
+							<h6 class="font-italic col-6 endTime"></h6>
+						</div>
+					</c:forEach>
+				</div>
+			</div>
+ 		</div>
+ 		
+		<form id="addForm" action="modifyExcute.do?postNo=${postDto.postNo}&${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data" class="col-8">
+			<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
+			<input type="hidden" name="email" value="${user}"/>
+			<input type="hidden" name="planNum" value="${planMstDto.planNum}" />		
+			<div class="planDt">
+				<c:forEach items="${postDto.postDt}" var="postDt1">
+					<input type="hidden" name="planDtNum" data-group="${postDt1.planDtNum }" value="${postDt1.planDtNum }"/>
+					<input type="hidden" name="placeName" data-group="${postDt1.planDtNum }" value="${postDt1.location }"/>
+				</c:forEach>			
+			</div>
+			
+			
+			
+			<div class="list-group-item py-1 mb-1">
+				<input type="hidden" name="delDtNum" value="" />
+				<h4 class="px-0">Location</h4>
+				<p id="notice">최대 10개의 장소를 매칭할 수 있습니다.</p>
+				<div class="locations-box"></div>
+			</div>
+			
+			<div class="list-group-item mb-1 row d-flex mx-0 px-0">
+				<div class="col-10">
+					<h4>Image</h4>
+					<p id="notice">최대 10장, 전체 용량 20MB를 초과할 수 없습니다.</p>
+				</div>
+				
+				<div class="col-2 text-center mt-1">
+					<button type="button" class="btn btn-xl btn-primary addImgBtn">
+						<i class="fa-brands fa-instagram"></i>
+					</button>
+					<div class="input-group" style="display: none;">
+						<div class="custom-file">
+							<input name="img" type="file" class="img custom-file-input" placeholder="img" id="inputGroupFile01" multiple="multiple">
+							<label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+						</div>
+					</div>
+				</div>
+				
+				
+				<hr />
+				
+				<!-- 등록했던 이미지 박스 -->
+				<p class="font-italic ml-1 mb-1">before</p>
+				<div class="beforeImg mb-2" style="display: flex; flex-wrap: nowrap;"></div>
+				
+				<p class="font-italic ml-1 mb-1">added</p>
+				<div class="imgView" style="display: flex; flex-wrap: nowrap;"></div>
+				<!-- 이미지 보이는 박스 -->
+				<input name="addImg" type="file" class="addImg" multiple="multiple" style="display: none;">
+				<input name="images" type="hidden" class=" form-control images" value="${postDto.images}">
+    			<input name="deleteImg" type="hidden" class=" form-control deleteImg" >
+			</div>
 
-	    <div class="imgView" style="display: flex; flex-wrap: wrap;">
-	    
-	    	<i class="fa-brands fa-instagram addImgBtn" style="color : red; font-size: 220px;"></i>
-	    </div>
 
-		<input name="addImg" type="file" class="addImg" multiple="multiple" style="display: none;">
-		<input name="images" type="text" class=" form-control images" value="${list.images}">
-    	<input name="deleteImg" type="text" class=" form-control deleteImg" >
-		<input type="submit" value="ㄱㄱ">
-	</form>
+
+			<div class="list-group-item form-group mb-1">
+				<h4>Content</h4>
+				<p id="notice">해시태그는 최대 10개 이상을 초과할 수 없습니다.&nbsp;<span class="textCount" style="font-weight: 600;">( 0/300자 )</span></p>
+				<hr />
+				<input name="usertag" type="text" class="title form-control" placeholder="@user">
+				<textarea class="form-control content mt-2" name="content" rows="10" cols="40" placeholder="content" required>${postDto.content}</textarea>
+				<input name="hashtag" type="text" class="title form-control mt-2 hashtag" placeholder="#HASHTAG" value="${postDto.hashtag}">
+			</div>
+			
+			<div class="list-group-item button-group row mx-0 d-flex justify-content-around">
+		        <input type="button" class="btn btn-sm btn-primary col-6 border-white" onclick="checkfrm()" value="등록"/>
+		        <input type="button" class="btn btn-sm btn-danger col-6 border-white" data-dismiss="modal" value="피드로 가기"/>
+			</div>
+		</form>
+	
+	</div>
 </section>
 <%@ include file="../includes/footer.jsp" %>
-</c:forEach>
+<script src="../js/post/addPost2.js"></script>
+
 </body>
 </html>

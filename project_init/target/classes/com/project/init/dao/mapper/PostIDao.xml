@@ -26,7 +26,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    CONTENT,
 	    HASHTAG,
 	    REGDATE,
-	    LOCATION,
 	    AUTHORITY,
 	    (SELECT userProfileImg FROM UserInfo WHERE userEmail = POST.EMAIL) userProfileImg,
 	    (SELECT userNick FROM UserInfo WHERE userEmail = POST.EMAIL) userNick,
@@ -47,12 +46,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 ORDER BY POSTNO DESC
    </select>
    
-   <select id="locationList" parameterType="java.util.List" resultType="com.project.init.dto.PlanDtDto">
-   		SELECT placeName FROM plan_dt WHERE
-   		<foreach collection="list" separator="OR" item="dt">
-   			 planDtNum = #{dt.planDtNum}
-   		</foreach>
-   </select>
 
    <update id="insertPostDt" parameterType="java.util.List">
 		<foreach collection="list" item="dt" index="index" separator=" " open="INSERT ALL" close="SELECT * FROM dual ">
@@ -66,11 +59,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</foreach>
    </update>
 
+	<select id="selectMyPostDt" parameterType="java.util.List" resultType="com.project.init.dto.PostDtDto">
+   		SELECT * 
+   		FROM post_dt
+   		WHERE 
+   		<foreach collection="list" separator="OR" item="no">
+   			postNo = #{no}
+   		</foreach>
+	</select>
+
+
+	<delete id="deletePostDt" parameterType="java.util.List">
+   		DELETE FROM post_dt
+   		WHERE 
+   		<foreach collection="list" separator="OR" item="dt">
+   			(postNo = #{dt.postNo} AND planDtNum = #{dt.planDtNum})
+   		</foreach>
+	</delete>
+
 	<select id="selectPostDt" parameterType="int" resultType="com.project.init.dto.PostDtDto">
    		SELECT * 
    		FROM post_dt
    		WHERE postNo = #{postNo}
-   </select>
+	</select>
 
 
 	<!-- 게시글 불러오기 -->
@@ -84,7 +95,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    CONTENT,
 	    HASHTAG,
 	    REGDATE,
-	    LOCATION,
 	    AUTHORITY,
 	    (SELECT userProfileImg FROM UserInfo WHERE userEmail = #{email,jdbcType=VARCHAR}) userProfileImg,
 	    (SELECT userNick FROM UserInfo WHERE userEmail = #{email,jdbcType=VARCHAR}) userNick,
@@ -108,7 +118,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    CONTENT,
 	    HASHTAG,
 	    REGDATE,
-	    LOCATION,
 	    AUTHORITY,
 	    (SELECT userProfileImg FROM UserInfo WHERE userEmail = #{email,jdbcType=VARCHAR}) userProfileImg,
 	    (SELECT userNick FROM UserInfo WHERE userEmail = #{email,jdbcType=VARCHAR}) userNick,
@@ -135,7 +144,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    CONTENT,
 	    HASHTAG,
 	    REGDATE,
-	    LOCATION,
 	    AUTHORITY,
 	    (SELECT userProfileImg FROM UserInfo WHERE userEmail = (SELECT email FROM POST WHERE POSTNO= #{postNo})) userProfileImg,
 	    (SELECT userNick FROM UserInfo WHERE userEmail = (SELECT email FROM POST WHERE POSTNO= #{postNo})) userNick,
@@ -164,7 +172,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    
    	<!-- 게시글 수정 -->
    <update id="modifyExcute" parameterType="String" >
-      UPDATE POST SET CONTENT = #{content}, HASHTAG = #{hashtag}, TITLEIMAGE = #{titleImage}, IMAGES = #{images} WHERE POSTNO = #{postNo}
+      UPDATE POST 
+      SET CONTENT = #{content}, HASHTAG = #{hashtag}, TITLEIMAGE = #{titleImage}, IMAGES = #{images} 
+      WHERE POSTNO = #{postNo} AND email = #{email}
    </update>
 
 	<!-- 댓글 달기 -->
@@ -200,10 +210,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       SELECT * FROM POST WHERE CONTENT LIKE '%'||#{keyword}||'%'       
    </select>
 
-	<!-- 검색어 필터 /장소 -->
-   <select id="searchLocation" parameterType="String" resultType="com.project.init.dto.PostDto">      
-      SELECT * FROM POST WHERE LOCATION LIKE '%'||#{keyword}||'%'
-   </select>
 	<!-- 검색어 필터 /해시태그 -->
    <select id="searchHashtag" parameterType="String" resultType="com.project.init.dto.PostDto">
       SELECT * FROM POST WHERE HASHTAG LIKE '%'||#{keyword}||'%' 
@@ -268,5 +274,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	 INSERT INTO post_view(POSTVIEWNO,POSTNO,EMAIL,VIEWS) VALUES (POST_VIEW_SEQ.NEXTVAL,#{postNo},#{email},1)
    
    </insert>
+   
+      <!-- 게시글 불러오기 -->
+   <select id="getMapPost" parameterType="java.util.List" resultType="com.project.init.dto.PostDtDto" >
+		SELECT 
+        	*
+		FROM POST_DT
+		WHERE
+		<foreach collection="list" separator="OR" item="dt">
+			planDtNum = #{dt.planDtNum}
+		</foreach>
+   </select>
+   
+   
 </mapper>
 

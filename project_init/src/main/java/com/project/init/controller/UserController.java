@@ -71,7 +71,7 @@ public class UserController {
 			return "join-failed";
 	}
 	
-	@RequestMapping(value="/user/emailCheck")  //¿Ö Æ÷½ºÆ® ¹æ½ÄÀº ¾ÈµÅ?
+	@RequestMapping(value="/user/emailCheck")  //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Èµï¿½?
 	@ResponseBody
 	public int emailCheck(@RequestParam("id") String id) {
 		logger.info("emailCheck(" + id + ") in >>> ");
@@ -101,7 +101,7 @@ public class UserController {
 		logger.info("processLogin() in >>> ");
 		
 		if(error != null && error !="") {
-			model.addAttribute("error", "¾ÆÀÌµð¿Í ºñ¹Ð¹øÈ£¸¦ ´Ù½Ã È®ÀÎÇØÁÖ¼¼¿ä.");
+			model.addAttribute("error", "ì•„ì´ë””ì™€ ë¹„ë°€ë²ˆí˜¸ë¥¼ í™•ì¸í•´ì£¼ì„¸ìš”.");
 			
 			logger.info("processLogin() result : error");
 			return "/index";
@@ -118,7 +118,7 @@ public class UserController {
 		return "redirect:/";
 	}
 	
-	//·Î±×ÀÎ ¼º°ø½Ã
+	//ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@RequestMapping(value="/loginSuc")
 	public String loginSuc(Authentication authentication) {
 		logger.info("loginSuc() in >>> ");
@@ -127,9 +127,9 @@ public class UserController {
 		Constant.username = userDetails.getUsername();
 
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-		String auth = authorities.toString(); //roleÀ» ¾ò¾î¼­ ¹®ÀÚ¿­·Î º¯È¯
+		String auth = authorities.toString(); //roleï¿½ï¿½ ï¿½ï¿½î¼­ ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
 
-		udao.userVisit(Constant.username); //·Î±×ÀÎ ³¯Â¥ ¾÷µ¥ÀÌÆ®
+		udao.userVisit(Constant.username); //ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 		
 		logger.info("loginSuc() userAuth : " + auth);
 		

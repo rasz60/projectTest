@@ -2,7 +2,6 @@ package com.project.init.controller;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,9 +30,11 @@ import com.project.init.command.MypageCommand;
 import com.project.init.command.PlanDtGetMapCommand;
 import com.project.init.command.PlanMstModifyCommand;
 import com.project.init.dao.PlanIDao;
+import com.project.init.dao.PostIDao;
 import com.project.init.dao.UserDao;
 import com.project.init.dto.PlanDtDto;
 import com.project.init.dto.PlanMstDto;
+import com.project.init.dto.PostDto;
 import com.project.init.dto.UserDto;
 import com.project.init.util.Constant;
 
@@ -45,6 +46,8 @@ public class FeedController {
 	
 	@Autowired
 	private PlanIDao dao;
+	@Autowired
+	private PostIDao postDao;
 	private ICommand comm;
 	private UserDao udao;
 	
@@ -132,17 +135,32 @@ public class FeedController {
 
 	@ResponseBody
 	@RequestMapping(value="getAllPlansMap.do", produces="application/json; charset=UTF-8")
-	public ArrayList<PlanDtDto> getAllPlansMap(HttpServletRequest request, Model model) {
+	public ArrayList<Object> getAllPlansMap(HttpServletRequest request, Model model) {
 		logger.info("getAllPlansMap() >>>>");
 
 		comm = new PlanDtGetMapCommand();
 		comm.execute(request, model);
 		
-		ArrayList<PlanDtDto> result = (ArrayList)request.getAttribute("selectPlanDtMap");
+		ArrayList<Object> result = new ArrayList<Object>();
+		result.add((ArrayList)request.getAttribute("getMapPost"));
+		result.add((ArrayList)request.getAttribute("selectPlanDtMap"));
 		
-		logger.info("getAllPlansMap() result : result.isEmpty() ? " + result.isEmpty());
+		
+		logger.info("getAllPlansMap() result : result.size() ? " + result.size());
 		return result;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="getMapPost.do", produces="application/json; charset=UTF-8")
+	public PostDto getMapPost(HttpServletRequest request, Model model) {
+		logger.info("getMapPost() >>>>");
+		PostDto dto = new PostDto(request.getParameter("postNo"), Constant.username);
+		dto = postDao.getlist(dto);
+		
+		logger.info("getMapPost() result : dto ? " + dto.getPostNo());
+		return dto;
+	}
+	
 	
 	
 	@RequestMapping("feedInfo")
