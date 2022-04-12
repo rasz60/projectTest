@@ -26,6 +26,7 @@ $(document).ready(function() {
 	 			$('#modalBtn').trigger('click');
 	               
 	 			// data parsing
+				var userEmail = data.email;
 	 			var userNick=data.userNick;
 	            var userProfileImg = data.userProfileImg;
 	            var likes = data.likes;
@@ -37,6 +38,18 @@ $(document).ready(function() {
 	            var postNo = data.postNo;
 	            var heartCheck =data.heartCheck;
 	            var hashtag;
+
+				if ( userEmail == email ) {
+					$('.modifyBtn').css('display', 'inline-block');
+					$('.modifyBtn').attr('href', $('.modifyBtn').attr('href')+postNo)
+					$('.deleteBtn').css('display', 'inline-block');
+					$('.deleteBtn').attr('href', $('.deleteBtn').attr('href')+postNo)
+				} else {
+					$('.modifyBtn').css('display', 'none');
+					$('.deleteBtn').css('display', 'none');
+				}
+
+
 	            if (data.hashtag != null) {
 	            	hashtag = data.hashtag.split('#');
 	            }
@@ -348,16 +361,3 @@ function deleteCheck(){
         return false;
     }
 }
-
-
-$('.modifyBtn').click(function() {
-	var postNo = $('.addcomment').attr('data-num');
-	
-	$(this).attr('href', $(this).attr('href') + postNo);
-});
-
-$('.deleteBtn').click(function() {
-	var postNo = $('.addcomment').attr('data-num');
-	
-	$(this).attr('href', $(this).attr('href') + postNo);
-});

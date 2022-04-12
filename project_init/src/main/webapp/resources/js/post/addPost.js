@@ -116,9 +116,13 @@ $(document).ready(function() {
 			$('.locations-box').css('flex-wrap', 'nowrap');
 		}
 
-		var item = '<div class="mr-1 px-1 location-item border bg-light rounded">' + placeName + '&nbsp;<span class="text-danger delLocBtn" data-index="' + planDtNum + '">&times;</span></div>';
+		var item = '<div class="mr-1 px-1 location-item border bg-light rounded">' 
+				 + placeName + '&nbsp;<span class="text-danger delLocBtn" data-index="' + planDtNum + '">&times;</span></div>';
 		
 		$('.locations-box').append(item);
+		
+		$('div.planDt').append('<input type="hidden" name="planDtNum" data-group="' + planDtNum + '" value="' + planDtNum + '"/>');
+		$('div.planDt').append('<input type="hidden" name="placeName" data-group="' + planDtNum + '" value="' + placeName + '"/>');
 		
 		addLocBtn.attr('disabled', 'disabled');	
 	});
@@ -128,7 +132,7 @@ $(document).ready(function() {
 		var index = $(this).attr('data-index');
 		
 		$('.addLocBtn[data-index='+ index + ']').removeAttr('disabled');
-		
+		$('input[data-group='+ index +']').remove();
 		
 		$(this).parent().remove();
 		

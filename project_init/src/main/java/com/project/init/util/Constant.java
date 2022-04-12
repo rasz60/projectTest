@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.project.init.dao.BoardDao;
 import com.project.init.dao.PlanDao;
 import com.project.init.dao.PostDao;
+import com.project.init.dao.SearchDao;
 import com.project.init.dao.UserDao;
 import com.project.init.dto.PlanDtDto;
 import com.project.init.dto.PlanMstDto;
@@ -22,11 +23,12 @@ public class Constant {
 	public static PlanDao pdao;
 	public static PostDao postDao;
 	public static UserDao udao;
+	public static SearchDao searchDao;
 	public static BCryptPasswordEncoder passwordEncoder;
 	public static String username;
 	public static BoardDao bdao;
 	
-	//PlanMstDto�� �����ϴ� �޼���
+	//PlanMstDto占쏙옙 占쏙옙占쏙옙占싹댐옙 占쌨쇽옙占쏙옙
 	public static PlanMstDto planMstDtoParser(HttpServletRequest request, String userId) {
 		int planNum = Integer.parseInt(request.getParameter("planNum"));
 		String planName = request.getParameter("planName");
@@ -40,7 +42,7 @@ public class Constant {
 		return mstDto;
 	}
 	
-	//PlanDtDto�� ����Ʈ�� �����ϴ� �޼���
+	//PlanDtDto占쏙옙 占쏙옙占쏙옙트占쏙옙 占쏙옙占쏙옙占싹댐옙 占쌨쇽옙占쏙옙
 	public static List<PlanDtDto> planDtDtoParser(int planNum, String userId, HttpServletRequest request) {
 		String[] planDtNum = request.getParameterValues("planDtNum");
 		String[] placeName = request.getParameterValues("placeName");
@@ -83,11 +85,11 @@ public class Constant {
 		return planDtDtos;
 	}
 	
-	// modalâ���� ������ plan�� update�� ��ü �迭 ���� �޼���
+	// modal창占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 plan占쏙옙 update占쏙옙 占쏙옙체 占썼열 占쏙옙占쏙옙 占쌨쇽옙占쏙옙
 	public static List<PlanDtDto> getUpdateDtos(int planNum, String userId, String startDate, int dateCount) {
 		List<PlanDtDto> dtos = new ArrayList<PlanDtDto>();
 		
-		// startDate Calendar ��ü�� ���� �۾�
+		// startDate Calendar 占쏙옙체占쏙옙 占쏙옙占쏙옙底� 占쌜억옙
 		int y = Integer.parseInt(startDate.substring(0, 4));
 		int m = Integer.parseInt(startDate.substring(5, 7)) - 1;;
 		int d = Integer.parseInt(startDate.substring(8));
@@ -98,16 +100,16 @@ public class Constant {
 		
 		for ( int i = 0; i < dateCount; i++ ) {
 			if ( i == 0 ) {
-				// Calendar ��ü�� �� startDate���� �Ϸ羿 �÷����鼭 planDate ����
+				// Calendar 占쏙옙체占쏙옙 占쏙옙 startDate占쏙옙占쏙옙 占싹루씩 占시뤄옙占쏙옙占썽서 planDate 占쏙옙占쏙옙
 				cal.add(Calendar.DATE, i);
 			}
-			// Calendar ��ü�� �� startDate���� �Ϸ羿 �÷����鼭 planDate ����
+			// Calendar 占쏙옙체占쏙옙 占쏙옙 startDate占쏙옙占쏙옙 占싹루씩 占시뤄옙占쏙옙占썽서 planDate 占쏙옙占쏙옙
 			cal.add(Calendar.DATE, 1);
 			
-			// planDate�� db ���˿� �°� ����
+			// planDate占쏙옙 db 占쏙옙占싯울옙 占승곤옙 占쏙옙占쏙옙
 			String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
 			
-			// planNum, planDay, planDate ���� ���� PlanDtDto�� ���� �迭�� ����
+			// planNum, planDay, planDate 占쏙옙占쏙옙 占쏙옙占쏙옙 PlanDtDto占쏙옙 占쏙옙占쏙옙底� 占썼열占쏙옙 占쏙옙占쏙옙
 			PlanDtDto dtDto = new PlanDtDto();
 			dtDto.setUserId(userId);
 			dtDto.setPlanNum(planNum);

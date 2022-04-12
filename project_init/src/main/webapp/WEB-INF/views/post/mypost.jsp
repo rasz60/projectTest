@@ -120,7 +120,7 @@ var email = '<c:out value="${user}" />';
 			<div id="feedPost" class="col-12">
 				<div id="postBox">
 				<c:choose>
-					<c:when test="${rowCount > 0 || rowCount <= 1}">
+					<c:when test="${rowCount > 0 && rowCount <= 1}">
 						<div class="posts mt-2">
 							<c:forEach items="${list}" var="post">
 								<div class="post mr-2" data-value="${post.postNo}">

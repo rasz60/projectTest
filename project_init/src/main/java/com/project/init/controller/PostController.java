@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.project.init.command.ICommand;
+import com.project.init.command.PostModifyCommand;
 import com.project.init.command.PostWriteCommand;
 import com.project.init.dao.PlanIDao;
 import com.project.init.dao.PostIDao;
@@ -101,6 +102,8 @@ public class PostController {
 		model.addAttribute("plan2", result2);
 		
 		logger.info("posting("+ planNum +") result2.isEmpty() ? " + result2.isEmpty());
+		
+		model.addAttribute("user", Constant.username);
 		
 		return "post/addPost";
 	}
@@ -212,7 +215,7 @@ public class PostController {
 	public PostDto getlist(@RequestParam("postNo") String postNo, @RequestParam("email") String email) {
 		logger.info("addLike(" + postNo + ") in >>>");
 		
-		PostDto tmp = new PostDto(postNo,email);
+		PostDto tmp = new PostDto(postNo, email);
 		PostDto dto = postDao.getlist(tmp);
 		
 		logger.info("addLike(" + postNo + ") result : dto.getPostNo() ?" + dto.getPostNo());
@@ -221,12 +224,15 @@ public class PostController {
 	}
 	
 	@RequestMapping("modify")
-	public String modify(HttpServletRequest request,Model model) {
-		String postNo = request.getParameter("postNo");
+	public String modify(HttpServletRequest request, Model model) {
+		logger.info("modify(" + request.getParameter("postNo") + ") in >>>");
 		
-		ArrayList<PostDto> list = postDao.modifyList(postNo);		
-		model.addAttribute("list", list);
-		return "post/modifypost";
+		comm = new PostModifyCommand();
+		comm.execute(request, model);
+		
+		model.addAttribute("user", Constant.username);
+		
+		return "post/addPost2";
 	}
 	
 	@RequestMapping(value = "modifyExcute.do", method = { RequestMethod.POST })

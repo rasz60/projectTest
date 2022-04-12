@@ -104,14 +104,18 @@ public class UserController {
 			model.addAttribute("error", "아이디와 비밀번호를 다시 확인해주세요.");
 			
 			logger.info("processLogin() result : error");
+			return "/index";
 		}
 		
 		if(logout != null && logout != "") {
 			Constant.username = "";
 			
 			logger.info("processLogin() result : logout");
+			return "redirect:/";
 		}
-		return "/index";
+		
+		
+		return "redirect:/";
 	}
 	
 	//로그인 성공시
@@ -129,7 +133,7 @@ public class UserController {
 		
 		logger.info("loginSuc() userAuth : " + auth);
 		
-		return "/index";
+		return "redirect:/";
 	}
 	
 }

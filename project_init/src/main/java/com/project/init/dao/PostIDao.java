@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import org.springframework.ui.Model;
 
 import com.project.init.dto.CommentsDto;
+import com.project.init.dto.PostDtDto;
 import com.project.init.dto.PostDto;
 import com.project.init.dto.PostLikeDto;
 import com.project.init.dto.PostViewDto;
 
 public interface PostIDao {
 
-	public void write(PostDto dto);
+	public void write(PostDto dto, ArrayList<PostDtDto> dtDtos);
 	
 	public ArrayList<PostDto> mylist(String email, Model model);
 	
@@ -31,8 +32,6 @@ public interface PostIDao {
 	
 	public PostDto getlist(PostDto tmp);
 	
-	public ArrayList<PostDto> modifyList(String boardNum);
-	
 	public void modifyExcute(PostDto dto);
 
 	public void deletePost(String postNo);
@@ -41,7 +40,7 @@ public interface PostIDao {
 	
 	public ArrayList<PostDto> viewList(String email);
 	
-	
+	public void selectPostDt(String postNo, Model model);
 	
 	/* unset
 

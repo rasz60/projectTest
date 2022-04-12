@@ -30,7 +30,7 @@
 <title>List</title>
 </head>
 <body>
-<c:forEach var="list" items="${list}">
+<c:forEach var="list" items="${postDto}">
 
 <%@ include file="../includes/header.jsp" %>
  <br/><br/>

@@ -27,11 +27,11 @@
 </head>
 
 <script>
-var dateCount = '<c:out value="${plan1.dateCount}" />'
+var dateCount = '<c:out value="${planMstDto.dateCount}" />'
 
 var planDt = new Array();
 
-<c:forEach items="${plan2}" var="item">
+<c:forEach items="${planDtDtos}" var="item">
 
 	<c:choose>
 		<c:when test="${empty item.placeName}">
@@ -119,14 +119,26 @@ var planDt = new Array();
 		<form id="addForm" action="uploadMulti?${_csrf.parameterName}=${_csrf.token }" method="post" enctype="multipart/form-data" class="col-8">
 			<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
 			<input type="hidden" name="email" value="${user}"/>		
-			<input type="hidden" name="planNum" value="${plan1.planNum}" />
-			<div class="planDt"></div>
+			<div class="planDt">
+				<c:forEach items="${postDtDtos}" var="postDt1">
+					<input type="hidden" name="planDtNum" data-group="${postDt1.planDtNum }" value="${postDt1.planDtNum }"/>
+					<input type="hidden" name="placeName" data-group="${postDt1.planDtNum }" value="${postDt1.location }"/>
+				</c:forEach>			
+			</div>
+			
+			
 			
 			<div class="list-group-item py-1 mb-1">
 				<input type="hidden" />
 				<h4 class="px-0">Location</h4>
 				<p id="notice">최대 10개의 장소를 매칭할 수 있습니다.</p>
 				<div class="locations-box">
+					<c:forEach items="${postDtDtos}" var="postDt2">
+						<div class="mr-1 px-1 location-item border bg-light rounded">
+							${postDt2.location }&nbsp;
+							<span class="text-danger delLocBtn" data-index="${postDt2.planDtNum }">&times;</span>
+						</div>
+					</c:forEach>
 				</div>
 			</div>
 			
@@ -164,8 +176,10 @@ var planDt = new Array();
 				<p id="notice">해시태그는 최대 10개 이상을 초과할 수 없습니다.&nbsp;<span class="textCount" style="font-weight: 600;">( 0/300자 )</span></p>
 				<hr />
 				<input name="usertag" type="text" class="title form-control" placeholder="@user">
-				<textarea class="form-control content mt-2" name="content" rows="10" cols="40" placeholder="content" required></textarea>
-				<input name="hashtag" type="text" class="title form-control mt-2 hashtag" placeholder="#HASHTAG">
+				<textarea class="form-control content mt-2" name="content" rows="10" cols="40" placeholder="content" required>
+					${postDto.content}
+				</textarea>
+				<input name="hashtag" type="text" class="title form-control mt-2 hashtag" placeholder="#HASHTAG" value="${postDto.hashtag}">
 			</div>
 			
 			<div class="list-group-item button-group row mx-0 d-flex justify-content-around">					

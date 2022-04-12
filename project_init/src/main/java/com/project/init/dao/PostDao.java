@@ -7,10 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.project.init.dto.CommentsDto;
 import com.project.init.dto.PlanDtDto;
+import com.project.init.dto.PlanMstDto;
+import com.project.init.dto.PostDtDto;
 import com.project.init.dto.PostDto;
 import com.project.init.dto.PostLikeDto;
 import com.project.init.dto.PostViewDto;
@@ -34,11 +37,18 @@ public class PostDao implements PostIDao {
 	}
 	
 	@Override
-	public void write(PostDto dto) {
+	@Transactional
+	public void write(PostDto dto, ArrayList<PostDtDto> dtDtos) {
 		logger.info("write(" + dto.getEmail() + ") in >>>");
 		
 		sqlSession.insert("write", dto);
 
+		for(int i = 0; i < dtDtos.size(); i++ ) {
+			dtDtos.get(i).setPostNo(Integer.parseInt(dto.getPostNo()));
+		}
+		
+		sqlSession.insert("insertPostDt", dtDtos);
+		
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -151,22 +161,6 @@ public class PostDao implements PostIDao {
 		
 		PostDto dto = sqlSession.selectOne("getlist",tmp);
 		
-		if (dto.getPlan() != null ) {
-			String[] arr = dto.getPlan().split("/");
-			ArrayList<PlanDtDto> dto2s = new ArrayList<PlanDtDto>();
-				
-			for ( int j = 0; j < arr.length; j++ ) {
-				PlanDtDto dto2 = new PlanDtDto();
-				dto2.setPlanDtNum(Integer.parseInt(arr[j]));
-				dto2s.add(dto2);
-			}
-			ArrayList<PlanDtDto> location = (ArrayList)sqlSession.selectList("locationList", dto2s);
-				
-			dto.setLocation(location);
-			
-			logger.info("getlist(" + tmp.getPostNo() + ") sub-result : dto.getLocation().size() ? " + dto.getLocation().size());
-		}
-		
 		logger.info("getlist(" + tmp.getPostNo() + ") result : dto.getViews() ? " + dto.getViews());
 		
 		return dto;
@@ -174,10 +168,10 @@ public class PostDao implements PostIDao {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public ArrayList<PostDto> modifyList(String postNo) {
-		ArrayList<PostDto> list =  (ArrayList)sqlSession.selectList("modifyList",postNo);
-		
-		return list;
+	public void selectPostDt(String postNo, Model model) {
+		ArrayList<PostDtDto> postDtDtos = (ArrayList)sqlSession.selectList("selectPostDt", Integer.parseInt(postNo));
+
+		model.addAttribute("postDtDtos", postDtDtos);
 	}
 
 	@Override

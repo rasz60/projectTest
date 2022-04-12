@@ -2,19 +2,18 @@ package com.project.init.command;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.project.init.dao.PostDao;
 import com.project.init.dao.PostIDao;
+import com.project.init.dto.PostDtDto;
 import com.project.init.dto.PostDto;
 import com.project.init.util.Constant;
 
@@ -52,14 +51,33 @@ public class PostWriteCommand implements ICommand {
 		String[] test = images.split("/");
 		titleImage = test[0];
 		PostDto dto = new PostDto(Constant.username,
-								  multi.getParameter("planDtNum"),
+								  multi.getParameter("planNum"),
 								  multi.getParameter("content"),
 								  multi.getParameter("hashtag"),
 								  titleImage,
 								  images,
 								  views);
+		ArrayList<PostDtDto> dtDtos = new ArrayList<PostDtDto>();
 		
-		postDao.write(dto);
+		if ( request.getParameterValues("planDtNum") != null) {
+			String[] planDtNum = request.getParameterValues("planDtNum");
+			String[] placeName = request.getParameterValues("placeName");
+			
+			int planNum = Integer.parseInt(multi.getParameter("planNum"));
+
+			for(int i = 0; i < planDtNum.length; i++ ) {
+				PostDtDto dtDto = new PostDtDto();
+				
+				dtDto.setPlanNum(planNum);
+				dtDto.setPlanDtNum(Integer.parseInt(planDtNum[i]));
+				dtDto.setLocation(placeName[i]);
+				
+				dtDtos.add(dtDto);
+			}
+			
+		}
+		
+		postDao.write(dto, dtDtos);
 		
 		multi.setAttribute("result", dto);
 	}

@@ -8,6 +8,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    <insert id="write" parameterType="com.project.init.dto.PostDto"> 
       Insert into POST(EMAIL,POSTNO,CONTENT,HASHTAG,PLAN,TITLEIMAGE,IMAGES,views)
        values (#{email},POST_NO_SEQ.NEXTVAL,#{content},#{hashtag},#{plan},#{titleImage},#{images},#{views})
+       
+       	<selectKey resultType="string" keyProperty="postNo" order="AFTER">
+			SELECT POST_NO_SEQ.currVal from dual
+		</selectKey>
+       
    </insert>
    
 	<!-- 게시글 불러오기 -->
@@ -48,6 +53,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    			 planDtNum = #{dt.planDtNum}
    		</foreach>
    </select>
+
+   <update id="insertPostDt" parameterType="java.util.List">
+		<foreach collection="list" item="dt" index="index" separator=" " open="INSERT ALL" close="SELECT * FROM dual ">
+			INTO post_dt
+				
+			VALUES
+			(#{dt.postNo},
+			#{dt.planNum},
+			#{dt.planDtNum},
+			#{dt.location})
+		</foreach>
+   </update>
+
+	<select id="selectPostDt" parameterType="int" resultType="com.project.init.dto.PostDtDto">
+   		SELECT * 
+   		FROM post_dt
+   		WHERE postNo = #{postNo}
+   </select>
+
 
 	<!-- 게시글 불러오기 -->
    <select id="likeList" parameterType="String" resultType="com.project.init.dto.PostDto" >
