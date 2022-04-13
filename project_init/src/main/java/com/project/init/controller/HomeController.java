@@ -1,10 +1,10 @@
 package com.project.init.controller;
 
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,11 +12,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.project.init.feed.dao.IDao;
-import com.project.init.feed.dto.PlanDto2;
+import com.project.init.command.BoardContentCommand;
+import com.project.init.command.BoardWriteCommand;
+import com.project.init.command.ICommand;
+import com.project.init.command.MainMapFilterCommand;
+import com.project.init.dao.BoardIDao;
+import com.project.init.dao.PlanIDao;
+import com.project.init.dao.PostIDao;
+import com.project.init.dao.UserDao;
+import com.project.init.dto.NoticeBoardDto;
+import com.project.init.dto.PlanDtDto;
+import com.project.init.dto.PostDto;
+import com.project.init.util.Constant;
+
 
 @Controller
 public class HomeController {
@@ -24,88 +34,121 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@Autowired
-	private IDao dao;
+	private PlanIDao dao;
+
+	@Autowired
+	private BoardIDao bdao;
+
+	@Autowired
+	private PostIDao postDao;
 	
+	private ICommand comm;
+	private UserDao udao;
 	
+	@Autowired
+	public void setUdao(UserDao udao) {
+		this.udao = udao;
+		Constant.udao = udao;
+	}
+	
+
 	@RequestMapping("/")
-	public String main() {
-		logger.info("main >>>");
+	public String index(Model model) {
+		logger.info("index() in >>>>");
+		String user = Constant.username;
 		
-		return "main";
+		ArrayList<PostDto> post = postDao.list(user);
+		model.addAttribute("post", post);
+		
+		ArrayList<PostDto> likeList = postDao.likeList(user);
+		model.addAttribute("likeList", likeList);
+		
+		ArrayList<PostDto> viewList = postDao.viewList(user);
+		model.addAttribute("viewList", viewList);
+		model.addAttribute("user",Constant.username);
+		
+		return "index";
 	}
 	
-	@RequestMapping("home")
-	public String home() {
-		logger.info("home in >>>");
-		
-		return "home";
-	}
-	
-	@RequestMapping("search")
-	public String search(HttpServletRequest request, Model model) {
-		logger.info("search >>>");
-			
-		int totalPosts = 2000;
-		int endPage = 0;
-		
-		if ( totalPosts <= 20 ) {
-			endPage = 1;
-		}
-		
-		if ( totalPosts % 20 == 0 ) {
-			endPage = totalPosts / 20;
-		} else {
-			endPage = (totalPosts / 20) + 1; 
-		}
-		
-		request.setAttribute("startPage", 1);
-		request.setAttribute("endPage", endPage);
-		request.setAttribute("totalPosts", totalPosts);
-		
-		return "search";
+	@RequestMapping("/join")
+	public String join() {
+		logger.info("join() in >>>>");
+		return "join/join";
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "getSearchResult.do", produces = "application/text; charset=UTF-8")
-	public String getSearchResult(@RequestParam String page, Model model) {
-		logger.info("getSearchResult(" + page + ") in >>>");
-		
-		int startIdx = ((Integer.parseInt(page) - 1) * 20) + 1;
-		int endIdx = Integer.parseInt(page) * 20;		
-		
-		logger.info(startIdx + ", " + endIdx);
-		
-		logger.info("getSearchResult result : " + page);
-		return page;
-	}
-	
-	@ResponseBody //main 맵에 전체 마커 표시
 	@RequestMapping(value = "/selectPlanList", produces="application/json; charset=UTF-8")
-	public ArrayList<PlanDto2> selectPlanList(Model model) {
+	public ArrayList<PlanDtDto> selectPlanList(Model model) {
 		logger.info("selectPlanList() in >>>>");
-		ArrayList<PlanDto2> selectPlanList = dao.selectPlanList();
+		
+		ArrayList<PlanDtDto> selectPlanList = dao.selectPlanList();
 		model.addAttribute("latlng", selectPlanList);
-		System.out.println(selectPlanList);
+		
 		return selectPlanList;
 	}
-	
-	@ResponseBody //main 맵 필터
-	@RequestMapping(value = "/filter", produces="application/json; charset=UTF-8")
-	public ArrayList<PlanDto2> filter(HttpServletRequest request, Model model){
-		logger.info("filter() in >>>>");
-		String value1 = request.getParameter("value1");
-		String value2 = request.getParameter("value2");
-		String value3 = request.getParameter("value3");
-		String value4 = request.getParameter("value4");
-		Map<String, String> map = new HashMap<>();
-		map.put("value1", value1);
-		map.put("value2", value2);
-		map.put("value3", value3);
-		map.put("value4", value4);
-		ArrayList<PlanDto2> filter = dao.filter(map);
 
-		request.setAttribute("filter", filter);
-		return filter;
+	
+	@ResponseBody
+	@RequestMapping(value = "/filter", produces="application/json; charset=UTF-8")
+	public ArrayList<PlanDtDto> filter(HttpServletRequest request, Model model){
+		logger.info("filter() in >>>>");
+		comm = new MainMapFilterCommand();
+		comm.execute(request, model);
+		
+		ArrayList<PlanDtDto> filterDtos = (ArrayList)request.getAttribute("filter");
+
+		return filterDtos;
+	}
+	
+	@RequestMapping("/notice_board")
+	public String noticeBoard(Model model) {
+		logger.info("noticeBoard() in >>>>");
+		
+		ArrayList<NoticeBoardDto> bdtos = bdao.getBoardList();
+		
+		model.addAttribute("boardList", bdtos);
+		
+		logger.info("noticeBoard() result : bdtos.isEmpty() ? " + bdtos.isEmpty());
+		
+		return "notice_board/notice_board";
+	}
+	
+	@RequestMapping("/notice_board/write_view")
+	public String writeView(Model model) {
+		logger.info("writeView() in >>>>");
+		
+		model.addAttribute("bName", Constant.username);
+		logger.info("write_view result : bName ? " + Constant.username);
+
+		
+		return "notice_board/notice_board_write";
+	}
+	
+	@RequestMapping("/notice_board/write")
+	public String write(HttpServletRequest request, HttpServletResponse response, Model model) {
+		logger.info("write in >>>>");
+		comm = new BoardWriteCommand();
+		comm.execute(request, model);
+		
+		return "redirect:notice_board";
+	}
+	
+	@RequestMapping("/notice_board/contentView")
+	public String content_view(HttpServletRequest request, HttpServletResponse response, Model model) {
+		logger.info("content_view in >>>>");
+
+		String result = "failed";
+		
+		comm = new BoardContentCommand();
+		comm.execute(request, model);
+		
+		if ( model.containsAttribute("content_view") ) {
+			result = "success";
+		}
+
+		logger.info("content_view result : " + result);
+		
+		return "notice_board/notice_board_content";
 	}
 	
 }

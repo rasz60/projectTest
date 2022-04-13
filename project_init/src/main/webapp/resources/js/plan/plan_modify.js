@@ -32,7 +32,7 @@ $(document).ready(function() {
 				var lng = target.children('.inputbox').children('input[name=longitude]').val();
 				
 				// db에서 불러온 값으로 marker를 생성
-				var imageSrc = '../images/marker.png', // 마커이미지의 경로    
+				var imageSrc = '../images/marker.png', // 마커이미지의 경로
 			    imageSize = new kakao.maps.Size(50, 50), // 마커이미지의 크기입니다
 			    imageOption = {offset: new kakao.maps.Point(10, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 				
@@ -102,13 +102,8 @@ $(document).ready(function() {
 	// 전체 일정을 submit하는 버튼 클릭 시
 	$('#submitAll').click(function(e) {
 		e.preventDefault();
-		
-		// modal창으로 저장 여부 체크
-		$('.modal-body').text('모든 일정 작성을 완료하고 피드로 이동할까요?');
-		$('#modalBtn').trigger('click');
-		
-		$('#trueBtn').click(function(e) {
-			e.preventDefault();
+
+		if ( confirm('모든 일정을 저장하고 피드로 돌아갈까요?') ) {
 			
 			// id가 frm으로 시작하는 form을 배열로 모두 선택
 			var form = $('form[id^=frm]').get();
@@ -121,7 +116,7 @@ $(document).ready(function() {
 			
 			// 모든 form value를 seralize()해서 ajax 처리	
 			let data = $('form').serialize();
-			console.log(data);
+
 			$.ajax({
 				url: '/init/plan/detail_modify.do',
 				type: 'post',
@@ -133,8 +128,13 @@ $(document).ready(function() {
 					console.log('error');				
 				}
 			})
-		})
+			
+		} else {
+			return false;
+		}		
 	});
+
+
 	
 	// 상세 일정에 마이너스 버튼 클릭시 이벤트
 	$(document).on('click', '.deleteBtn', function() {
@@ -152,6 +152,8 @@ $(document).ready(function() {
 		// 현재 작성중인 일정의 planDay를 변수로 저장
 		let planDay = target.attr('data-day');
 		
+		var inputBox = $(this).siblings('.inputbox');
+		
 		// 현재 value가 0인 경우, return false
 		if ( delValue < 0 ) {
 			alert('최소 1개 이상의 일정이 필요합니다');
@@ -161,7 +163,18 @@ $(document).ready(function() {
 		} else if ( delValue < 1 ) {
 			$(this).siblings('input[name=placeName]').val('');
 
-			var inputBox = $(this).siblings('.inputbox');
+			var delNum = inputBox.children('input[name=planDtNum]').val();
+
+			if ( delNum != 0 ) {
+				var delDtNums = $('#frm0').children('input[name=deleteDtNum]').val();
+
+				if ( delDtNums == '' ) {
+					$('#frm0').children('input[name=deleteDtNum]').val(delNum);
+				} else {
+					$('#frm0').children('input[name=deleteDtNum]').val(delDtNums + "/" + delNum);
+				}
+			}
+			
 			// 해당되는 마커를 삭제
 			removeMarkerArray(planDay, (Number(index)-1));
 			inputBox.children('input[name=planDtNum]').val('0');
@@ -181,6 +194,20 @@ $(document).ready(function() {
 			target.parent().siblings('p.mt-2').children('.showIndex').text(delValue);
 		
 		} else {
+
+			var delNum = inputBox.children('input[name=planDtNum]').val();
+
+			if ( delNum != 0 ) {
+				var delDtNums = $('#frm0').children('input[name=deleteDtNum]').val();
+
+				if ( delDtNums == '' ) {
+					$('#frm0').children('input[name=deleteDtNum]').val(delNum);
+				} else {
+					$('#frm0').children('input[name=deleteDtNum]').val(delDtNums + "/" + delNum);
+				}
+			}
+			
+			
 			// 지워지는 박스보다 다음에 생긴 박스에 index를 조정 ex> 2번이 지워지면 3,4,5,6번을 2,3,4,5번으로 바꿈
 			for ( var i = Number(index); i <= currValue; i++ ) {
 				// 자기 자신의 박스를 삭제

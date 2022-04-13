@@ -35,8 +35,7 @@ map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'µ¸¿
 #pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
 
-
-/* ÀÎÆ÷À©µµ¿ì CSS */
+/* Infowindow CSS */
 .wrap * {padding: 0;margin: 0;} 
 .wrap .info {width: 350px;height: 130px;overflow: hidden;background: #fff;}
 .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 2px 3px #888;}
@@ -46,6 +45,7 @@ map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'µ¸¿
 .content .address {font-size: 13px;color: #888;margin-top: -2px;}
 .content .category {font-size: 13px;color: #888;margin-top: -2px;}
 .info .img {position: absolute;width: 70px;height: 60px;color: #888;overflow: hidden;}
+
 
 /* custom */
 #removebtn{margin-left : 20px;}

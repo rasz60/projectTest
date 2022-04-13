@@ -22,8 +22,8 @@ pageEncoding="UTF-8"%>
 <script type="text/javascript" src="../js/plan/plan_modify.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/plan/kakaomap/kakaomap.css" />
 <link rel="stylesheet" type="text/css" href="../css/plan/plan_detail.css" />
-<link rel="stylesheet" type="text/css" href="../css/header.css" />
-<link rel="stylesheet" type="text/css" href="../css/footer.css" />
+<link rel="stylesheet" type="text/css" href="../css/includes/header.css" />
+<link rel="stylesheet" type="text/css" href="../css/includes/footer.css" />
 <title>Insert title here</title>
 <script>
 var dateCount = '<c:out value="${plan1.dateCount}" />';
@@ -31,7 +31,7 @@ var dateCount = '<c:out value="${plan1.dateCount}" />';
 </head>
 
 <body>
-<%@ include file="../header.jsp" %>
+<%@ include file="../includes/header.jsp" %>
 
 <section class="container-fluid">
 	<div class="planlist row mx-0">
@@ -218,7 +218,7 @@ var dateCount = '<c:out value="${plan1.dateCount}" />';
 
 <script type="text/javascript" src="../js/plan/kakaomap/kakaomap.js"></script>
 
-<%@ include file="../footer.jsp" %>
+<%@ include file="../includes/footer.jsp" %>
 
 </body>
 </html>

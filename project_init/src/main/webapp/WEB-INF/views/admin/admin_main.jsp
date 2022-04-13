@@ -14,16 +14,14 @@
 <meta name="_csrf" content="${_csrf.token}" />
 <meta name="_csrf_header" content="${_csrf.headerName}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" 
- integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" 
- crossorigin="anonymous">
+<script src="https://kit.fontawesome.com/b4e02812b5.js" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/header.css" />
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css" />
+<link rel="stylesheet" type="text/css" href="css/includes/header.css" />
+<link rel="stylesheet" type="text/css" href="css/includes/footer.css" />
 <!-- Cart.js API 라이브러리 추가 -->
 <title>Insert title here</title>
 <style>
@@ -86,12 +84,12 @@ body{
 </head>
 <body>
 
-<%@ include file="../header.jsp" %>
+<%@ include file="../includes/header.jsp" %>
 
 	<nav class="navbar navbar-default bg-white">
 		<ul id="admin_ul">
-		  <li id="admin-li"><a class="active" href="#">DashBoard</a></li>
-		  <li id="admin-li"><a href="#">유저 관리</a></li>
+		  <li id="admin-li"><a class="active" href="admin">DashBoard</a></li>
+		  <li id="admin-li"><a href="u_admin">유저 관리</a></li>
 		</ul>
 	</nav>	
 <div class="container">
@@ -136,7 +134,7 @@ body{
 	</div>
 </div>
 
-<%@ include file="../footer.jsp" %>
+<%@ include file="../includes/footer.jsp" %>
 
 <script>
 $(document).ready(function(){
@@ -341,9 +339,9 @@ $(document).ready(function(){
 		switch(value1){ // DB에는 카테고리의 code값이 들어가므로 code를 카테고리 명으로 변경
 			case "년도 별 가입자 수" : value1 = "'YYYY'";
 			break;
-			case "월 별 가입자 수" : value1 = "'MM'";
+			case "월 별 가입자 수" : value1 = "'YYYY-MM'";
 			break;
-			case "일 별 가입자 수" : value1 = "'DD'";
+			case "일 별 가입자 수" : value1 = "'YYYY-MM-DD'";
 			break;
 		}
 		
@@ -352,9 +350,9 @@ $(document).ready(function(){
 		switch(value1){
 			case "'YYYY'" : value2 = "YYYY";
 			break;
-			case "'MM'" : value2 = "YYYYMM";
+			case "'YYYY-MM'" : value2 = "YYYYMM";
 			break;
-			case "'DD'" : value2 = "YYYYMMDD";
+			case "'YYYY-MM-DD'" : value2 = "YYYYMMDD";
 			break;
 		}
 		

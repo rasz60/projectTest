@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 
-import com.project.init.feed.dao.UserDao;
+import com.project.init.dao.UserDao;
 import com.project.init.util.Constant;
 
 public class JoinCommand implements ICommand {
@@ -24,15 +24,15 @@ public class JoinCommand implements ICommand {
 		String UPst = request.getParameter("uPst");
 		String UAddr1 = request.getParameter("uAddr1");
 		String UAddr2 = request.getParameter("uAddr2");
-		String UAddr = UAddr1+UAddr2;
+
 		
-		String UPw_org = UPw; //ì•”í˜¸í™” ë˜ê¸°ì „ passwordë¥¼ UPw_orgì— ì €ì¥
-		UPw = passwordEncoder.encode(UPw_org); //ï¿½ï¿½È£È­
+		String UPw_org = UPw; //¾ÏÈ£È­ µÇ±âÀü password¸¦ UPw_org¿¡ ÀúÀå
+		UPw = passwordEncoder.encode(UPw_org); //¾ÏÈ£È­
 		System.out.println(UPw + " size " + UPw.length());
 		
-		String result = udao.join(UEmail,UPw,UNickName,UBirth,UGender,UPst,UAddr);
+		String result = udao.join(UEmail,UPw,UNickName,UBirth,UGender,UPst, UAddr1, UAddr2);
 		
-		request.setAttribute("result", result); //controllerì—ì„œ ê²°ê³¼ ì‚¬ìš©
+		request.setAttribute("result", result); //controller¿¡¼­ °á°ú »ç¿ë
 	}
 	
 }
