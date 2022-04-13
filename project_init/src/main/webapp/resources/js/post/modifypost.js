@@ -87,7 +87,11 @@ function setModifyPost(data, dateCount) {
 
 $(document).ready(function() {
 	setModifyPost(planDt, dateCount);
-
+	
+	for(var i = 0; i < dtNums.length; i++ ) {
+		console.log(dtNums[i]);
+	}
+	
   	let images = $('.images').val();
    	let arrImages=images.split('/');
    	let beforeImg ='';
@@ -124,11 +128,11 @@ $(document).ready(function() {
          
          	images+=arrImages[i]+'/';
       	}
-      
+
       	$('.beforeImg').html(beforeImg);
       	$('.images').val(images);
       	$('.deleteImg').val(deleteImg);
-      
+
    	});
 
 	// modal창에 상세일정 표시 부분에 previous 버튼 클릭 시
@@ -211,10 +215,8 @@ $(document).ready(function() {
 				
 				if ( delDtNum == '' ) {
 					$('input[name=delDtNum]').val(dtNums[i]);
-					break;
 				} else {
 					$('input[name=delDtNum]').val(delDtNum + '/' + dtNums[i]);
-					break;
 				}
 			}
 		}
@@ -312,13 +314,13 @@ $(document).ready(function() {
 	});
 
 	$('.addImg').change(function(){ //파일 추가
+
       	const dataTransfer = new DataTransfer(); 
       	let arr = $('.img')[0].files;
       	let arr2 =$('.addImg')[0].files;
       	let extension =''; //확장자
      	let totalSize = 0;
       
-   
       
       	for(var i=0; i<arr.length; i++){ //사진 용량 확인 1
          	totalSize+=arr[i].size;
@@ -365,7 +367,9 @@ $(document).ready(function() {
       	}
 
      	$('.imgView').html(imgView);
-      	$('.addImg').val('');   
+      	$('.addImg').val('');
+
+		console.log($('.img')[0].files);
    	});
 	
 	$(document).on('click','.addImgBtn',function(){
@@ -382,59 +386,63 @@ function checkfrm() {
 		return false;
 	}
 	
-	if ($('input[name=delDtNum]').val() == '') {
-		$('input[name=delDtNum]').val('false');
-	} else {
-		// 이미 등록된 location, planDtNum은 submit하지 않음
-		for ( var i = 0; i < $('input[name=planDtNum]').length; i++ ) {
-			var addDtNum = $('input[name=planDtNum]').eq(i).val();		
-			var delDts = $('input[name=delDtNum]').val();
-			
-			if ( delDts == '' ){
-				$('input[name=delDtNum]').val('false');
-				console.log('???');
-			}
-			
-			
-			if ( delDts.indexOf('/') == -1 && delDts == addDtNum) {
-				$('input[name=delDtNum]').val('false');
-				console.log('?');
-			} 
-			
-			if (delDts.indexOf('/') != -1) {
-				var value = '';
-				var delDtArr = delDts.split('/');
-				for ( var k = 0; k < delDtArr.length; k++ ) {
-					var count = 0;
-					if ( delDtArr[k] == addDtNum ) {
-						delDtArr.splice(k, 1);
-					} else {
-						if ( count == 0 ) {
-							value = delDtArr[k];
-						} else {
-							value += "/" + delDtArr[k];
-						}
-					}
-					console.log('??');
-				}
-				if ( value == '' ) {
-					$('input[name=delDtNum]').val('false');
-				} else {
-					$('input[name=delDtNum]').val(value);
-				}
-			} 
-			
+	// 지워진 DtNum
+	var delDt = $('input[name=delDtNum]').val();
 
+	var delDts = [];
+	if ( delDt == "" ) {
+		delDt = $('input[name=delDtNum]').val('false');
+	} else {
+		delDts = delDt.split('/');
+	}
+	
+	
+	;
+	// planDt에 들어있는 insert or return false 할 dtNum
+	var planDtNum = [];
+	for ( var i = 0; i < $('input[name=planDtNum]').length; i++ ) {
+		planDtNum.push( $('input[name=planDtNum]').eq(i).val() );
 		
-			for ( var j = 0; j < dtNums.length; j++ ) {	
-				if ( dtNums[j] == addDtNum ) {
-					$('input[data-group=' + addDtNum + ']').remove();
-				}
+	}
+
+	
+	// delDts 중에 planDtNum에 같은 값이 있으면, delDts에서 지워버림
+	for ( var i = 0; i < planDtNum.length; i++ ) {
+		for ( var j = 0; j < delDts.length; j++ ) {
+			if ( planDtNum[i] == delDts[j] ) {
+				delDts.splice(j, 1);
 			}
 		}
 	}
 	
-	console.log($('input[name=delDtNum]').val());
+	if ( delDts.length > 1 ) {
+		for ( var i = 0; i < delDts.length; i++ ) {
+			if ( i == 0 ) {
+				$('input[name=delDtNum]').val(delDts[i]);
+			} else {
+				$('input[name=delDtNum]').val($('input[name=delDtNum]').val() + "/" + delDts[i]);
+			}
+		}
+	}
+
+	
+	for ( var i = 0; i < planDtNum.length; i++ ) {
+		for ( var j = 0; j < dtNums.length; j++ ) {
+			if ( planDtNum[i] == dtNums[j] ) {
+				console.log(dtNums[j]);
+				planDtNum.splice(i, 1);
+				
+				for ( var k = 0; k < $('input[name=planDtNum]').length; k++ ) {
+					if ( $('input[name=planDtNum]').eq(k).attr('data-group') == dtNums[j] ) {
+						$('input[name=planDtNum]').eq(k).remove();
+						$('input[name=placeName]').eq(k).remove();
+					}
+				}
+			}
+		}
+	}
+
+	
 	
 	$('#addForm').submit();
 }

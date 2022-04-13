@@ -12,7 +12,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta id="_csrf" name="_csrf" content="${_csrf.token}" />
+<meta name="_csrf" content="${_csrf.token}" />
+<meta name="_csrf_header" content="${_csrf.headerName}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 
 <script src="https://kit.fontawesome.com/b4e02812b5.js" crossorigin="anonymous"></script>
@@ -30,6 +31,7 @@
 
 </head>
 <body>
+<%@ include file="../includes/roader.jsp" %>
 <%@ include file="../includes/header.jsp" %>
 
 <div class="container" style="margin-top:90px; margin-bottom:50px;">
@@ -94,10 +96,19 @@
 		
 			<div class="form-group row mx-0">
 				<label for="userEmail" class="mt-2 col-2 border-right">E-mail <span class="required">*</span></label>
-				<div class="col-10">
+				<div class="col-8">
 					<input type="text" class="userEmail form-control" id="userEmail" name="uEmail" placeholder="EMAIL" onkeyup="checkEmail()" autocomplete="off" maxlength="30">
 					<div class="userEmail-validation validation mt-1">
 					</div>
+				</div>
+				<button type="button" id="mailCheck" class="btn btn-sm btn-dark ml-1 col-1" disabled="true"><i class="fa-solid fa-at"></i></button>
+				
+			</div>
+
+			<div class="form-group row mx-0 d-none" id="mailCheck">
+				<label for="emailCert" class="mt-2 col-2 border-right">Certification <span class="required">*</span></label>
+				<div class="col-10">
+					<input type="number" class="mailCheck form-control" id="emailCert" name="emailCert" placeholder="PIN" maxlength="6" required>
 				</div>
 			</div>
 			
@@ -196,5 +207,56 @@
 <%@ include file="../includes/footer.jsp" %>
 
 <script src="../js/join/join.js"></script>
+
+<script>
+
+// 메일 인증
+$('#mailCheck').click(function() {
+	
+	var height = $(document).height();
+	$('#roader').css('height', height);
+	$('#roader').removeClass('none');
+	$('#roader').addClass('active');
+	
+	
+	var mail = $('input#userEmail').val();
+	$('#userEmail').attr('readonly', true);
+	$('div#mailCheck').removeClass('d-none');
+	
+	$.ajax({
+		url: "/init/mail/joinCert",
+		type: "get",
+		data: {email : mail},
+		contentType: 'json',
+		beforeSend: function(xhr){
+ 		   	var token = $("meta[name='_csrf']").attr('content');
+ 			var header = $("meta[name='_csrf_header']").attr('content');
+		        xhr.setRequestHeader(header, token);
+		},
+		success: function(data) {
+			$('#roader').addClass('none');
+			$('#roader').removeClass('active');
+
+			var pinNum = data;
+			
+			$('input.mailCheck').keyup(function() {
+				if( $(this).val() == pinNum ) {
+					
+					alert('메일 인증에 성공했습니다.');
+					$('div#mailCheck').remove();
+					$('#mailCheck').attr('disabled', true);
+					$('#userEmail-validation').text('메일 인증이 완료되었습니다.');
+				}
+			});
+			
+		},
+		error: function() {
+			console.log('실패');
+		}
+	});
+});
+
+</script>
+
 </body>
 </html>

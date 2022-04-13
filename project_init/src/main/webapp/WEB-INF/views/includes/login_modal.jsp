@@ -19,8 +19,8 @@
 		<div class="modal-dialog modal-dialog-centered modal-sm d-block">
 			<button type="button" id="modalCloseBtn" class="btn btn-xl btn-default text-white text-weight-bold display-1 float-right" data-dismiss="modal">&times;</button>
 			<div class="modal-content">
-				<div class="modal-header d-flex justify-content-start">
-					<h4 id="title" class="modal-title display-4">WAYG</h4>
+				<div class="modal-header d-flex justify-content-around">
+					<img src="images/logo.png" alt="" />
 				</div>
 				
 				<div class="modal-body d-flex justify-content-center">
@@ -41,11 +41,8 @@
 						<div class="form-group" style="visibility:hidden; color:red; font-size:12px;" id="loginError">아이디 혹은 비밀번호가 잘못 입력되었습니다.</div>
 						
 						<div class="row mx-0">
-							<button type="button" class="btn btn-sm bg-light col-2 border-white"><i class="fa-solid fa-g"></i></button>
-							<button type="button" class="btn btn-sm bg-success text-white col-2 border-white"><i class="fa-solid fa-n"></i></button>
-							<button type="button" class="btn btn-sm bg-warning col-2 border-white"><i class="fa-solid fa-k"></i></button>
 							<button type="submit" class="btn btn-sm btn-primary col-6 border-white">Login</button>
-							<a href="user/join_view" class="btn btn-sm btn-dark col-12 border-white mt-2" id="join">Join Us</a>
+							<a href="user/join_view" class="btn btn-sm btn-dark col-6 border-white" id="join">Join Us</a>
 						</div>
 					</form>
 				</div>

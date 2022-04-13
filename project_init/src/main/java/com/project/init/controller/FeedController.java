@@ -128,7 +128,7 @@ public class FeedController {
 	public String feedMap(Model model) {
 		logger.info("feedMap() in >>>>");
 		
-		model.addAttribute("user_id", Constant.username);
+		model.addAttribute("user", Constant.username);
 		
 		return "feed/feed_map";
 	}

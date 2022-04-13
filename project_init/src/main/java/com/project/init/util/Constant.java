@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.project.init.dao.BoardDao;
+import com.project.init.dao.ChatDao;
 import com.project.init.dao.PlanDao;
 import com.project.init.dao.PostDao;
 import com.project.init.dao.SearchDao;
@@ -27,6 +28,11 @@ public class Constant {
 	public static BCryptPasswordEncoder passwordEncoder;
 	public static String username;
 	public static BoardDao bdao;
+	public static ChatDao cdao;
+	
+	
+	
+	
 	
 	//PlanMstDto占쏙옙 占쏙옙占쏙옙占싹댐옙 占쌨쇽옙占쏙옙
 	public static PlanMstDto planMstDtoParser(HttpServletRequest request, String userId) {

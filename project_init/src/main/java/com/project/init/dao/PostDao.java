@@ -175,7 +175,10 @@ public class PostDao implements PostIDao {
 	@Override
 	@Transactional
 	public void modifyExcute(PostDto dto, ArrayList<PostDtDto> insertDtDtos, ArrayList<PostDtDto> deleteDtDtos) {
-		sqlSession.update("modifyExcute", dto);
+		
+		if ( dto != null ) { 
+			sqlSession.update("modifyExcute", dto);
+		}
 		
 		if ( deleteDtDtos.size() != 0 ) {
 			sqlSession.delete("deletePostDt", deleteDtDtos);

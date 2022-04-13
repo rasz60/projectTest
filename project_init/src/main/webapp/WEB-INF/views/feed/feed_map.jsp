@@ -88,22 +88,20 @@ span.required {
 	height: 75%;
 }
 
-.content .address {
+.content .info-theme,
+.content .info-address,
+.content .info-category,
+.content .info-transportation,
+.content .info-post {
 	font-size: 13px;
 	color: #888;
 	margin-top: -2px;
 }
 
-.content .category {
-	font-size: 13px;
-	color: #888;
-	margin-top: -2px;
-}
-
-.content .post {
-	font-size: 13px;
-	color: #888;
-	margin-top: -2px;
+.content .info-post {
+	margin-top: 4px;
+	color: white;
+	width: 90%;
 }
 
 .info .img {
@@ -116,13 +114,18 @@ span.required {
 }
 </style>
 <script src="../js/post/mypost.js"></script>
+<script>
+var email = '<c:out value="${user}" />';
+
+</script>
+
 </head>
 
 <body>
 <%@ include file="../includes/header.jsp" %>
 	<sec:authorize access="isAuthenticated()">
 		<sec:authentication property="principal.username" var="user_id" />
-		<div id="user_id" style="display:none">${user_id}</div> <!-- 사용자의 Id값 가져오기, 필터에서 사용-->
+		<div id="user_id" style="display:none">${user}</div> <!-- 사용자의 Id값 가져오기, 필터에서 사용-->
 	</sec:authorize>
 
 

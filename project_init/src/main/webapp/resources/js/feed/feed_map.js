@@ -276,27 +276,27 @@ function displayInfowindow(marker, feedMapObj) { //인포윈도우 생성
 	content += '<div class="content" style="height: 150px">';
 	
 	if ( feedMapObj.address != null ) {
-		content += '<div class="address">' + '주소 : ' + feedMapObj.address + '</div>';
+		content += '<div class="info-address">' + '주소 : ' + feedMapObj.address + '</div>';
 	}
 	
 	console.log(feedMapObj.theme);
 	
 	if ( feedMapObj.theme != null ) {
-		content += '<div class="theme">' + '목적 : ' + feedMapObj.theme + '</div>';
+		content += '<div class="info-theme">' + '목적 : ' + feedMapObj.theme + '</div>';
 	}
 	
 	if ( feedMapObj.category != null ) {
-		content += '<div class="category">' + '장소 : ' + feedMapObj.category + '</div>';
+		content += '<div class="info-category">' + '장소 : ' + feedMapObj.category + '</div>';
 	}
 	
 	if ( feedMapObj.transportation != null ) {
-		content += '<div class="transportation">' + '이동수단 : ' + feedMapObj.transportation + '</div>';
+		content += '<div class="info-transportation">' + '이동수단 : ' + feedMapObj.transportation + '</div>';
 	}
 	
 	if ( feedMapObj.post != '' ) {
-		content += '<div class="post">' + 'POST : ';
-		content += '<button type="button" class="btn btn-sm btn-dark post_link" data-num="'+ feedMapObj.post + '">post</button>';
-		content += '</div>';
+		content += '<button type="button" class="btn btn-xl btn-primary post_link info-post" style="width: 90%;" data-num="'+ feedMapObj.post + '">';
+		content += '<i class="fa-brands fa-instagram"></i>';
+		content += '</button>';		
 	}
 	content += '</div>';
 	content += '</div>';
@@ -335,8 +335,8 @@ $(document).on('click', 'button.post_link', function(e) {
 	        xhr.setRequestHeader(header, token);
 	    },
 		success: function(data) {
-			$('#modalBtn').trigger('click');
-	               
+				$('#modalBtn').trigger('click');
+	            infowindow.close();
 	 			// data parsing
 				var userEmail = data.email;
 	 			var userNick=data.userNick;
@@ -353,9 +353,9 @@ $(document).on('click', 'button.post_link', function(e) {
 
 				if ( userEmail == email ) {
 					$('.modifyBtn').css('display', 'inline-block');
-					$('.modifyBtn').attr('href', $('.modifyBtn').attr('href')+postNo)
+					$('.modifyBtn').attr('href', '/init/post/' + $('.modifyBtn').attr('href')+postNo)
 					$('.deleteBtn').css('display', 'inline-block');
-					$('.deleteBtn').attr('href', $('.deleteBtn').attr('href')+postNo)
+					$('.deleteBtn').attr('href', '/init/post/' + $('.deleteBtn').attr('href')+postNo)
 				} else {
 					$('.modifyBtn').css('display', 'none');
 					$('.deleteBtn').css('display', 'none');
@@ -427,7 +427,85 @@ $(document).on('click', 'button.post_link', function(e) {
 		}
 	});
 	getComments(postNo);
-})
+});
+
+$('.modal-like').on('click', function(){
+	console.log('진입');
+	var element = $(this);
+	postNo = $(this).attr('data-num');
+	modalLike(element, postNo);
+});
+
+function modalLike(element, postNo) {
+	$.ajax({
+    	url :'/init/post/addLike.do',
+     	data : {
+        	postNo : postNo,
+            email : email
+        },
+     	type : 'post',
+     	beforeSend: function(xhr){
+        	var token = $("meta[name='_csrf']").attr('content');
+        	var header = $("meta[name='_csrf_header']").attr('content');
+        	xhr.setRequestHeader(header, token);
+     	},
+    	success : function(info) {
+        	if ( info == 'add' ) {
+           		element.addClass('active');
+           		element.siblings('#likeCount').text(Number(element.siblings('#likeCount').text())+1);
+        	} else {
+           		element.removeClass('active');
+           		element.siblings('#likeCount').text(Number(element.siblings('#likeCount').text())-1);
+   		    }
+        	console.log('하트날리기 성공');   
+    	},
+    	
+     	error : function () {
+        	console.log('하트날리기 실패');
+    	}
+	});
+};
+
+$(document).on('click', '.addcomment', function () {
+	console.log('진입');
+	
+	postNo = $(this).attr('data-num');
+	let content = $('input.comment').val();
+	let grpl = $('.grpl').attr('data-value');
+	
+	if( content == '' ) {
+		return false;
+	}
+	
+	$.ajax({
+		url : '/init/post/addcomments.do',
+		type : 'post',
+		data : {postNo : postNo,
+				content : content,
+				grpl : grpl,
+				email : email},
+		beforeSend: function(xhr){
+	 	  	var token = $("meta[name='_csrf']").attr('content');
+	 		var header = $("meta[name='_csrf_header']").attr('content');
+ 		    xhr.setRequestHeader(header, token);
+ 		},
+ 		success : function () {
+ 			console.log('success');
+ 			getComments(postNo);
+			
+ 			$('.comment').val('');
+ 			
+ 			console.log($('.comment-block').length);
+ 			
+ 			$('div.comment_total>span').text(Number($('.comment-block').length)+1);
+		},
+		error : function () {
+			console.log('ERROR');
+		}
+		
+	});
+});
+
 
 
 function getComments(postNo) {
@@ -491,7 +569,7 @@ function getComments(postNo) {
 				console.log(email);
 
 				$.ajax({
-					url : 'addReplyComments.do',
+					url : '/init/post/addReplyComments.do',
 					type : 'post',
 					data : {postNo : postNo,
 							content : content,
@@ -520,7 +598,7 @@ function getComments(postNo) {
 				let commentNo = $(this).attr('data-no');
 			
 				$.ajax({
-					url : 'deleteReplyComments.do',
+					url : '/init/post/deleteReplyComments.do',
 					type : 'post',
 					data : {commentNo : commentNo},
 					beforeSend: function(xhr){
@@ -545,3 +623,31 @@ function getComments(postNo) {
 	});
 }
 
+$(document).on('hidden.bs.modal', '#modal-reg', function() {
+	console.log('진입');
+    $(".nickname b").html('');
+    $(".content").html('');
+    $('.hashtag').children('span').remove();
+    $(".comment_total span").html('');
+    $('.likes span').html('');
+    $('.likes i.modal-like').attr('data-num', '');
+    $('button.addcomment ').attr('data-num', '');
+    $(".views span").html('');
+    $('i.modal-like').removeClass('active');
+    $('.Citem').children('div.carousel-item').remove();
+    $('div.location').children('div.location-item').remove();
+    $('div.location').removeAttr('style');
+    $('.comments').children('div.comment-block').remove();
+
+	$('a.modifyBtn').attr('href', 'init/post/modify?postNo=');
+    $('a.deleteBtn').attr('href', 'init/post/delete.do?postNo=');
+});
+
+function deleteCheck(){
+    if(confirm("삭제하시겠습니까?")){
+        return true;
+    } else {
+    	$(".delete").attr('href','post/list');
+        return false;
+    }
+}

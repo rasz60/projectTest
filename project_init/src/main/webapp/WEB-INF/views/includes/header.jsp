@@ -77,7 +77,7 @@
 			</li>
 			
 			<li class="mr-4 msg">
-				<a href="/init/message">
+				<a href="/init/chat/messages">
 					<i class="menu-icon fa-regular fa-comment-dots"></i>
 				</a>
 			</li>
@@ -104,7 +104,6 @@ $(document).ready(function(){
 	});
 	
 	$('.keyword').click(function () {
-
 		$('.keywordView').text($(this).attr('value'));
 		keyword = $(this).attr('value');
 		
@@ -113,16 +112,14 @@ $(document).ready(function(){
 	$('.search').click(function () {
 		
 		searchVal = $('.searchVal').val();
-
-
+		
 		if(keyword==''){
 			alert('검색하실 키워드를 선택해주세요 ! ')
 			
 		}else if(searchVal==''){
 			alert('검색어를 입려해주세요 ! ')
-
 		}else{
-			$(this).attr('href','search/search?keyword='+keyword+'&searchVal='+searchVal);
+			$(this).attr('href','/init/search/search?keyword='+keyword+'&searchVal='+searchVal);
 			
 	
 		}

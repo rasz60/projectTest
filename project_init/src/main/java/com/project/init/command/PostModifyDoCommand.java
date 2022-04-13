@@ -32,33 +32,39 @@ public class PostModifyDoCommand implements ICommand {
 		System.out.println(images);
 		
 		List<MultipartFile> fileList = multi.getFiles("img");
+
+		PostDto dto = null;
+		String path = "C:/Users/310-08/git/projectTest/project_init/src/main/webapp/resources/images/";
+		//String path = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/images/";
 		
+		if ( fileList.get(0).getOriginalFilename() != ""  ) {
 		
-		//String path = "C:/Users/310-08/git/projectTest/project_init/src/main/webapp/resources/images/";
-		String path = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/images/";
-		
-		for (MultipartFile mf : fileList) {
-			String originalFileName = mf.getOriginalFilename();
-			UUID prefix = UUID.randomUUID();
-			
-			try {
-				mf.transferTo(new File(path + prefix + originalFileName));
-				tmp+=prefix + originalFileName+"/";
-			} catch (IllegalStateException | IOException e) {
-				e.getMessage(); 
+			for (MultipartFile mf : fileList) {
+				String originalFileName = mf.getOriginalFilename();
+				UUID prefix = UUID.randomUUID();
+				
+				try {
+					mf.transferTo(new File(path + prefix + originalFileName));
+					tmp+=prefix + originalFileName+"/";
+				} catch (IllegalStateException | IOException e) {
+					e.getMessage(); 
+				}
 			}
+			
+			images += tmp;
 		}
-		images += tmp;
+
 		String[] test =  images.split("/");
 		titleImage = test[0];
 		
-		PostDto dto = new PostDto(multi.getParameter("postNo"),
+		dto = new PostDto(multi.getParameter("postNo"),
 								  Constant.username,
 				  				  multi.getParameter("content"),
 				  				  multi.getParameter("hashtag"),
 				  				  titleImage,
 				  				  images);
 		
+		// planDt
 		ArrayList<PostDtDto> insertDtDtos = new ArrayList<PostDtDto>();
 		ArrayList<PostDtDto> deleteDtDtos = new ArrayList<PostDtDto>();
 		
@@ -70,7 +76,7 @@ public class PostModifyDoCommand implements ICommand {
 			int planNum = Integer.parseInt(multi.getParameter("planNum"));
 
 			for(int i = 0; i < planDtNum.length; i++ ) {
-				PostDtDto dtDto = new PostDtDto(Integer.parseInt(dto.getPostNo()),
+				PostDtDto dtDto = new PostDtDto(Integer.parseInt(multi.getParameter("postNo")),
 												planNum,
 												Integer.parseInt(planDtNum[i]),
 												placeName[i]);
@@ -79,12 +85,14 @@ public class PostModifyDoCommand implements ICommand {
 			}
 		}
 		
-		if ( multi.getParameter("delDtNum").equals("false") == false ) {
-			String[] delDtNum = multi.getParameter("delDtNum").split("/");
+		System.out.println(request.getParameter("delDtNum"));
+		
+		if ( request.getParameter("delDtNum").equals("false") == false ) {
+			String[] delDtNum = request.getParameter("delDtNum").split("/");
 			
 			for(int i = 0; i < delDtNum.length; i++ ) {
 				PostDtDto dtDto = new PostDtDto();
-				dtDto.setPostNo(Integer.parseInt(dto.getPostNo()));
+				dtDto.setPostNo(Integer.parseInt(multi.getParameter("postNo")));
 				dtDto.setPlanDtNum(Integer.parseInt(delDtNum[i]));
 				deleteDtDtos.add(dtDto);
 			}

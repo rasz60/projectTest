@@ -146,7 +146,7 @@ var planDt = new Array();
 					<button type="button" class="btn btn-xl btn-primary addImgBtn">
 						<i class="fa-brands fa-instagram"></i>
 					</button>
-					<div class="input-group" style="display: none;">
+					<div class="input-group" style="display: none">
 						<div class="custom-file">
 							<input name="img" type="file" class="img custom-file-input" placeholder="img" id="inputGroupFile01" multiple="multiple">
 							<label class="custom-file-label" for="inputGroupFile01">Choose file</label>
@@ -189,7 +189,7 @@ var planDt = new Array();
 	</div>
 </section>
 <%@ include file="../includes/footer.jsp" %>
-<script src="../js/post/addPost2.js"></script>
+<script src="../js/post/modifypost.js"></script>
 
 </body>
 </html>

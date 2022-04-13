@@ -41,6 +41,7 @@ public class HomeController {
 
 	@Autowired
 	private PostIDao postDao;
+
 	
 	private ICommand comm;
 	private UserDao udao;
@@ -150,5 +151,7 @@ public class HomeController {
 		
 		return "notice_board/notice_board_content";
 	}
-	
+
+
+		
 }

@@ -26,6 +26,7 @@
 </head>
 
 <body>
+<%@ include file="includes/roader.jsp" %>
 <%@ include file="includes/header.jsp" %>
 
 <section class="container">
@@ -76,11 +77,13 @@
 				</div>
 			</div>
 			<div class="map-filter border rounded p-2 bg-light">
-			
-				<h6 id="filter-title" class="display-4">
-					<img src="images/logo.png" id="logo" class="d-inline"/><i class="fa-solid fa-filter text-info" style="font-size: 25px"></i>
-				</h6>
+				<div class="d-inline">
+					<i class="fa-solid fa-filter text-info ml-3" style="font-size: 25px"></i>
+				</div>
+
+				
 				<hr />
+
 			
 				<form id="frm" name="frm" action="insertFilter" method="post">
 					<div class="form-group">
@@ -94,21 +97,23 @@
 							<option value="theme">테마</option>
 						</select>
 					</div>
-					
+
 					<div class="form-group">
 						<label for="subSelBox" class="mt-2 labels">&nbsp;Filter 2 <span class="required">*</span></label>
 						<select id="subSelBox" class="sub-filter custom-select my-1 mr-sm-2 labels" name="value4"> <!-- 서브 필터 select창 생성, option은 script에서 생성 -->
 							<option>Select Detail Filter</option>
 						</select>			 
-					</div>	
-							
+					</div>					
+		
+								
 					<div class="form-group">
 						<!-- <label for="plandate">날짜</label> -->
 						<label for="plandate" class="labels">&nbsp;Date</label>
 						<input type="date" class="form-control labels" id="plandate" name="value2" value=""/> <!-- 날짜 선택 input 생성 -->
 					</div>
-					
+	
 					<div class="form-group d-flex justify-content-end row mx-0">
+					
 						<button type="submit" id="filterbtn" class="btn btn-success col-2 mr-2">
 							<i class="fa-solid fa-magnifying-glass"></i>
 						</button> <!-- 필터 제출 버튼 -->
@@ -132,10 +137,12 @@
 				</a>
 			</div>
 			<div class="posts d-flex justify-content-between mt-2">
-				<c:forEach items="${post}" var="post" begin="0" end="4" >
+				<c:forEach items="${post}" var="post" begin="0" end="3" >
 					<div class="post mr-2">
 						<div class="post-top border rounded">
-						post.titleImage = ${post.titleImage}<br/>
+							<img src="${post.titleImage}" alt="" />
+						
+						post.titleImage = <br/>
 						post.userNick = ${post.userNick}<br/>
 						post.likes = ${post.likes}<br/>
 						post.comments = ${post.comments}<br/>
@@ -155,9 +162,16 @@
 				</a>
 			</div>	
 			<div class="posts d-flex justify-content-between mt-2">
-				<c:forEach items="${likeList}" var="likeList" begin="0" end="4" >
+				<c:forEach items="${likeList}" var="likeList" begin="0" end="3" >
 					<div class="post mr-2">
 						<div class="post-top border rounded">
+						
+						
+						
+						
+						
+						
+						
 						likeList.titleImage = ${likeList.titleImage}<br/>
 						likeList.userNick = ${likeList.userNick}<br/>
 						likeList.likes = ${likeList.likes}<br/>
@@ -177,7 +191,7 @@
 				</a>
 			</div>
 			<div class="posts d-flex justify-content-between mt-2">			
-				<c:forEach items="${viewList}" var="viewList" begin="0" end="4" >
+				<c:forEach items="${viewList}" var="viewList" begin="0" end="3" >
 					<div class="post mr-2">
 						<div class="post-top border rounded">
 						viewList.titleImage = ${viewList.titleImage}<br/>
@@ -218,10 +232,11 @@
 <script src="js/index.js"></script>
 
 <script>
-	<c:if test='${not empty error}'>
-		$('#loginError').css('visibility','visible');
-		$('#loginModalBtn').trigger('click');
-	</c:if>
+<c:if test='${not empty error}'>
+	$('#loginError').css('visibility','visible');
+	$('#loginModalBtn').trigger('click');
+</c:if>
+
 </script>
 
 </body>

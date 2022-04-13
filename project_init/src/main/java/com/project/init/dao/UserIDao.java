@@ -1,7 +1,8 @@
 package com.project.init.dao;
 
+import java.util.Map;
+
 import com.project.init.dto.UserDto;
-import com.project.init.util.Constant;
 
 public interface UserIDao {
 	
@@ -30,5 +31,9 @@ public interface UserIDao {
 	public String getolduPrfImg(String uId);
 	
 	public void deletePrfImg(String uId);
+	
+	public UserDto searchNick(Map<String,Object> map);
+	
+	public String searchImg(String uId);
 	
 }

@@ -228,11 +228,14 @@ public class PostController {
 		
 		model.addAttribute("user", Constant.username);
 		
-		return "post/addPost2";
+		return "post/modifypost";
 	}
 	
 	@RequestMapping(value = "modifyExcute.do", method = { RequestMethod.POST })
 	public String modifyExcute(MultipartHttpServletRequest multi, Model model) {
+		System.out.println(multi.getParameter("delDtNum"));
+		
+		
 		comm = new PostModifyDoCommand();
 		comm.execute(multi, model);
 		return "redirect:/post/mypost";

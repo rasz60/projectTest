@@ -34,9 +34,22 @@ public class SearchDao implements SearchIDao {
 	@Override
 	public ArrayList<PostDto> search(SearchDto dto) {
 		
-		ArrayList<PostDto> dtos =(ArrayList)sqlSession.selectList("search", dto);
 		
-		return dtos;
+		String keyword =dto.getKeyword();
+		
+		if(keyword.equals("Hashtag")) {
+			ArrayList<PostDto> dtos =(ArrayList)sqlSession.selectList("searchHashtag", dto);			
+			return dtos;
+		}else if(keyword.equals("NickName")) {			
+			ArrayList<String> arr =(ArrayList) sqlSession.selectList("checkNickName", dto);
+			ArrayList<PostDto> dtos =(ArrayList)sqlSession.selectList("searchNickName", arr);			
+			return dtos;	
+			
+		}else{
+			ArrayList<String> arr =(ArrayList) sqlSession.selectList("checkLocation", dto);
+			ArrayList<PostDto> dtos =(ArrayList)sqlSession.selectList("searchLocation", arr);			
+			return dtos;	
+			
+		}
 	}
-
 }

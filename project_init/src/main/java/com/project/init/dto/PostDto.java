@@ -53,8 +53,8 @@ public class PostDto {
 		this.postNo = postNo;
 		this.email = email;
 	}
-	
 
+	
 	public PostDto(String postNo, String email,String content,String hashtag, String titleImage,String images) {
 		super();
 		this.postNo = postNo;

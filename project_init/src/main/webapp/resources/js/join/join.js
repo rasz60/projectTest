@@ -149,10 +149,12 @@ function checkEmail() {
 				if(res != 1) {
 					$('.userEmail-validation').css('color', 'green');
 					$('.userEmail-validation').html("사용 가능한 이메일 입니다.");
+					$('button#mailCheck').removeAttr('disabled');
 					chkEmail = true;
 				} else{
 					$('.userEmail-validation').css('color', 'red');
 					$('.userEmail-validation').html("누군가 사용중인 이메일 입니다.");
+					$('button#mailCheck').attr('disabled', true);
 					chkEmail = false;
 				}
 			},

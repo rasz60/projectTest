@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
 <meta id="_csrf" name="_csrf" content="${_csrf.token}" />
-<link rel="stylesheet" type="text/css" href="../css/includes/modalPost.css" />
+<link rel="stylesheet" type="text/css" href="/init/css/includes/modalPost.css" />
 </head>
 <body>
 <!-- modal button -->
