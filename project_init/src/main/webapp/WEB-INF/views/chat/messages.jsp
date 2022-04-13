@@ -33,7 +33,7 @@ body{margin-top:20px;}
     flex-direction: column;
     max-height: 800px;
     height:800px;
-    overflow-y: scroll
+    overflow-y: auto;
 }
 
 .chat-message-left,
@@ -80,8 +80,7 @@ body{margin-top:20px;}
 
 		<div class="card">
 			<div class="row g-0">
-				<div id="searchAndUser" class="col-12 col-lg-5 col-xl-3 border-right" style="max-height:939px; overflow-y:scroll">
-
+				<div id="searchAndUser" class="col-12 col-lg-5 col-xl-3" style="max-height:939px; overflow-y:auto">
 					<div class="px-4 d-none d-md-block">
 						<div class="d-flex align-items-center">
 							<div class="flex-grow-1">
@@ -90,7 +89,7 @@ body{margin-top:20px;}
 						</div>
 					</div>
 					
-					<a href="#" id="foundUserInfo" class="list-group-item list-group-item-action border-0" style="display:none;">
+					<a href="#" id="foundUserInfo" class="list-group-item list-group-item-action " style="display:none;">
 						<button id="createChat" style="all:unset;" class="float-right"><i class="fa-solid fa-message"></i></button>
 						<div class="d-flex align-items-start">
 							<img id="foundUserImg" class="rounded-circle mr-1" width="40" height="40">
@@ -99,9 +98,9 @@ body{margin-top:20px;}
 						</div>
 					</a>
 					
-					<div id="userList">
+					<div id="userList" class="list-group d-flex justify-content-center">
 					<c:forEach items="${chatRoomList}" var="dto">
-					<button class="addedUserInfo ${dto.roomNum} list-group-item list-group-item-action border-0" style="display:none;">
+					<button class="addedUserInfo ${dto.roomNum} list-group-item list-group-item-action border" style="display:none;">
 						<div class="rId" style="display:none;">${dto.roomId}</div>
 						<div class="d-flex align-items-start">
 							<img src="${dto.roomImg}" class="rounded-circle mr-1" width="40" height="40">

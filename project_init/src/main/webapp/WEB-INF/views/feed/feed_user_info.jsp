@@ -22,10 +22,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <!-- KAKAO API -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<link rel="stylesheet" type="text/css" href="../css/includes/header.css" />
-<link rel="stylesheet" type="text/css" href="../css/feed/feed_calendar.css" />
-<link rel="stylesheet" type="text/css" href="../css/feed/feed_user_info.css" />
-<link rel="stylesheet" type="text/css" href="../css/includes/footer.css" />
+<link rel="stylesheet" type="text/css" href="/init/css/includes/header.css" />
+<link rel="stylesheet" type="text/css" href="/init/css/feed/feed_calendar.css" />
+<link rel="stylesheet" type="text/css" href="/init/css/feed/feed_user_info.css" />
+<link rel="stylesheet" type="text/css" href="/init/css/includes/footer.css" />
 <title>Insert title here</title>
 
 <script>
@@ -291,16 +291,21 @@ var myAddr2 = '<c:out value="${myPageInfo.userAddress2}" />';
 				<hr />
 				
 				<div class="d-flex justify-content-end">
+					<s:authorize access="hasRole('ROLE_ADMIN')">			
+						<button type="button" id="adminModifyInfo" class="btn btn-primary border-white"><i class="fa-solid fa-user-plus"></i></button>
+						<button type="button" id="adminModified" class="btn btn-success border-white" style="display:none"><i class="fa-solid fa-user-check"></i></button>
+					</s:authorize>
 					<button type="button" id="modifyInfo" class="btn btn-primary border-white"><i class="fa-solid fa-user-plus"></i></button>
 					<button type="button" id="modified" class="btn btn-success border-white" style="display:none"><i class="fa-solid fa-user-check"></i></button>
 					<button type="button" id="modifyPw" class="btn btn-warning border-white"><i class="fa-solid fa-key text-white"></i></button>
 					<button type="button" id="resigBtn" class="btn btn-danger border-white"><i class="fa-solid fa-user-xmark"></i></button>
 				</div>
+				<input type="hidden" id="uemail" value=""/>
 			</div>
 		</div>
 	</div>
 </section>
 <%-- custom javascript files --%>
-<script src="../js/feed/feed_user_info.js"></script>
+<script src="/init/js/feed/feed_user_info.js"></script>
 </body>
 </html>

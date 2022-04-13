@@ -80,6 +80,22 @@ $(document).ready(function(){
 		
 	});
 	
+	//admin 페이지에서 회원정보 수정
+	$("#adminModifyInfo").click(function(){
+		//회원정보 수정-> 수정 완료로 버튼 변경
+		$("#adminModifyInfo").css("display","none");
+		$("#adminModified").css("display","inline");
+		
+		//회원정보 수정가능하게 바뀜
+		$("#inputUserNick").attr("readonly",false);
+		$("textarea[name='uPrfMsg']").attr("readonly",false);
+		$("input[name='uPst']").attr("disabled",false);
+		$("input[name='uAddr1']").attr("disabled",false);
+		$("input[name='uAddr2']").attr("readonly",false);
+		$("#searchPst").css("display","inline");
+		$("#imgBtn").css("display","none");	
+	});
+	
 	//input type="text"가 form안에 들어있어서 엔터누르면 submit되기땜에 방지하기 위해
 	$("#inputUserNick").keydown(function() {
 	    if (event.keyCode === 13) {
@@ -132,6 +148,47 @@ $(document).ready(function(){
 		}
 	});
 	
+	$("#adminModified").click(function(){
+		var userNick = $("#inputUserNick").val();
+		var userBio = $("#userProfileMsg").val();
+		var userPst = $("#userPst").val();
+		var userAddr1 = $("#userAddr1").val();
+		var userAddr2 = $("#userAddr2").val();
+		let uemail = $("#uemail").val();
+		console.log(uemail);
+		var allData = {"userNick":userNick, "userBio":userBio, "userPst":userPst, "userAddr1":userAddr1, "userAddr2":userAddr2, "useremail" : uemail}; 
+		
+		
+		
+		//mdfBio변수를 따로 둔 이유는 내용에 엔터가 포함되면 자바스크립트 오류 발생
+		if(userNick == myNick && mdfBio == false && userPst == myPst && userAddr1 == myAddr1 && userAddr2 == myAddr2) {
+			location.reload();
+		} else if(!chkNick) {
+			$("#inputUserNick").keyup().focus();
+		} else {
+			$.ajax({
+				type:"GET",
+				url : "/init/adminModifyMyPage",
+				data: allData,
+				success:function(data){
+					if(data.search("modified") > -1) {
+						$(".modal-body").html("<h5>회원정보가 변경되었습니다.</h5>") //모달창 메세지
+						$("#modalBtn").trigger("click");
+						$('#myModal').on('hidden.bs.modal',function(e) { //모달 닫을때 이벤트
+							location.reload();
+						});
+					} else {
+						$(".modal-body").text("다시 시도해 주세요."); //회원정보 변경 실패
+						$("modalBtn").trigger("click");
+					}
+				},
+				error:function() {
+					alert("회원정보수정 에러 입니다. 다시 시도해 주세요.");
+				}
+			});
+		}
+	});
+		
 	//비밀번호 변경 버튼 클릭시 모달창 비밀번호입력 UI로 바뀜
 	$("#modifyPw").click(function(){
 		$("#chkPwForMdf").css("display","inline");

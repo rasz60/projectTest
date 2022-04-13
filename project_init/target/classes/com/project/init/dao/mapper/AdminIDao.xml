@@ -52,4 +52,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    ORDER BY agegroup
 	    ]]>
 	</select>
+	
+
+	<!-- 회원 탈퇴 -->
+	<delete id="deleteUser" parameterType="String">
+		 delete from userinfo where usernick = #{nick}
+	</delete>
+	
+	<!-- 회원 정지 활성화-->
+	<update id="disabledUser" parameterType="com.project.init.dto.UserDto">
+		update userinfo set userenabled = 0 where usernick = #{nick}
+	</update>
+	
+	<!-- 회원 정지 비활성화-->
+	<update id="activateUser" parameterType="com.project.init.dto.UserDto">
+		update userinfo set userenabled = 1 where usernick = #{nick}
+	</update>
 </mapper>

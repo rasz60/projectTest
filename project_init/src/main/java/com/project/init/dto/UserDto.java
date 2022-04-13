@@ -22,6 +22,7 @@ public class UserDto {
 	private String userDate;
 	private String agegroup;
 	private String count;
+	private static boolean userEnabled;
 	
 	public UserDto() {
 		super();
@@ -191,5 +192,7 @@ public class UserDto {
 	public void setCount(String count) {
 		this.count = count;
 	}
-	
+    public static boolean isEnabled() {
+        return userEnabled;
+    }
 }

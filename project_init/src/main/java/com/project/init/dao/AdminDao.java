@@ -28,7 +28,7 @@ public class AdminDao implements AdminIDao {
 		logger.info("DashBoardDao Const result : sqlSession getConn success ? " + sqlSession.toString());
 	}
 	
-	// Àå¼Ò º° Åë°è
+	// ì¥ì†Œ ë³„ í†µê³„
 	@Override
 	public ArrayList<PlanDtDto> selectDashBoardPlaces(Map<String, String> map) {
 		
@@ -37,7 +37,7 @@ public class AdminDao implements AdminIDao {
 		return result;
 	}
 	
-	// ³âµµ, ¿ù, ÀÏ º° È¸¿ø¼ö Åë°è
+	// ë…„ë„, ì›”, ì¼ ë³„ íšŒì›ìˆ˜ í†µê³„
 	@Override
 	public ArrayList<UserDto> selectDashBoardUser(Map<String, String> map) {
 
@@ -46,7 +46,7 @@ public class AdminDao implements AdminIDao {
 		return result;
 	}
 	
-	// È¸¿ø ¼ºº° Åë°è
+	// íšŒì› ì„±ë³„ í†µê³„
 	@Override
 	public ArrayList<UserDto> selectDashBoardUserGender() {
 		
@@ -55,7 +55,7 @@ public class AdminDao implements AdminIDao {
 		return result;
 	}
 	
-	// È¸¿ø ¿¬·Éº° Åë°è
+	// íšŒì› ì—°ë ¹ë³„ í†µê³„
 	@Override
 	public ArrayList<UserDto> selectDashBoardUserAge() {
 		
@@ -63,4 +63,38 @@ public class AdminDao implements AdminIDao {
 		
 		return result;
 	}
+	
+	// íšŒì› ê²€ìƒ‰
+	@Override
+	public UserDto searchNick(String nick) {
+		UserDto udto = sqlSession.selectOne("searchNick",nick);
+		return udto;
+	}
+	
+	// íšŒì› íƒˆí‡´
+	@Override
+	public UserDto deleteUser(String nick) {
+		UserDto udto = sqlSession.selectOne("deleteUser",nick);
+		return udto;
+	}
+	
+	// íšŒì› ì •ì§€ í™œì„±í™”
+	@Override
+	public UserDto banUser(String nick) {
+		
+		UserDto udto = sqlSession.selectOne("disabledUser",nick);
+		
+		return udto;
+	}
+
+	// íšŒì› ì •ì§€ ë¹„í™œì„±í™”
+	@Override
+	public UserDto activateUser(String nick) {
+		
+		UserDto udto = sqlSession.selectOne("activateUser",nick);
+		
+		return udto;
+	}
+
+
 }

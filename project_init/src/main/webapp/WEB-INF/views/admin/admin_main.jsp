@@ -88,10 +88,13 @@ body{
 
 	<nav class="navbar navbar-default bg-white">
 		<ul id="admin_ul">
-		  <li id="admin-li"><a class="active" href="#">DashBoard</a></li>
-		  <li id="admin-li"><a href="#">유저 관리</a></li>
+		  <li id="admin-li"><a class="active" href="admin">DashBoard</a></li>
+		  <li id="admin-li"><a href="u_admin">유저 관리</a></li>
 		</ul>
 	</nav>	
+	
+
+
 <div class="container">
 	<div class="DashBoard-filter d-flex"> <!-- 필터 생성 -->
 		<form id="frm" name="frm" action="insertFilter" method="post""> <!-- 필터 form -->
@@ -339,9 +342,9 @@ $(document).ready(function(){
 		switch(value1){ // DB에는 카테고리의 code값이 들어가므로 code를 카테고리 명으로 변경
 			case "년도 별 가입자 수" : value1 = "'YYYY'";
 			break;
-			case "월 별 가입자 수" : value1 = "'MM'";
+			case "월 별 가입자 수" : value1 = "'YYYY-MM'";
 			break;
-			case "일 별 가입자 수" : value1 = "'DD'";
+			case "일 별 가입자 수" : value1 = "'YYYY-MM-DD'";
 			break;
 		}
 		
@@ -350,9 +353,9 @@ $(document).ready(function(){
 		switch(value1){
 			case "'YYYY'" : value2 = "YYYY";
 			break;
-			case "'MM'" : value2 = "YYYYMM";
+			case "'YYYY-MM'" : value2 = "YYYYMM";
 			break;
-			case "'DD'" : value2 = "YYYYMMDD";
+			case "'YYYY-MM-DD'" : value2 = "YYYYMMDD";
 			break;
 		}
 		

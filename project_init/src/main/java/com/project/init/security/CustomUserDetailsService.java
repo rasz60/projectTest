@@ -3,6 +3,7 @@ package com.project.init.security;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +27,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 			//스프링 시큐리티에서 예외를 처리하여 로그인 실패 처리
 			throw new UsernameNotFoundException("No user found with username");
 			
+		}
+		
+		if(!UserDto.isEnabled()) { //계정이 비활성화된 경우 
+			throw new DisabledException("Ban User : " + username);
 		}
 		
 		String pw = dto.getUserPw(); // 암호화된 패스워드

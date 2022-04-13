@@ -23,6 +23,29 @@
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 <link rel="stylesheet" type="text/css" href="css/includes/footer.css" />
 <title>WAYG</title>
+<style>
+.post-top {
+	line-height: 320px;
+}
+
+.post-top img {
+	max-width: 100%;
+	max-heihgt: 100%;
+}
+
+.profile-box{
+	height: 100%;
+}
+
+#post-profile {
+	margin-left: 4px;
+	border-radius: 50%;
+	width: 35px;
+	height: 35px;
+}
+
+</style>
+
 </head>
 
 <body>
@@ -140,15 +163,37 @@
 				<c:forEach items="${post}" var="post" begin="0" end="3" >
 					<div class="post mr-2">
 						<div class="post-top border rounded">
-							<img src="${post.titleImage}" alt="" />
-						
-						post.titleImage = <br/>
-						post.userNick = ${post.userNick}<br/>
-						post.likes = ${post.likes}<br/>
-						post.comments = ${post.comments}<br/>
-						post.views = ${post.views}<br/>
+							<img src="/init/images/${post.titleImage}" alt="" />
 						</div>
-						<div class="post-bottom border"></div>
+						
+						<div class="post-bottom bg-light border">
+							<div class="d-flex pt-1" style="height: 60%">
+								<div class="profile-box col-2 px-0">
+									<div id="post-profile" class="border"></div>
+								</div>
+								<div class="col-10 pt-2">
+									<b>${post.userNick}</b>
+								</div>
+							</div>
+								
+								
+							<div class="row mx-2 d-flex justify-content-around" style="height: 40%">
+								<div class="col-4 px-1">
+									<i class="fa-solid fa-heart"></i>
+									${post.likes}
+								</div>
+								
+								<div class="col-4 px-1">
+									<i class="fa-regular fa-circle-check"></i>
+									${post.views}
+								</div>
+								
+								<div class="col-4 px-1">
+									<i class="fa-solid fa-comment-dots"></i>
+									${post.comments}
+								</div>
+							</div>
+						</div>
 					</div>
 				</c:forEach>
 			</div>
@@ -165,19 +210,37 @@
 				<c:forEach items="${likeList}" var="likeList" begin="0" end="3" >
 					<div class="post mr-2">
 						<div class="post-top border rounded">
+							<img src="/init/images/${likeList.titleImage}" alt="" />
+						</div>
 						
-						
-						
-						
-						
-						
-						
-						likeList.titleImage = ${likeList.titleImage}<br/>
-						likeList.userNick = ${likeList.userNick}<br/>
-						likeList.likes = ${likeList.likes}<br/>
-						likeList.comments = ${likeList.comments}<br/>
-						likeList.views = ${likeList.views}<br/></div>
-						<div class="post-bottom border"></div>
+						<div class="post-bottom bg-light border">
+							<div class="d-flex pt-1" style="height: 60%">
+								<div class="profile-box col-2 px-0">
+									<div id="post-profile" class="border"></div>
+								</div>
+								<div class="col-10 pt-2">
+									<b>${likeList.userNick}</b>
+								</div>
+							</div>
+								
+								
+							<div class="row mx-2 d-flex justify-content-around" style="height: 40%">
+								<div class="col-4 px-1">
+									<i class="fa-solid fa-heart"></i>
+									${likeList.likes}
+								</div>
+								
+								<div class="col-4 px-1">
+									<i class="fa-regular fa-circle-check"></i>
+									${likeList.views}
+								</div>
+								
+								<div class="col-4 px-1">
+									<i class="fa-solid fa-comment-dots"></i>
+									${likeList.comments}
+								</div>
+							</div>
+						</div>
 					</div>
 				</c:forEach>
 			</div>
@@ -194,30 +257,37 @@
 				<c:forEach items="${viewList}" var="viewList" begin="0" end="3" >
 					<div class="post mr-2">
 						<div class="post-top border rounded">
-						viewList.titleImage = ${viewList.titleImage}<br/>
-						viewList.userNick = ${viewList.userNick}<br/>
-						viewList.likes = ${viewList.likes}<br/>
-						viewList.comments = ${viewList.comments}<br/>
-						viewList.views = ${viewList.views}<br/></div>
-						<div class="post-bottom border"></div>
-					</div>
-				</c:forEach>
-			</div>
-		</div>
-		
-		<div class="recommand recommand-4 mb-2">
-			<div class="recommand-icon text-warning d-flex justify-content-between">
-				<i class="btn1 fa-solid fa-trophy"></i>
-				<a href="search" class="text-warning">
-					<i class="btn2 fa-regular fa-circle-right"></i>
-				</a>
-			</div>
-			
-			<div class="posts d-flex justify-content-between mt-2">			
-				<c:forEach begin="1" end="4" var="i">
-					<div class="post mr-2">
-						<div class="post-top border rounded"></div>
-						<div class="post-bottom border"></div>
+							<img src="/init/images/${viewList.titleImage}" alt="" />
+						</div>
+						<div class="post-bottom bg-light border">
+							<div class="d-flex pt-1" style="height: 60%">
+								<div class="profile-box col-2 px-0">
+									<div id="post-profile" class="border"></div>
+								</div>
+								<div class="col-10 pt-2">
+									<b>${viewList.userNick}</b>
+								</div>
+							</div>
+								
+								
+							<div class="row mx-2 d-flex justify-content-around" style="height: 40%">
+								<div class="col-4 px-1">
+									<i class="fa-solid fa-heart"></i>
+									${viewList.likes}
+								</div>
+								
+								<div class="col-4 px-1">
+									<i class="fa-regular fa-circle-check"></i>
+									${viewList.views}
+								</div>
+								
+								<div class="col-4 px-1">
+									<i class="fa-solid fa-comment-dots"></i>
+									${viewList.comments}
+								</div>
+							</div>
+
+						</div>
 					</div>
 				</c:forEach>
 			</div>

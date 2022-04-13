@@ -59,7 +59,7 @@
 	</delete>
 	
 	<select id="searchNick" parameterType="Map" resultType="com.project.init.dto.UserDto">
-		select usernick,userprofileimg from userinfo where usernick = #{nick} and not (useremail = #{uId})
+		select useremail,usernick,userprofileimg from userinfo where usernick = #{nick} and not (useremail = #{uId})
 	</select>
 	
 	<select id="searchImg" parameterType="String" resultType="String">
