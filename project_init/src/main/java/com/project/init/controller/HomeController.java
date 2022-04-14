@@ -2,6 +2,7 @@ package com.project.init.controller;
 
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.project.init.command.BoardContentCommand;
 import com.project.init.command.BoardWriteCommand;
@@ -25,6 +27,7 @@ import com.project.init.dao.UserDao;
 import com.project.init.dto.NoticeBoardDto;
 import com.project.init.dto.PlanDtDto;
 import com.project.init.dto.PostDto;
+import com.project.init.dto.UserDto;
 import com.project.init.util.Constant;
 
 
@@ -54,19 +57,31 @@ public class HomeController {
 	
 
 	@RequestMapping("/")
-	public String index(Model model) {
+	public String index(Model model, HttpServletRequest request ) {
 		logger.info("index() in >>>>");
-		String user = Constant.username;
+		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		
-		ArrayList<PostDto> post = postDao.list(user);
+		String uId = Constant.username;
+		
+		if ( uId != "" && uId != null ) {
+			model.addAttribute("user", udao.login(uId));
+		}
+		
+		
+		if ( flashMap != null ) {
+			model.addAttribute("error", (String)flashMap.get("error"));
+		}
+		
+		
+		
+		ArrayList<PostDto> post = postDao.list(uId);
 		model.addAttribute("post", post);
 		
-		ArrayList<PostDto> likeList = postDao.likeList(user);
+		ArrayList<PostDto> likeList = postDao.likeList(uId);
 		model.addAttribute("likeList", likeList);
 		
-		ArrayList<PostDto> viewList = postDao.viewList(user);
+		ArrayList<PostDto> viewList = postDao.viewList(uId);
 		model.addAttribute("viewList", viewList);
-		model.addAttribute("user",Constant.username);
 		
 		return "index";
 	}
@@ -131,7 +146,7 @@ public class HomeController {
 		comm = new BoardWriteCommand();
 		comm.execute(request, model);
 		
-		return "redirect:notice_board";
+		return "redirect:/notice_board";
 	}
 	
 	@RequestMapping("/notice_board/contentView")
@@ -152,6 +167,24 @@ public class HomeController {
 		return "notice_board/notice_board_content";
 	}
 
+	
+	@RequestMapping("/notice_board/modify")
+	public String modify(HttpServletRequest request, HttpServletResponse response, Model model) {
+		logger.info("modify in >>>>");
+		//comm = new BoardModifyCommand();
+		comm.execute(request, model);
+		
+		return "redirect:board";
+	}
+	
+	@RequestMapping("/notice_board/delete")
+	public String delete(HttpServletRequest request, HttpServletResponse response, Model model) {
+		logger.info("delete in >>>> " + request.getParameter("bId"));
+		//comm = new BoardDeleteCommand();
+		comm.execute(request, model);
+		
+		return "redirect:board";
+	}
 
 		
 }

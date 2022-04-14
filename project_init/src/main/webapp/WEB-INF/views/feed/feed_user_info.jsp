@@ -53,28 +53,16 @@ var myAddr2 = '<c:out value="${myPageInfo.userAddress2}" />';
 			<%-- 2- 유저정보2 =  --%>
 			<div id="profile-right" class="p-3 bg-body col-9 d-block">
 				<div class="row mx-0 d-flex justify-content-around">
-					<div class="col-2 text-center">
+					<div class="col-5 text-center">
 						<b>일정</b>
 						<br />
-						<span id="planCount">2</span>
+						<span id="planCount">count</span>
 					</div>
 					
-					<div class="col-2 text-center">
+					<div class="col-5 text-center">
 						<b>포스트</b>
 						<br />
-						<span id="postCount">2</span>
-					</div>
-					
-					<div class="col-2 text-center">
-						<b>팔로워</b>
-						<br />
-						<span id="followerCount">2</span>
-					</div>
-					
-					<div class="col-2 text-center">
-						<b>팔로잉</b>
-						<br />
-						<span id="followingCount">2</span>
+						<span id="postCount">count</span>
 					</div>
 				</div>
 				
@@ -197,7 +185,7 @@ var myAddr2 = '<c:out value="${myPageInfo.userAddress2}" />';
 						<c:choose>
 							<c:when test="${not empty fileName}">
 								<div id="prfImgArea">
-									<img src="/init/resources/profileImg/${fileName}" class="rounded-circle" width="100" height="100">
+									<img src="/init/pimages/${fileName}" class="rounded-circle" width="100" height="100">
 									<a href="/init/feed/eraseImg" class="eraseImg"><i class="fa-solid fa-eraser"></i></a>
 								</div>
 							</c:when>

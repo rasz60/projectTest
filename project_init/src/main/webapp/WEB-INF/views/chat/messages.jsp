@@ -26,50 +26,43 @@
 <title>Insert title here</title>
 <style>
 body{margin-top:20px;}
-
 .card {
 	overflow: hidden;
 }
-
 .addedUserInfo {
 	border: none;
 	border-top: 1px solid rgba(0,0,0,.125);
 	border-bottom: 1px solid rgba(0,0,0,.125);
 	border-radius: 0;
 }
-
 #searchAndUser {
 	padding-right: 0px;
 	overflow-x: hidden;
+	max-height:939px; 
+	overflow-y:auto;
+	height: expression( this.scrollHeight > 938 ? "939px" : "auto" ); /*IE에서 max-height */
 }
-
 #searchNick {
 	border: none;
 	border-radius: 0;
 	border-bottom: 2px solid rgba(0,0,0,.125);
 }
-
 .chat-messages {
     display: flex;
     flex-direction: column;
     max-height: 800px;
     height:800px;
     overflow-y: auto;
+    height: expression( this.scrollHeight > 799 ? "800px" : "auto" ); /*IE에서 max-height */
 }
-
-.chat-message-left,
-.chat-message-right {
+.chat-message-left {
+    margin-right: auto;
     display: flex;
     flex-shrink: 0
 }
-
-.chat-message-left {
-    margin-right: auto;
-}
-
 .chat-message-right {
-    flex-direction: row-reverse;
     margin-left: auto;
+    display: inline-block;
 }
 .py-3 {
     padding-top: 1rem!important;
@@ -88,6 +81,9 @@ body{margin-top:20px;}
 #appOtherImg {
 	height:50px;
 }
+#inputMsg {
+	visibility: hidden;
+}
 </style>
 </head>
 <body>
@@ -98,7 +94,7 @@ body{margin-top:20px;}
     <div class="container p-0">
 		<div class="card">
 			<div class="row g-0">
-				<div id="searchAndUser" class="col-12 col-lg-5 col-xl-3" style="max-height:939px; overflow-y:auto">
+				<div id="searchAndUser" class="col-12 col-lg-5 col-xl-3">
 					<div class="px-4 d-none d-md-block">
 						<div class="d-flex align-items-center">
 							<div class="flex-grow-1">
@@ -143,7 +139,7 @@ body{margin-top:20px;}
 						</div>
 					</div>
 
-					<div class="flex-grow-0 py-3 px-4 border-top">
+					<div id="inputMsg" class="flex-grow-0 py-3 px-4 border-top">
 						<div class="input-group">
 							<input id="msg" type="text" class="form-control" placeholder="Type your message">
 							<button id="button-send" class="btn btn-primary" disabled>Send</button>
@@ -233,7 +229,7 @@ $(document).ready(function() {
 		console.log("STOMP Connection");
 		$(".addedUserInfo ${dto.roomNum}").click(function(){
 			$(".addedUserInfo").attr("disabled",true);
-			//$(".addedUserInfo").not(this).css("display","block");
+			$("#inputMsg").css("visibility", "visible");
 			$("#searchAndUser").css("visibility","hidden");
 			$("#msgArea").empty();
 			$.ajax({
@@ -290,16 +286,14 @@ $(document).ready(function() {
 						
 			   			if(uId == data.mdtos[i].m_pubId) {
 							if(data.mdtos[i].m_pubMsg != null) {
-			   					str = '<div class="chat-message-right pb-4">';
-								str += '<div>';
-								str += '<div class="text-muted small text-nowrap mt-2">' + data.mdtos[i].m_sendTime + '</div>';
-								str += '</div>';
-								str += '<div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">';
+			   					str = '<div class="chat-message-right">';
+								str += '<div class="bg-light rounded py-2 px-3" style="text-align:right;">';
 								str += data.mdtos[i].m_pubMsg;
 								str += '</div>';
 								str += '</div>';
+								str += '<div class="text-muted small text-nowrap pb-4" style="text-align:right;">' + data.mdtos[i].m_sendTime + '</div>';
 								$("#msgArea").append(str);
-								$(".chat-messages").scrollTop($(".chat-messages")[0].scrollHeight);
+								$(".chat-messages").scrollTop($(".chat-messages")[0].scrollHeight)
 							}
 							if(data.mdtos[i].m_subMsg != null) {
 								str1 = '<div class="chat-message-left pb-4">';
@@ -317,14 +311,12 @@ $(document).ready(function() {
 							}
 						} else {
 							if(data.mdtos[i].m_subMsg != null) {
-								str = '<div class="chat-message-right pb-4">';
-								str += '<div>';
-								str += '<div class="text-muted small text-nowrap mt-2">' + data.mdtos[i].m_sendTime + '</div>';
-								str += '</div>';
-								str += '<div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">';
+								str = '<div class="chat-message-right">';
+								str += '<div class="bg-light rounded py-2 px-3" style="text-align:right;">';
 								str += data.mdtos[i].m_subMsg;
 								str += '</div>';
 								str += '</div>';
+								str += '<div class="text-muted small text-nowrap pb-4" style="text-align:right;">' + data.mdtos[i].m_sendTime + '</div>';
 								$("#msgArea").append(str);
 								$(".chat-messages").scrollTop($(".chat-messages")[0].scrollHeight);
 							}
@@ -368,14 +360,12 @@ $(document).ready(function() {
 						}
 						
 						if(uId == content.m_sendId) {
-							str = '<div class="chat-message-right pb-4">';
-							str += '<div>';
-							str += '<div class="text-muted small text-nowrap mt-2">' + content.m_sendTime + '</div>';
-							str += '</div>';
-							str += '<div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">';
+							str = '<div class="chat-message-right">';
+							str += '<div class="bg-light rounded py-2 px-3" style="text-align:right;">';
 							str += msg;
 							str += '</div>';
 							str += '</div>';
+							str += '<div class="text-muted small text-nowrap pb-4" style="text-align:right;">' + content.m_sendTime + '</div>';
 							$("#msgArea").append(str);
 							$(".chat-messages").scrollTop($(".chat-messages")[0].scrollHeight);
 						}

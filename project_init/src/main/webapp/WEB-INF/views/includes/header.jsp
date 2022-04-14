@@ -36,36 +36,44 @@
 		        	</ul>
 		      	</div>
 				<input type="text" class="form-control bg-light mr-1 searchVal" size="30" aria-label="000" placeholder="search...">
-	    		<a href="#" class="btn btn-default mr-1 search"><i class="fa-brands fa-sistrix"></i></a>	      	     	
+				<s:authorize access="isAnonymous()">
+	    			<a href="#" class="btn btn-default mr-1 anFeed"><i class="fa-brands fa-sistrix"></i></a>
+	    		</s:authorize>
+	    		
+	    		<s:authorize access="isAuthenticated()">
+	    			<a href="#" class="btn btn-default mr-1 search"><i class="fa-brands fa-sistrix"></i></a>
+	    		</s:authorize>	     	
 		    </div>
 		</div>
 		
 		<ul class="nav navbar">
-		<li class="mr-4 notice_board">
-			<a href="/init/notice_board">
-				<i class="menu-icon fa-regular fa-rectangle-list"></i>
-			</a>
-		</li>
-		
-		
-		<s:authorize access="isAnonymous()">
-			<li class="mr-4 /init/feed">
-				<a href="/init/feed" id="anFeed">
-					<i class="menu-icon fa-regular fa-circle-user"></i>
+			<li class="mr-4 notice_board">
+				<a href="/init/notice_board">
+					<i class="menu-icon fa-regular fa-rectangle-list"></i>
 				</a>
 			</li>
-		</s:authorize>
-		<s:authorize access="isAuthenticated()">
+		
+		
+		
 			<li class="mr-4 /init/feed">
-				<a href="/init/feed" id="loginFeed">
-					<i class="menu-icon fa-regular fa-circle-user"></i>
-				</a>
+				<s:authorize access="isAnonymous()">
+					<a href="/init/feed" class="anFeed">
+						<i class="menu-icon fa-regular fa-circle-user"></i>
+					</a>
+				</s:authorize>
+				
+				<s:authorize access="isAuthenticated()">
+					<a href="/init/feed" id="loginFeed">
+						<i class="menu-icon fa-regular fa-circle-user"></i>
+					</a>
+				</s:authorize>
 			</li>
-		</s:authorize>	
+			
 			<li class="mr-4 notice">
 				<a href="" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i class="menu-icon fa-regular fa-bell"></i>
 				</a>
+				<s:authorize access="isAuthenticated()">
 	        	<ul class="dropdown-menu">
 	        		<c:forEach begin="1" end="10" var="i">
 			          	<li class="list-group-item">
@@ -73,14 +81,24 @@
 			          	</li>
 		          	</c:forEach>
 	        	</ul>
+	        	</s:authorize>
 				
 			</li>
 			
 			<li class="mr-4 msg">
-				<a href="/init/chat/messages">
-					<i class="menu-icon fa-regular fa-comment-dots"></i>
-				</a>
+				<s:authorize access="isAnonymous()">
+					<a href="/init/chat/messages" class="anFeed">
+						<i class="menu-icon fa-regular fa-comment-dots"></i>
+					</a>
+				</s:authorize>
+				
+				<s:authorize access="isAuthenticated()">
+					<a href="/init/chat/messages">
+						<i class="menu-icon fa-regular fa-comment-dots"></i>
+					</a>
+				</s:authorize>
 			</li>
+			
 			<s:authorize access="hasRole('ROLE_ADMIN')">
 				<li class="mr-4 msg">
 					<a href="/init/admin">
@@ -98,7 +116,7 @@ $(document).ready(function(){
 	let searchVal = '';
 	
 	
-	$('#anFeed').click(function(e){
+	$('.anFeed').click(function(e){
 		e.preventDefault();
 		$('#loginModalBtn').trigger('click');
 	});

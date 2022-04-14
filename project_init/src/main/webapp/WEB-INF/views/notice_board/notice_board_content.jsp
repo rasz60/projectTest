@@ -72,13 +72,15 @@
 		<hr />
 		
 		<a href="../notice_board" id="goback" class="btn btn-sm btn-secondary">목록</a>	
-		<a href="delete?bId=${content_view.bId}" id="delBtn" class="btn btn-sm btn-danger float-right mr-2">삭제</a>
-		<button type="submit" id="modBtn" class="btn btn-sm btn-success float-right mr-2">수정</button>
+		<s:authorize access="hasRole('ROLE_ADMIN')">
+			<a href="delete?bId=${content_view.bId}" id="delBtn" class="btn btn-sm btn-danger float-right mr-2">삭제</a>
+			<button type="submit" id="modBtn" class="btn btn-sm btn-success float-right mr-2">수정</button>
+		</s:authorize>
 	</form>
 </div>
 
 <%@ include file="../includes/footer.jsp" %>
-
+<%@ include file="../includes/login_modal.jsp" %>
 <script>
 
 </script>

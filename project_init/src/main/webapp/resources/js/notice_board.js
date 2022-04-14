@@ -7,9 +7,6 @@ $(document).ready(function() {
 	if ( username == "" || username != bName ) {
 		$('#title').attr('readonly',true);
 		$('#content').attr('readonly',true);
-		
-		$('#modBtn').css('display','none');
-		$('#delBtn').css('display','none');
 	}
 	
 	
@@ -51,5 +48,11 @@ $(document).ready(function() {
 		});
 	});
 	
+	$('#loginBtn').click(function() {
+		$('#loginModalBtn').trigger('click');
+	});
 	
+	$('.anFeed').click(function() {
+		$('#loginModalBtn').trigger('click');
+	});
 });

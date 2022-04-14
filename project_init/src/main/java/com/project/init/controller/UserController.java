@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.init.command.ICommand;
 import com.project.init.command.JoinCommand;
@@ -71,7 +72,7 @@ public class UserController {
 			return "join-failed";
 	}
 	
-	@RequestMapping(value="/user/emailCheck")  //�� ����Ʈ ����� �ȵ�?
+	@RequestMapping(value="/user/emailCheck")  //占쏙옙 占쏙옙占쏙옙트 占쏙옙占쏙옙占� 占싫듸옙?
 	@ResponseBody
 	public int emailCheck(@RequestParam("id") String id) {
 		logger.info("emailCheck(" + id + ") in >>> ");
@@ -96,40 +97,41 @@ public class UserController {
 
 	@RequestMapping(value="/processLogin")
 	public String processLogin(@RequestParam(value="error", required = false) String error, 
-							   @RequestParam(value="logout", required = false) String logout, Model model) {
+							   @RequestParam(value="logout", required = false) String logout, Model model, RedirectAttributes rttr) {
 		
 		logger.info("processLogin() in >>> ");
 		
 		if(error != null && error !="") {
-			model.addAttribute("error", "아이디와 비밀번호를 확인해주세요.");
+			model.addAttribute("error", "아이디나 비밀번호가 잘못되었습니다.");
 			
+			rttr.addFlashAttribute("error", "아이디나 비밀번호가 잘못되었습니다.");
 			logger.info("processLogin() result : error");
-			return "/index";
 		}
 		
 		if(logout != null && logout != "") {
 			Constant.username = "";
 			
 			logger.info("processLogin() result : logout");
-			return "redirect:/";
 		}
 		
 		
 		return "redirect:/";
 	}
 	
-	//�α��� ������
+	//占싸깍옙占쏙옙 占쏙옙占쏙옙占쏙옙
 	@RequestMapping(value="/loginSuc")
-	public String loginSuc(Authentication authentication) {
+	public String loginSuc(Authentication authentication, RedirectAttributes rttr) {
 		logger.info("loginSuc() in >>> ");
 		
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Constant.username = userDetails.getUsername();
 
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-		String auth = authorities.toString(); //role�� �� ���ڿ��� ��ȯ
+		String auth = authorities.toString(); //role占쏙옙 占쏙옙底� 占쏙옙占쌘울옙占쏙옙 占쏙옙환
 
-		udao.userVisit(Constant.username); //�α��� ��¥ ������Ʈ
+		udao.userVisit(Constant.username); //占싸깍옙占쏙옙 占쏙옙짜 占쏙옙占쏙옙占쏙옙트
+		
+		rttr.addAttribute("login", Constant.username);
 		
 		logger.info("loginSuc() userAuth : " + auth);
 		

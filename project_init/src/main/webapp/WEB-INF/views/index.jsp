@@ -19,9 +19,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" type="text/css" href="css/includes/header.css" />
-<link rel="stylesheet" type="text/css" href="css/main.css" />
-<link rel="stylesheet" type="text/css" href="css/includes/footer.css" />
+<link rel="stylesheet" type="text/css" href="/init/css/includes/header.css" />
+<link rel="stylesheet" type="text/css" href="/init/css/main.css" />
+<link rel="stylesheet" type="text/css" href="/init/css/includes/footer.css" />
 <title>WAYG</title>
 <style>
 .post-top {
@@ -46,6 +46,11 @@
 
 </style>
 
+<script>
+<c:if test="${not empty user}">
+	var email = '<c:out value="${user.userEmail}" />';
+</c:if>
+</script>
 </head>
 
 <body>
@@ -83,7 +88,7 @@
 						</div>
 						<div class="d-block col-9">
 							<div class="nickname">
-								<p class="h5 font-italic ml-2">user.nickName</p>
+								<p class="h5 font-italic ml-2">${user.userNick}</p>
 							</div>
 							<div class="row mx-0">
 								<a href="feed" class="text-dark font-italic col-3 px-1">FEED</a>
@@ -134,7 +139,24 @@
 						<label for="plandate" class="labels">&nbsp;Date</label>
 						<input type="date" class="form-control labels" id="plandate" name="value2" value=""/> <!-- 날짜 선택 input 생성 -->
 					</div>
-	
+					
+					<s:authorize access="isAnonymous()">
+					<div class="form-group d-flex justify-content-end row mx-0">
+							<button type="submit" id="filterbtn" class="btn btn-success col-2 mr-2 d-none">
+								<i class="fa-solid fa-magnifying-glass"></i>
+							</button> <!-- 필터 제출 버튼 -->
+							
+							<a href="" type="button" id="filterbtn" class="btn btn-success col-2 mr-2 anFeed">
+								<i class="fa-solid fa-magnifying-glass"></i>
+							</a> <!-- 필터 제출 버튼 -->
+						
+						<a href="" type="reset" id="filterResetbtn" class="btn btn-danger col-2 anFeed" >
+							<i class="fa-solid fa-delete-left"></i>
+						</a> <!-- 필터 초기화 버튼 -->
+					</div>
+					</s:authorize>
+					
+					<s:authorize access="isAuthenticated()">
 					<div class="form-group d-flex justify-content-end row mx-0">
 					
 						<button type="submit" id="filterbtn" class="btn btn-success col-2 mr-2">
@@ -145,168 +167,453 @@
 							<i class="fa-solid fa-delete-left"></i>
 						</button> <!-- 필터 초기화 버튼 -->
 					</div>
+					</s:authorize>
 				</form>
 			</div>
 		</div>
 	</div>
 	
-	<div class="main-body-bottom mb-3">
-			
-		<div class="recommand recommand-1 mb-2">
-			<div class="recommand-icon text-danger d-flex justify-content-between">
-				<i class="btn1 fa-brands fa-instagram"></i>
-				<a href="post/addPost" class="text-danger">
+	<c:set var="lastestPosts" value="${post.size() }" />
+	<c:set var="bestLikePosts" value="${likeList.size() }" />
+	<c:set var="bestViewPosts" value="${viewList.size() }" />
+	
+	<div class="main-body-bottom mb-5 mt-3">
+		<div class="recommand recommand-1 mt-4 mb-2">
+			<div class="recommand-icon text-primary d-flex justify-content-between">
+				<i class="btn1 fa-regular fa-clock"></i>
+				<s:authorize access="isAuthenticated()">
+				<a href="post/addPost" class="text-primary">
 					<i class="btn2 fa-regular fa-circle-right"></i>
 				</a>
+				</s:authorize>
 			</div>
 			<div class="posts d-flex justify-content-between mt-2">
-				<c:forEach items="${post}" var="post" begin="0" end="3" >
-					<div class="post mr-2">
-						<div class="post-top border rounded">
-							<img src="/init/images/${post.titleImage}" alt="" />
-						</div>
-						
-						<div class="post-bottom bg-light border">
-							<div class="d-flex pt-1" style="height: 60%">
-								<div class="profile-box col-2 px-0">
-									<div id="post-profile" class="border"></div>
+			
+			<c:choose>
+				<c:when test="${lastestPosts > 3}">
+					<c:forEach items="${post}" var="post" begin="0" end="3" >
+						<s:authorize access="isAnonymous()">
+						<div class="anFeed mr-2">
+						</s:authorize>
+						<s:authorize access="isAuthenticated()">
+						<div class="post mr-2" data-value="${post.postNo }" data-email="${post.email }">
+						</s:authorize>
+							<div class="post-top border rounded">
+								<img src="/init/images/${post.titleImage}" alt="" />
+							</div>
+							
+							<div class="post-bottom bg-light border">
+								<div class="d-flex pt-1" style="height: 60%">
+									<div class="profile-box col-2 px-0">
+										<div id="post-profile" class="border"></div>
+									</div>
+									<div class="col-10 pt-2">
+										<b>${post.userNick}</b>
+									</div>
 								</div>
-								<div class="col-10 pt-2">
-									<b>${post.userNick}</b>
+									
+									
+								<div class="row mx-2 d-flex justify-content-around" style="height: 40%">
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-heart"></i>
+										${post.likes}
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-regular fa-circle-check"></i>
+										${post.views}
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-comment-dots"></i>
+										${post.comments}
+									</div>
 								</div>
 							</div>
-								
-								
-							<div class="row mx-2 d-flex justify-content-around" style="height: 40%">
-								<div class="col-4 px-1">
-									<i class="fa-solid fa-heart"></i>
-									${post.likes}
+						</div>
+					</c:forEach>
+				</c:when>
+				
+				<c:otherwise>
+					<c:forEach items="${post}" var="post" begin="0" end="${lastestPosts }" >
+						<s:authorize access="isAnonymous()">
+						<div class="anFeed mr-2">
+						</s:authorize>
+						<s:authorize access="isAuthenticated()">
+						<div class="post mr-2" data-value="${post.postNo }" data-email="${post.email }">
+						</s:authorize>
+							<div class="post-top border rounded">
+								<img src="/init/images/${post.titleImage}" alt="" />
+							</div>
+							
+							<div class="post-bottom bg-light border">
+								<div class="d-flex pt-1" style="height: 60%">
+									<div class="profile-box col-2 px-0">
+										<div id="post-profile" class="border"></div>
+									</div>
+									<div class="col-10 pt-2">
+										<b>${post.userNick}</b>
+									</div>
 								</div>
-								
-								<div class="col-4 px-1">
-									<i class="fa-regular fa-circle-check"></i>
-									${post.views}
-								</div>
-								
-								<div class="col-4 px-1">
-									<i class="fa-solid fa-comment-dots"></i>
-									${post.comments}
+									
+									
+								<div class="row mx-2 d-flex justify-content-around" style="height: 40%">
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-heart"></i>
+										${post.likes}
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-regular fa-circle-check"></i>
+										${post.views}
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-comment-dots"></i>
+										${post.comments}
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</c:forEach>
+					</c:forEach>
+					
+					<c:forEach begin="${lastestPosts }" end="3" >
+						<div class="nullPost anFeed mr-2">
+							<div class="post-top border rounded">
+								<img src="/init/images/" alt="" />
+							</div>
+							
+							<div class="post-bottom bg-light border">
+								<div class="d-flex pt-1" style="height: 60%">
+									<div class="profile-box col-2 px-0">
+										<div id="post-profile" class="border"></div>
+									</div>
+									<div class="col-10 pt-2">
+										<b></b>
+									</div>
+								</div>
+									
+									
+								<div class="row mx-2 d-flex justify-content-around" style="height: 40%">
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-heart"></i>
+										
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-regular fa-circle-check"></i>
+										
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-comment-dots"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>			
 			</div>
-		</div> 
+		</div>
+
 		
-		<div class="recommand recommand-2 mb-2">
-			<div class="recommand-icon text-primary d-flex justify-content-between">
-				<i class="btn1 fa-solid fa-users"></i>
-				<a href="post/postLike" class="text-primary">
+		<div class="recommand recommand-2 mb-2 mt-5">
+			<div class="recommand-icon text-danger d-flex justify-content-between">
+				<i class="btn1 fa-regular fa-heart"></i>
+				<s:authorize access="isAuthenticated()">
+				<a href="post/postLike" class="text-danger">
 					<i class="btn2 fa-regular fa-circle-right"></i>
 				</a>
+				</s:authorize>
 			</div>	
 			<div class="posts d-flex justify-content-between mt-2">
-				<c:forEach items="${likeList}" var="likeList" begin="0" end="3" >
-					<div class="post mr-2">
-						<div class="post-top border rounded">
-							<img src="/init/images/${likeList.titleImage}" alt="" />
-						</div>
-						
-						<div class="post-bottom bg-light border">
-							<div class="d-flex pt-1" style="height: 60%">
-								<div class="profile-box col-2 px-0">
-									<div id="post-profile" class="border"></div>
+			<c:choose>
+				<c:when test="${bestLikePosts > 3}">
+					<c:forEach items="${likeList}" var="likeList" begin="0" end="3" >
+						<s:authorize access="isAnonymous()">
+						<div class="anFeed mr-2">
+						</s:authorize>
+						<s:authorize access="isAuthenticated()">
+						<div class="post mr-2" data-value="${likeList.postNo }" data-email="${likeList.email }">
+						</s:authorize>
+													<div class="post-top border rounded">
+								<img src="/init/images/${likeList.titleImage}" alt="" />
+							</div>
+							
+							<div class="post-bottom bg-light border">
+								<div class="d-flex pt-1" style="height: 60%">
+									<div class="profile-box col-2 px-0">
+										<div id="post-profile" class="border"></div>
+									</div>
+									<div class="col-10 pt-2">
+										<b>${likeList.userNick}</b>
+									</div>
 								</div>
-								<div class="col-10 pt-2">
-									<b>${likeList.userNick}</b>
+									
+									
+								<div class="row mx-2 d-flex justify-content-around" style="height: 40%">
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-heart"></i>
+										${likeList.likes}
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-regular fa-circle-check"></i>
+										${likeList.views}
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-comment-dots"></i>
+										${likeList.comments}
+									</div>
 								</div>
 							</div>
-								
-								
-							<div class="row mx-2 d-flex justify-content-around" style="height: 40%">
-								<div class="col-4 px-1">
-									<i class="fa-solid fa-heart"></i>
-									${likeList.likes}
+						</div>
+					</c:forEach>
+				</c:when>
+				
+				<c:otherwise>
+					<c:forEach items="${likeList}" var="likeList" begin="0" end="${bestLikePosts }" >
+						<s:authorize access="isAnonymous()">
+						<div class="anFeed mr-2">
+						</s:authorize>
+						<s:authorize access="isAuthenticated()">
+						<div class="post mr-2" data-value="${likeList.postNo }" data-email="${likeList.email }">
+						</s:authorize>
+							<div class="post-top border rounded">
+								<img src="/init/images/${likeList.titleImage}" alt="" />
+							</div>
+							
+							<div class="post-bottom bg-light border">
+								<div class="d-flex pt-1" style="height: 60%">
+									<div class="profile-box col-2 px-0">
+										<div id="post-profile" class="border"></div>
+									</div>
+									<div class="col-10 pt-2">
+										<b>${likeList.userNick}</b>
+									</div>
 								</div>
-								
-								<div class="col-4 px-1">
-									<i class="fa-regular fa-circle-check"></i>
-									${likeList.views}
-								</div>
-								
-								<div class="col-4 px-1">
-									<i class="fa-solid fa-comment-dots"></i>
-									${likeList.comments}
+									
+									
+								<div class="row mx-2 d-flex justify-content-around" style="height: 40%">
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-heart"></i>
+										${likeList.likes}
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-regular fa-circle-check"></i>
+										${likeList.views}
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-comment-dots"></i>
+										${likeList.comments}
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</c:forEach>
+					</c:forEach>
+					
+					<c:forEach begin="${bestLikePosts }" end="3" >
+						<div class="nullPost anFeed mr-2">
+							<div class="post-top border rounded">
+								<img src="/init/images/" alt="" />
+							</div>
+							
+							<div class="post-bottom bg-light border">
+								<div class="d-flex pt-1" style="height: 60%">
+									<div class="profile-box col-2 px-0">
+										<div id="post-profile" class="border"></div>
+									</div>
+									<div class="col-10 pt-2">
+										<b></b>
+									</div>
+								</div>
+									
+									
+								<div class="row mx-2 d-flex justify-content-around" style="height: 40%">
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-heart"></i>
+										
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-regular fa-circle-check"></i>
+										
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-comment-dots"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
 			</div>
 		</div>
 		
-		<div class="recommand recommand-3 mb-2">
+		<div class="recommand recommand-3 mb-2 mt-5">
 			<div class="recommand-icon text-success d-flex justify-content-between">
-				<i class="btn1 fa-solid fa-font-awesome"></i>
+				<i class="btn1 fa-regular fa-thumbs-up"></i>
+				<s:authorize access="isAuthenticated()">
 				<a href="post/postView" class="text-success">
 					<i class="btn2 fa-regular fa-circle-right"></i>
 				</a>
+				</s:authorize>
 			</div>
 			<div class="posts d-flex justify-content-between mt-2">			
-				<c:forEach items="${viewList}" var="viewList" begin="0" end="3" >
-					<div class="post mr-2">
-						<div class="post-top border rounded">
-							<img src="/init/images/${viewList.titleImage}" alt="" />
-						</div>
-						<div class="post-bottom bg-light border">
-							<div class="d-flex pt-1" style="height: 60%">
-								<div class="profile-box col-2 px-0">
-									<div id="post-profile" class="border"></div>
+			<c:choose>
+				<c:when test="${bestViewPosts > 3}">
+					<c:forEach items="${viewList}" var="viewList" begin="0" end="3" >
+						<s:authorize access="isAnonymous()">
+						<div class="anFeed mr-2">
+						</s:authorize>
+						<s:authorize access="isAuthenticated()">
+						<div class="post mr-2" data-value="${viewList.postNo}" data-email="${viewList.email }">
+						</s:authorize>
+							<div class="post-top border rounded">
+								<img src="/init/images/${viewList.titleImage}" alt="" />
+							</div>
+							
+							<div class="post-bottom bg-light border">
+								<div class="d-flex pt-1" style="height: 60%">
+									<div class="profile-box col-2 px-0">
+										<div id="post-profile" class="border"></div>
+									</div>
+									<div class="col-10 pt-2">
+										<b>${viewList.userNick}</b>
+									</div>
 								</div>
-								<div class="col-10 pt-2">
-									<b>${viewList.userNick}</b>
+									
+									
+								<div class="row mx-2 d-flex justify-content-around" style="height: 40%">
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-heart"></i>
+										${viewList.likes}
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-regular fa-circle-check"></i>
+										${viewList.views}
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-comment-dots"></i>
+										${viewList.comments}
+									</div>
 								</div>
 							</div>
-								
-								
-							<div class="row mx-2 d-flex justify-content-around" style="height: 40%">
-								<div class="col-4 px-1">
-									<i class="fa-solid fa-heart"></i>
-									${viewList.likes}
+						</div>
+					</c:forEach>
+				</c:when>
+				
+				<c:otherwise>
+					<c:forEach items="${viewList}" var="viewList" begin="0" end="${bestViewPosts }" >
+						<s:authorize access="isAnonymous()">
+						<div class="anFeed mr-2">
+						</s:authorize>
+						<s:authorize access="isAuthenticated()">
+						<div class="post mr-2" data-value="${viewList.postNo}" data-email="${viewList.email }">
+						</s:authorize>
+							<div class="post-top border rounded">
+								<img src="/init/images/${viewList.titleImage}" alt="" />
+							</div>
+							
+							<div class="post-bottom bg-light border">
+								<div class="d-flex pt-1" style="height: 60%">
+									<div class="profile-box col-2 px-0">
+										<div id="post-profile" class="border"></div>
+									</div>
+									<div class="col-10 pt-2">
+										<b>${viewList.userNick}</b>
+									</div>
 								</div>
-								
-								<div class="col-4 px-1">
-									<i class="fa-regular fa-circle-check"></i>
-									${viewList.views}
-								</div>
-								
-								<div class="col-4 px-1">
-									<i class="fa-solid fa-comment-dots"></i>
-									${viewList.comments}
+									
+									
+								<div class="row mx-2 d-flex justify-content-around" style="height: 40%">
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-heart"></i>
+										${viewList.likes}
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-regular fa-circle-check"></i>
+										${viewList.views}
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-comment-dots"></i>
+										${viewList.comments}
+									</div>
 								</div>
 							</div>
-
 						</div>
-					</div>
-				</c:forEach>
+					</c:forEach>
+					
+					<c:forEach begin="${bestViewPosts }" end="3" >
+						<div class="nullPost anFeed mr-2">
+							<div class="post-top border rounded">
+								<img src="/init/images/" alt="" />
+							</div>
+							
+							<div class="post-bottom bg-light border">
+								<div class="d-flex pt-1" style="height: 60%">
+									<div class="profile-box col-2 px-0">
+										<div id="post-profile" class="border"></div>
+									</div>
+									<div class="col-10 pt-2">
+										<b></b>
+									</div>
+								</div>
+									
+									
+								<div class="row mx-2 d-flex justify-content-around" style="height: 40%">
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-heart"></i>
+										
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-regular fa-circle-check"></i>
+										
+									</div>
+									
+									<div class="col-4 px-1">
+										<i class="fa-solid fa-comment-dots"></i>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
 			</div>
 		</div>
-	</div>	
+	</div>
 </section>
 <%@ include file="includes/login_modal.jsp" %>
 <%@ include file="includes/modalPost.jsp" %>
 <%@ include file="includes/footer.jsp" %>
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd&libraries=clusterer"></script>
-<script src="js/index.js"></script>
+
+<script src="/init/js/index.js"></script>
 
 <script>
+
+$('#loginBtn').click(function() {
+	$('#loginModalBtn').trigger('click');
+});
+
 <c:if test='${not empty error}'>
 	$('#loginError').css('visibility','visible');
 	$('#loginModalBtn').trigger('click');
 </c:if>
-
 </script>
 
 </body>

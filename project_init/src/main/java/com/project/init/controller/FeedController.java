@@ -186,8 +186,11 @@ public class FeedController {
 		
 		MultipartFile mf = mtpRequest.getFile("pImg");
 		
-		String path = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/profileImg/";
-		String path1 = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/profileImg/";
+		String path = "C:/Users/310-08/git/projectTest/project_init/src/main/webapp/resources/profileImg/";
+		String path1 = "C:/Users/310-08/git/projectTest/apache-tomcat-9.0.56/wtpwebapps/project_init/resources/profileImg/";
+		
+		//String path = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/profileImg/";
+		//String path1 = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/profileImg/";
 		String originFileName = mf.getOriginalFilename();
 		
 		long prename = System.currentTimeMillis();
@@ -242,8 +245,8 @@ public class FeedController {
 		
 		udao.deletePrfImg(Constant.username);
 
-		String path = "C:/ecl/workspaceWEB/WAYGprj/src/main/webapp/resources/profileImg/";
-		String path1 = "C:/ecl/apache-tomcat-9.0.56/wtpwebapps/WAYGprj/resources/profileImg/";
+		String path = "C:/Users/310-08/git/projectTest/project_init/src/main/webapp/resources/profileImg/";
+		String path1 = "C:/Users/310-08/git/projectTest/apache-tomcat-9.0.56/wtpwebapps/project_init/resources/profileImg/";
 		File file = new File(path + olduPrfImg);
 		File file1 = new File(path1 + olduPrfImg);
 		if(file.exists()) {

@@ -92,7 +92,7 @@ span.required {
 
 
 .main-body-bottom {
-	height: 2000px;
+	height: auto;
 }
 
 .main-body-bottom .recommand {
@@ -116,7 +116,7 @@ span.required {
 	height: 80%;
 }
 
-.main-body-bottom .recommand .posts .post {
+.main-body-bottom .recommand .posts .post, .anFeed, .nullPost {
 	width : 24%;
 	height: 100%;
 }

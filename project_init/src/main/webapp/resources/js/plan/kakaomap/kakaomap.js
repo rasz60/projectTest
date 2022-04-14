@@ -245,12 +245,12 @@ function displayInfowindow(marker, title, address, category) {
 	var content = '<div class="wrap">' + 
     	       '<div class="info">' + 
 	           '<div class="title bg-info">' + 
-	     	   '<img src="../images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;' + 
+	     	   '<img src="/init/images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;' + 
 	     		placeName + 
 	            '</div>' + 
 	            '<div class="body">' + 
 	            '<div class="img">' +
-	            '<img src="../images/infowindow-logo.png">' +
+	            '<img src="/init/images/infowindow-logo.png">' +
 	            '</div>' + 
 	            '<div class="content">' + 
 	            '<div class="address">' + '주소 : ' + address + '</div>' +
@@ -378,7 +378,7 @@ function inputdata(marker, target1, value, title, address, category, category_co
    
    
    //클릭한 마커에 임의로 지정한 마커 생성
-   var imageSrc = 'images/marker.png', // 마커이미지의 경로    
+   var imageSrc = '/init/images/marker.png', // 마커이미지의 경로    
     imageSize = new kakao.maps.Size(50, 50), // 마커이미지의 크기입니다
     imageOption = {offset: new kakao.maps.Point(10, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
    
@@ -414,12 +414,12 @@ function displayInfowindow(marker, placeName, title, address, category) { //인�
 	var content = '<div class="wrap">' + 
     	       '<div class="info">' + 
 	           '<div class="title bg-info">' + 
-	     	   '<img src="../images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;' + 
+	     	   '<img src="/init/images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;' + 
 	     		placeName + 
 	            '</div>' + 
 	            '<div class="body">' + 
 	            '<div class="img">' +
-	            '<img src="../images/infowindow-logo.png">' +
+	            '<img src="/init/images/infowindow-logo.png">' +
 	            '</div>' + 
 	            '<div class="content">' + 
 	            '<div class="address">' + '주소 : ' + address + '</div>' +

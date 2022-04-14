@@ -36,7 +36,6 @@
 		<s:authorize access="hasRole('ROLE_ADMIN')">
 			<a href="notice_board/write_view" id="write" class="btn btn-sm btn-dark float-right mt-5">글작성</a>
 		</s:authorize>
-
 	</div>
 	<hr />
 	
@@ -74,6 +73,6 @@
 </div>
 
 <%@ include file="../includes/footer.jsp" %>
-
+<%@ include file="../includes/login_modal.jsp" %>
 </body>
 </html>

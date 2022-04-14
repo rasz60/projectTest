@@ -22,6 +22,7 @@
 	<resources mapping="/css/**" location="/resources/css/" />
 	<resources mapping="/js/**" location="/resources/js/" />
 	<resources mapping="/images/**" location="/resources/images/" />
+	<resources mapping="/pimages/**" location="/resources/profileImg/" />
 	<resources mapping="/txt/**" location="/resources/txt/" />
 
 

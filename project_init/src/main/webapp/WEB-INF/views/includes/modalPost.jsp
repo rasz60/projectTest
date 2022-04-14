@@ -42,8 +42,8 @@
 						<div class="col-10">
 							<div class="nickname row mx-0">
 								<b class="col-8">nickname</b>
-								<a href="modify?postNo=" class="btn btn-sm col-2 text-success font-italic modifyBtn">수정</a>
-								<a href="delete.do?postNo=" class="btn btn-sm col-2 text-danger font-italic deleteBtn">삭제</a>
+								<a href="/init/post/modify?postNo=" class="btn btn-sm col-2 text-success font-italic modifyBtn">수정</a>
+								<a href="/init/post/delete.do?postNo=" class="btn btn-sm col-2 text-danger font-italic deleteBtn">삭제</a>
 							</div>
 							
 							<div class="location"></div>

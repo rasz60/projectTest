@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
-<link rel="stylesheet" type="text/css" href="css/includes/login_modal.css" />
+<link rel="stylesheet" type="text/css" href="/init/css/includes/login_modal.css" />
 <title>login</title>
 </head>
 
@@ -20,7 +20,7 @@
 			<button type="button" id="modalCloseBtn" class="btn btn-xl btn-default text-white text-weight-bold display-1 float-right" data-dismiss="modal">&times;</button>
 			<div class="modal-content">
 				<div class="modal-header d-flex justify-content-around">
-					<img src="images/logo.png" alt="" />
+					<img src="/init/images/logo.png" alt="" />
 				</div>
 				
 				<div class="modal-body d-flex justify-content-center">

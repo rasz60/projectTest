@@ -34,22 +34,49 @@ public class SearchDao implements SearchIDao {
 	@Override
 	public ArrayList<PostDto> search(SearchDto dto) {
 		
+		System.out.println(dto.getKeyword());
 		
-		String keyword =dto.getKeyword();
+		ArrayList<PostDto> dtos = new ArrayList<PostDto>();
+		PostDto tmp = new PostDto();
+		ArrayList<String> arr = new ArrayList<String>();
+		String keyword = dto.getKeyword();
+		String email="";
+		String location="";
 		
 		if(keyword.equals("Hashtag")) {
-			ArrayList<PostDto> dtos =(ArrayList)sqlSession.selectList("searchHashtag", dto);			
+			System.out.println(dto.getSearchVal());
+			dtos =(ArrayList)sqlSession.selectList("searchHashtag", dto);
+			System.out.println("dtos : " + dtos);
 			return dtos;
+
 		}else if(keyword.equals("NickName")) {			
-			ArrayList<String> arr =(ArrayList) sqlSession.selectList("checkNickName", dto);
-			ArrayList<PostDto> dtos =(ArrayList)sqlSession.selectList("searchNickName", arr);			
-			return dtos;	
+			arr =(ArrayList) sqlSession.selectList("checkNickName", dto);
 			
+			if(arr.size()!=0) {			
+				for(int i=0; i<arr.size(); i++) {	
+					email = arr.get(i);
+					System.out.println(email);
+					ArrayList<PostDto> tmpArr = (ArrayList)sqlSession.selectList("searchNickName",email);
+					dtos.addAll(tmpArr);
+				}
+				System.out.println("SIZE()"+dtos.size());
+				return dtos;	
+			}			
 		}else{
-			ArrayList<String> arr =(ArrayList) sqlSession.selectList("checkLocation", dto);
-			ArrayList<PostDto> dtos =(ArrayList)sqlSession.selectList("searchLocation", arr);			
-			return dtos;	
 			
-		}
+			arr =(ArrayList) sqlSession.selectList("checkLocation", dto);
+			
+			if(arr.size()!=0) {		
+				for(int i=0; i<arr.size(); i++) {	
+					location = arr.get(i);
+					System.out.println(location);
+					ArrayList<PostDto> tmpArr = (ArrayList)sqlSession.selectList("searchLocation", location);	
+					dtos.addAll(tmpArr);
+				}
+				return dtos;	
+			}
+			
+		}		
+		return dtos;		
 	}
 }

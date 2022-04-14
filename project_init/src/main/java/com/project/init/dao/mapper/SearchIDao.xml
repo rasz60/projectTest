@@ -5,37 +5,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace = "com.project.init.dao.SearchIDao">
 
    <select id="searchHashtag" parameterType="com.project.init.dto.SearchDto" resultType="com.project.init.dto.PostDto">
-      SELECT * FROM POST WHERE Hashtag LIKE '%'||#{searchVal}||'%' 
+      SELECT * FROM POST WHERE Hashtag LIKE '%'||#{searchVal}||'%'
+
    </select>
 
 	<select id="checkNickName" parameterType="com.project.init.dto.SearchDto" resultType="String">
-		DISTINCT SELECT 
+		SELECT 
 		userEmail 
 		FROM UserInfo 
 		WHERE 
-		userNick LIKE '%'||#{searchVal}||'%'
+		userNick 
+		LIKE '%'||#{searchVal}||'%'
    </select>
 
-   <select id="searchNickName" parameterType="java.util.ArrayList" resultType="com.project.init.dto.PostDto">
+   <select id="searchNickName" parameterType="String" resultType="com.project.init.dto.PostDto">
    		 SELECT * FROM POST
-   		  WHERE POSTNO =  
-        <foreach collection="arr" item="arr" open="(" close=")" separator=",">
-            ${arr}
-        </foreach>
+   		  WHERE email = #{value}
     
    </select>
    
    <select id="checkLocation" parameterType="com.project.init.dto.SearchDto" resultType="String">
-		DISTINCT SELECT POSTNO FROM post_dt WHERE location LIKE '%'||#{searchVal}||'%'
+		<![CDATA[
+		SELECT 
+		DISTINCT 
+		POSTNO 
+		FROM post_dt 
+		WHERE 
+		location 
+		LIKE '%'||#{searchVal}||'%'
+		]]>
    </select>
    
-   <select id="searchLocation" parameterType="java.util.ArrayList" resultType="com.project.init.dto.PostDto">
+   <select id="searchLocation" parameterType="String" resultType="com.project.init.dto.PostDto">
    		 SELECT * FROM POST
-   		  WHERE POSTNO =  
-        <foreach collection="arr" item="arr" open="(" close=")" separator=",">
-            ${arr}
-        </foreach>
-    
+   		  WHERE POSTNO =  #{value}
    </select>
 
 </mapper>

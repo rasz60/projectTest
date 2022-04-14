@@ -31,7 +31,9 @@ public class SearchController {
 		String keyword = request.getParameter("keyword");
 		String searchVal = request.getParameter("searchVal");
 		SearchDto dto = new SearchDto(keyword, searchVal);
+		
 		ArrayList<PostDto> list = searchDao.search(dto);
+		
 		if(list.size()==0) {
 			return "error/nullPage";			
 		}

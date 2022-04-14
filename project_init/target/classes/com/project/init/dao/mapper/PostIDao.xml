@@ -88,23 +88,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    <select id="likeList" parameterType="String" resultType="com.project.init.dto.PostDto" >
       SELECT 
         POSTNO,
-      	EMAIL,
-      	PLAN,
-      	TITLEIMAGE,
-	    IMAGES,
-	    CONTENT,
-	    HASHTAG,
-	    REGDATE,
-	    AUTHORITY,
-	    (SELECT userProfileImg FROM UserInfo WHERE userEmail = #{email,jdbcType=VARCHAR}) userProfileImg,
-	    (SELECT userNick FROM UserInfo WHERE userEmail = #{email,jdbcType=VARCHAR}) userNick,
-	    (SELECT count(*) from POST_VIEW where POST_VIEW.postno = POST.postno) VIEWS,
-	 	(SELECT count(*) from COMMENTS where comments.postno = POST.postno)comments, 
-		(SELECT count(*) from POST_LIKE where POST_LIKE.postno = POST.postno) likes,
-		(SELECT LIKES FROM POST_LIKE WHERE email = #{email,jdbcType=VARCHAR} AND POST_LIKE.postno=POST.postno) heart
-	 FROM POST ORDER BY 
-	likes 
-	 DESC
+         EMAIL,
+         PLAN,
+         TITLEIMAGE,
+       IMAGES,
+       CONTENT,
+       HASHTAG,
+       REGDATE,
+       LOCATION,
+       AUTHORITY,
+       (SELECT userProfileImg FROM UserInfo WHERE userEmail = POST.EMAIL) userProfileImg,
+       (SELECT userNick FROM UserInfo WHERE userEmail = POST.EMAIL) userNick,
+       (SELECT count(*) from POST_VIEW where POST_VIEW.postno = POST.postno) VIEWS,
+       (SELECT count(*) from COMMENTS where comments.postno = POST.postno)comments, 
+      (SELECT count(*) from POST_LIKE where POST_LIKE.postno = POST.postno) likes,
+      (SELECT LIKES FROM POST_LIKE WHERE email = #{email,jdbcType=VARCHAR} AND POST_LIKE.postno=POST.postno) heart
+    	FROM POST ORDER BY likes DESC
    </select>
 
 	<!-- 게시글 불러오기 -->
@@ -119,15 +118,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    HASHTAG,
 	    REGDATE,
 	    AUTHORITY,
-	    (SELECT userProfileImg FROM UserInfo WHERE userEmail = #{email,jdbcType=VARCHAR}) userProfileImg,
-	    (SELECT userNick FROM UserInfo WHERE userEmail = #{email,jdbcType=VARCHAR}) userNick,
-	    (SELECT count(*) from POST_VIEW where POST_VIEW.postno = POST.postno) VIEWS,
-	 	(SELECT count(*) from COMMENTS where comments.postno = POST.postno)comments, 
-		(SELECT count(*) from POST_LIKE where POST_LIKE.postno = POST.postno) likes,
-		(SELECT LIKES FROM POST_LIKE WHERE email = #{email,jdbcType=VARCHAR} AND POST_LIKE.postno=POST.postno) heart
-	 FROM POST ORDER BY
-	  VIEWS
-	   DESC
+		(SELECT userProfileImg FROM UserInfo WHERE userEmail = POST.EMAIL) userProfileImg,
+        (SELECT userNick FROM UserInfo WHERE userEmail = POST.EMAIL) userNick,
+        (SELECT count(*) from POST_VIEW where POST_VIEW.postno = POST.postno) VIEWS,
+        (SELECT count(*) from COMMENTS where comments.postno = POST.postno)comments, 
+        (SELECT count(*) from POST_LIKE where POST_LIKE.postno = POST.postno) likes,
+        (SELECT LIKES FROM POST_LIKE WHERE email = #{email,jdbcType=VARCHAR} AND POST_LIKE.postno=POST.postno) heart
+	 	FROM POST ORDER BY
+	  	VIEWS DESC
    </select>
 
    
@@ -160,8 +158,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		DELETE FROM POST WHERE POSTNO = #{postNo}
    </select>
 
+   <select id="deletePostDt2" parameterType="int" >
+		DELETE FROM POST_DT WHERE POSTNO = #{postNo}
+   </select>
+
 	<!--게시글을 삭제 하면 댓글 또한 삭제 -->
    <select id="deleteComments" parameterType="String" >
+		DELETE FROM COMMENTS WHERE POSTNO = #{postNo}
+   </select>
+   
+   	<!--게시글을 삭제 하면 댓글 또한 삭제 -->
+   <select id="deleteLikes" parameterType="String" >
 		DELETE FROM COMMENTS WHERE POSTNO = #{postNo}
    </select>
    
@@ -200,21 +207,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        FROM COMMENTS WHERE POSTNO= #{postNo} ORDER BY GRP DESC, GRPS ASC
    </select>
 
-	<!-- 검색어 필터 /작성자 -->
-   <select id="searchWriter" parameterType="String" resultType="com.project.init.dto.PostDto">
-      SELECT * FROM POST WHERE EMAIL LIKE '%'||#{keyword}||'%'   
-   </select>
-   
-	<!-- 검색어 필터 /내용 -->
-   <select id="searchContent" parameterType="String" resultType="com.project.init.dto.PostDto">
-      SELECT * FROM POST WHERE CONTENT LIKE '%'||#{keyword}||'%'       
-   </select>
-
-	<!-- 검색어 필터 /해시태그 -->
-   <select id="searchHashtag" parameterType="String" resultType="com.project.init.dto.PostDto">
-      SELECT * FROM POST WHERE HASHTAG LIKE '%'||#{keyword}||'%' 
-   </select>
-   
    <update id="beforeAddReply" parameterType="com.project.init.dto.CommentsDto" >
       <![CDATA[
          UPDATE COMMENTS SET grps = grps + 1 

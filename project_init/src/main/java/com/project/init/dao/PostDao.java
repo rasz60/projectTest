@@ -193,6 +193,8 @@ public class PostDao implements PostIDao {
 	public void deletePost(String postNo) {
 		sqlSession.delete("deletePost", postNo);
 		sqlSession.delete("deleteComments", postNo);
+		sqlSession.delete("deletePostDt", Integer.parseInt(postNo));
+		sqlSession.delete("deleteLikes", postNo);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
