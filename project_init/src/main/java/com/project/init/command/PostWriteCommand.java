@@ -30,8 +30,8 @@ public class PostWriteCommand implements ICommand {
 		String tmp="";
 		int views =0;
 		List<MultipartFile> fileList = multi.getFiles("img");
-		String path = "C:/Users/310-08/git/projectTest/project_init/src/main/webapp/resources/images/";
-		//String path = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/images/";
+		//String path = "C:/Users/310-08/git/projectTest/project_init/src/main/webapp/resources/images/";
+		String path = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/images/";
 		
 		for (MultipartFile mf : fileList) {
 			String originalFileName = mf.getOriginalFilename();

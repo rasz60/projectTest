@@ -27,6 +27,27 @@
 <style>
 body{margin-top:20px;}
 
+.card {
+	overflow: hidden;
+}
+
+.addedUserInfo {
+	border: none;
+	border-top: 1px solid rgba(0,0,0,.125);
+	border-bottom: 1px solid rgba(0,0,0,.125);
+	border-radius: 0;
+}
+
+#searchAndUser {
+	padding-right: 0px;
+	overflow-x: hidden;
+}
+
+#searchNick {
+	border: none;
+	border-radius: 0;
+	border-bottom: 2px solid rgba(0,0,0,.125);
+}
 
 .chat-messages {
     display: flex;
@@ -75,9 +96,6 @@ body{margin-top:20px;}
 
 <main class="content" style="margin-top:90px; margin-bottom:50px;">
     <div class="container p-0">
-
-		<h1 class="h3 mb-3">Messages</h1>
-
 		<div class="card">
 			<div class="row g-0">
 				<div id="searchAndUser" class="col-12 col-lg-5 col-xl-3" style="max-height:939px; overflow-y:auto">
@@ -98,13 +116,15 @@ body{margin-top:20px;}
 						</div>
 					</a>
 					
-					<div id="userList" class="list-group d-flex justify-content-center">
+					<div id="userList" class="list-group d-flex justify-content-around">
 					<c:forEach items="${chatRoomList}" var="dto">
-					<button class="addedUserInfo ${dto.roomNum} list-group-item list-group-item-action border" style="display:none;">
+					<button class="addedUserInfo ${dto.roomNum} list-group-item list-group-item-action mb-1" style="display:none;">
 						<div class="rId" style="display:none;">${dto.roomId}</div>
-						<div class="d-flex align-items-start">
+						<div class="d-flex align-items-center">
 							<img src="${dto.roomImg}" class="rounded-circle mr-1" width="40" height="40">
-							<div class="addedUserNicks flex-grow-1 ml-3">${dto.chatRoom}</div>
+							<div class="addedUserNicks flex-grow-1 ml-3">
+								<b>${dto.chatRoom}</b>
+							</div>
 						</div>
 					</button>
 					</c:forEach>
@@ -112,8 +132,8 @@ body{margin-top:20px;}
 				</div>
 					<hr class="d-block d-lg-none mt-1 mb-0">
 				</div>
-				<div class="col-12 col-lg-7 col-xl-9 border-left">
-					<div class="py-2 px-4 border-bottom d-none d-lg-block">
+				<div class="col-12 col-lg-7 col-xl-9 border-left px-0">
+					<div id="chatroom-title" class="py-2 px-4 border-bottom d-none d-lg-block bg-light">
 						<div id="appOtherImg" class="d-flex align-items-center py-1">
 						</div>
 					</div>

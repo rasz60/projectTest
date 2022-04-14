@@ -40,10 +40,7 @@ body{
   list-style-type: none;
   margin: 0;
   padding: 0;
-  width: 15%;
-  background-color: #f1f1f1;
   overflow: auto;
-  border: solid;
 }
 
 #admin-li a {
@@ -51,16 +48,21 @@ body{
   color: #000;
   padding: 8px 16px;
   text-decoration: none;
+  border-radius: 15px 15px 0px 0px;
 }
 
 #admin-li a.active {
-  background-color: #555;
+  background-color: #828282;
   color: white;
 }
 
 #admin-li a:hover:not(.active) {
-  background-color: #555;
+  background-color: #CBCBCB;
   color: white;
+}
+
+hr {
+	margin-top : 0;
 }
 
 #main{
@@ -71,21 +73,15 @@ body{
   list-style-type: none;
   margin: 0;
   padding: 0;
-  width: 15%;
-  background-color: #E6E6FA;
-  overflow: auto;
-  border: solid;
+  align-self: center;
 }
 
 #user_ul li{
-  display: block;
   color: #000;
   text-decoration: none;
-  border-top: solid 1px black;
 }
 
 #user_ul li a{
-  display: block;
   color: #000;
   text-align : center;
   font-weight : bold;
@@ -104,38 +100,52 @@ body{
 <%@ include file="../includes/header.jsp" %>
 <input type="hidden" id="uemail" value=""/>
 <div id="main" class="container">
-	<nav class="navbar navbar-default bg-white">
-		<ul id="admin_ul">
-		  <li id="admin-li"><a href="admin">DashBoard</a></li>
-		  <li id="admin-li"><a class="active" href="u_admin">유저 관리</a></li>
+	<nav class="bg-white mt-3">
+		<ul id="admin_ul" class="d-flex row mx-0">
+			<li id="admin-li" class="col-6">
+				<a href="admin"><b class="font-italic">DashBoard</b></a>
+			</li>
+			
+			<li id="admin-li" class="col-6">
+				<a class="active" href="u_admin"><b class="font-italic">UserBoard</b></a>
+			</li>
 		</ul>
-	</nav>	
-	
+	</nav>
+	<hr />
 	<!-- 유저 검색 창 -->
-	<div id="search-div" class="container px-4 d-none d-md-block mt-5">
-		<div class="d-flex align-items-center">
-			<div class="flex-grow-1">
-				<input id="searchNick" type="text" class="form-control my-3" placeholder="회원 검색">
-			</div>
+	<div id="search-div" class="container px-4 d-none d-md-block mt-2">
+		<div class="form-group d-flex align-items-center">
+			<label for="searchNick" class="col-3 border-right mt-2 mr-3">Search Nickname</label>
+			<input id="searchNick" type="text" class="form-control col-8" placeholder="회원 검색">
 		</div>
 		
+		<hr />
+		
 		<!-- 유저 검색 결과 창 -->
-		<a href="#" id="foundUserInfo" class="list-group-item list-group-item-action border-0" style="display:none;">
+		<div id="foundUserInfo" class="list-group-item list-group-item-action" style="display:none;">
 			<button id="createUser" style="all:unset;" class="float-right"><i class="fa-solid fa-user"></i></button>
-			<div class="d-flex align-items-start">	
-				<img id="foundUserImg" class="rounded-circle mr-1" width="40" height="40">
-				<div id="foundUserNick" class="flex-grow-1 ml-3">
-				</div>
+			<div class="row mx-0 d-flex align-items-start">	
+				<img id="foundUserImg" class="rounded-circle col-1 mr-1" width="40" height="40">
+				
+				<div id="foundUserNick" class="col-5 ml-3 mt-2"></div>
+
+				<!-- 유저 관리 창 -->
+				<ul id="user_ul" class="col-5 d-flex row mx-0" style="display">
+				  <li id="user-li" class="col-4">
+				  	<a href="#">정보 관리</a>
+				  </li>
+				  
+				  <li id="user-li-ban" class="col-4">
+				  	<a href="#">회원 정지</a>
+				  </li>
+				  
+				  
+				  <li id="user-li-delete" class="col-4">
+				  	<a href="#">회원 탈퇴</a>
+				  </li>  
+				</ul>
 			</div>
-		</a>
-		<!-- 유저 관리 창 -->
-		<nav class="navbar navbar-default bg-white" id="user_nav" style="display:none;">
-			<ul id="user_ul" style="display">
-			  <li id="user-li"><a href="#">회원정보 관리</a></li>
-			  <li id="user-li-ban"><a href="#">회원 정지</a></li>
-			  <li id="user-li-delete"><a href="#">회원 탈퇴</a></li>  
-			</ul>
-		</nav>	
+		</div>
 	</div>
 	
 	<!-- 유저 mypage 보일 위치 -->
@@ -215,6 +225,11 @@ $("#searchNick").keyup(function(){
 
 //찾은 회원 눌렀을 때 회원관리 창 보이게
 $("#foundUserInfo").click(function(){
+	
+	if ( $('#myPage').html() != null ) {
+		$('#myPage').html('');
+	}
+	
 	$("#user_nav").toggle();
 });
 

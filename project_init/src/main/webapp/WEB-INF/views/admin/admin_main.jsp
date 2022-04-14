@@ -43,10 +43,7 @@ body{
   list-style-type: none;
   margin: 0;
   padding: 0;
-  width: 15%;
-  background-color: #f1f1f1;
   overflow: auto;
-  border: solid;
 }
 
 #admin-li a {
@@ -54,16 +51,21 @@ body{
   color: #000;
   padding: 8px 16px;
   text-decoration: none;
+  border-radius: 15px 15px 0px 0px;
 }
 
 #admin-li a.active {
-  background-color: #555;
+  background-color: #828282;
   color: white;
 }
 
 #admin-li a:hover:not(.active) {
-  background-color: #555;
+  background-color: #CBCBCB;
   color: white;
+}
+
+hr {
+	margin-top : 0;
 }
 
 .DashBoard-filter{
@@ -86,47 +88,57 @@ body{
 
 <%@ include file="../includes/header.jsp" %>
 
-	<nav class="navbar navbar-default bg-white">
-		<ul id="admin_ul">
-		  <li id="admin-li"><a class="active" href="admin">DashBoard</a></li>
-		  <li id="admin-li"><a href="u_admin">유저 관리</a></li>
-		</ul>
-	</nav>	
-	
 
 
 <div class="container">
-	<div class="DashBoard-filter d-flex"> <!-- 필터 생성 -->
-		<form id="frm" name="frm" action="insertFilter" method="post""> <!-- 필터 form -->
-			<div class="pSelBox_title">인기 장소 통계 : </div>
-			<div class="form-group"> 
-				<select id="pSelBox" class="main-filter custom-select my-1 mr-sm-2" name="value1"> <!-- 메인 필터 select창 생성 -->
+	<nav class="bg-white mt-3">
+		<ul id="admin_ul" class="d-flex row mx-0">
+			<li id="admin-li" class="col-6">
+				<a class="active" href="admin"><b class="font-italic">DashBoard</b></a>
+			</li>
+			
+			<li id="admin-li" class="col-6">
+				<a href="u_admin"><b class="font-italic">UserBoard</b></a>
+			</li>
+		</ul>
+	</nav>
+	
+	<hr />
+	
+	<div class="DashBoard-filter d-flex mt-2 mb-3 row mx-0"> <!-- 필터 생성 -->
+		<form id="frm" name="frm" action="insertFilter" method="post" class="col-6 border-right"> <!-- 필터 form -->
+			<div class="form-group row mx-0"> 
+				<label for="pSelBox" class="pSelBox_title col-4 mt-2 mr-3 border-right">인기 장소 통계</label>
+				<select id="pSelBox" class="main-filter custom-select my-1 col-7" name="value1"> <!-- 메인 필터 select창 생성 -->
 					<option value="AllPlaces Top 5">AllPlaces Top 5</option>
 					<option value="Restaurant Top 5">Restaurant Top 5</option>
 					<option value="Cafe Top 5">Cafe Top 5</option>
 					<option value="Attractions Top 5">Attractions Top 5</option>
-				</select><br/>		
+				</select>	
 				<select id="pSelSubBox" class="sub-filter custom-select my-1 mr-sm-2" name="value2" style="display:none"> <!-- 서브 필터 select창 생성, option은 script에서 생성 --></select>			 
-			</div>					
-			<button type="submit" id="pfilterbtn" class="btn btn-success" style="float: left; margin-top:32px;">장소 통계</button> <!-- 필터 제출 버튼 -->
+			</div>
+			<button type="submit" id="pfilterbtn" class="btn btn-sm btn-success float-right col-3">장소 통계</button> <!-- 필터 제출 버튼 -->
 		</form>
 		
-		<form id="frm" name="frm" action="insertFilter" method="post" style="margin-left:30%;"> <!-- 필터 form -->
+		<form id="frm" name="frm" action="insertFilter" method="post" class="col-6"> <!-- 필터 form -->
 			<div class="form-group">
-				<div class="uSelBox_title" >회원 통계 : </div> 
-				<select id="uSelBox" class="main-filter custom-select my-1 mr-sm-2" name="value1" style="width:45%;" > <!-- 메인 필터 select창 생성 -->
+				<label for="uSelBox" class="uSelBox_title col-4 mt-2 mr-3 border-right">회원 통계</label> 
+				<select id="uSelBox" class="main-filter custom-select my-1 my-1 col-7" name="value1" > <!-- 메인 필터 select창 생성 -->
+					<option value="#">---------------------------</option>
 					<option value="년도 별 가입자 수">년도 별 가입자 수</option>
 					<option value="월 별 가입자 수">월 별 가입자 수</option>
 					<option value="일 별 가입자 수">일 별 가입자 수</option>
 				</select>
-				<div class="date_value1">		
-					<input id="uvalue3" type="text" name="value3" placeholder="ex)2018"/>&nbsp;&nbsp;~&nbsp;
-					<input id="uvalue4" type="text" name="value4" placeholder="ex)2022"/>
+				<div class="date_value1 d-none mt-2 row mx-0">		
+					<input id="uvalue3" type="text" name="value3" class="ml-5 form-control col-5" placeholder="ex)2018"/>&nbsp;~&nbsp;
+					<input id="uvalue4" type="text" name="value4" class="form-control col-5" placeholder="ex)2022"/>
 				</div>			 
-			</div>					
-			<button type="submit" id="ufilterbtn" class="btn btn-primary" style="float: left; margin-right:95px;">가입자 수</button> <!-- 가입자 수 -->
-			<button type="submit" id="gfilterbtn" class="btn btn-warning" style="float: left;" value="User Gender">가입자 성별</button> <!-- 가입자 성별 -->
-			<button type="submit" id="afilterbtn" class="btn btn-secondary" style="float: left;" value="User Age">가입자 연령</button> <!-- 가입자 연령 -->
+			</div>
+			<div class="row mx-0 d-flex justify-content-end">				
+				<button type="submit" id="ufilterbtn" class="btn btn-sm ml-2 btn-primary col-3" >가입자 수</button> <!-- 가입자 수 -->
+				<button type="submit" id="gfilterbtn" class="btn btn-sm ml-2 btn-warning col-3 text-white" >가입자 성별</button> <!-- 가입자 성별 -->
+				<button type="submit" id="afilterbtn" class="btn btn-sm ml-2 btn-secondary col-3" >가입자 연령</button> <!-- 가입자 연령 -->
+			</div>
 		</form>
 	</div>
 	<hr/>
@@ -156,9 +168,7 @@ $(document).ready(function(){
 			cafe : ['CE7'],
 			attractions : ['AT4']	
 		}
-		
-		
-		
+
 		//메인옵션 선택에 따라 서브옵션 select
 		switch(mainOption){
 			case 'AllPlaces Top 5' : 
@@ -189,22 +199,36 @@ $(document).ready(function(){
 	$('#uSelBox').change(function(){
 		console.log($('#uSelBox option:selected').val());
 		if($('#uSelBox option:selected').val() == '년도 별 가입자 수'){
-			$('#uvalue3').attr('placeholder', 'ex)2018');
-			$('#uvalue4').attr('placeholder', 'ex)2022');
+			$('.date_value1').removeClass('d-none');
+			$('#uvalue3').attr('type', 'number');
+			$('#uvalue4').attr('type', 'number');
+			
+			var date = new Date();
+
+			$('#uvalue3').attr('min', 2000);
+			$('#uvalue3').attr('max', date.getFullYear());
+			$('#uvalue4').attr('min', 2000);
+			$('#uvalue4').attr('max', date.getFullYear());
+			
+			
 			$('#uvalue3').val('');
 			$('#uvalue4').val('');
 		}
 		else if($('#uSelBox option:selected').val() == '월 별 가입자 수'){
-			$('#uvalue3').attr('placeholder', 'ex)202201');
-			$('#uvalue4').attr('placeholder', 'ex)202212');
+			$('.date_value1').removeClass('d-none');
+			$('#uvalue3').attr('type', 'month');
+			$('#uvalue4').attr('type', 'month');
 			$('#uvalue3').val('');
 			$('#uvalue4').val('');
 		}
-		else{
-			$('#uvalue3').attr('placeholder', 'ex)20220401');
-			$('#uvalue4').attr('placeholder', 'ex)20220430');
+		else if($('#uSelBox option:selected').val() == '일 별 가입자 수'){
+			$('.date_value1').removeClass('d-none');
+			$('#uvalue3').attr('type', 'date');
+			$('#uvalue4').attr('type', 'date');
 			$('#uvalue3').val('');
 			$('#uvalue4').val('');
+		} else {
+			$('.date_value1').addClass('d-none');
 		}
 	});
 	

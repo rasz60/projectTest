@@ -186,8 +186,8 @@ public class FeedController {
 		
 		MultipartFile mf = mtpRequest.getFile("pImg");
 		
-		String path = "D:/project_init/project_init/src/main/webapp/resources/profileImg/";
-		String path1 = "D:/project_init/apache-tomcat-9.0.56/wtpwebapps/project_init/resources/profileImg/";
+		String path = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/profileImg/";
+		String path1 = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/profileImg/";
 		String originFileName = mf.getOriginalFilename();
 		
 		long prename = System.currentTimeMillis();
