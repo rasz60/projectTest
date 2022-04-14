@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,9 +44,15 @@ public class PlanController {
 	@RequestMapping("")
 	public String planmstDo(PlanMstDto dto, Model model) {
 		logger.info("planmst.do(" + dto.getPlanName() + ") in >>>>");
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		
 		// 상세 일정 생성페이지로 넘어갈 때, feed_calendar에서 생성한 planMst 정보 model에 싣어서 보냄
 		model.addAttribute("plan", dto);
-		model.addAttribute("id", Constant.username);
+		model.addAttribute("id", uId);
 
 		return "plan/plan_detail";
 	}
@@ -67,12 +76,16 @@ public class PlanController {
 	public String detail_modify(String planNum, Model model) {
 		logger.info("detail_modify(" + planNum + ") in >>>>");
 		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
 		// planNum이 일치하는 planMst 정보를 가져와서 model에 담음
-		PlanMstDto result1= dao.selectPlanMst(planNum, Constant.username);
+		PlanMstDto result1= dao.selectPlanMst(planNum, uId);
 		model.addAttribute("plan1", result1);
 		
 		// planNum이 일치하는 planDt 정보를 가져와서 model에 담음
-		ArrayList<PlanDtDto> result2= dao.selectPlanDt(planNum, Constant.username);
+		ArrayList<PlanDtDto> result2= dao.selectPlanDt(planNum, uId);
 		model.addAttribute("plan2", result2);
 		
 		return "plan/plan_modify";

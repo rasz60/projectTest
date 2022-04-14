@@ -54,7 +54,7 @@
 			<c:forEach items="${boardList}" var="dto">
 				<tr class="row mx-0">
 					<td id="bid" class="col-1">${dto.bId}</td>
-					<td class="col-2">WAYG SUPER ADMIN</td>
+					<td class="col-2">WAYG ADMIN</td>
 					<td class="col-4">
 						<a href="notice_board/contentView?bId=${dto.bId}" class="content_view text-dark">${dto.bTitle}</a>
 					</td>

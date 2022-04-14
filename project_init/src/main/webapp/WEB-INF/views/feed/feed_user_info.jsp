@@ -35,7 +35,21 @@ var myPst = '<c:out value="${myPageInfo.userPst}" />';
 var myAddr1 = '<c:out value="${myPageInfo.userAddress1}" />';
 var myAddr2 = '<c:out value="${myPageInfo.userAddress2}" />';
 </script>
+<style>
+#profile-img {
+	overflow: hidden;
+}
 
+#profile-img img {
+	max-width: 100%;
+	min-height: 100%;
+}
+
+pre.header-bio {
+	overflow: auto;
+}
+
+</style>
 </head>
 
 <body>
@@ -47,7 +61,14 @@ var myAddr2 = '<c:out value="${myPageInfo.userAddress2}" />';
 		<div id="feed-header" class="d-flex justify-content-start border-bottom row mx-0 flex-nowrap">
 			<%-- 1- 프로필 이미지 --%>
 			<div id="profile-img" class="p-3 ml-4 bg-body col-2 text-center">
-				<i class="profile-img fa-regular fa-circle-user"></i>
+				<c:choose>
+					<c:when test="${not empty fileName}">
+						<img src="/init/resources/profileImg/${fileName}" class="rounded-circle">
+					</c:when>
+					<c:otherwise>
+						<img src="/init/resources/profileImg/nulluser.svg" class="rounded-circle">
+					</c:otherwise>
+				</c:choose>
 			</div>
 			
 			<%-- 2- 유저정보2 =  --%>
@@ -56,20 +77,20 @@ var myAddr2 = '<c:out value="${myPageInfo.userAddress2}" />';
 					<div class="col-5 text-center">
 						<b>일정</b>
 						<br />
-						<span id="planCount">count</span>
+						<span id="planCount">${planCount }</span>
 					</div>
 					
 					<div class="col-5 text-center">
 						<b>포스트</b>
 						<br />
-						<span id="postCount">count</span>
+						<span id="postCount">${postCount }</span>
 					</div>
 				</div>
 				
 				<hr />
 							
 				<div class="text-left">
-					<pre class="ml-3">bio</pre>
+					<pre class="ml-3 header-bio">${myPageInfo.userProfileMsg}</pre>
 				</div>
 			</div>
 		</div>
@@ -185,12 +206,12 @@ var myAddr2 = '<c:out value="${myPageInfo.userAddress2}" />';
 						<c:choose>
 							<c:when test="${not empty fileName}">
 								<div id="prfImgArea">
-									<img src="/init/pimages/${fileName}" class="rounded-circle" width="100" height="100">
+									<img src="/init/resources/profileImg/${fileName}" class="rounded-circle" width="100" height="100">
 									<a href="/init/feed/eraseImg" class="eraseImg"><i class="fa-solid fa-eraser"></i></a>
 								</div>
 							</c:when>
 							<c:otherwise>
-								<i class="user-info-icon fa-regular fa-circle-user" style="font-size:6rem; color: #112FE0;"></i>
+								<img src="/init/resources/profileImg/nulluser.svg" class="rounded-circle" width="100" height="100">
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -280,8 +301,8 @@ var myAddr2 = '<c:out value="${myPageInfo.userAddress2}" />';
 				
 				<div class="d-flex justify-content-end">
 					<s:authorize access="hasRole('ROLE_ADMIN')">			
-						<button type="button" id="adminModifyInfo" class="btn btn-primary border-white"><i class="fa-solid fa-user-plus"></i></button>
-						<button type="button" id="adminModified" class="btn btn-success border-white" style="display:none"><i class="fa-solid fa-user-check"></i></button>
+						<button type="button" id="adminModifyInfo" class="btn btn-dark border-white"><i class="fa-solid fa-screwdriver-wrench"></i></button>
+						<button type="button" id="adminModified" class="btn btn-dark border-white" style="display:none"><i class="fa-solid fa-screwdriver-wrench"></i></button>
 					</s:authorize>
 					<button type="button" id="modifyInfo" class="btn btn-primary border-white"><i class="fa-solid fa-user-plus"></i></button>
 					<button type="button" id="modified" class="btn btn-success border-white" style="display:none"><i class="fa-solid fa-user-check"></i></button>

@@ -7,6 +7,27 @@
 <head>
 <meta id="_csrf" name="_csrf" content="${_csrf.token}" />
 <link rel="stylesheet" type="text/css" href="/init/css/includes/modalPost.css" />
+<style>
+.profile-img-s {
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.profile-img-s img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.img-xxs {
+	overflow: hidden;
+}
+
+.img-xxs img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+</style>
 </head>
 <body>
 <!-- modal button -->
@@ -36,12 +57,12 @@
 				<ul class="list-group d-block">
 					<li class="list-group-item d-flex row mx-0 mb-1">
 						<div class="profile-img-s col-2 px-0">
-							<div class="img-s border"></div>
+							<img src="" alt="" />
 						</div>
 						
 						<div class="col-10">
 							<div class="nickname row mx-0">
-								<b class="col-8">nickname</b>
+								<b class="col-8" id="post_nick">nickname</b>
 								<a href="/init/post/modify?postNo=" class="btn btn-sm col-2 text-success font-italic modifyBtn">수정</a>
 								<a href="/init/post/delete.do?postNo=" class="btn btn-sm col-2 text-danger font-italic deleteBtn">삭제</a>
 							</div>
@@ -101,6 +122,18 @@
 
 <script>
 
+$('.profile-img-s').click(function() {
+	var nickname = $('#post_nick').text();
+	
+	location.href = "/init/feed/otherUser?nick=" + nickname;
+});
+
+
+$(document).on('click', '.profile-img-xxs', function() {
+	var nickname = $(this).siblings('.nickname').text();
+	
+	location.href = "/init/feed/otherUser?nick=" + nickname;
+});
 
 </script>
 </body>

@@ -2,6 +2,7 @@ package com.project.init.controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,7 +70,18 @@ public class FeedController {
 	
 	@RequestMapping("")
 	public String feed(Model model) {
-		logger.info("feed page " + Constant.username + " >>>>");
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		UserDto dto = udao.login(uId);
+		int planCount = dao.countPlanMst(uId);
+		int postCount = postDao.countPost(uId);
+		
+		model.addAttribute("user", dto);
+		model.addAttribute("planCount", planCount);
+		model.addAttribute("postCount", postCount);
+		logger.info("feed page " + uId + " >>>>");
 
 		return "feed/feed_calendar";
 	}
@@ -77,7 +91,11 @@ public class FeedController {
 	public ArrayList<PlanMstDto> getAllPlans() {
 		logger.info("getAllPlans() >>>>");
 
-		ArrayList<PlanMstDto> result = dao.selectAllPlan(Constant.username);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		ArrayList<PlanMstDto> result = dao.selectAllPlan(uId);
 				
 		logger.info("getAllPlans() result.isEmpty() ? " + result.isEmpty());
 
@@ -88,8 +106,12 @@ public class FeedController {
 	@RequestMapping(value = "modify_modal.do", produces="application/json; charset=UTF-8")
 	public ArrayList<PlanDtDto> modifyModal(@RequestBody String planNum, Model model) {
 		logger.info("modifyModal("+ planNum +") in >>>>");
-
-		ArrayList<PlanDtDto> result= dao.selectPlanDt(planNum, Constant.username);
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		ArrayList<PlanDtDto> result= dao.selectPlanDt(planNum, uId);
 		
 		logger.info("modifyModal("+ planNum +") result.isEmpty() ? " + result.isEmpty());
 		
@@ -118,7 +140,11 @@ public class FeedController {
 	public String deleteMstPlan(@RequestBody String planNum) {
 		logger.info("deletePlans("+ planNum +") in >>>>");
 		
-		String result = dao.deletePlanMst(planNum, Constant.username);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		String result = dao.deletePlanMst(planNum, uId);
 		
 		return result;
 	}
@@ -128,7 +154,17 @@ public class FeedController {
 	public String feedMap(Model model) {
 		logger.info("feedMap() in >>>>");
 		
-		model.addAttribute("user", Constant.username);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		UserDto dto = udao.login(uId);
+		int planCount = dao.countPlanMst(uId);
+		int postCount = postDao.countPost(uId);
+		
+		model.addAttribute("user", dto);
+		model.addAttribute("planCount", planCount);
+		model.addAttribute("postCount", postCount);
 		
 		return "feed/feed_map";
 	}
@@ -154,7 +190,12 @@ public class FeedController {
 	@RequestMapping(value="getMapPost.do", produces="application/json; charset=UTF-8")
 	public PostDto getMapPost(HttpServletRequest request, Model model) {
 		logger.info("getMapPost() >>>>");
-		PostDto dto = new PostDto(request.getParameter("postNo"), Constant.username);
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		PostDto dto = new PostDto(request.getParameter("postNo"), uId);
 		dto = postDao.getlist(dto);
 		
 		logger.info("getMapPost() result : dto ? " + dto.getPostNo());
@@ -167,9 +208,19 @@ public class FeedController {
 	public String feedInfo(HttpServletRequest request, HttpServletResponse response, Model model) {
 		logger.info("feedInfo() in >>>>");
 		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		
 		comm = new MypageCommand();
 		comm.execute(request, model);
+		int planCount = dao.countPlanMst(uId);
+		int postCount = postDao.countPost(uId);
 		
+		model.addAttribute("planCount", planCount);
+		model.addAttribute("postCount", postCount);
+
 		logger.info("feedInfo out");
 		
 		return "feed/feed_user_info";
@@ -181,16 +232,21 @@ public class FeedController {
 	public String add_PrfImg(MultipartHttpServletRequest mtpRequest, HttpServletRequest request, Model model) {
 		logger.info("add_PrfImg() in >>>>");
 		
-		String olduPrfImg = udao.getolduPrfImg(Constant.username);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		
+		String olduPrfImg = udao.getolduPrfImg(uId);
 		String uPrfImg = null;
 		
 		MultipartFile mf = mtpRequest.getFile("pImg");
 		
-		String path = "C:/Users/310-08/git/projectTest/project_init/src/main/webapp/resources/profileImg/";
-		String path1 = "C:/Users/310-08/git/projectTest/apache-tomcat-9.0.56/wtpwebapps/project_init/resources/profileImg/";
+		//String path = "C:/Users/310-08/git/projectTest/project_init/src/main/webapp/resources/profileImg/";
+		//String path1 = "C:/Users/310-08/git/projectTest/apache-tomcat-9.0.56/wtpwebapps/project_init/resources/profileImg/";
 		
-		//String path = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/profileImg/";
-		//String path1 = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/profileImg/";
+		String path = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/profileImg/";
+		String path1 = "F:/init/init_project/projectTest/apache-tomcat-9.0.56/wtpwebapps/project_init/resources/profileImg/";
 		String originFileName = mf.getOriginalFilename();
 		
 		long prename = System.currentTimeMillis();
@@ -204,7 +260,7 @@ public class FeedController {
 		
 		uPrfImg = prename + originFileName;
 		
-		UserDto udto = new UserDto(Constant.username,null,null,null,0,null,0,null,uPrfImg,null,null,null,null,null,null,null);
+		UserDto udto = new UserDto(uId,null,null,null,0,null,0,null,uPrfImg,null,null,null,null,null,null,null);
 		mtpRequest.setAttribute("udto", udto);
 		
 		comm = new AddPrfImgCommand();
@@ -240,13 +296,21 @@ public class FeedController {
 	@RequestMapping("eraseImg")
 	public String eraseImg() {
 		logger.info("eraseImg() in >>>>");
-
-		String olduPrfImg = udao.getolduPrfImg(Constant.username);
 		
-		udao.deletePrfImg(Constant.username);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		String olduPrfImg = udao.getolduPrfImg(uId);
+		
+		udao.deletePrfImg(uId);
 
-		String path = "C:/Users/310-08/git/projectTest/project_init/src/main/webapp/resources/profileImg/";
-		String path1 = "C:/Users/310-08/git/projectTest/apache-tomcat-9.0.56/wtpwebapps/project_init/resources/profileImg/";
+		//String path = "C:/Users/310-08/git/projectTest/project_init/src/main/webapp/resources/profileImg/";
+		//String path1 = "C:/Users/310-08/git/projectTest/apache-tomcat-9.0.56/wtpwebapps/project_init/resources/profileImg/";
+		
+		String path = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/profileImg/";
+		String path1 = "F:/init/init_project/projectTest/apache-tomcat-9.0.56/wtpwebapps/project_init/resources/profileImg/";
+		
 		File file = new File(path + olduPrfImg);
 		File file1 = new File(path1 + olduPrfImg);
 		if(file.exists()) {
@@ -262,11 +326,22 @@ public class FeedController {
 	
 	@RequestMapping("modifyMyPage")
 	@ResponseBody
-	public String modifyMyPage(@RequestParam(value="userNick") String userNick, @RequestParam(value="userBio") String userProfileMsg, @RequestParam(value="userPst") String userPst, @RequestParam(value="userAddr1") String userAddress1, @RequestParam(value="userAddr2") String userAddress2, HttpServletRequest request, Model model) {
+	public String modifyMyPage(@RequestParam(value="userNick") String userNick, 
+							   @RequestParam(value="userBio") String userProfileMsg, 
+							   @RequestParam(value="userPst") String userPst, 
+							   @RequestParam(value="userAddr1") String userAddress1, 
+							   @RequestParam(value="userAddr2") String userAddress2, 
+							   HttpServletRequest request, Model model) {
+		
 		logger.info("modifyMyPage() in >>>>");
 		int UserPst = Integer.parseInt(userPst);
 		
-		UserDto udto = new UserDto(Constant.username, null, userNick, null, 0, null, UserPst, userAddress1, null, userProfileMsg, null, null, null, null, null, userAddress2);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		
+		UserDto udto = new UserDto(uId, null, userNick, null, 0, null, UserPst, userAddress1, null, userProfileMsg, null, null, null, null, null, userAddress2);
 		
 		request.setAttribute("udto", udto);
 		comm = new MdfMyPageCommand();
@@ -289,10 +364,14 @@ public class FeedController {
 	public String chkPwForMdf(HttpServletRequest request, HttpServletResponse response, Model model) {
 		logger.info("chkPwForMdf() in >>>>");
 		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
 		String result = null;
 		
 		String Crpw = request.getParameter("crpw");
-		String upw = udao.pwcheck(Constant.username);
+		String upw = udao.pwcheck(uId);
 		
 		passwordEncoder = new BCryptPasswordEncoder();
 		
@@ -334,8 +413,12 @@ public class FeedController {
 		
 		String result = null;
 		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
 		String RgPw = request.getParameter("rgPw");
-		String upw = udao.pwcheck(Constant.username);
+		String upw = udao.pwcheck(uId);
 		
 		passwordEncoder = new BCryptPasswordEncoder();
 		
@@ -355,10 +438,51 @@ public class FeedController {
 	public String resignation() {
 		logger.info("resignation() in >>>>");
 		
-		udao.resign(Constant.username);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		
+		udao.resign(uId);
 		SecurityContextHolder.clearContext();
 		
 		return "redirect:/";
 	}
+	
+	@RequestMapping("otherUser")
+	public String otherUserFeed(HttpServletRequest request, Model model) {
+		String nickName = request.getParameter("nick");
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		UserDto dto = udao.login(uId);
+		model.addAttribute("my", dto);
+		
+		System.out.println(dto.getUserNick());
+		
+		if ( nickName.equals(dto.getUserNick()) ) {
+			return "redirect:/feed";
+		}
+		
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("nick", nickName);
+		map.put("uId", uId);
+		
+		UserDto otherUser = udao.searchNick(map);
+		int planCount = dao.countPlanMst(otherUser.getUserEmail());
+		int postCount = postDao.countPost(otherUser.getUserEmail());
+		
+		model.addAttribute("user", otherUser);
+		model.addAttribute("planCount", planCount);
+		model.addAttribute("postCount", postCount);
+		
+		return "feed/other_feed_map";
+	}
+	
+	
 
 }

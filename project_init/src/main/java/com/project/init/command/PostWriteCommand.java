@@ -8,6 +8,9 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -29,9 +32,19 @@ public class PostWriteCommand implements ICommand {
 		String titleImage="";
 		String tmp="";
 		int views =0;
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		
 		List<MultipartFile> fileList = multi.getFiles("img");
-		String path = "C:/Users/310-08/git/projectTest/project_init/src/main/webapp/resources/images/";
-		//String path = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/images/";
+		
+		//String path = "C:/Users/310-08/git/projectTest/project_init/src/main/webapp/resources/images/";
+		//String path = "C:/Users/310-08/git/projectTest/apache-tomcat-9.0.56/wtpwebapps/project_init/resources/images/";
+		
+		String path = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/images/";
+		String path1 = "F:/init/init_project/projectTest/apache-tomcat-9.0.56/wtpwebapps/project_init/resources/images/";
 		
 		for (MultipartFile mf : fileList) {
 			String originalFileName = mf.getOriginalFilename();
@@ -39,8 +52,10 @@ public class PostWriteCommand implements ICommand {
 			
 			try {
 				mf.transferTo(new File(path + prefix + originalFileName));
-				tmp+=prefix + originalFileName+"/";
-			
+				mf.transferTo(new File(path1 + prefix + originalFileName));
+				
+				tmp += prefix + originalFileName+"/";
+				
 			} catch (IllegalStateException | IOException e) {
 				e.getMessage(); 
 				System.out.println(e.getMessage());
@@ -49,8 +64,9 @@ public class PostWriteCommand implements ICommand {
 		
 		images = tmp;
 		String[] test = images.split("/");
+		
 		titleImage = test[0];
-		PostDto dto = new PostDto(Constant.username,
+		PostDto dto = new PostDto(uId,
 								  multi.getParameter("planNum"),
 								  multi.getParameter("content"),
 								  multi.getParameter("hashtag"),

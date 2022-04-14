@@ -34,7 +34,21 @@
 <link rel="stylesheet" type="text/css" href="css/includes/footer.css" />
 
 <title>Insert title here</title>
+<style>
+#profile-img {
+	overflow: hidden;
+}
 
+#profile-img img {
+	max-width: 100%;
+	min-height: 100%;
+}
+
+pre.header-bio {
+	overflow: auto;
+}
+
+</style>
 </head>
 
 <body>
@@ -47,7 +61,14 @@
 		<div id="feed-header" class="d-flex justify-content-start border-bottom row mx-0 flex-nowrap">
 			<%-- 1- 프로필 이미지 --%>
 			<div id="profile-img" class="p-3 ml-4 bg-body col-2 text-center">
-				<i class="profile-img fa-regular fa-circle-user"></i>
+				<c:choose>
+					<c:when test="${not empty user.userProfileImg}">
+						<img src="/init/resources/profileImg/${user.userProfileImg}" class="rounded-circle">
+					</c:when>
+					<c:otherwise>
+						<img src="/init/resources/profileImg/nulluser.svg" class="rounded-circle">
+					</c:otherwise>
+				</c:choose>
 			</div>
 			
 			<%-- 2- 유저정보2 =  --%>
@@ -56,13 +77,13 @@
 					<div class="col-5 text-center">
 						<b>일정</b>
 						<br />
-						<span id="planCount">count</span>
+						<span id="planCount">${planCount }</span>
 					</div>
 					
 					<div class="col-5 text-center">
 						<b>포스트</b>
 						<br />
-						<span id="postCount">count</span>
+						<span id="postCount">${postCount }</span>
 					</div>
 
 				</div>
@@ -70,7 +91,7 @@
 				<hr />
 							
 				<div class="text-left">
-					<pre class="ml-3">bio</pre>
+					<pre class="ml-3">${user.userProfileMsg }</pre>
 				</div>
 			</div>
 		</div>

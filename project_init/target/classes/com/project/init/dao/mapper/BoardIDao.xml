@@ -25,6 +25,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="upHitNotice" parameterType="int">
 		UPDATE notice_board SET bHit = bHit + 1 WHERE bId = #{bId}
 	</update>
+	
+	<update id="noticeModify" parameterType="com.project.init.dto.NoticeBoardDto">
+		UPDATE notice_board SET bTitle = #{bTitle}, bContent = #{bContent} WHERE bId = #{bId}
+	</update>
+	
+	<delete id="noticeDelete" parameterType="int">
+		DELETE FROM notice_board WHERE bId = #{bId}
+	</delete>
+
 
 </mapper>
 

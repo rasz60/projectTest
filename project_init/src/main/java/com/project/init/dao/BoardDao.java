@@ -74,6 +74,24 @@ public class BoardDao implements BoardIDao {
 		
 		logger.info("upHit result : " + res);
 	}
+
+	@Override
+	public void noticeModify(NoticeBoardDto dto) {
+		logger.info("noticeModify(" + dto.getbId() + ") in >>> ");
+		
+		int res = sqlSession.update("noticeModify", dto);
+		
+		logger.info("noticeModify result : " + res);
+	}
+	
+	@Override
+	public void noticeDelete(int bId) {
+		logger.info("noticeDelete(" + bId + ") in >>> ");
+		
+		int res = sqlSession.update("noticeDelete", bId);
+		
+		logger.info("noticeDelete result : " + res);
+	}
 	
 	
 }

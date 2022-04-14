@@ -38,7 +38,20 @@ $(document).ready(function() {
 	            var postNo = data.postNo;
 	            var heartCheck =data.heartCheck;
 	            var hashtag;
-
+				
+				console.log(userProfileImg);				
+				
+				if ( userProfileImg != null || userProfileImg != "" ) {
+					$('.profile-img-s img').attr('src', '/init/resources/profileImg/'+ userProfileImg);
+				} else if ( userProfileImg == "null" ) {
+					console.log(userProfileImg);
+					$('.profile-img-s img').attr('src', '/init/resources/profileImg/nulluser.svg');
+				} else {
+					console.log(userProfileImg);
+					$('.profile-img-s img').attr('src', '/init/resources/profileImg/nulluser.svg');
+				}
+				
+				
 				if ( userEmail == email ) {
 					$('.modifyBtn').css('display', 'inline-block');
 					$('.modifyBtn').attr('href', $('.modifyBtn').attr('href')+postNo)

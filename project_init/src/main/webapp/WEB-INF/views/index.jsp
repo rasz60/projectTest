@@ -24,6 +24,12 @@
 <link rel="stylesheet" type="text/css" href="/init/css/includes/footer.css" />
 <title>WAYG</title>
 <style>
+.profile-img img {
+	border-radius: 50%;
+	max-width: 100%;
+	max-height: 100%;
+}
+
 .post-top {
 	line-height: 320px;
 }
@@ -44,6 +50,11 @@
 	height: 35px;
 }
 
+#post-profile img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
 </style>
 
 <script>
@@ -56,7 +67,7 @@
 <body>
 <%@ include file="includes/roader.jsp" %>
 <%@ include file="includes/header.jsp" %>
-
+<c:set var="profileImg" value="${user.userProfileImg}" />
 <section class="container">
 	<div class="main-body-top d-flex justify-content-between mb-3">
 		<div id="map" class="map border rounded p-2"></div>
@@ -84,7 +95,18 @@
 					
 					<s:authorize access="isAuthenticated()">				
 						<div class="profile-img col-3">
-							<i class="user-info-icon fa-regular fa-circle-user"></i>
+							<c:if test="${user.userProfileImg == null}">
+								<s:authorize access="hasRole('ROLE_USER')">
+								<img src="/init/resources/profileImg/nulluser.svg" alt="" />
+								</s:authorize>
+								<s:authorize access="hasRole('ROLE_ADMIN')">
+								<img src="/init/resources/profileImg/admin_default.png" alt="" />
+								</s:authorize>
+							</c:if>
+							
+							<c:if test="${user.userProfileImg != null}">
+								<img src="/init/resources/profileImg/${user.userProfileImg }" alt="" />
+							</c:if>
 						</div>
 						<div class="d-block col-9">
 							<div class="nickname">
@@ -182,13 +204,12 @@
 			<div class="recommand-icon text-primary d-flex justify-content-between">
 				<i class="btn1 fa-regular fa-clock"></i>
 				<s:authorize access="isAuthenticated()">
-				<a href="post/addPost" class="text-primary">
+				<a href="/init/search/lastest" class="text-primary">
 					<i class="btn2 fa-regular fa-circle-right"></i>
 				</a>
 				</s:authorize>
 			</div>
 			<div class="posts d-flex justify-content-between mt-2">
-			
 			<c:choose>
 				<c:when test="${lastestPosts > 3}">
 					<c:forEach items="${post}" var="post" begin="0" end="3" >
@@ -196,16 +217,24 @@
 						<div class="anFeed mr-2">
 						</s:authorize>
 						<s:authorize access="isAuthenticated()">
-						<div class="post mr-2" data-value="${post.postNo }" data-email="${post.email }">
+						<div class="post mr-2" data-value="${post.postNo }"">
 						</s:authorize>
 							<div class="post-top border rounded">
-								<img src="/init/images/${post.titleImage}" alt="" />
+								<img src="/init/resources/images/${post.titleImage}" alt="" />
 							</div>
 							
 							<div class="post-bottom bg-light border">
 								<div class="d-flex pt-1" style="height: 60%">
 									<div class="profile-box col-2 px-0">
-										<div id="post-profile" class="border"></div>
+										<div id="post-profile">
+											<c:if test="${post.userProfileImg != null }">
+											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
+											</c:if>
+											
+											<c:if test="${post.userProfileImg == null }">
+											<img src="/init/resources/profileImg/nulluser.svg" alt="" />
+											</c:if>
+										</div>
 									</div>
 									<div class="col-10 pt-2">
 										<b>${post.userNick}</b>
@@ -240,16 +269,24 @@
 						<div class="anFeed mr-2">
 						</s:authorize>
 						<s:authorize access="isAuthenticated()">
-						<div class="post mr-2" data-value="${post.postNo }" data-email="${post.email }">
+						<div class="post mr-2" data-value="${post.postNo }">
 						</s:authorize>
 							<div class="post-top border rounded">
-								<img src="/init/images/${post.titleImage}" alt="" />
+								<img src="/init/resources/images/${post.titleImage}" alt="" />
 							</div>
 							
 							<div class="post-bottom bg-light border">
 								<div class="d-flex pt-1" style="height: 60%">
 									<div class="profile-box col-2 px-0">
-										<div id="post-profile" class="border"></div>
+										<div id="post-profile">
+											<c:if test="${post.userProfileImg != null }">
+											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
+											</c:if>
+											
+											<c:if test="${post.userProfileImg == null }">
+											<img src="/init/resources/profileImg/nulluser.svg" alt="" />
+											</c:if>
+										</div>
 									</div>
 									<div class="col-10 pt-2">
 										<b>${post.userNick}</b>
@@ -278,15 +315,17 @@
 					</c:forEach>
 					
 					<c:forEach begin="${lastestPosts }" end="3" >
-						<div class="nullPost anFeed mr-2">
+						<div class="nullPost mr-2">
 							<div class="post-top border rounded">
-								<img src="/init/images/" alt="" />
+								<img src="" alt="" />
 							</div>
 							
 							<div class="post-bottom bg-light border">
 								<div class="d-flex pt-1" style="height: 60%">
 									<div class="profile-box col-2 px-0">
-										<div id="post-profile" class="border"></div>
+										<div id="post-profile" class="border">
+										
+										</div>
 									</div>
 									<div class="col-10 pt-2">
 										<b></b>
@@ -322,7 +361,7 @@
 			<div class="recommand-icon text-danger d-flex justify-content-between">
 				<i class="btn1 fa-regular fa-heart"></i>
 				<s:authorize access="isAuthenticated()">
-				<a href="post/postLike" class="text-danger">
+				<a href="/init/search/bestLikes" class="text-danger">
 					<i class="btn2 fa-regular fa-circle-right"></i>
 				</a>
 				</s:authorize>
@@ -337,14 +376,22 @@
 						<s:authorize access="isAuthenticated()">
 						<div class="post mr-2" data-value="${likeList.postNo }" data-email="${likeList.email }">
 						</s:authorize>
-													<div class="post-top border rounded">
-								<img src="/init/images/${likeList.titleImage}" alt="" />
+							<div class="post-top border rounded">
+								<img src="/init/resources/images/${likeList.titleImage}" alt="" />
 							</div>
 							
 							<div class="post-bottom bg-light border">
 								<div class="d-flex pt-1" style="height: 60%">
 									<div class="profile-box col-2 px-0">
-										<div id="post-profile" class="border"></div>
+										<div id="post-profile">
+											<c:if test="${likeList.userProfileImg != null }">
+											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
+											</c:if>
+											
+											<c:if test="${likeList.userProfileImg == null }">
+											<img src="/init/resources/profileImg/nulluser.svg" alt="" />
+											</c:if>
+										</div>
 									</div>
 									<div class="col-10 pt-2">
 										<b>${likeList.userNick}</b>
@@ -382,13 +429,21 @@
 						<div class="post mr-2" data-value="${likeList.postNo }" data-email="${likeList.email }">
 						</s:authorize>
 							<div class="post-top border rounded">
-								<img src="/init/images/${likeList.titleImage}" alt="" />
+								<img src="/init/resources/images/${likeList.titleImage}" alt="" />
 							</div>
 							
 							<div class="post-bottom bg-light border">
 								<div class="d-flex pt-1" style="height: 60%">
 									<div class="profile-box col-2 px-0">
-										<div id="post-profile" class="border"></div>
+										<div id="post-profile">
+											<c:if test="${likeList.userProfileImg != null }">
+											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
+											</c:if>
+											
+											<c:if test="${likeList.userProfileImg == null }">
+											<img src="/init/resources/profileImg/nulluser.svg" alt="" />
+											</c:if>
+										</div>
 									</div>
 									<div class="col-10 pt-2">
 										<b>${likeList.userNick}</b>
@@ -417,9 +472,9 @@
 					</c:forEach>
 					
 					<c:forEach begin="${bestLikePosts }" end="3" >
-						<div class="nullPost anFeed mr-2">
+						<div class="nullPost mr-2">
 							<div class="post-top border rounded">
-								<img src="/init/images/" alt="" />
+								<img src="" alt="" />
 							</div>
 							
 							<div class="post-bottom bg-light border">
@@ -460,7 +515,7 @@
 			<div class="recommand-icon text-success d-flex justify-content-between">
 				<i class="btn1 fa-regular fa-thumbs-up"></i>
 				<s:authorize access="isAuthenticated()">
-				<a href="post/postView" class="text-success">
+				<a href="/init/search/bestViews" class="text-success">
 					<i class="btn2 fa-regular fa-circle-right"></i>
 				</a>
 				</s:authorize>
@@ -476,13 +531,21 @@
 						<div class="post mr-2" data-value="${viewList.postNo}" data-email="${viewList.email }">
 						</s:authorize>
 							<div class="post-top border rounded">
-								<img src="/init/images/${viewList.titleImage}" alt="" />
+								<img src="/init/resources/images/${viewList.titleImage}" alt="" />
 							</div>
 							
 							<div class="post-bottom bg-light border">
 								<div class="d-flex pt-1" style="height: 60%">
 									<div class="profile-box col-2 px-0">
-										<div id="post-profile" class="border"></div>
+										<div id="post-profile">
+											<c:if test="${viewList.userProfileImg != null }">
+											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
+											</c:if>
+											
+											<c:if test="${viewList.userProfileImg == null }">
+											<img src="/init/resources/profileImg/nulluser.svg" alt="" />
+											</c:if>
+										</div>
 									</div>
 									<div class="col-10 pt-2">
 										<b>${viewList.userNick}</b>
@@ -520,13 +583,21 @@
 						<div class="post mr-2" data-value="${viewList.postNo}" data-email="${viewList.email }">
 						</s:authorize>
 							<div class="post-top border rounded">
-								<img src="/init/images/${viewList.titleImage}" alt="" />
+								<img src="/init/resources/images/${viewList.titleImage}" alt="" />
 							</div>
 							
 							<div class="post-bottom bg-light border">
 								<div class="d-flex pt-1" style="height: 60%">
 									<div class="profile-box col-2 px-0">
-										<div id="post-profile" class="border"></div>
+										<div id="post-profile">
+											<c:if test="${viewList.userProfileImg != null }">
+											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
+											</c:if>
+											
+											<c:if test="${viewList.userProfileImg == null }">
+											<img src="/init/resources/profileImg/nulluser.svg" alt="" />
+											</c:if>
+										</div>
 									</div>
 									<div class="col-10 pt-2">
 										<b>${viewList.userNick}</b>
@@ -555,9 +626,9 @@
 					</c:forEach>
 					
 					<c:forEach begin="${bestViewPosts }" end="3" >
-						<div class="nullPost anFeed mr-2">
+						<div class="nullPost mr-2">
 							<div class="post-top border rounded">
-								<img src="/init/images/" alt="" />
+								<img src="" alt="" />
 							</div>
 							
 							<div class="post-bottom bg-light border">

@@ -76,7 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <update id="insertNullDt" parameterType="java.util.List">
 	<foreach collection="list" item="dt" index="index" separator=" " open="INSERT ALL" close="SELECT * FROM dual ">
 	INTO plan_dt
-	(planDtNum, userId, planNum, placeCount, planDay, planDate, theme)
+	(planDtNum, userId, planNum, placeCount, planDay, planDate, transportation, theme)
 	VALUES
 		(plan_dt_seq.NEXTVAL,
 		 #{dt.userId},
@@ -84,6 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 #{dt.placeCount},
 		 #{dt.planDay},
 		 #{dt.planDate},
+		 #{dt.transportation},
  		 #{dt.theme}
 		 )
 	</foreach>
@@ -181,6 +182,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <select id="selectPlanDtMap" resultType="com.project.init.dto.PlanDtDto">
 	SELECT * FROM plan_dt WHERE userId = #{userId} and ${value1} = #{value2} and ${value3} like '%'||#{value4}||'%'
 </select>
+
+<select id="countPlanMst" parameterType="String" resultType="int">
+	SELECT count(*) FROM plan_mst WHERE userId = #{email}
+</select>
+
+
+
 
 </mapper>
 

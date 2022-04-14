@@ -8,6 +8,9 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -34,8 +37,11 @@ public class PostModifyDoCommand implements ICommand {
 		List<MultipartFile> fileList = multi.getFiles("img");
 
 		PostDto dto = null;
-		String path = "C:/Users/310-08/git/projectTest/project_init/src/main/webapp/resources/images/";
-		//String path = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/images/";
+		//String path = "C:/Users/310-08/git/projectTest/project_init/src/main/webapp/resources/images/";
+		//String path = "C:/Users/310-08/git/projectTest/apache-tomcat-9.0.56/wtpwebapps/project_init/resources/images/";
+		
+		String path = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/images/";
+		String path1 = "F:/init/init_project/projectTest/apache-tomcat-9.0.56/wtpwebapps/project_init/resources/images/";
 		
 		if ( fileList.get(0).getOriginalFilename() != ""  ) {
 		
@@ -45,6 +51,8 @@ public class PostModifyDoCommand implements ICommand {
 				
 				try {
 					mf.transferTo(new File(path + prefix + originalFileName));
+					mf.transferTo(new File(path1 + prefix + originalFileName));
+					
 					tmp+=prefix + originalFileName+"/";
 				} catch (IllegalStateException | IOException e) {
 					e.getMessage(); 
@@ -54,11 +62,15 @@ public class PostModifyDoCommand implements ICommand {
 			images += tmp;
 		}
 
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
 		String[] test =  images.split("/");
 		titleImage = test[0];
 		
 		dto = new PostDto(multi.getParameter("postNo"),
-								  Constant.username,
+								  uId,
 				  				  multi.getParameter("content"),
 				  				  multi.getParameter("hashtag"),
 				  				  titleImage,

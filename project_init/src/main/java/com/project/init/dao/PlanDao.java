@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,19 +118,25 @@ public class PlanDao implements PlanIDao {
 			result = resMst > 0 ? "success": "failed";
 			logger.info("modifyPlanMst result 1 : " + result);
 			
-		} else if (deletePlanDt.isEmpty() == false ) {
+		} 
+		
+		if (deletePlanDt.isEmpty() == false ) {
 			
 			int resDt1 = sqlSession.delete("deletePlanDt1", deletePlanDt);
 			result = resDt1 > 0 ? "success": "failed";
 			logger.info("modifyPlanMst result 2 : " + result);
 			
-		} else if (insertPlanDt.isEmpty() == false ) {			
+		}
+		
+		if (insertPlanDt.isEmpty() == false ) {			
 		
 			int resDt2 = sqlSession.insert("insertNullDt", insertPlanDt);
 			result = resDt2 > 0 ? "success": "failed";
 			logger.info("modifyPlanMst result 3 : " + result);		
 		
-		} else if ( updatePlanDt.isEmpty() == false ) {
+		}
+
+		if ( updatePlanDt.isEmpty() == false ) {
 		
 			int resDt3 = sqlSession.update("updatePlanDt1", updatePlanDt);
 			result = resDt3 == 0 ? "success": "failed";
@@ -208,7 +215,7 @@ public class PlanDao implements PlanIDao {
 		} 
 		
 		if ( insertDtDtos.isEmpty() == false ) {	
-			int res2 = sqlSession.insert("insertDt", insertDtDtos);
+			int res2 = sqlSession.insert("insertNullDt", insertDtDtos);
 			result = res2 > 0 ? "success": "failed";
 			logger.info("detailModifyDo result 2 : insertPlanDt ? " + result);	
 		}
@@ -231,4 +238,14 @@ public class PlanDao implements PlanIDao {
 		logger.info("selectPlanDtMap() result : result.isEmpty() ? " + result.isEmpty());
 		return result;
 	}
+	
+	@Override
+	public int countPlanMst(String email) {
+		int res = sqlSession.selectOne("countPlanMst", email);
+		
+		System.out.println(res);
+		
+		return res;
+	}
+	
 }

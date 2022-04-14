@@ -27,6 +27,21 @@ pageEncoding="UTF-8"%>
 <title>Insert title here</title>
 <script>
 var dateCount = '<c:out value="${plan1.dateCount}" />';
+
+
+var selectDts = [];
+
+<c:forEach var="plan2" items="${plan2 }">
+
+var selectDt = {
+		planDtNum : "${plan2.planDtNum}",
+		theme : "${plan2.theme}",
+		transportation : "${plan2.transportation}"
+}
+
+selectDts.push(selectDt);
+</c:forEach>
+
 </script>
 </head>
 
@@ -142,19 +157,19 @@ var dateCount = '<c:out value="${plan1.dateCount}" />';
 											<input type="hidden" class="form-control" name="category" value="${plan2.category}" readonly/>
 											
 											<%-- startTime --%>
-											<div class="form-group col-4">
+											<div class="form-group col-6">
 												<label for="startTime">StartTime</label>
 												<input type="time" class="form-control" name="startTime" value="${plan2.startTime}" />
 											</div>
 											
 											<%-- endTime --%>
-											<div class="form-group col-4">
+											<div class="form-group col-6">
 												<label for="endTime">EndTime</label>
 												<input type="time" class="form-control" name="endTime" value="${plan2.endTime}" />
 											</div>
 											
 											<%-- theme --%>
-											<div class="form-group col-4">
+											<div class="form-group col-6">
 												<label for="theme">방문</label>
 												<select class="custom-select my-1 mr-sm-2 " id="theme" name="theme">
 													<option value="방문" selected>방문</option>
@@ -172,9 +187,23 @@ var dateCount = '<c:out value="${plan1.dateCount}" />';
 											</div>
 											
 											<%-- transportation --%>								
-											<div class="form-group col-12 toggle none">
-												<label for="transportation">저장</label>
-												<input type="text" class="form-control" name="transportation" value="${plan2.transportation}"/>
+											<div class="form-group col-6">
+												<label for="transportation">교통수단</label>
+												<select class="custom-select my-1 mr-sm-2 " id="transportation" name="transportation">
+													<option value="도보" selected>도보</option>
+													<option value="자가용">자가용</option>
+													<option value="고속/시외/시내버스">고속/시외/시내버스</option>
+													<option value="지하철">지하철</option>
+													<option value="자전거">자전거</option>
+													<option value="택시">택시</option>
+													<option value="전세/관광버스">전세/관광버스</option>
+													<option value="차량대여/렌트">차량대여/렌트</option>
+													<option value="오토바이">오토바이</option>
+													<option value="전동킥보드">전동킥보드</option>
+													<option value="비행기">비행기</option>
+													<option value="선박">선박</option>
+													<option value="기타">기타</option>
+												</select>
 											</div>
 											
 											<%-- details --%>	

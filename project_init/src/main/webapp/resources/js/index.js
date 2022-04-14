@@ -317,7 +317,7 @@ $(document).ready(function() {
 			},
 	 		success:function(data){
 	 			$('#modalBtn').trigger('click');
-	               
+	            
 	 			// data parsing
 				var userEmail = data.email;
 	 			var userNick=data.userNick;
@@ -331,7 +331,15 @@ $(document).ready(function() {
 	            var postNo = data.postNo;
 	            var heartCheck =data.heartCheck;
 	            var hashtag;
-
+				
+				if( userProfileImg != null ) {
+					$('.profile-img-s img').attr("src", "/init/resources/profileImg/" + userProfileImg);
+				} else {
+					$('.profile-img-s img').attr("src", "/init/resources/profileImg/nulluser.svg");
+				}
+				
+				
+				
 				if ( userEmail == email ) {
 					$('.modifyBtn').css('display', 'inline-block');
 					$('.modifyBtn').attr('href', $('.modifyBtn').attr('href')+postNo)
@@ -434,7 +442,13 @@ function getComments(postNo, email) {
 	       	for(var i=0; i<data.length; i++){
 				comments += '<div class="comment-block row mx-0 my-1 d-flex">';
 				comments +=	'<div class="profile-img-xxs col-1 px-0">';
-				comments +=	'<div class="img-xxs border"></div>';
+				comments +=	'<div class="img-xxs">';
+				if ( data[i].userProfileImg != null ) {
+					comments +=	'<img src="/init/resources/profileImg/' + data[i].userProfileImg + '" />';					
+				} else {
+					comments +=	'<img src="/init/resources/profileImg/nulluser.svg" />';
+				}
+				comments += '</div>';
 				comments +=	'</div>';
 				comments +=	'<span class="col-3 pl-1 nickname" style="font-size: 14px; font-weight: 600;">' + data[i].userNick + '</span>';
 	           	comments += '<span class="col-6 px-0 comment-text" style="font-size: 13px;">'+data[i].content+'</span>';

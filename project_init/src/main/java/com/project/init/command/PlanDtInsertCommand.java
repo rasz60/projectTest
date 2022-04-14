@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
 
 import com.project.init.dao.PlanIDao;
@@ -27,12 +30,16 @@ public class PlanDtInsertCommand implements ICommand {
 		
 		String result = null;
 		
-		// request¿¡¼­ ³Ñ¾î¿Â parameter¸¦ planMstDto·Î ÆÄ½ÌÇÏ´Â ¸Þ¼­µå ½ÇÇà
-		PlanMstDto mstDto = Constant.planMstDtoParser(request, Constant.username);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		// requestï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾ï¿½ï¿½ parameterï¿½ï¿½ planMstDtoï¿½ï¿½ ï¿½Ä½ï¿½ï¿½Ï´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		PlanMstDto mstDto = Constant.planMstDtoParser(request, uId);
 		logger.info("PlanDtInsertCommand result1 : mstDto.planName ? " + mstDto.getPlanName());
 		
-		// request¿¡¼­ ³Ñ¾î¿Â parameter¸¦ planDtDto·Î ÆÄ½ÌÇÏ´Â ¸Þ¼­µå ½ÇÇà
-		ArrayList<PlanDtDto> dtDtos = (ArrayList)Constant.planDtDtoParser(mstDto.getPlanNum(), Constant.username, request);
+		// requestï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾ï¿½ï¿½ parameterï¿½ï¿½ planDtDtoï¿½ï¿½ ï¿½Ä½ï¿½ï¿½Ï´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		ArrayList<PlanDtDto> dtDtos = (ArrayList)Constant.planDtDtoParser(mstDto.getPlanNum(), uId, request);
 		logger.info("PlanDtInsertCommand result2 : dtDtos.isEmpty() ? " + dtDtos.isEmpty());		
 		
 		result = planDao.insertPlanDtDo(mstDto, dtDtos);

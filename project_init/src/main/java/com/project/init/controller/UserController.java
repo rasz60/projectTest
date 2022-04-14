@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -123,15 +125,16 @@ public class UserController {
 	public String loginSuc(Authentication authentication, RedirectAttributes rttr) {
 		logger.info("loginSuc() in >>> ");
 		
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		Constant.username = userDetails.getUsername();
+		authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
 
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		String auth = authorities.toString(); //role占쏙옙 占쏙옙底� 占쏙옙占쌘울옙占쏙옙 占쏙옙환
 
-		udao.userVisit(Constant.username); //占싸깍옙占쏙옙 占쏙옙짜 占쏙옙占쏙옙占쏙옙트
+		udao.userVisit(uId); //占싸깍옙占쏙옙 占쏙옙짜 占쏙옙占쏙옙占쏙옙트
 		
-		rttr.addAttribute("login", Constant.username);
+		rttr.addAttribute("login", uId);
 		
 		logger.info("loginSuc() userAuth : " + auth);
 		

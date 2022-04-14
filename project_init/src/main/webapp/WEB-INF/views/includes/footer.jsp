@@ -45,7 +45,7 @@ textarea.contact-input {
 		<input type="text" name="subject" class="form-control col-11 mt-4 contact-input" placeholder="여러분의 의견을 보내주세요." required/>
 	
 		<input type="text" name="mail" class="form-control col-10 mt-1 ml-3 mr-5 contact-input" placeholder="Your email address" required/>
-		<button type="submit" id="sendBtn" class="btn btn-sm btn-info ml-2 col-1 p-0"><i class="fa-regular fa-envelope"></i></button>
+		<button type="submit" id="sendQnABtn" class="btn btn-sm btn-info ml-2 col-1 p-0"><i class="fa-regular fa-envelope"></i></button>
 
 		<textarea name="content" class="form-control contact-input" id="" cols="30" rows="2" placeholder="Contact Us-*" required></textarea>
 	</form>
@@ -53,8 +53,9 @@ textarea.contact-input {
 
 <script>
 
-$('button#sendBtn').click(function(e) {
+$('button#sendQnABtn').click(function(e) {
 	e.preventDefault();
+	
 	var subject = $('input[name=subject]').val();
 	var mail = $('input[name=mail]').val();
 	var content = $('input[name=content]').val();
@@ -62,8 +63,8 @@ $('button#sendBtn').click(function(e) {
 	$('#roader').css('display', 'block');
 	
 	$.ajax({
-		url: "contactus",
-		type: "post",
+		url: "/init/mail/contactus",
+		type: "get",
 		data: {
 			subject : subject,
 			usermail : mail,
@@ -86,7 +87,6 @@ $('button#sendBtn').click(function(e) {
 		}
 	})
 })
-
 </script>
 
 </body>

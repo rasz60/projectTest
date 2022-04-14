@@ -33,7 +33,7 @@
 	<h3 class="display-4 font-italic"><i class="fa-solid fa-bullhorn"></i></h3>
 	<hr />
 	
-	<form action="modify" method="post" class="mb-4" id="frm">
+	<form action="modify?bId=${content_view.bId}" method="post" class="mb-4" id="frm">
 		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
 		
 		<div class="form-group d-none">
@@ -52,7 +52,7 @@
 		
 		<div class="form-group row mx-0">
 			<label for="uname" class="col-2 mt-2"><strong>Writer</strong></label>
-			<input type="text" class="form-control col-9 ml-3" id="uname" name="bName" value="WAYG SUPER ADMIN" readonly/>
+			<input type="text" class="form-control col-9 ml-3" id="uname" name="bName" value="WAYG ADMIN" readonly/>
 		</div>
 		
 		<hr />
@@ -74,7 +74,8 @@
 		<a href="../notice_board" id="goback" class="btn btn-sm btn-secondary">목록</a>	
 		<s:authorize access="hasRole('ROLE_ADMIN')">
 			<a href="delete?bId=${content_view.bId}" id="delBtn" class="btn btn-sm btn-danger float-right mr-2">삭제</a>
-			<button type="submit" id="modBtn" class="btn btn-sm btn-success float-right mr-2">수정</button>
+			<button type="submit" id="modDoBtn" class="btn btn-sm btn-success d-none float-right mr-2">수정</button>
+			<button type="button" id="modBtn" class="btn btn-sm btn-success float-right mr-2">수정</button>
 		</s:authorize>
 	</form>
 </div>

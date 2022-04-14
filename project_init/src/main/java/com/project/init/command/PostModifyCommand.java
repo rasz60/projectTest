@@ -3,6 +3,9 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
 
 import com.project.init.dao.PlanIDao;
@@ -21,20 +24,25 @@ public class PostModifyCommand implements ICommand {
 		
 		String postNo = request.getParameter("postNo");
 		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		
 		// result 1 : PostDto
 		PostDto dto = new PostDto();
 		dto.setPostNo(postNo);
-		dto.setEmail(Constant.username);
+		dto.setEmail(uId);
 		
 		dto = postDao.getlist(dto);
 		model.addAttribute("postDto", dto);
 		
 		// result 2 : planMstDto
-		PlanMstDto pmst = planDao.selectPlanMst(dto.getPlan(), Constant.username);
+		PlanMstDto pmst = planDao.selectPlanMst(dto.getPlan(), uId);
 		model.addAttribute("planMstDto", pmst);
 		
 		// result 3 : planDtDto
-		ArrayList<PlanDtDto> pdts = planDao.selectPlanDt(dto.getPlan(), Constant.username);
+		ArrayList<PlanDtDto> pdts = planDao.selectPlanDt(dto.getPlan(), uId);
 		model.addAttribute("planDtDtos", pdts);
 	}
 

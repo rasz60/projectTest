@@ -1,5 +1,6 @@
 package com.project.init;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -18,4 +19,10 @@ public class InitTests {
 	@Autowired
 	public PlanDao pdao;
 	
+	@Test
+	public void test1() {
+		String email =  "tester-1@mail.com";
+		
+		System.out.println(pdao.countPlanMst(email));
+	}
 }

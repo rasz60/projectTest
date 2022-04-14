@@ -1,12 +1,17 @@
 package com.project.init.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +33,7 @@ import com.project.init.dto.PlanMstDto;
 import com.project.init.dto.PostDto;
 import com.project.init.dto.PostLikeDto;
 import com.project.init.dto.PostViewDto;
+import com.project.init.dto.UserDto;
 import com.project.init.util.Constant;
 
 @Controller
@@ -49,57 +55,27 @@ public class PostController {
 		Constant.udao = udao;
 	}
 
-	
-	/* unset
-	
-	@RequestMapping("postLike")
-	public String postLike(Model model) {
-		String user = Constant.username;
-		ArrayList<PostDto> list = dao.likeList(user);
-		model.addAttribute("list", list);
-		model.addAttribute("user",Constant.username);
-		System.out.println(Constant.username);
-		return "post/postMain";
-	}
-	
-	@RequestMapping("postView")
-	public String postView(Model model) {
-		String user = Constant.username;
-		ArrayList<PostDto> list = dao.viewList(user);
-		model.addAttribute("list", list);
-		model.addAttribute("user",Constant.username);
-		System.out.println(Constant.username);
-		return "post/postMain";
-	}
-	
-	@RequestMapping("getPost")
-	public String getPost(Model model) {
-		String user = Constant.username;
-		ArrayList<PostDto> list = dao.list(user);
-		model.addAttribute("list", list);
-		model.addAttribute("user",Constant.username);
-		System.out.println(Constant.username);
-		return"post/postMain";
-	}
-	
-	
-	*/
 
 	@RequestMapping("posting")
 	public String posting(String planNum, Model model) {
 		logger.info("posting(" + planNum + ") in >>>");
 		
-		PlanMstDto result1= pdao.selectPlanMst(planNum, Constant.username);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		
+		PlanMstDto result1= pdao.selectPlanMst(planNum, uId);
 		model.addAttribute("plan1", result1);
 		
 		logger.info("posting("+ planNum +") result1.isEmpty() ? " + result1.getDateCount());
 		
-		ArrayList<PlanDtDto> result2= pdao.selectPlanDt(planNum, Constant.username);
+		ArrayList<PlanDtDto> result2= pdao.selectPlanDt(planNum, uId);
 		model.addAttribute("plan2", result2);
 		
 		logger.info("posting("+ planNum +") result2.isEmpty() ? " + result2.isEmpty());
 		
-		model.addAttribute("user", Constant.username);
+		model.addAttribute("user", uId);
 		
 		return "post/addPost";
 	}
@@ -122,11 +98,22 @@ public class PostController {
 	public String mypost(Model model) {
 		logger.info("mypost() in >>>");
 		
-		String user = Constant.username;
-		ArrayList<PostDto> list = postDao.mylist(user, model);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		UserDto dto = udao.login(uId);
+		
+		int planCount = pdao.countPlanMst(uId);
+		int postCount = postDao.countPost(uId);
+		
+		model.addAttribute("planCount", planCount);
+		model.addAttribute("postCount", postCount);		
+
+		ArrayList<PostDto> list = postDao.mylist(uId, model);
 		
 		model.addAttribute("list", list);
-		model.addAttribute("user", Constant.username);
+		model.addAttribute("user", dto);
 		
 		logger.info("mypost() result : post.isEmpty ? " + list.isEmpty());
 		
@@ -226,7 +213,11 @@ public class PostController {
 		comm = new PostModifyCommand();
 		comm.execute(request, model);
 		
-		model.addAttribute("user", Constant.username);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		model.addAttribute("user", uId);
 		
 		return "post/modifypost";
 	}
@@ -248,20 +239,47 @@ public class PostController {
 		return "redirect:/post/mypost";
 	}
 	
-	
-	/*
-
-	@RequestMapping("searchPage")
-	public String searchPage(HttpServletRequest request, Model model) {
-		String keyword = request.getParameter("keyword");
-		String searchVal = request.getParameter("searchVal");
-		ArrayList<PostDto> list = dao.search(keyword,searchVal);
-		model.addAttribute("list", list);
+	@RequestMapping("otherUser")
+	public String otherPost(HttpServletRequest request, Model model) {
+		String nickName = request.getParameter("nick");
 		
-		return "postMain";
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		UserDto dto = udao.login(uId);
+		model.addAttribute("myinfo", dto);
+		System.out.println(dto.getUserNick());
+		
+		if ( nickName.equals(dto.getUserNick()) ) {
+			return "redirect:/mypost";
+		}
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("nick", nickName);
+		map.put("uId", uId);
+		
+		UserDto otherUser = udao.searchNick(map);
+		int planCount = pdao.countPlanMst(otherUser.getUserEmail());
+		int postCount = postDao.countPost(otherUser.getUserEmail());
+		
+		model.addAttribute("planCount", planCount);
+		model.addAttribute("postCount", postCount);
+		
+		UserDto dto2 = udao.login(otherUser.getUserEmail());
+		
+		ArrayList<PostDto> list = postDao.mylist(otherUser.getUserEmail(), model);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("user", dto2);
+		
+		
+		
+		logger.info("mypost() result : post.isEmpty ? " + list.isEmpty());
+		
+		return "post/otherPost";
 	}
-
-	*/
-
-
+	
+	
 }

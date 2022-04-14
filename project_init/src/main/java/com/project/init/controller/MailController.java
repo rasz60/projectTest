@@ -26,15 +26,15 @@ public class MailController {
 	@RequestMapping(value = "joinCert", method = RequestMethod.GET)
     public String joinCert(HttpServletRequest request) throws Exception {
 		logger.info("joinCert() in >>> ");
-		// ajax·Î °í°´ÀÌ ÀÔ·ÂÇÑ ¸ŞÀÏÁÖ¼Ò¸¦ º¸³»¼­ Controller·Î ÀÎÁõ¹øÈ£¸¦ º¸³½´Ù.
+
 		String email = request.getParameter("email");
 		
 		
-		// mail Á¦¸ñ
-        String subject = "[WAYG] È¸¿ø°¡ÀÔÀ» À§ÇÑ ÀÎÁõ¹øÈ£ÀÔ´Ï´Ù.";
+		// mail subject
+        String subject = "[WAYG] íšŒì›ê°€ì…ì„ ìœ„í•œ ì¸ì¦ë²ˆí˜¸ì…ë‹ˆë‹¤.";
         
         
-        // mail º»¹® ³»¿ë
+        // mail content
         String content= "";
         String pinNum = "";
         for ( int i = 0; i < 6; i++ ) {
@@ -48,17 +48,16 @@ public class MailController {
         }
         
         
-        content += "¾È³çÇÏ¼¼¿ä, WAYGÀÔ´Ï´Ù.<br/>"; 
-        content += "ÀÌ¸ŞÀÏ ÀÎÁõÀ» À§ÇÑ PIN ¹øÈ£ÀÔ´Ï´Ù.<br/> ¾Æ·¡ÀÇ ¹øÈ£¸¦ È®ÀÎÇÏ½Ã°í È¸¿ø °¡ÀÔÃ¢¿¡ Á¤È®È÷ ÀÔ·ÂÇØÁÖ¼¼¿ä.<br/><br/>";
-        content += "<hr/>";
-        content += "<br/>È¸¿ø´ÔÀÇ ÀÎÁõ¹øÈ£´Â " + pinNum + "ÀÔ´Ï´Ù.<br/>";
-        content += "È¸¿ø°¡ÀÔ ÆäÀÌÁö¿¡¼­ PIN ¹øÈ£¸¦ Á¤È®È÷ ÀÔ·ÂÇØÁÖ¼¼¿ä.";
+        content += "ì•ˆë…•í•˜ì„¸ìš”, WAYGì…ë‹ˆë‹¤.<br/>"; 
+        content += "ì´ë©”ì¼ ì¸ì¦ì„ ìœ„í•œ PIN ë²ˆí˜¸ì…ë‹ˆë‹¤.<br/>ì•„ë˜ì˜ ë²ˆí˜¸ë¥¼ í™•ì¸í•˜ì‹œê³  íšŒì› ê°€ì…ì°½ì— ì •í™•íˆ ì…ë ¥í•´ì£¼ì„¸ìš”.<br/>";
+        content += "<br/>íšŒì›ë‹˜ì˜ ì¸ì¦ë²ˆí˜¸ëŠ” " + pinNum + "ì…ë‹ˆë‹¤.<br />";
+        content += "íšŒì›ê°€ì… í˜ì´ì§€ì—ì„œ PIN ë²ˆí˜¸ë¥¼ ì •í™•íˆ ì…ë ¥í•´ì£¼ì„¸ìš”.";
         
         
-        // º¸³»´Â »ç¶÷
+        // sender mail-address
         String from = "WAYG <wayg.superad@gmail.com>";
         
-        // ¹Ş´Â »ç¶÷
+        // receiver mail-address
         String to = email;
         
         
@@ -69,8 +68,8 @@ public class MailController {
 	        mailHelper.setFrom(from);
 	        mailHelper.setTo(to);
 	        mailHelper.setSubject(subject);
-	        mailHelper.setText(content, true);
-	        // htmlÅÂ±×¸¦ »ç¿ëÇÏ·Á¸é true           
+	        // use html statement
+	        mailHelper.setText(content, true);       
 	        mailSender.send(mail);
 	        return pinNum;
 	        
@@ -80,4 +79,33 @@ public class MailController {
 	    }        
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping(value = "contactus", method = RequestMethod.GET)
+    public String contactus(HttpServletRequest request) throws Exception {
+		logger.info("contactus() in >>> ");
+		String to ="WAYG <wayg.superad@gmail.com>";
+		String from = "WAYG <wayg.superad@gmail.com>";
+        String subject = request.getParameter("subject");
+        String content = "íšŒì‹  ìš”ì²­ ë©”ì¼ ì£¼ì†Œ : " + request.getParameter("usermail") + "<br />";
+        content += request.getParameter("content");
+        
+        try {
+	        MimeMessage mail = mailSender.createMimeMessage();
+	        MimeMessageHelper mailHelper = new MimeMessageHelper(mail, true, "UTF-8");
+	            
+	        mailHelper.setFrom(from);
+	        mailHelper.setTo(to);
+	        mailHelper.setSubject(subject);
+	        // use html statement
+	        mailHelper.setText(content, true);       
+	        mailSender.send(mail);
+	        return "success";
+	        
+	    } catch(Exception e) {
+	        e.printStackTrace();
+	        return "error";
+	    }   
+		
+	}
 }

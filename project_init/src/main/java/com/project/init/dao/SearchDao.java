@@ -43,13 +43,13 @@ public class SearchDao implements SearchIDao {
 		String email="";
 		String location="";
 		
-		if(keyword.equals("Hashtag")) {
+		if (keyword.equals("Hashtag")) {
 			System.out.println(dto.getSearchVal());
 			dtos =(ArrayList)sqlSession.selectList("searchHashtag", dto);
 			System.out.println("dtos : " + dtos);
 			return dtos;
 
-		}else if(keyword.equals("NickName")) {			
+		} else if (keyword.equals("NickName")) {			
 			arr =(ArrayList) sqlSession.selectList("checkNickName", dto);
 			
 			if(arr.size()!=0) {			
@@ -62,11 +62,11 @@ public class SearchDao implements SearchIDao {
 				System.out.println("SIZE()"+dtos.size());
 				return dtos;	
 			}			
-		}else{
+		} else {
 			
 			arr =(ArrayList) sqlSession.selectList("checkLocation", dto);
 			
-			if(arr.size()!=0) {		
+			if (arr.size()!=0) {		
 				for(int i=0; i<arr.size(); i++) {	
 					location = arr.get(i);
 					System.out.println(location);
@@ -76,7 +76,8 @@ public class SearchDao implements SearchIDao {
 				return dtos;	
 			}
 			
-		}		
+		}
+		
 		return dtos;		
 	}
 }

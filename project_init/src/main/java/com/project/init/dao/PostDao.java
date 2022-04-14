@@ -193,8 +193,9 @@ public class PostDao implements PostIDao {
 	public void deletePost(String postNo) {
 		sqlSession.delete("deletePost", postNo);
 		sqlSession.delete("deleteComments", postNo);
-		sqlSession.delete("deletePostDt", Integer.parseInt(postNo));
+		sqlSession.delete("deletePostDt2", Integer.parseInt(postNo));
 		sqlSession.delete("deleteLikes", postNo);
+		sqlSession.delete("deleteViews", postNo);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -216,21 +217,26 @@ public class PostDao implements PostIDao {
 	public ArrayList<PostDtDto> getMapPost(ArrayList<PlanDtDto> dtDtos) {
 		logger.info("getMapPost(dtDtos) in >>>");
 		
-		ArrayList<PostDtDto> mapPost = (ArrayList)sqlSession.selectList("getMapPost", dtDtos);
-
-		logger.info("getMapPost(dtDtos) result : mapPost.isEmpty() ? " + mapPost.isEmpty());
+		ArrayList<PostDtDto> mapPost = new ArrayList<PostDtDto>();
+		if ( dtDtos.size() != 0 ) {
+			mapPost = (ArrayList)sqlSession.selectList("getMapPost", dtDtos);
+		}
 		
+		logger.info("getMapPost(dtDtos) result : mapPost.size() ? " + mapPost.size());
 		return mapPost;
+	}
+	
+	public int countPost (String email) {
+		int res = sqlSession.selectOne("countPlanMst", email);
+		
+		System.out.println(res);
+
+		return res;
 	}
 	
 	
 	
-	
-	
 	/* unset
-	
-
-
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override

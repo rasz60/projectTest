@@ -42,6 +42,10 @@ public interface PostIDao {
 	public ArrayList<PostDto> viewList(String email);
 	
 	public ArrayList<PostDtDto> getMapPost(ArrayList<PlanDtDto> dtDtos);
+	
+	public int countPost (String email);
+	
+	
 	/* unset
 
 	public ArrayList<PostDto> search(String keyword,String searchVal);

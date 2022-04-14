@@ -7,6 +7,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
 
 import com.project.init.dao.PlanIDao;
@@ -26,6 +29,13 @@ public class PlanDtGetMapCommand implements ICommand {
 	@Override
 	public void execute(HttpServletRequest request, Model model) {
 		String userId = request.getParameter("userId");
+		
+		if ( userId == null || userId == "" ) {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			User user = (User)authentication.getPrincipal();
+			userId = user.getUsername();
+		}
+		
 		String value1 = request.getParameter("value1");
 		String value2 = request.getParameter("value2");
 		String value3 = request.getParameter("value3");

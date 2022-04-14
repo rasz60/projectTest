@@ -40,7 +40,7 @@ public interface PlanIDao {
 	// planDt modify (update, insert, delete)
 	String detailModifyDo(ArrayList<PlanDtDto> deleteDtDtos, ArrayList<PlanDtDto> insertDtDtos, ArrayList<PlanDtDto> updateDtDtos);
 	
-	
 	ArrayList<PlanDtDto> selectPlanDtMap(Map<String, String> map);
 	
+	int countPlanMst(String email);
 }

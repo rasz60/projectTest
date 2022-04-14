@@ -56,6 +56,12 @@ $(document).ready(function() {
 
 	setDayMap('day1');
 	
+	for ( var i = 0; i < $('select#theme').length; i++ ) {
+		$('select#theme').eq(i).val(selectDts[i].theme);
+		$('select#transportation').eq(i).val(selectDts[i].transportation);
+	}
+	
+	
 	// 상세 일정 표시 부분에 previous 버튼 클릭 시
 	$('#prev-btn').click(function() {
 		// 버튼에 부여한 data-index 값(= .active인 탭 박스에 index - 1) 을 가져옴

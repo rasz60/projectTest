@@ -12,4 +12,7 @@ public interface BoardIDao {
 	
 	NoticeBoardDto contentView(String bid);
 
+	void noticeModify(NoticeBoardDto dto);
+	
+	void noticeDelete(int bId);
 }

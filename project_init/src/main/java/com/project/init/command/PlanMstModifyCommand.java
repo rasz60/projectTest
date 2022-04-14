@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
 
 import com.project.init.dao.PlanDao;
@@ -26,7 +29,10 @@ public class PlanMstModifyCommand implements ICommand {
 	@Override
 	public void execute(HttpServletRequest request, Model model) {
 		// pdao Parameter Setting
-		String userId = Constant.username;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String userId = user.getUsername();
+
 		List<PlanDtDto> updatePlanDt = new ArrayList<PlanDtDto>();
 		List<PlanDtDto> deletePlanDt = new ArrayList<PlanDtDto>();
 		List<PlanDtDto> insertPlanDt = new ArrayList<PlanDtDto>();
@@ -35,18 +41,18 @@ public class PlanMstModifyCommand implements ICommand {
 		String originDateCount = request.getParameter("originDateCount");
 		String newDateCount = request.getParameter("newDateCount");
 		
-		// planMst update : [«ˆ¿Á] πŸ≤Ô ≥ªøÎ¿Ã æ¯¥ı∂Ûµµ π´¡∂∞« update π›øµ
+		// planMst update : [ÔøΩÔøΩÔøΩÔøΩ] ÔøΩŸ≤ÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ update ÔøΩ›øÔøΩ
 		PlanMstDto mstDto = Constant.planMstDtoParser(request, userId);
 		mstDto.setDateCount(newDateCount);
 		
-		// ºˆ¡§µ«±‚ ¿¸ dateCount		
+		// ÔøΩÔøΩÔøΩÔøΩÔøΩ«±ÔøΩ ÔøΩÔøΩ dateCount		
 		int origin = Integer.parseInt(originDateCount);
-		// ºˆ¡§µ«±‚ »ƒ dateCount
+		// ÔøΩÔøΩÔøΩÔøΩÔøΩ«±ÔøΩ ÔøΩÔøΩ dateCount
 		int newly = Integer.parseInt(newDateCount);
 
-		// dateCount∞° ¿€æ∆¡≥¿∏∏È (ø¯∑° ¿œ¡§ ºˆ - ªı∑ŒøÓ ¿œ¡§ ºˆ)∏∏≈≠ ≥°ø°º≠∫Œ≈Õ ¡ˆøÏ∞Ì ≥™∏”¡ˆ ≥Ø¬•∏¶ πŸ≤„¡‹
+		// dateCountÔøΩÔøΩ ÔøΩ€æÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ (ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩ - ÔøΩÔøΩÔøΩŒøÔøΩ ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩ)ÔøΩÔøΩ≈≠ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩ¬•ÔøΩÔøΩ ÔøΩŸ≤ÔøΩÔøΩÔøΩ
 		if ( origin > newly ) {
-			// ±‚¡∏ ¿œ¡§ø°º≠ newly+1 ¿œ¬˜ ¿œ¡§∫Œ≈Õ ªË¡¶ ex> origin 5¿œ , newly 2¿œ = 3¿œ(newly+1)¬˜∫Œ≈Õ ≥°(origin)±Ó¡ˆ planDtªË¡¶
+			// ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ newly+1 ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ ex> origin 5ÔøΩÔøΩ , newly 2ÔøΩÔøΩ = 3ÔøΩÔøΩ(newly+1)ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩ(origin)ÔøΩÔøΩÔøΩÔøΩ planDtÔøΩÔøΩÔøΩÔøΩ
 			for (int i = (newly+1); i <= origin; i++) {
 				PlanDtDto dtDto = new PlanDtDto();
 				dtDto.setPlanNum(mstDto.getPlanNum());
@@ -58,24 +64,31 @@ public class PlanMstModifyCommand implements ICommand {
 			updatePlanDt = Constant.getUpdateDtos(mstDto.getPlanNum(), userId, mstDto.getStartDate(), newly);
 		}		
 		
-		// date count∞° ∞∞¿∏∏È ∞¢ planDate¿« ≥Ø¬•∏∏ πŸ≤„¡‹
+		// date countÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩ planDateÔøΩÔøΩ ÔøΩÔøΩ¬•ÔøΩÔøΩ ÔøΩŸ≤ÔøΩÔøΩÔøΩ
 		else if ( origin == newly ) {
 			updatePlanDt = Constant.getUpdateDtos(mstDto.getPlanNum(), userId, mstDto.getStartDate(), newly);				
 		}
 			
-		// dateCount∞° ¥ı ƒø¡≥¿∏∏È ø¯∑°¿« ¿œ¡§ ºˆ ∏∏≈≠¿∫ πŸ≤„¡÷∞Ì ≥™∏”¡ˆ ¿œ¿⁄¥¬ ∫Û ¿œ¡§¿ª ª˝º∫«ÿº≠ insert
+		// dateCountÔøΩÔøΩ ÔøΩÔøΩ ƒøÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩ ÔøΩÔøΩ≈≠ÔøΩÔøΩ ÔøΩŸ≤ÔøΩÔøΩ÷∞ÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩ⁄¥ÔøΩ ÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÿºÔøΩ insert
 		else if ( origin < newly ) {
-			// ªı∑Œ ª˝º∫«— dateCount∏∏≈≠ ª˝º∫«— πËø≠¿ª ∞°¡Æø»
+			System.out.println(origin + " - " + newly );
+			
+			// ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ dateCountÔøΩÔøΩ≈≠ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩËø≠ÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
 			updatePlanDt = Constant.getUpdateDtos(mstDto.getPlanNum(), userId, mstDto.getStartDate(), newly);
 			
-			// ø¯∑° ¿œ¡§¿ª √ ∞˙«œ¥¬ ∏∏≈≠∏∏ nullPlanDtø° ¥„∞Ì ¿¸√º πËø≠ø°º≠ ªË¡¶«‘
+			System.out.println("updateDt.size : " + updatePlanDt.size());
+			
+			// ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩ ∞ÔøΩÔøΩœ¥ÔøΩ ÔøΩÔøΩ≈≠ÔøΩÔøΩ nullPlanDtÔøΩÔøΩ ÔøΩÔøΩÔøΩ ÔøΩÔøΩ√º ÔøΩËø≠ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
 			for(int i = (newly-1); i >= origin; i-- ) {
 				updatePlanDt.get(i).setPlanDtNum(0);
-				updatePlanDt.get(i).setTheme("πÊπÆ");
+				updatePlanDt.get(i).setTheme("Î∞©Î¨∏");
+				updatePlanDt.get(i).setTransportation("ÎèÑÎ≥¥");
 				updatePlanDt.get(i).setPlaceCount("0");
-				
+				System.out.println("updateDt.size : " + updatePlanDt.size());
 				insertPlanDt.add(updatePlanDt.get(i));
+				System.out.println("insertPlanDt.size : " + updatePlanDt.size());
 				updatePlanDt.remove(i);
+				System.out.println("updateDt.size : " + updatePlanDt.size());
 			}
 		}	
 		String result = planDao.modifyPlanMst(mstDto, updatePlanDt, deletePlanDt, insertPlanDt, userId);

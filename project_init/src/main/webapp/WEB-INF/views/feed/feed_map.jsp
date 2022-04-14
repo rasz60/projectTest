@@ -112,10 +112,24 @@ span.required {
 	color: #888;
 	overflow: hidden;
 }
+
+#profile-img {
+	overflow: hidden;
+}
+
+#profile-img img {
+	max-width: 100%;
+	min-height: 100%;
+}
+
+pre.header-bio {
+	overflow: auto;
+}
+
 </style>
 <script src="../js/post/mypost.js"></script>
 <script>
-var email = '<c:out value="${user}" />';
+var email = '<c:out value="${user.userEmail}" />';
 
 </script>
 
@@ -125,7 +139,7 @@ var email = '<c:out value="${user}" />';
 <%@ include file="../includes/header.jsp" %>
 	<sec:authorize access="isAuthenticated()">
 		<sec:authentication property="principal.username" var="user_id" />
-		<div id="user_id" style="display:none">${user}</div> <!-- 사용자의 Id값 가져오기, 필터에서 사용-->
+		<div id="user_id" style="display:none">${user_id}</div> <!-- 사용자의 Id값 가져오기, 필터에서 사용-->
 	</sec:authorize>
 
 
@@ -136,7 +150,14 @@ var email = '<c:out value="${user}" />';
 		<div id="feed-header" class="d-flex justify-content-start border-bottom row mx-0 flex-nowrap">
 			<%-- 1- 프로필 이미지 --%>
 			<div id="profile-img" class="p-3 ml-4 bg-body col-2 text-center">
-				<i class="profile-img fa-regular fa-circle-user"></i>
+				<c:choose>
+					<c:when test="${not empty user.userProfileImg}">
+						<img src="/init/resources/profileImg/${user.userProfileImg}" class="rounded-circle">
+					</c:when>
+					<c:otherwise>
+						<img src="/init/resources/profileImg/nulluser.svg" class="rounded-circle">
+					</c:otherwise>
+				</c:choose>
 			</div>
 			
 			<%-- 2- 유저정보2 =  --%>
@@ -145,20 +166,20 @@ var email = '<c:out value="${user}" />';
 					<div class="col-5 text-center">
 						<b>일정</b>
 						<br />
-						<span id="planCount">count</span>
+						<span id="planCount">${planCount }</span>
 					</div>
 					
 					<div class="col-5 text-center">
 						<b>포스트</b>
 						<br />
-						<span id="postCount">count</span>
+						<span id="postCount">${postCount }</span>
 					</div>
 				</div>
 				
 				<hr />
 							
 				<div class="text-left">
-					<pre class="ml-3">bio</pre>
+					<pre class="ml-3">${user.userProfileMsg }</pre>
 				</div>
 			</div>
 		</div>

@@ -8,6 +8,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.project.init.dao.BoardDao;
@@ -18,6 +21,7 @@ import com.project.init.dao.SearchDao;
 import com.project.init.dao.UserDao;
 import com.project.init.dto.PlanDtDto;
 import com.project.init.dto.PlanMstDto;
+import com.project.init.dto.UserDto;
 
 public class Constant {
 	
@@ -30,7 +34,18 @@ public class Constant {
 	public static BoardDao bdao;
 	public static ChatDao cdao;
 	
-	
+	public static UserDto getUserInfo(Authentication authentication) {
+		
+		String uId = authentication.getPrincipal().toString();
+		UserDto dto = null;
+		if ( uId == "" || uId == null || uId != "anonymousUser" ) {
+			User user = (User)authentication.getPrincipal();
+			uId = user.getUsername();
+			dto = udao.login(uId);
+		}
+		
+		return dto;
+	}
 	
 	
 	

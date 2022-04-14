@@ -154,7 +154,7 @@ hr {
 
 <!-- 회원탈퇴 모달 창 -->
 <div class="container">
-	<input id="modalBtn" type="hidden" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" value="modal">
+	<input id="modalBtn3" type="hidden" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" value="modal">
 	<!-- modal창 -->
 	<div class="modal fade" id="myModal" role="dialog">
 		<div class="modal-dialog modal-dialog-centered modal-sm text-center">
@@ -235,7 +235,7 @@ $("#foundUserInfo").click(function(){
 
 //회원 탈퇴 누르면 모달 창 생성
 $("#user-li-delete").click(function(){
-	$("#modalBtn").trigger("click");
+	$("#modalBtn3").trigger("click");
 });
 
 //회원 정지 누르면 모달 창 생성
@@ -333,8 +333,10 @@ $("#user-li").click(function(){
 	        xhr.setRequestHeader(header, token);    
 		},
 		success : function(data){
-			console.log(data);
 			$("#myPage").html(data);
+			
+			$('#feed-header').remove();
+			$('.feed-tabs').remove();
 		},
 		error : function(){
 			console.log("error");

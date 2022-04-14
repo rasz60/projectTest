@@ -5,8 +5,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace = "com.project.init.dao.SearchIDao">
 
    <select id="searchHashtag" parameterType="com.project.init.dto.SearchDto" resultType="com.project.init.dto.PostDto">
-      SELECT * FROM POST WHERE Hashtag LIKE '%'||#{searchVal}||'%'
-
+      SELECT
+      	postNo,
+      	titleImage ,
+   	    (SELECT userProfileImg FROM UserInfo WHERE userEmail = POST.EMAIL) userProfileImg,
+	    (SELECT userNick FROM UserInfo WHERE userEmail = POST.EMAIL) userNick,
+	    (SELECT count(*) from POST_VIEW where POST_VIEW.postno = POST.postno) VIEWS,
+	 	(SELECT count(*) from COMMENTS where comments.postno = POST.postno)comments, 
+		(SELECT count(*) from POST_LIKE where POST_LIKE.postno = POST.postno) likes
+      
+      FROM POST WHERE Hashtag LIKE '%'||#{searchVal}||'%'
    </select>
 
 	<select id="checkNickName" parameterType="com.project.init.dto.SearchDto" resultType="String">
@@ -19,7 +27,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    </select>
 
    <select id="searchNickName" parameterType="String" resultType="com.project.init.dto.PostDto">
-   		 SELECT * FROM POST
+   		 SELECT 
+   		 postNo,
+   		 titleImage ,
+   	    (SELECT userProfileImg FROM UserInfo WHERE userEmail = POST.EMAIL) userProfileImg,
+	    (SELECT userNick FROM UserInfo WHERE userEmail = POST.EMAIL) userNick,
+	    (SELECT count(*) from POST_VIEW where POST_VIEW.postno = POST.postno) VIEWS,
+	 	(SELECT count(*) from COMMENTS where comments.postno = POST.postno)comments, 
+		(SELECT count(*) from POST_LIKE where POST_LIKE.postno = POST.postno) likes
+		 FROM POST
    		  WHERE email = #{value}
     
    </select>
@@ -37,7 +53,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    </select>
    
    <select id="searchLocation" parameterType="String" resultType="com.project.init.dto.PostDto">
-   		 SELECT * FROM POST
+   		 SELECT 
+   		 postNo,
+   		 titleImage ,
+   	    (SELECT userProfileImg FROM UserInfo WHERE userEmail = POST.EMAIL) userProfileImg,
+	    (SELECT userNick FROM UserInfo WHERE userEmail = POST.EMAIL) userNick,
+	    (SELECT count(*) from POST_VIEW where POST_VIEW.postno = POST.postno) VIEWS,
+	 	(SELECT count(*) from COMMENTS where comments.postno = POST.postno)comments, 
+		(SELECT count(*) from POST_LIKE where POST_LIKE.postno = POST.postno) likes
+		 FROM POST
+   		 
+   		 FROM POST
    		  WHERE POSTNO =  #{value}
    </select>
 

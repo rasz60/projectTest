@@ -169,7 +169,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    
    	<!--게시글을 삭제 하면 댓글 또한 삭제 -->
    <select id="deleteLikes" parameterType="String" >
-		DELETE FROM COMMENTS WHERE POSTNO = #{postNo}
+		DELETE FROM POST_LIKE WHERE POSTNO = #{postNo}
+   </select>
+   
+   <!--게시글을 삭제 하면 views 또한 삭제 -->
+   <select id="deleteViews" parameterType="String" >
+		DELETE FROM POST_VIEW WHERE POSTNO = #{postNo}
    </select>
    
 	<!-- 게시글 수정을 위한 데이터 불러오기 -->

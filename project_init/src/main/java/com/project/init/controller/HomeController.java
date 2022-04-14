@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.project.init.command.BoardContentCommand;
+import com.project.init.command.BoardModifyCommand;
 import com.project.init.command.BoardWriteCommand;
 import com.project.init.command.ICommand;
 import com.project.init.command.MainMapFilterCommand;
@@ -61,19 +65,20 @@ public class HomeController {
 		logger.info("index() in >>>>");
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		
-		String uId = Constant.username;
+		String uId = null;
 		
-		if ( uId != "" && uId != null ) {
-			model.addAttribute("user", udao.login(uId));
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDto dto = Constant.getUserInfo(authentication);
+		
+		if ( dto != null ) {
+			model.addAttribute("user", dto);
+			uId = dto.getUserEmail();
 		}
-		
 		
 		if ( flashMap != null ) {
 			model.addAttribute("error", (String)flashMap.get("error"));
 		}
-		
-		
-		
+				
 		ArrayList<PostDto> post = postDao.list(uId);
 		model.addAttribute("post", post);
 		
@@ -133,8 +138,12 @@ public class HomeController {
 	public String writeView(Model model) {
 		logger.info("writeView() in >>>>");
 		
-		model.addAttribute("bName", Constant.username);
-		logger.info("write_view result : bName ? " + Constant.username);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		model.addAttribute("bName", uId);
+		logger.info("write_view result : bName ? " + uId);
 
 		
 		return "notice_board/notice_board_write";
@@ -171,19 +180,20 @@ public class HomeController {
 	@RequestMapping("/notice_board/modify")
 	public String modify(HttpServletRequest request, HttpServletResponse response, Model model) {
 		logger.info("modify in >>>>");
-		//comm = new BoardModifyCommand();
+		comm = new BoardModifyCommand();
 		comm.execute(request, model);
+		String redirect = request.getParameter("bId");
 		
-		return "redirect:board";
+		return "redirect:/notice_board/contentView?bId="+redirect;
 	}
 	
 	@RequestMapping("/notice_board/delete")
 	public String delete(HttpServletRequest request, HttpServletResponse response, Model model) {
 		logger.info("delete in >>>> " + request.getParameter("bId"));
-		//comm = new BoardDeleteCommand();
-		comm.execute(request, model);
+
+		bdao.noticeDelete(Integer.parseInt(request.getParameter("bId")));
 		
-		return "redirect:board";
+		return "redirect:/notice_board";
 	}
 
 		

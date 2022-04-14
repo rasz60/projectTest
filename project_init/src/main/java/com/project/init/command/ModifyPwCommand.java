@@ -2,6 +2,9 @@ package com.project.init.command;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 
@@ -15,15 +18,19 @@ public class ModifyPwCommand implements ICommand {
 		BCryptPasswordEncoder passwordEncoder = Constant.passwordEncoder;
 		UserDao udao = Constant.udao;
 		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
 		String Npw = request.getParameter("npw");
 		
-		String Npw_org = Npw; //¾ÏÈ£È­ µÇ±âÀü password¸¦ Npw_org¿¡ ÀúÀå
-		Npw = passwordEncoder.encode(Npw_org); //¾ÏÈ£È­
+		String Npw_org = Npw; //ï¿½ï¿½È£È­ ï¿½Ç±ï¿½ï¿½ï¿½ passwordï¿½ï¿½ Npw_orgï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		Npw = passwordEncoder.encode(Npw_org); //ï¿½ï¿½È£È­
 		System.out.println(Npw + " size " + Npw.length());
 		
-		String result = udao.modifyPw(Npw,Constant.username);
+		String result = udao.modifyPw(Npw, uId);
 		
-		request.setAttribute("result", result); //controller¿¡¼­ °á°ú »ç¿ë
+		request.setAttribute("result", result); //controllerï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	}
 
 }

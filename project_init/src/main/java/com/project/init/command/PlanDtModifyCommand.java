@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
 
 import com.project.init.dao.PlanIDao;
@@ -26,25 +29,28 @@ public class PlanDtModifyCommand implements ICommand {
 		logger.info("detailModifyDo() in >>> ");
 		
 		String result = null;
-		String userId = Constant.username;
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
 		
-		// Ã³¸®ÇÒ query·Î ±¸ºÐÇØ¼­ ´ãÀ» list »ý¼º
+		// Ã³ï¿½ï¿½ï¿½ï¿½ queryï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ list ï¿½ï¿½ï¿½ï¿½
 		ArrayList<PlanDtDto> deleteDtDtos = new ArrayList<PlanDtDto>();
 		ArrayList<PlanDtDto> insertDtDtos = new ArrayList<PlanDtDto>();
 		ArrayList<PlanDtDto> updateDtDtos = new ArrayList<PlanDtDto>();
 		
-		// deleteDtNum : »èÁ¦µÈ ÀÏÁ¤ÀÌ ÇÏ³ª¶óµµ ÀÖÀ» ¶§
+		// deleteDtNum : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 		if(! request.getParameter("deleteDtNum").equals("") ) {
 			logger.info("detailModifyDo deleteNum is exist");
 			
-			// parameter·Î ³Ñ¾î¿Â deleteDtNumÀ» '/'·Î ±¸ºÐÇÏ¿© ¹è¿­·Î »ý¼º
+			// parameterï¿½ï¿½ ï¿½Ñ¾ï¿½ï¿½ deleteDtNumï¿½ï¿½ '/'ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			String[] deleteDtNums = request.getParameter("deleteDtNum").split("/");
 			
-			// deleteDtNums ¹è¿­¿¡ ´ã±ä planDtNumÀ¸·Î dto¸¦ ¸¸µé¾î¼­ list¿¡ add
+			// deleteDtNums ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ planDtNumï¿½ï¿½ï¿½ï¿½ dtoï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½î¼­ listï¿½ï¿½ add
 			for ( int i = 0; i < deleteDtNums.length; i++ ) {
 				
 				PlanDtDto dto = new PlanDtDto();
-				dto.setUserId(userId);
+				dto.setUserId(uId);
 				dto.setPlanDtNum(Integer.parseInt(deleteDtNums[i]));
 				
 				deleteDtDtos.add(dto);
@@ -55,17 +61,17 @@ public class PlanDtModifyCommand implements ICommand {
 			logger.info("detailModifyDo deleteNum is null");
 		}
 		
-		// ¼öÁ¤ ÆäÀÌÁö¿¡¼­ ³Ñ¾î¿Â parameter parsingÇØ¼­ Dto°´Ã¼ list »ý¼º
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾ï¿½ï¿½ parameter parsingï¿½Ø¼ï¿½ Dtoï¿½ï¿½Ã¼ list ï¿½ï¿½ï¿½ï¿½
 		int planNum = Integer.parseInt(request.getParameter("planNum"));
-		ArrayList<PlanDtDto> dtos = (ArrayList)Constant.planDtDtoParser(planNum, userId, request);
+		ArrayList<PlanDtDto> dtos = (ArrayList)Constant.planDtDtoParser(planNum, uId, request);
 
-		// Dto·Î ¸¸µé¾î¼­ ÇÏ³ª¾¿ add
+		// Dtoï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½î¼­ ï¿½Ï³ï¿½ï¿½ï¿½ add
 		for ( int i = 0 ; i < dtos.size(); i++ ) {
-			// planDtNum == 0 : »õ·Î Ãß°¡µÈ »ó¼¼ ÀÏÁ¤À¸·Î insert
+			// planDtNum == 0 : ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ insert
 			if ( dtos.get(i).getPlanDtNum() == 0 ) {
 				insertDtDtos.add(dtos.get(i));
 				
-			// planDtNum != 0 : ±âÁ¸¿¡ ÀÖ´ø »ó¼¼ ÀÏÁ¤À¸·Î update
+			// planDtNum != 0 : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ update
 			} else {
 				updateDtDtos.add(dtos.get(i));
 			}

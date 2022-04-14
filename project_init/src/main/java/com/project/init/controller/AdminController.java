@@ -46,7 +46,7 @@ public class AdminController {
 		return "admin/user_admin"; 
 	}
 	
-	// Àå¼Ò º° Åë°è
+	// ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½
 	@ResponseBody 
 	@RequestMapping(value = "/placesDashBoard", produces="application/json; charset=UTF-8")
 	public ArrayList<PlanDtDto> placesDashBoard(HttpServletRequest request, Model model) {
@@ -66,7 +66,7 @@ public class AdminController {
 		return placesDashBoard;
 	}
 	
-	// ³âµµ, ¿ù, ÀÏ º° È¸¿ø¼ö Åë°è
+	// ï¿½âµµ, ï¿½ï¿½, ï¿½ï¿½ ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	@ResponseBody
 	@RequestMapping(value = "/userDashBoard", produces="application/json; charset=UTF-8")
 	public ArrayList<UserDto> userDashBoard(HttpServletRequest request, Model model){
@@ -90,7 +90,7 @@ public class AdminController {
 		return userDashBoard;
 	}
 	
-	// È¸¿ø ¼ºº° Åë°è
+	// È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	@ResponseBody
 	@RequestMapping(value = "/userDashBoardGender", produces="application/json; charset=UTF-8")
 	public ArrayList<UserDto> userDashBoardGender(Model model){
@@ -102,7 +102,7 @@ public class AdminController {
 		return userDashBoardGender;
 	}
 	
-	// È¸¿ø ¿¬·Éº° Åë°è
+	// È¸ï¿½ï¿½ ï¿½ï¿½ï¿½Éºï¿½ ï¿½ï¿½ï¿½
 	@ResponseBody
 	@RequestMapping(value = "/userDashBoardAge", produces="application/json; charset=UTF-8")
 	public ArrayList<UserDto> userDashBoardAge(Model model){
@@ -167,7 +167,14 @@ public class AdminController {
 	
 	@RequestMapping("adminModifyMyPage")
 	@ResponseBody
-	public String modifyMyPage(@RequestParam(value="userNick") String userNick, @RequestParam(value="userBio") String userProfileMsg, @RequestParam(value="userPst") String userPst, @RequestParam(value="userAddr1") String userAddress1, @RequestParam(value="userAddr2") String userAddress2, @RequestParam(value="useremail") String uemail, HttpServletRequest request, Model model) {
+	public String modifyMyPage(@RequestParam(value="userNick") String userNick, 
+							   @RequestParam(value="userBio") String userProfileMsg, 
+							   @RequestParam(value="userPst") String userPst, 
+							   @RequestParam(value="userAddr1") String userAddress1, 
+							   @RequestParam(value="userAddr2") String userAddress2, 
+							   @RequestParam(value="useremail") String uemail, 
+							   HttpServletRequest request, Model model) {
+		
 		logger.info("modifyMyPage() in >>>>");
 		int UserPst = Integer.parseInt(userPst);
 			

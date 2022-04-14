@@ -372,19 +372,26 @@ $(document).ready(function(){
 			break;
 		}
 		
+		console.log(value1);
+		
 		let value2;
 			
 		switch(value1){
 			case "'YYYY'" : value2 = "YYYY";
 			break;
-			case "'YYYY-MM'" : value2 = "YYYYMM";
+			case "'YYYY-MM'" : value2 = "YYYY-MM";
 			break;
-			case "'YYYY-MM-DD'" : value2 = "YYYYMMDD";
+			case "'YYYY-MM-DD'" : value2 = "YYYY-MM-DD";
 			break;
 		}
 		
+		console.log(value2);
+		
 		let value3 = $('#uvalue3').val();
 		let value4 = $('#uvalue4').val();
+		
+		console.log(value3);
+		console.log(value4);
 		
 		let uChartLabels = []; //장소 표시 배열 초기화
 		let uChartData = []; // top.5 장소
