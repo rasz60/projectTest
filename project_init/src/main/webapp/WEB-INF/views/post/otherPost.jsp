@@ -27,6 +27,7 @@
 <title>Insert title here</title>
 <script>
 var email = '<c:out value="${user}" />';
+var mymail = '<c:out value="${myinfo}" />';
 </script>
 <script src="../js/post/mypost.js"></script>
 <style>
@@ -36,7 +37,7 @@ var email = '<c:out value="${user}" />';
 
 #profile-img img {
 	max-width: 100%;
-	min-height: 100%;
+	max-height: 100%;
 }
 
 pre.header-bio {

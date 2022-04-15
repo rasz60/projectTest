@@ -163,7 +163,6 @@ var planDt = new Array();
 				<h4>Content</h4>
 				<p id="notice">해시태그는 최대 10개 이상을 초과할 수 없습니다.&nbsp;<span class="textCount" style="font-weight: 600;">( 0/300자 )</span></p>
 				<hr />
-				<input name="usertag" type="text" class="title form-control" placeholder="@user">
 				<textarea class="form-control content mt-2" name="content" rows="10" cols="40" placeholder="content" required></textarea>
 				<input name="hashtag" type="text" class="title form-control mt-2 hashtag" placeholder="#HASHTAG">
 			</div>

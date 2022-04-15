@@ -91,6 +91,7 @@ public class HomeController {
 		return "index";
 	}
 	
+	
 	@RequestMapping("/join")
 	public String join() {
 		logger.info("join() in >>>>");
@@ -196,5 +197,13 @@ public class HomeController {
 		return "redirect:/notice_board";
 	}
 
+	
+	@RequestMapping("/portfolio")
+	public String portfolio(HttpServletRequest request, HttpServletResponse response, Model model) {
+		logger.info("portfolio in >>>>");
+
 		
+		return "portfolio";
+	}
+	
 }

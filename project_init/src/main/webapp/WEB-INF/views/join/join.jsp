@@ -101,14 +101,16 @@
 					<div class="userEmail-validation validation mt-1">
 					</div>
 				</div>
+				
 				<button type="button" id="mailCheck" class="btn btn-sm btn-dark ml-1 col-1" disabled="true"><i class="fa-solid fa-at"></i></button>
 				
+				 
 			</div>
 
 			<div class="form-group row mx-0 d-none" id="mailCheck">
 				<label for="emailCert" class="mt-2 col-2 border-right">Certification <span class="required">*</span></label>
 				<div class="col-10">
-					<input type="number" class="mailCheck form-control" id="emailCert" name="emailCert" placeholder="PIN" maxlength="6" required>
+					<input type="number" class="mailCheck form-control" id="emailCert" name="emailCert" placeholder="PIN" maxlength="6">
 				</div>
 			</div>
 			

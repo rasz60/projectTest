@@ -155,37 +155,48 @@ $(document).ready(function() {
 	});
 
 	$('.hashtag').keyup(function () {
-		
 		let element = $(this);
 		let count = element.val().split('#').length-1;
 		let hashtag = element.val().split('#');
 		let result = '';
+		let hashCheck =element.val().substr(0,1);
+
+		if(hashCheck !=='#'){
+			alert('해쉬태그는 #을 붙여주세요! ');
+			element.val('#');
+		}
 		
 		if(count>=11){
-
 			for(let i=0; i<11; i++){
-			
 				if(i==0){
-				
 					result=hashtag[0];
-				} else {
-					result +='#'+hashtag[i];
+				}else{
+					
+				result +='#'+hashtag[i];
 				}
 			}
 			alert('해쉬태그는 10개까지만 등록가능합니다\n'+result);
 			element.val(result); 
-			
-		} else {
-			for(let i=0; i<hashtag.length; i++) {
-				if(i==0) {
+		}else{
+			for(let i=0; i<hashtag.length; i++){
+				element.val(element.val().replaceAll(/##/gi, "#")); 
+		
+				if(hashtag[i]!='' && hashtag[i].replaceAll(' ','')==''){
+					element.val(result+'#'); 	
+				}
+				
+				if(i==0){
 					result=hashtag[0];
-				} else {
+				
+				}else{
 					result +='#'+hashtag[i];									
 				}
+			
 			}
 		}	
+			console.log(result);
 		
-		$(this).attr('value',result);	
+		$(this).attr('value',result);
 	});
 
 	$(document).on('click','.reimg',function(){

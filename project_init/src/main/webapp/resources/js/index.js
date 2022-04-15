@@ -300,7 +300,7 @@ $(document).ready(function() {
 	$('.post').click(function() {
 		var postNo = $(this).attr("data-value");
 		console.log(postNo);
-		
+		addview(postNo);
 		$('#modalBtn').trigger('click');
 		$.ajax({
 	           url:"/init/post/getlist.do",
@@ -456,7 +456,7 @@ function getComments(postNo, email) {
 				if(email!=="" && email!==null && email!=="null"){
 					comments += '<span class="replyClick col-1 px-0" data-count="0" style="font-size: 5px; cursor : pointer;">답글</span>';
 				}
-				if(email===data[i].email){
+				if(email === data[i].email){
 					comments += '<i class="fa-solid fa-x deleteRe" style="font-size:5px; color:red; cursor : pointer;" data-no="'+data[i].commentNo+'"></i><br/>';
 				}
 
@@ -556,6 +556,30 @@ $(document).on('click', '.modal-like', function(){
 	postNo = $(this).attr('data-num');
 	modalLike(element, postNo);
 });
+
+
+
+function addview(postNo){
+	console.log(postNo);
+	$.ajax({
+		url :'/init/post/addView.do',
+		data : {
+			postNo : postNo,
+			email : email},
+		type : 'post',
+		beforeSend: function(xhr){
+	 	   	var token = $("meta[name='_csrf']").attr('content');
+	 		var header = $("meta[name='_csrf_header']").attr('content');
+ 		    xhr.setRequestHeader(header, token);
+ 		},
+		success : function () {
+		},
+		error : function () {
+			console.log('failed view up');
+		}
+	})
+};
+
 
 
 

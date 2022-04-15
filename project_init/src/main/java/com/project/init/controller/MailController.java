@@ -31,7 +31,7 @@ public class MailController {
 		
 		
 		// mail subject
-        String subject = "[WAYG] íšŒì›ê°€ì…ì„ ìœ„í•œ ì¸ì¦ë²ˆí˜¸ì…ë‹ˆë‹¤.";
+        String subject = "[WAYG] È¸¿ø°¡ÀÔÀ» À§ÇÑ ÀÎÁõ¹øÈ£ÀÔ´Ï´Ù.";
         
         
         // mail content
@@ -48,10 +48,10 @@ public class MailController {
         }
         
         
-        content += "ì•ˆë…•í•˜ì„¸ìš”, WAYGì…ë‹ˆë‹¤.<br/>"; 
-        content += "ì´ë©”ì¼ ì¸ì¦ì„ ìœ„í•œ PIN ë²ˆí˜¸ì…ë‹ˆë‹¤.<br/>ì•„ë˜ì˜ ë²ˆí˜¸ë¥¼ í™•ì¸í•˜ì‹œê³  íšŒì› ê°€ì…ì°½ì— ì •í™•íˆ ì…ë ¥í•´ì£¼ì„¸ìš”.<br/>";
-        content += "<br/>íšŒì›ë‹˜ì˜ ì¸ì¦ë²ˆí˜¸ëŠ” " + pinNum + "ì…ë‹ˆë‹¤.<br />";
-        content += "íšŒì›ê°€ì… í˜ì´ì§€ì—ì„œ PIN ë²ˆí˜¸ë¥¼ ì •í™•íˆ ì…ë ¥í•´ì£¼ì„¸ìš”.";
+        content += "¾È³çÇÏ¼¼¿ä, WAYGÀÔ´Ï´Ù.<br/>"; 
+        content += "ÀÌ¸ŞÀÏ ÀÎÁõÀ» À§ÇÑ PIN ¹øÈ£ÀÔ´Ï´Ù.<br/>¾Æ·¡ÀÇ ¹øÈ£¸¦ È®ÀÎÇÏ½Ã°í È¸¿ø °¡ÀÔÃ¢¿¡ Á¤È®È÷ ÀÔ·ÂÇØÁÖ¼¼¿ä.<br/>";
+        content += "<br/>È¸¿ø´ÔÀÇ ÀÎÁõ¹øÈ£´Â " + pinNum + "ÀÔ´Ï´Ù.<br />";
+        content += "È¸¿ø°¡ÀÔ ÆäÀÌÁö¿¡¼­ PIN ¹øÈ£¸¦ Á¤È®È÷ ÀÔ·ÂÇØÁÖ¼¼¿ä.";
         
         
         // sender mail-address
@@ -87,7 +87,7 @@ public class MailController {
 		String to ="WAYG <wayg.superad@gmail.com>";
 		String from = "WAYG <wayg.superad@gmail.com>";
         String subject = request.getParameter("subject");
-        String content = "íšŒì‹  ìš”ì²­ ë©”ì¼ ì£¼ì†Œ : " + request.getParameter("usermail") + "<br />";
+        String content = "È¸½Å ¸ŞÀÏ ÁÖ¼Ò : " + request.getParameter("usermail") + "<br />";
         content += request.getParameter("content");
         
         try {
@@ -108,4 +108,55 @@ public class MailController {
 	    }   
 		
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "findInfo", method = RequestMethod.GET)
+    public String findInfo(HttpServletRequest request) throws Exception {
+		logger.info("findInfo() in >>> ");
+		String to = request.getParameter("to");
+		String from = "WAYG <wayg.superad@gmail.com>";
+		
+		// mail subject
+        String subject = "[WAYG] ¾ÆÀÌµğ¸¦ Ã£±â À§ÇÑ ÀÎÁõ¹øÈ£ÀÔ´Ï´Ù.";
+        
+        
+        // mail content
+        String content= "";
+        String pinNum = "";
+        for ( int i = 0; i < 6; i++ ) {
+        	int pin = (int)(Math.random() * 10);
+        	
+        	if ( i == 0 && pin == 0 ) {
+        		pinNum += pin + 1;
+        	}
+        	
+        	pinNum += pin;
+        }
+
+        content += "¾È³çÇÏ¼¼¿ä, WAYGÀÔ´Ï´Ù.<br/>"; 
+        content += "ÀÌ¸ŞÀÏ ÀÎÁõÀ» À§ÇÑ PIN ¹øÈ£ÀÔ´Ï´Ù.<br/>¾Æ·¡ÀÇ ¹øÈ£¸¦ È®ÀÎÇÏ½Ã°í Pin È®ÀÎ Ã¢¿¡ Á¤È®È÷ ÀÔ·ÂÇØÁÖ¼¼¿ä.<br/>";
+        content += "<br/>È¸¿ø´ÔÀÇ ÀÎÁõ¹øÈ£´Â " + pinNum + "ÀÔ´Ï´Ù.<br />";
+        
+	    try {
+	        MimeMessage mail = mailSender.createMimeMessage();
+	        MimeMessageHelper mailHelper = new MimeMessageHelper(mail, true, "UTF-8");
+	            
+	        mailHelper.setFrom(from);
+	        mailHelper.setTo(to);
+	        mailHelper.setSubject(subject);
+	        // use html statement
+	        mailHelper.setText(content, true);       
+	        mailSender.send(mail);
+	        return pinNum;
+	        
+	    } catch(Exception e) {
+	        e.printStackTrace();
+	        return "error";
+	    }    
+		
+	}
+	
+	
+	
 }

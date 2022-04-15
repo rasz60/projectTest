@@ -1,9 +1,11 @@
 package com.project.init.dao;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.project.init.dto.ChatMessageDto;
 import com.project.init.dto.ChatRoomDto;
+import com.project.init.dto.UserDto;
 
 public interface ChatIDao {
 	public String idFromNick(String subNick);
@@ -21,4 +23,12 @@ public interface ChatIDao {
 	public ArrayList<ChatMessageDto> getChatMessageDto(String roomId);
 	
 	public void saveMsg(ChatMessageDto message);
+	
+	public String updatePImg(UserDto udto);
+	
+	public String findUserImg(String uId);
+	
+	public void mdfChatRoomSImg(Map<String, Object> map);
+
+    public void mdfChatRoomPImg(Map<String, Object> map);
 }

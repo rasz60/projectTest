@@ -248,7 +248,7 @@ public class PostController {
 		String uId = user.getUsername();
 		
 		UserDto dto = udao.login(uId);
-		model.addAttribute("myinfo", dto);
+		model.addAttribute("myinfo", uId);
 		System.out.println(dto.getUserNick());
 		
 		if ( nickName.equals(dto.getUserNick()) ) {

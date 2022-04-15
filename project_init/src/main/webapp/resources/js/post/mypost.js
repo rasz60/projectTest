@@ -224,15 +224,21 @@ function getComments(postNo) {
 	       	for(var i=0; i<data.length; i++){
 				comments += '<div class="comment-block row mx-0 my-1 d-flex">';
 				comments +=	'<div class="profile-img-xxs col-1 px-0">';
-				comments +=	'<div class="img-xxs border"></div>';
+				comments +=	'<div class="img-xxs border">';
+				if ( data[i].userProfileImg != null ) {
+					comments +=	'<img src="/init/resources/profileImg/' + data[i].userProfileImg + '" />';					
+				} else {
+					comments +=	'<img src="/init/resources/profileImg/nulluser.svg" />';
+				}
+				comments += '</div>';
 				comments +=	'</div>';
 				comments +=	'<span class="col-3 pl-1 nickname" style="font-size: 14px; font-weight: 600;">' + data[i].userNick + '</span>';
 	           	comments += '<span class="col-6 px-0 comment-text" style="font-size: 13px;">'+data[i].content+'</span>';
 					
-				if(email!=="" && email!==null && email!=="null"){
+				if(mymail!=="" && mymail!==null && mymail!=="null"){
 					comments += '<span class="replyClick col-1 px-0" data-count="0" style="font-size: 5px; cursor : pointer;">답글</span>';
 				}
-				if(email===data[i].email){
+				if(mymail===data[i].email){
 					comments += '<i class="fa-solid fa-x deleteRe" style="font-size:5px; color:red; cursor : pointer;" data-no="'+data[i].commentNo+'"></i><br/>';
 				}
 

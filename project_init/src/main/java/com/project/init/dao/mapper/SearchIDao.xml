@@ -62,8 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 	(SELECT count(*) from COMMENTS where comments.postno = POST.postno)comments, 
 		(SELECT count(*) from POST_LIKE where POST_LIKE.postno = POST.postno) likes
 		 FROM POST
-   		 
-   		 FROM POST
+
    		  WHERE POSTNO =  #{value}
    </select>
 

@@ -75,6 +75,8 @@ img {
 }
 
 #post-profile {
+	overflow: hidden;
+	text-align: center;
 	margin-left: 4px;
 	border-radius: 50%;
 	width: 35px;
@@ -93,14 +95,14 @@ img {
 
 <script>
 var totalCount = '<c:out value="${list.size()}" />';
-
+var user1 = '<c:out value="${list.get(0).userProfileImg}" />';
 var posts = [];
 
 <c:forEach items="${list}" var="result" >
 
 var post = {
 		postNo : "${result.postNo}",
-		profileImg : "${result.userProfileImg}",
+		userProfileImg : "${result.userProfileImg}",
 		titleImg : "${result.titleImage}",
 		userNick : "${result.userNick}",
 		likes : "${result.likes}",
@@ -112,8 +114,9 @@ var post = {
 posts.push(post);
 </c:forEach>
 
+console.log(user1);
 var email = '<c:out value="${user.userEmail}" />';
-
+console.log(email);
 </script>
 
 </head>
@@ -143,6 +146,8 @@ if ( posts.length > 20 ) {
 			+ '<div class="d-flex pt-1" style="height: 60%">'
 			+ '<div class="profile-box col-2 px-0">'
 			+ '<div id="post-profile">';
+			
+			
 			
 			if ( posts[i].userProfileImg == null || posts[i].userProfileImg =='' ) {
 				postBox += '<img src=/init/resources/profileImg/nulluser.svg" />';	
@@ -192,9 +197,13 @@ if ( posts.length > 20 ) {
 			+ '<div class="profile-box col-2 px-0">'
 			+ '<div id="post-profile">';
 			
-			if ( posts[i].userProfileImg == null || posts[i].userProfileImg =='' ) {
+			
+			console.log( posts[i].userProfileImg );
+			
+			if ( posts[i].userProfileImg === null || posts[i].userProfileImg === '' ) {
 				postBox += '<img src="/init/resources/profileImg/nulluser.svg" />';	
 			} else {
+				console.log( posts[i].userProfileImg);
 				postBox += '<img src="/init/resources/profileImg/' + posts[i].userProfileImg + '" />';
 			}
 		
@@ -229,9 +238,10 @@ if ( posts.length > 20 ) {
 
 $('.post').click(function() {
 	var postNo = $(this).attr("data-value");
-	console.log(postNo);
+	addview(postNo);
 	
 	$('#modalBtn').trigger('click');
+
 	$.ajax({
            url:"/init/post/getlist.do",
            type:"post",
@@ -247,7 +257,7 @@ $('.post').click(function() {
 		},
  		success:function(data){
  			$('#modalBtn').trigger('click');
-            
+ 			
  			// data parsing
 			var userEmail = data.email;
  			var userNick=data.userNick;
@@ -348,6 +358,28 @@ $('.post').click(function() {
 	});
 	getComments(postNo, email);
 });
+
+
+function addview(postNo){
+	console.log(postNo);
+	$.ajax({
+		url :'/init/post/addView.do',
+		data : {
+			postNo : postNo,
+			email : email},
+		type : 'post',
+		beforeSend: function(xhr){
+	 	   	var token = $("meta[name='_csrf']").attr('content');
+	 		var header = $("meta[name='_csrf_header']").attr('content');
+ 		    xhr.setRequestHeader(header, token);
+ 		},
+		success : function () {
+		},
+		error : function () {
+			console.log('failed view up');
+		}
+	})
+};
 
 
 function getComments(postNo, email) {
@@ -570,7 +602,7 @@ $(document).on('hidden.bs.modal', '#modal-reg', function() {
 	$('div.location').children('div.location-item').remove();
 	$('div.location').removeAttr('style');
 	$('.comments').children('div.comment-block').remove();
-	
+	$('input.commnet.grpl').val('');
 	$('a.modifyBtn').attr('href', 'modify?postNo=');
 	$('a.deleteBtn').attr('href', 'delete.do?postNo=');
 });

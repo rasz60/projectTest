@@ -6,6 +6,9 @@ $(document).ready(function() {
 	let postNo = "";
 	$(".post").click(function(){
 		postNo = $(this).attr("data-value");
+		addview(postNo);
+		
+		console.log(postNo);
 		
 		$('#modalBtn').trigger('click');
 		
@@ -39,7 +42,7 @@ $(document).ready(function() {
 	            var heartCheck =data.heartCheck;
 	            var hashtag;
 
-				if ( userEmail == email ) {
+				if ( userEmail.equals(mymail) ) {
 					$('.modifyBtn').css('display', 'inline-block');
 					$('.modifyBtn').attr('href', $('.modifyBtn').attr('href')+postNo)
 					$('.deleteBtn').css('display', 'inline-block');
@@ -49,7 +52,17 @@ $(document).ready(function() {
 					$('.deleteBtn').css('display', 'none');
 				}
 
-
+				if ( userProfileImg != null || userProfileImg != "" ) {
+					$('.profile-img-s img').attr('src', '/init/resources/profileImg/'+ userProfileImg);
+				} else if ( userProfileImg == "null" ) {
+					console.log(userProfileImg);
+					$('.profile-img-s img').attr('src', '/init/resources/profileImg/nulluser.svg');
+				} else {
+					console.log(userProfileImg);
+					$('.profile-img-s img').attr('src', '/init/resources/profileImg/nulluser.svg');
+				}
+				
+				
 	            if (data.hashtag != null) {
 	            	hashtag = data.hashtag.split('#');
 	            }
@@ -124,6 +137,29 @@ $(document).on('click', '.modal-like', function(){
 	postNo = $(this).attr('data-num');
 	modalLike(element, postNo);
 });
+
+function addview(postNo){
+	console.log(postNo);
+	$.ajax({
+		url :'/init/post/addView.do',
+		data : {
+			postNo : postNo,
+			email : email},
+		type : 'post',
+		beforeSend: function(xhr){
+	 	   	var token = $("meta[name='_csrf']").attr('content');
+	 		var header = $("meta[name='_csrf_header']").attr('content');
+ 		    xhr.setRequestHeader(header, token);
+ 		},
+		success : function () {
+		},
+		error : function () {
+			console.log('failed view up');
+		}
+	})
+};
+
+
 
 function modalLike(element, postNo) {
 	$.ajax({
@@ -216,10 +252,10 @@ function getComments(postNo) {
 				comments +=	'<span class="col-3 pl-1 nickname" style="font-size: 14px; font-weight: 600;">' + data[i].userNick + '</span>';
 	           	comments += '<span class="col-6 px-0 comment-text" style="font-size: 13px;">'+data[i].content+'</span>';
 					
-				if(email!=="" && email!==null && email!=="null"){
+				if(mymail!=="" && mymail!==null && mymail!=="null"){
 					comments += '<span class="replyClick col-1 px-0" data-count="0" style="font-size: 5px; cursor : pointer;">답글</span>';
 				}
-				if(email===data[i].email){
+				if(mymail===data[i].email){
 					comments += '<i class="fa-solid fa-x deleteRe" style="font-size:5px; color:red; cursor : pointer;" data-no="'+data[i].commentNo+'"></i><br/>';
 				}
 

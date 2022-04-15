@@ -11,6 +11,7 @@
 .profile-img-s {
 	border-radius: 50%;
 	overflow: hidden;
+	text-align: center;
 }
 
 .profile-img-s img {
@@ -19,7 +20,9 @@
 }
 
 .img-xxs {
+	border-radius: 50%;
 	overflow: hidden;
+	text-align: center;
 }
 
 .img-xxs img {

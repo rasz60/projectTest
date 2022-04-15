@@ -37,5 +37,17 @@
 <insert id="saveMsg" parameterType="com.project.init.dto.ChatMessageDto">
 	insert into chatmessage values (#{m_roomId}, #{m_pubId}, #{m_pubNick}, #{m_subId}, #{m_subNick}, #{m_sendTime}, #{m_pubImg}, #{m_subImg}, CHAT_MSG_SEQ.nextval, #{m_sendId}, #{m_pubMsg, jdbcType = VARCHAR}, #{m_subMsg, jdbcType = VARCHAR})
 </insert>
-	
+
+<select id="findUserImg" parameterType="String" resultType="String">
+   select userprofileimg from userinfo where useremail = #{uId}
+</select>
+
+<update id="mdfChatRoomSImg" parameterType="Map">
+   update chatroom set subimg = #{ChatRoomImg} where subid = #{subId}
+</update>
+
+<update id="mdfChatRoomPImg" parameterType="Map">
+   update chatroom set pubimg = #{ChatRoomImg} where pubid = #{pubId}
+</update>
+
 </mapper>

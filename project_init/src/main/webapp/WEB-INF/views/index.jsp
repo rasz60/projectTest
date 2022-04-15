@@ -24,10 +24,14 @@
 <link rel="stylesheet" type="text/css" href="/init/css/includes/footer.css" />
 <title>WAYG</title>
 <style>
-.profile-img img {
+.profile-img {
 	border-radius: 50%;
-	max-width: 100%;
-	max-height: 100%;
+	overflow: hidden;
+}
+
+.profile-img img {
+	max-width: 80%;
+	max-height: 80%;
 }
 
 .post-top {
@@ -44,10 +48,12 @@
 }
 
 #post-profile {
+	text-align: center;
 	margin-left: 4px;
 	border-radius: 50%;
 	width: 35px;
 	height: 35px;
+	overflow: hidden;
 }
 
 #post-profile img {
@@ -283,7 +289,7 @@
 											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
 											</c:if>
 											
-											<c:if test="${post.userProfileImg == null }">
+											<c:if test="${post.userProfileImg eq null }">
 											<img src="/init/resources/profileImg/nulluser.svg" alt="" />
 											</c:if>
 										</div>
@@ -385,7 +391,7 @@
 									<div class="profile-box col-2 px-0">
 										<div id="post-profile">
 											<c:if test="${likeList.userProfileImg != null }">
-											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
+											<img src="/init/resources/profileImg/${likeList.userProfileImg }" alt="" />
 											</c:if>
 											
 											<c:if test="${likeList.userProfileImg == null }">
@@ -437,7 +443,7 @@
 									<div class="profile-box col-2 px-0">
 										<div id="post-profile">
 											<c:if test="${likeList.userProfileImg != null }">
-											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
+											<img src="/init/resources/profileImg/${likeList.userProfileImg }" alt="" />
 											</c:if>
 											
 											<c:if test="${likeList.userProfileImg == null }">
@@ -539,7 +545,7 @@
 									<div class="profile-box col-2 px-0">
 										<div id="post-profile">
 											<c:if test="${viewList.userProfileImg != null }">
-											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
+											<img src="/init/resources/profileImg/${viewList.userProfileImg }" alt="" />
 											</c:if>
 											
 											<c:if test="${viewList.userProfileImg == null }">
@@ -591,7 +597,7 @@
 									<div class="profile-box col-2 px-0">
 										<div id="post-profile">
 											<c:if test="${viewList.userProfileImg != null }">
-											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
+											<img src="/init/resources/profileImg/${viewList.userProfileImg }" alt="" />
 											</c:if>
 											
 											<c:if test="${viewList.userProfileImg == null }">
@@ -673,7 +679,7 @@
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd&libraries=clusterer"></script>
 
-<script src="/init/js/index.js"></script>
+<script src="js/index.js"></script>
 
 <script>
 

@@ -15,6 +15,7 @@ public class MdfMyPageCommand implements ICommand {
 		UserDao udao = Constant.udao;
 		UserDto udto = (UserDto) request.getAttribute("udto");
 		String result = udao.mdfMyPage(udto);
+		
 		request.setAttribute("result", result);
 	}
 

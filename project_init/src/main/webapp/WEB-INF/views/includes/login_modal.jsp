@@ -36,7 +36,7 @@
 							<input type="password" class="form-control"  id="userPwd" name="upw" required/>
 						</div>
 						
-						<a href="#" class="text-secondary">Find your info <i class="fa-regular fa-circle-question"></i></a>
+						<a href="#" class="text-secondary findInfo_a">Find your password <i class="fa-regular fa-circle-question"></i></a>
 						
 						<div class="form-group" style="visibility:hidden; color:red; font-size:12px;" id="loginError">아이디 혹은 비밀번호가 잘못 입력되었습니다.</div>
 						

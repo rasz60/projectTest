@@ -47,6 +47,14 @@
 		</div>
 		
 		<ul class="nav navbar">
+		
+			<li class="mr-4 notice_board">
+				<a href="/init/portfolio">
+					<i class="menu-icon fa-regular fa-clipboard"></i></i>
+				</a>
+			</li>
+		
+		
 			<li class="mr-4 notice_board">
 				<a href="/init/notice_board">
 					<i class="menu-icon fa-regular fa-rectangle-list"></i>
