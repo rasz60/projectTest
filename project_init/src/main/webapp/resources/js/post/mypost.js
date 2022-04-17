@@ -40,12 +40,12 @@ $(document).ready(function() {
 	            var hashtag;
 				
 				console.log(userProfileImg);				
-				
-				if ( userProfileImg != null || userProfileImg != "" ) {
-					$('.profile-img-s img').attr('src', '/init/resources/profileImg/'+ userProfileImg);
-				} else if ( userProfileImg == "null" ) {
+				if ( userProfileImg === '' ) {
 					console.log(userProfileImg);
 					$('.profile-img-s img').attr('src', '/init/resources/profileImg/nulluser.svg');
+				} else if ( userProfileImg != null || userProfileImg != "" ) {
+					$('.profile-img-s img').attr('src', '/init/resources/profileImg/'+ userProfileImg);
+
 				} else {
 					console.log(userProfileImg);
 					$('.profile-img-s img').attr('src', '/init/resources/profileImg/nulluser.svg');

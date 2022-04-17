@@ -53,6 +53,7 @@ CREATE TABLE post_dt (
 );
 
 
+/* 작업용 */
 
 DROP SEQUENCE post_view_seq;
 DROP SEQUENCE post_no_SEQ;
@@ -64,7 +65,7 @@ DROP TABLE POST_LIKE;
 DROP TABLE COMMENTS;
 DROP TABLE POST_VIEW;
 DROP TABLE post_dt;
-/* 작업용 */
+
 SELECT * FROM COMMENTS;
 
 SELECT COUNT(COMMENTNO) comments 

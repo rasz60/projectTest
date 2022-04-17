@@ -75,7 +75,7 @@
 		<s:authorize access="hasRole('ROLE_ADMIN')">
 			<a href="delete?bId=${content_view.bId}" id="delBtn" class="btn btn-sm btn-danger float-right mr-2">삭제</a>
 			<button type="submit" id="modDoBtn" class="btn btn-sm btn-success d-none float-right mr-2">수정</button>
-			<button type="button" id="modBtn" class="btn btn-sm btn-success float-right mr-2">수정</button>
+			<a href="" id="modBtn" class="btn btn-sm btn-success float-right mr-2">수정</a>
 		</s:authorize>
 	</form>
 </div>

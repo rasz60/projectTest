@@ -78,7 +78,7 @@ public class HomeController {
 		if ( flashMap != null ) {
 			model.addAttribute("error", (String)flashMap.get("error"));
 		}
-				
+		
 		ArrayList<PostDto> post = postDao.list(uId);
 		model.addAttribute("post", post);
 		

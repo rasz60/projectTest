@@ -26,7 +26,7 @@
 <link rel="stylesheet" type="text/css" href="../css/includes/footer.css" />
 <title>Insert title here</title>
 <script>
-var email = '<c:out value="${user}" />';
+var email = '<c:out value="${user.userEmail}" />';
 </script>
 <script src="../js/post/mypost.js"></script>
 <style>
