@@ -61,8 +61,8 @@ margin-left : 20px;
 }
 </style>
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b3f997f12f2b7a81b668be4e73a0fb98&libraries=services"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b3f997f12f2b7a81b668be4e73a0fb98"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd&libraries=services"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd"></script>
 </head>
 <body>
 <a href = "main">main</a><br/>
