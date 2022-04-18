@@ -671,7 +671,7 @@
 <%@ include file="includes/modalPost.jsp" %>
 <%@ include file="includes/footer.jsp" %>
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b3f997f12f2b7a81b668be4e73a0fb98&libraries=clusterer"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92b6b7355eb56122be94594a5e40e5fd&libraries=clusterer"></script>
 
 <script src="/init/js/index.js"></script>
 
