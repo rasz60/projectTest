@@ -1,3 +1,6 @@
+# project_init v.1.5.5.BETA (2022/04/22 15:33)
+##### init project 완료 기능 오류 보완 (1차)
+
 # project_init v.1.4.4.BETA (2022/04/18 01:25)
 #### controller 추가 외 업데이트 완료 (상세 spread-sheet 확인)
 
