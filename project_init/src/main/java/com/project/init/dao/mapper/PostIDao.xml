@@ -95,7 +95,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        CONTENT,
        HASHTAG,
        REGDATE,
-       LOCATION,
        AUTHORITY,
        (SELECT userProfileImg FROM UserInfo WHERE userEmail = POST.EMAIL) userProfileImg,
        (SELECT userNick FROM UserInfo WHERE userEmail = POST.EMAIL) userNick,
