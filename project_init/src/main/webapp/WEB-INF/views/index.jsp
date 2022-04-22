@@ -24,32 +24,33 @@
 <link rel="stylesheet" type="text/css" href="/init/css/includes/footer.css" />
 <title>WAYG</title>
 <style>
-.profile-img img {
+.profile-img {
 	border-radius: 50%;
-	max-width: 100%;
-	max-height: 100%;
+	overflow: hidden;
 }
-
+.profile-img img {
+	max-width: 100%;
+}
 .post-top {
+	max-height: 320px;
 	line-height: 320px;
+	overflow: hidden;
 }
 
 .post-top img {
 	max-width: 100%;
-	max-heihgt: 100%;
 }
-
 .profile-box{
 	height: 100%;
 }
-
 #post-profile {
+	text-align: center;
 	margin-left: 4px;
 	border-radius: 50%;
 	width: 35px;
 	height: 35px;
+	overflow: hidden;
 }
-
 #post-profile img {
 	max-width: 100%;
 	max-height: 100%;
