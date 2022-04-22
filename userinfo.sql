@@ -15,7 +15,8 @@ CREATE TABLE Userinfo(
  userAuthority varchar2(20), 
  userJoindate date default sysdate not null, 
  userVisitdate date,
- userAddress2 varchar2(200)
+ userAddress2 varchar2(200),
+ userEnabled varchar2(1) default '1' not null
 );
 
 alter table userinfo add constraint user_nick_uk unique(usernick);
