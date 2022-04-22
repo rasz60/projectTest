@@ -85,7 +85,7 @@
 								<p class="h5 font-italic ml-2">Anonymous</p>
 							</div>
 							<div class="row mx-0">
-								<a href="#" class="text-secondary font-italic col-10 px-1">Find your info <i class="fa-regular fa-circle-question"></i></a>
+								<a href="#" class="text-secondary font-italic col-10 px-1 findInfo">Find your info <i class="fa-regular fa-circle-question"></i></a>
 								<button type="button" id="loginBtn" class="logx-btn btn btn-primary btn-sm col-2">
 									<i class="fa-solid fa-lock"></i>
 								</button>
@@ -94,9 +94,9 @@
 						
 					</s:authorize>
 					
-					<s:authorize access="isAuthenticated()">				
-						<div class="profile-img col-3">
-							<c:if test="${user.userProfileImg == null}">
+					<s:authorize access="isAuthenticated()">			
+						<div class="profile-img px-0 col-3">
+							<c:if test="${user.userProfileImg eq null}">
 								<s:authorize access="hasRole('ROLE_USER')">
 								<img src="/init/resources/profileImg/nulluser.svg" alt="" />
 								</s:authorize>
@@ -232,7 +232,7 @@
 											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
 											</c:if>
 											
-											<c:if test="${post.userProfileImg == null }">
+											<c:if test="${post.userProfileImg eq null }">
 											<img src="/init/resources/profileImg/nulluser.svg" alt="" />
 											</c:if>
 										</div>
@@ -284,7 +284,7 @@
 											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
 											</c:if>
 											
-											<c:if test="${post.userProfileImg == null }">
+											<c:if test="${post.userProfileImg eq null }">
 											<img src="/init/resources/profileImg/nulluser.svg" alt="" />
 											</c:if>
 										</div>
@@ -386,10 +386,10 @@
 									<div class="profile-box col-2 px-0">
 										<div id="post-profile">
 											<c:if test="${likeList.userProfileImg != null }">
-											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
+											<img src="/init/resources/profileImg/${likeList.userProfileImg }" alt="" />
 											</c:if>
 											
-											<c:if test="${likeList.userProfileImg == null }">
+											<c:if test="${likeList.userProfileImg  eq  null }">
 											<img src="/init/resources/profileImg/nulluser.svg" alt="" />
 											</c:if>
 										</div>
@@ -438,10 +438,10 @@
 									<div class="profile-box col-2 px-0">
 										<div id="post-profile">
 											<c:if test="${likeList.userProfileImg != null }">
-											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
+											<img src="/init/resources/profileImg/${likeList.userProfileImg }" alt="" />
 											</c:if>
 											
-											<c:if test="${likeList.userProfileImg == null }">
+											<c:if test="${likeList.userProfileImg  eq  null }">
 											<img src="/init/resources/profileImg/nulluser.svg" alt="" />
 											</c:if>
 										</div>
@@ -540,10 +540,10 @@
 									<div class="profile-box col-2 px-0">
 										<div id="post-profile">
 											<c:if test="${viewList.userProfileImg != null }">
-											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
+											<img src="/init/resources/profileImg/${viewList.userProfileImg }" alt="" />
 											</c:if>
 											
-											<c:if test="${viewList.userProfileImg == null }">
+											<c:if test="${viewList.userProfileImg eq null }">
 											<img src="/init/resources/profileImg/nulluser.svg" alt="" />
 											</c:if>
 										</div>
@@ -592,10 +592,10 @@
 									<div class="profile-box col-2 px-0">
 										<div id="post-profile">
 											<c:if test="${viewList.userProfileImg != null }">
-											<img src="/init/resources/profileImg/${post.userProfileImg }" alt="" />
+											<img src="/init/resources/profileImg/${viewList.userProfileImg }" alt="" />
 											</c:if>
 											
-											<c:if test="${viewList.userProfileImg == null }">
+											<c:if test="${viewList.userProfileImg eq null }">
 											<img src="/init/resources/profileImg/nulluser.svg" alt="" />
 											</c:if>
 										</div>
