@@ -27,8 +27,9 @@
 <title>Insert title here</title>
 <script>
 var email = '<c:out value="${user}" />';
+var myInfo = '<c:out value="${my.userEmail}" />';
 </script>
-<script src="../js/post/mypost.js"></script>
+<script src="../js/post/otherUserPost.js"></script>
 <style>
 #profile-img {
 	overflow: hidden;
