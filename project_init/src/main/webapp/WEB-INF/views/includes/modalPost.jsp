@@ -19,7 +19,9 @@
 }
 
 .img-xxs {
+	border-radius: 50%;
 	overflow: hidden;
+	text-align: center;
 }
 
 .img-xxs img {
@@ -56,7 +58,7 @@
 				</div>
 				<ul class="list-group d-block">
 					<li class="list-group-item d-flex row mx-0 mb-1">
-						<div class="profile-img-s col-2 px-0">
+						<div class="profile-img-s col-2 px-0 text-center">
 							<img src="" alt="" />
 						</div>
 						
