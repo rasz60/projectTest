@@ -28,7 +28,7 @@ $(document).ready(function() {
 	 			// data parsing
 				var userEmail = data.email;
 	 			var userNick=data.userNick;
-	            var userProfileImg = data.userProfileImg;
+	            var userProfileImg2 = data.userProfileImg;
 	            var likes = data.likes;
 	            var content = data.content;
 	            var comment_total = data.comments;
@@ -39,18 +39,13 @@ $(document).ready(function() {
 	            var heartCheck =data.heartCheck;
 	            var hashtag;
 				
-				console.log(userProfileImg);				
-				if ( userProfileImg === '' ) {
-					console.log(userProfileImg);
+		
+				if ( userProfileImg2 === '' || userProfileImg2 === null ) {
 					$('.profile-img-s img').attr('src', '/init/resources/profileImg/nulluser.svg');
-				} else if ( userProfileImg != null || userProfileImg != "" ) {
-					$('.profile-img-s img').attr('src', '/init/resources/profileImg/'+ userProfileImg);
-
 				} else {
-					console.log(userProfileImg);
-					$('.profile-img-s img').attr('src', '/init/resources/profileImg/nulluser.svg');
-				}
-				
+					$('.profile-img-s img').attr('src', '/init/resources/profileImg/'+ userProfileImg2);
+
+				} 
 				
 				if ( userEmail == email ) {
 					$('.modifyBtn').css('display', 'inline-block');
@@ -220,11 +215,22 @@ function getComments(postNo) {
 		    xhr.setRequestHeader(header, token);
 		},
         success:function(data){
-
+			
 	       	for(var i=0; i<data.length; i++){
+		
+				var upimg = data[i].userProfileImg;
+
 				comments += '<div class="comment-block row mx-0 my-1 d-flex">';
 				comments +=	'<div class="profile-img-xxs col-1 px-0">';
-				comments +=	'<div class="img-xxs border"></div>';
+				comments +=	'<div class="img-xxs">';
+				
+				if ( upimg === '' || upimg === null ) {
+					comments += '<img src="/init/resources/profileImg/nulluser.svg"/>';
+				} else {
+					comments += '<img src="/init/resources/profileImg/' + upimg + '" />';
+				} 
+				
+				comments +=	'</div>';
 				comments +=	'</div>';
 				comments +=	'<span class="col-3 pl-1 nickname" style="font-size: 14px; font-weight: 600;">' + data[i].userNick + '</span>';
 	           	comments += '<span class="col-6 px-0 comment-text" style="font-size: 13px;">'+data[i].content+'</span>';
