@@ -127,9 +127,10 @@ pre.header-bio {
 }
 
 </style>
-<script src="../js/post/mypost.js"></script>
+<script src="../js/post/otherUserPost.js"></script>
 <script>
 var email = '<c:out value="${user.userEmail}" />';
+var myInfo = '<c:out value="${my.userEmail}" />';
 
 </script>
 
@@ -253,7 +254,7 @@ var email = '<c:out value="${user.userEmail}" />';
 </section>
 
 
-<script src="../js/feed/feed_map.js"></script>
+<script src="../js/feed/otherUserFeed.js"></script>
 <%@ include file="../includes/modalPost.jsp" %>
 </body>
 </html>
