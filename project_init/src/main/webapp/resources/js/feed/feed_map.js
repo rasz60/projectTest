@@ -274,20 +274,14 @@ function displayInfowindow(marker, feedMapObj) { //인포윈도우 생성
 	content += '<img src="../images/infowindow-logo.png">';
 	content += '</div>';
 	content += '<div class="content" style="height: 150px">';
+	content += '<div class="info-address">' + '주소 : ' + feedMapObj.address + '</div>';
+	content += '<div class="info-theme">' + '목적 : ' + feedMapObj.theme + '</div>';
 	
-	if ( feedMapObj.address != null ) {
-		content += '<div class="info-address">' + '주소 : ' + feedMapObj.address + '</div>';
+	if ( feedMapObj.category == null ) {
+		feedMapObj.category = '준비 중';
 	}
 	
-	console.log(feedMapObj.theme);
-	
-	if ( feedMapObj.theme != null ) {
-		content += '<div class="info-theme">' + '목적 : ' + feedMapObj.theme + '</div>';
-	}
-	
-	if ( feedMapObj.category != null ) {
-		content += '<div class="info-category">' + '장소 : ' + feedMapObj.category + '</div>';
-	}
+	content += '<div class="info-category">' + '장소 : ' + feedMapObj.category + '</div>';
 	
 	if ( feedMapObj.transportation != null ) {
 		content += '<div class="info-transportation">' + '이동수단 : ' + feedMapObj.transportation + '</div>';
@@ -296,18 +290,18 @@ function displayInfowindow(marker, feedMapObj) { //인포윈도우 생성
 	if ( feedMapObj.post != '' ) {
 		content += '<button type="button" class="btn btn-xl btn-primary post_link info-post" style="width: 90%;" data-num="'+ feedMapObj.post + '">';
 		content += '<i class="fa-brands fa-instagram"></i>';
-		content += '</button>';		
+		content += '</button>';
 	}
 	content += '</div>';
 	content += '</div>';
 	content += '</div>';
 	content += '</div>';
 
-	$('div.wrap').parent().parent().css('border', 'none');
-	$('div.wrap').parent().parent().css('background-color', 'transparent');
-	
 	infowindow.setContent(content);
 	infowindow.open(map, marker);
+	
+	$('div.wrap').parent().parent().css('border', 'none');
+	$('div.wrap').parent().parent().css('background-color', 'transparent');
  }
 //마커 클러스터러에 클릭이벤트를 등록합니다
 //마커 클러스터러를 생성할 때 disableClickZoom을 true로 설정하지 않은 경우
