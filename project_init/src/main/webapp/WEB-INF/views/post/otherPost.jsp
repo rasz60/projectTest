@@ -27,7 +27,7 @@
 <title>Insert title here</title>
 <script>
 var email = '<c:out value="${user}" />';
-var myInfo = '<c:out value="${my.userEmail}" />';
+var myInfo = '<c:out value="${myinfo.userEmail}" />';
 </script>
 <script src="../js/post/otherUserPost.js"></script>
 <style>
