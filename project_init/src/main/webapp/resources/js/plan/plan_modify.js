@@ -31,6 +31,12 @@ $(document).ready(function() {
 				var lat = target.children('.inputbox').children('input[name=latitude]').val();
 				var lng = target.children('.inputbox').children('input[name=longitude]').val();
 				
+				var planPlaceName = target.children('input[name=placeName]').val();
+				var planAddress = target.children('.inputbox').children('input[name=address]').val();
+				var planCategory = target.children('.inputbox').children('input[name=category]').val();
+				
+				
+				
 				// db에서 불러온 값으로 marker를 생성
 				var imageSrc = '/init/images/marker.png', // 마커이미지의 경로
 			    imageSize = new kakao.maps.Size(50, 50), // 마커이미지의 크기입니다
@@ -46,6 +52,9 @@ $(document).ready(function() {
 				
 				planObject = {
 					day : planDay,
+					placeName : planPlaceName,
+					address : planAddress,
+					category : planCategory,
 					mapMarker : marker
 				};
 				
@@ -53,6 +62,26 @@ $(document).ready(function() {
 			}
 		}
 	}
+	
+	for(var i =0; i < markers2.length; i++ ) {
+		var p_marker = markers2[i].mapMarker;
+		var p_placeName = markers2[i].placeName;
+		var p_address = markers2[i].address;
+		var p_category = markers2[i].category;
+		
+		(function(p_marker, p_placeName, p_address, p_category) { //이벤트 등록
+			kakao.maps.event.addListener(p_marker, 'mouseover', function() { //마커에 마우스 올렸을 때
+	        	displayInfowindow(p_marker, p_placeName, p_address, p_category); // displayInfowindow()에서 처리
+	    	});
+	
+	    	kakao.maps.event.addListener(p_marker, 'mouseout', function() { // 마커에 마우스 치웠을 때 인포창 닫기
+	        	infowindow.close();
+	    	});
+		})(p_marker, p_placeName, p_address, p_category);
+
+	}
+	
+	
 
 	setDayMap('day1');
 	
