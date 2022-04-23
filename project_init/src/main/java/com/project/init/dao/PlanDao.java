@@ -33,7 +33,7 @@ public class PlanDao implements PlanIDao {
 	}
 	
 	
-	// 전체 일정 select (???)
+	// main map에 모든 일정 불러오기
 	@Override
 	public ArrayList<PlanDtDto> selectPlanList() {
 		logger.info("selectPlanList() in >>>");
@@ -45,7 +45,7 @@ public class PlanDao implements PlanIDao {
 	}
 	
 	
-	// map filter에서 지정한 값을 기준으로 상세 일정 조회
+	// main map filter 처리
 	@Override
 	public ArrayList<PlanDtDto> filter(Map<String, String> map) {
 		logger.info("filter() in >>> ");
@@ -59,7 +59,7 @@ public class PlanDao implements PlanIDao {
 	
 	
 	
-	// feedCalendar 페이지에 표시될 전체 일정 select
+	// feed calendar 페이지에 userId로 planMst 불러오기
 	@Override
 	public ArrayList<PlanMstDto> selectAllPlan(String userId) {
 		logger.info("getCalendarEvent(" + userId + ") in >>>");
@@ -70,7 +70,7 @@ public class PlanDao implements PlanIDao {
 		return dtos;
 	}
 	
-	// 포스트 생성 페이지로 이동시 해당 일정 정보 select
+	// planNum으로 PlanMst 불러오기
 	@Override
 	public PlanMstDto selectPlanMst(String planNum, String userId) {
 		logger.info("selectPlan (" + planNum + ") in >>>");
@@ -87,7 +87,7 @@ public class PlanDao implements PlanIDao {
 	}
 
 	
-	// planNum이 같은 PlanDt 전체 select
+	// planNum으로 planDt 불러오기
 	@Override
 	public ArrayList<PlanDtDto> selectPlanDt(String planNum, String userId) {
 		logger.info("selectPlanDt (" + planNum + ") in >>> ");
@@ -105,7 +105,7 @@ public class PlanDao implements PlanIDao {
 	
 	
 	
-	// modal창 일정 수정시 처리
+	// modal에서 수정한 planMst 처리
 	@Override
 	@Transactional
 	public String modifyPlanMst(PlanMstDto mstDto, List<PlanDtDto> updatePlanDt, List<PlanDtDto> deletePlanDt, List<PlanDtDto> insertPlanDt, String userId) {
@@ -153,7 +153,7 @@ public class PlanDao implements PlanIDao {
 		return result;
 	}
 	
-	// modal창에서 일정을 삭제한 경우
+	// modal창에서 planMst를 삭제했을 때 처리
 	@Override
 	@Transactional
 	public String deletePlanMst(String planNum, String userId) {
