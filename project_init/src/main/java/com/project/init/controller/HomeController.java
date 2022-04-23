@@ -59,32 +59,40 @@ public class HomeController {
 		Constant.udao = udao;
 	}
 	
-
+	//index page
 	@RequestMapping("/")
 	public String index(Model model, HttpServletRequest request ) {
 		logger.info("index() in >>>>");
+		
+		// redirectFlashAttribute에 담겨온 parameter를 Map으로 저장
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		
 		String uId = null;
 		
+		// securityContextHolder에 저장된 user정보로 dto 생성
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDto dto = Constant.getUserInfo(authentication);
 		
+		// 로그인 된 회원일 때
 		if ( dto != null ) {
 			model.addAttribute("user", dto);
 			uId = dto.getUserEmail();
 		}
 		
+		// redirectFlashAttribute 값이 존재할 때
 		if ( flashMap != null ) {
 			model.addAttribute("error", (String)flashMap.get("error"));
 		}
 		
+		// 최신포스트 가져오기
 		ArrayList<PostDto> post = postDao.list(uId);
 		model.addAttribute("post", post);
 		
+		// 좋아요 순 포스트 가져오기
 		ArrayList<PostDto> likeList = postDao.likeList(uId);
 		model.addAttribute("likeList", likeList);
 		
+		// 조회수 순 포스트 가져오기
 		ArrayList<PostDto> viewList = postDao.viewList(uId);
 		model.addAttribute("viewList", viewList);
 		
