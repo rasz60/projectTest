@@ -38,6 +38,7 @@ public class SearchController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SearchController.class);
 	
+	// 검색창 검색시 처리
 	@RequestMapping("search")
 	public String search(HttpServletRequest request, Model model) {
 		logger.info("search() in >>>>");
@@ -63,7 +64,7 @@ public class SearchController {
 		return "search/searchResult";
 	}
 	
-	
+	// 추천포스트 1 - 최신 post 더보기 버튼 클릭 시 
 	@RequestMapping("lastest")
 	public String lastest(HttpServletRequest request, Model model) {
 		logger.info("search() in >>>>");
@@ -86,6 +87,7 @@ public class SearchController {
 		return "search/searchResult";
 	}
 	
+	// 추천포스트 1 - 좋아요 순 post 더보기 버튼 클릭 시
 	@RequestMapping("bestLikes")
 	public String bestLikes(HttpServletRequest request, Model model) {
 		logger.info("search() in >>>>");
@@ -103,7 +105,8 @@ public class SearchController {
 		
 		return "search/searchResult";
 	}
-
+	
+	// 추천포스트 1 -  순 post 더보기 버튼 클릭 시
 	@RequestMapping("bestViews")
 	public String bestViews(HttpServletRequest request, Model model) {
 		logger.info("search() in >>>>");
