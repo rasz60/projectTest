@@ -227,7 +227,7 @@ public class FeedController {
 	}
 	
 	
-	// 프로필 이미지 변경
+	//프로필사진 등록
 	@RequestMapping("add_PrfImg")
 	public String add_PrfImg(MultipartHttpServletRequest mtpRequest, HttpServletRequest request, Model model) {
 		logger.info("add_PrfImg() in >>>>");
@@ -237,8 +237,8 @@ public class FeedController {
 		String uId = user.getUsername();
 		
 		
-		String olduPrfImg = udao.getolduPrfImg(uId);
-		String uPrfImg = null;
+		String olduPrfImg = udao.getolduPrfImg(uId); //이미 DB에 저장돼있는 이미지사진 이름 가져오기
+		String uPrfImg = null; //DB저장용 파일명
 		
 		MultipartFile mf = mtpRequest.getFile("pImg");
 		
@@ -273,7 +273,7 @@ public class FeedController {
 			try {
 				mf.transferTo(new File(safeFile));
 				mf.transferTo(new File(safeFile1));
-				
+				//기존 저장돼있던 사진 삭제
 				File file = new File(path + olduPrfImg);
 				File file1 = new File(path1 + olduPrfImg);
 				if(file.exists()) {
@@ -310,7 +310,7 @@ public class FeedController {
 		
 		String path = "F:/init/init_project/projectTest/project_init/src/main/webapp/resources/profileImg/";
 		String path1 = "F:/init/init_project/projectTest/apache-tomcat-9.0.56/wtpwebapps/project_init/resources/profileImg/";
-		
+		//기존 저장돼있던 사진 삭제
 		File file = new File(path + olduPrfImg);
 		File file1 = new File(path1 + olduPrfImg);
 		if(file.exists()) {
@@ -323,7 +323,7 @@ public class FeedController {
 		return "redirect:/feed/feedInfo";
 	}
 	
-	
+	//마이페이지 수정
 	@RequestMapping("modifyMyPage")
 	@ResponseBody
 	public String modifyMyPage(@RequestParam(value="userNick") String userNick, 
