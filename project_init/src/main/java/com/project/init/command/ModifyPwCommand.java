@@ -24,13 +24,13 @@ public class ModifyPwCommand implements ICommand {
 		
 		String Npw = request.getParameter("npw");
 		
-		String Npw_org = Npw; //��ȣȭ �Ǳ��� password�� Npw_org�� ����
-		Npw = passwordEncoder.encode(Npw_org); //��ȣȭ
+		String Npw_org = Npw; //암호화 되기전 password를 Npw_org에 저장
+		Npw = passwordEncoder.encode(Npw_org); //암호화
 		System.out.println(Npw + " size " + Npw.length());
 		
 		String result = udao.modifyPw(Npw, uId);
 		
-		request.setAttribute("result", result); //controller���� ��� ���
+		request.setAttribute("result", result); //controller에서 결과 사용
 	}
 
 }
