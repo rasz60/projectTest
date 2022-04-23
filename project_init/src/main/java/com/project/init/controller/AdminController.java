@@ -46,7 +46,7 @@ public class AdminController {
 		return "admin/user_admin"; 
 	}
 	
-	// ��� �� ���
+	// 장소 별 통계
 	@ResponseBody 
 	@RequestMapping(value = "/placesDashBoard", produces="application/json; charset=UTF-8")
 	public ArrayList<PlanDtDto> placesDashBoard(HttpServletRequest request, Model model) {
@@ -66,7 +66,7 @@ public class AdminController {
 		return placesDashBoard;
 	}
 	
-	// �⵵, ��, �� �� ȸ���� ���
+	// 년도, 월, 일 별 회원수 통계
 	@ResponseBody
 	@RequestMapping(value = "/userDashBoard", produces="application/json; charset=UTF-8")
 	public ArrayList<UserDto> userDashBoard(HttpServletRequest request, Model model){
@@ -90,7 +90,7 @@ public class AdminController {
 		return userDashBoard;
 	}
 	
-	// ȸ�� ���� ���
+	// 회원 성별 통계
 	@ResponseBody
 	@RequestMapping(value = "/userDashBoardGender", produces="application/json; charset=UTF-8")
 	public ArrayList<UserDto> userDashBoardGender(Model model){
@@ -102,7 +102,7 @@ public class AdminController {
 		return userDashBoardGender;
 	}
 	
-	// ȸ�� ���ɺ� ���
+	// 회원 연령별 통계
 	@ResponseBody
 	@RequestMapping(value = "/userDashBoardAge", produces="application/json; charset=UTF-8")
 	public ArrayList<UserDto> userDashBoardAge(Model model){
