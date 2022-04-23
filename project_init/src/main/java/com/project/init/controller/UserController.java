@@ -74,7 +74,8 @@ public class UserController {
 			return "join-failed";
 	}
 	
-	@RequestMapping(value="/user/emailCheck")  //占쏙옙 占쏙옙占쏙옙트 占쏙옙占쏙옙占� 占싫듸옙?
+	//회원가입시 이메일 중복체크
+	@RequestMapping(value="/user/emailCheck")  //왜 포스트 방식은 안돼?
 	@ResponseBody
 	public int emailCheck(@RequestParam("id") String id) {
 		logger.info("emailCheck(" + id + ") in >>> ");
@@ -85,6 +86,7 @@ public class UserController {
 		return res;
 	}
 	
+	//회원가입시 닉네임 중복체크
 	@RequestMapping(value="/user/nickCheck")
 	@ResponseBody
 	public int nickCheck(@RequestParam("nick") String nick) {
@@ -96,7 +98,7 @@ public class UserController {
 		return res;
 	}
 	
-
+	//로그인 실패 및 로그아웃시
 	@RequestMapping(value="/processLogin")
 	public String processLogin(@RequestParam(value="error", required = false) String error, 
 							   @RequestParam(value="logout", required = false) String logout, Model model, RedirectAttributes rttr) {
@@ -120,7 +122,7 @@ public class UserController {
 		return "redirect:/";
 	}
 	
-	//占싸깍옙占쏙옙 占쏙옙占쏙옙占쏙옙
+	//로그인 성공시
 	@RequestMapping(value="/loginSuc")
 	public String loginSuc(Authentication authentication, RedirectAttributes rttr) {
 		logger.info("loginSuc() in >>> ");
@@ -130,10 +132,11 @@ public class UserController {
 		String uId = user.getUsername();
 
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-		String auth = authorities.toString(); //role占쏙옙 占쏙옙底� 占쏙옙占쌘울옙占쏙옙 占쏙옙환
+		String auth = authorities.toString(); //role을 얻어서 문자열로 변환
 
-		udao.userVisit(uId); //占싸깍옙占쏙옙 占쏙옙짜 占쏙옙占쏙옙占쏙옙트
+		udao.userVisit(uId); //로그인 날짜 업데이트
 		
+		// redirectAttribute에 아이디를 담아서 index 페이지로 redirect 시킴
 		rttr.addAttribute("login", uId);
 		
 		logger.info("loginSuc() userAuth : " + auth);
