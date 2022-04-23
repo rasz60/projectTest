@@ -358,7 +358,7 @@ public class FeedController {
 			return "not-modified";
 	}
 	
-	//占쏙옙橘占싫� 占쏙옙占쏙옙 占쏙옙 占쏙옙橘占싫� 확占쏙옙
+	//비밀번호 변경 전 비밀번호 확인
 	@RequestMapping(value="chkPwForMdf", method=RequestMethod.POST, produces = "application/text; charset=UTF8")
 	@ResponseBody
 	public String chkPwForMdf(HttpServletRequest request, HttpServletResponse response, Model model) {
