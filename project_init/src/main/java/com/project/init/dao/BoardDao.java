@@ -17,7 +17,7 @@ public class BoardDao implements BoardIDao {
 	
 	private final SqlSession sqlSession;
 
-	// sqlSession ������ ����
+	// sqlSession set-autowired
 	@Autowired
 	public BoardDao (SqlSession sqlSession) {
 		logger.info("PlanDao Const in >>>");
@@ -27,7 +27,7 @@ public class BoardDao implements BoardIDao {
 		logger.info("PlanDao Const result : sqlSession getConn success ? " + sqlSession.toString());
 	}
 	
-	// �������� �Խ��� ����Ʈ �ҷ�����
+	// 전체 공지사항 게시글 불러오기
 	@Override
 	public ArrayList<NoticeBoardDto> getBoardList() {
 		logger.info("getBoardList() in >>>>");
@@ -39,7 +39,7 @@ public class BoardDao implements BoardIDao {
 		return result;
 	}
 
-	// �������� �Խ��� �� �ۼ�
+	// 공지사항 게시판 글 작성
 	@Override
 	public void write(String bName, String bTitle, String bContent) {
 		logger.info("write() in >>>>");
@@ -53,10 +53,11 @@ public class BoardDao implements BoardIDao {
 		logger.info("write() result : " + (res > 0 ? "success" : "failed"));
 	}
 	
-	// �������� �Խ��� �� ���� ������ ����
+	// 공지사항 게시글 조회
 	public NoticeBoardDto contentView(String bid) {
 		logger.info("contentView(" + bid + ") in >>>>");
 		
+		// 조회수 up
 		upHit(bid);
 		
 		NoticeBoardDto dto = sqlSession.selectOne("contentViewNotice", Integer.parseInt(bid));
@@ -66,7 +67,7 @@ public class BoardDao implements BoardIDao {
 		return dto;
 	}
 	
-	// ��ȸ�� �÷��ִ� �޼���
+	// 게시글 조회시 조회수 올리기
 	public void upHit(String bId) {
 		logger.info("upHit(" + bId + ") in >>> ");	
 		
@@ -74,7 +75,8 @@ public class BoardDao implements BoardIDao {
 		
 		logger.info("upHit result : " + res);
 	}
-
+	
+	// 공지사항 게시글 수정
 	@Override
 	public void noticeModify(NoticeBoardDto dto) {
 		logger.info("noticeModify(" + dto.getbId() + ") in >>> ");
@@ -84,6 +86,7 @@ public class BoardDao implements BoardIDao {
 		logger.info("noticeModify result : " + res);
 	}
 	
+	// 공지사항 게시글 삭제
 	@Override
 	public void noticeDelete(int bId) {
 		logger.info("noticeDelete(" + bId + ") in >>> ");
