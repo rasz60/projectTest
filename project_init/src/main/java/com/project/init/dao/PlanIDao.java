@@ -40,7 +40,9 @@ public interface PlanIDao {
 	// planDt modify (update, insert, delete)
 	String detailModifyDo(ArrayList<PlanDtDto> deleteDtDtos, ArrayList<PlanDtDto> insertDtDtos, ArrayList<PlanDtDto> updateDtDtos);
 	
+	// feedMap 에 표시할 상세 일정(PlanDt) 불러오기
 	ArrayList<PlanDtDto> selectPlanDtMap(Map<String, String> map);
 	
+	// myfeed 상단에 일정 개수 표시
 	int countPlanMst(String email);
 }
