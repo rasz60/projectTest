@@ -386,7 +386,7 @@ public class FeedController {
 		return result;
 	}
 	
-	
+	//비밀번호 변경
 	@RequestMapping(value="modifyPw", method=RequestMethod.POST, produces = "application/text; charset=UTF8")
 	@ResponseBody
 	public String modifyPw(HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -405,7 +405,7 @@ public class FeedController {
 			return "pw-not-modified";
 	}
 	
-	
+	//회원탈퇴시 비밀번호 확인
 	@RequestMapping(value="chkPwForResig", method=RequestMethod.POST, produces = "application/text; charset=UTF8")
 	@ResponseBody
 	public String chkPwForResig(HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -433,7 +433,7 @@ public class FeedController {
 		return result;
 	}
 	
-	
+	//회원탈퇴
 	@RequestMapping(value="resignation")
 	public String resignation() {
 		logger.info("resignation() in >>>>");
@@ -444,7 +444,7 @@ public class FeedController {
 		
 		
 		udao.resign(uId);
-		SecurityContextHolder.clearContext();
+		SecurityContextHolder.clearContext();//회원탈퇴시 로그아웃 위해
 		
 		return "redirect:/";
 	}
