@@ -49,7 +49,7 @@ public class Constant {
 	
 	
 	
-	//PlanMstDto占쏙옙 占쏙옙占쏙옙占싹댐옙 占쌨쇽옙占쏙옙
+	// parameter로 넘어온 PlanMstDto 정보를 PlanMst dto로 생성해주는 메서드
 	public static PlanMstDto planMstDtoParser(HttpServletRequest request, String userId) {
 		int planNum = Integer.parseInt(request.getParameter("planNum"));
 		String planName = request.getParameter("planName");
@@ -63,7 +63,7 @@ public class Constant {
 		return mstDto;
 	}
 	
-	//PlanDtDto占쏙옙 占쏙옙占쏙옙트占쏙옙 占쏙옙占쏙옙占싹댐옙 占쌨쇽옙占쏙옙
+	// parameter로 넘어온 PlanDtDto 정보를 PlanDt dto ArrayList로 생성해주는 메서드
 	public static List<PlanDtDto> planDtDtoParser(int planNum, String userId, HttpServletRequest request) {
 		String[] planDtNum = request.getParameterValues("planDtNum");
 		String[] placeName = request.getParameterValues("placeName");
@@ -106,11 +106,11 @@ public class Constant {
 		return planDtDtos;
 	}
 	
-	// modal창占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 plan占쏙옙 update占쏙옙 占쏙옙체 占썼열 占쏙옙占쏙옙 占쌨쇽옙占쏙옙
+	// modal창에서 PlanMst 수정시 수정된 일정(PlanMst)으로 상세 일정을 수정하기 위한 메서드
 	public static List<PlanDtDto> getUpdateDtos(int planNum, String userId, String startDate, int dateCount) {
 		List<PlanDtDto> dtos = new ArrayList<PlanDtDto>();
 		
-		// startDate Calendar 占쏙옙체占쏙옙 占쏙옙占쏙옙底� 占쌜억옙
+		// startDate Calendar 객체로 변환
 		int y = Integer.parseInt(startDate.substring(0, 4));
 		int m = Integer.parseInt(startDate.substring(5, 7)) - 1;;
 		int d = Integer.parseInt(startDate.substring(8));
@@ -121,16 +121,17 @@ public class Constant {
 		
 		for ( int i = 0; i < dateCount; i++ ) {
 			if ( i == 0 ) {
-				// Calendar 占쏙옙체占쏙옙 占쏙옙 startDate占쏙옙占쏙옙 占싹루씩 占시뤄옙占쏙옙占썽서 planDate 占쏙옙占쏙옙
+				// startDate 일 때
 				cal.add(Calendar.DATE, i);
+			} else {
+				// Calendar 1씩 더해진 날짜를 만듦
+				cal.add(Calendar.DATE, 1);
 			}
-			// Calendar 占쏙옙체占쏙옙 占쏙옙 startDate占쏙옙占쏙옙 占싹루씩 占시뤄옙占쏙옙占썽서 planDate 占쏙옙占쏙옙
-			cal.add(Calendar.DATE, 1);
 			
-			// planDate占쏙옙 db 占쏙옙占싯울옙 占승곤옙 占쏙옙占쏙옙
+			// planDate를 db 포맷으로 변환
 			String r = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
 			
-			// planNum, planDay, planDate 占쏙옙占쏙옙 占쏙옙占쏙옙 PlanDtDto占쏙옙 占쏙옙占쏙옙底� 占썼열占쏙옙 占쏙옙占쏙옙
+			// planNum, planDay, planDate 를 갖는 PlanDtDto를 생성해서 ArrayList add
 			PlanDtDto dtDto = new PlanDtDto();
 			dtDto.setUserId(userId);
 			dtDto.setPlanNum(planNum);
