@@ -22,7 +22,7 @@ public class PlanDao implements PlanIDao {
 	
 	private final SqlSession sqlSession;
 
-	// sqlSession 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙
+	// sqlSession set-autowired
 	@Autowired
 	public PlanDao (SqlSession sqlSession) {
 		logger.info("PlanDao Const in >>>");
@@ -33,7 +33,7 @@ public class PlanDao implements PlanIDao {
 	}
 	
 	
-	// 占쏙옙占� PlanDt占쏙옙 占쌀뤄옙占쏙옙
+	// 전체 일정 select (???)
 	@Override
 	public ArrayList<PlanDtDto> selectPlanList() {
 		logger.info("selectPlanList() in >>>");
@@ -45,7 +45,7 @@ public class PlanDao implements PlanIDao {
 	}
 	
 	
-	// 占쏙옙占� PlanDt占쏙옙 占쌀뤄옙占쏙옙
+	// map filter에서 지정한 값을 기준으로 상세 일정 조회
 	@Override
 	public ArrayList<PlanDtDto> filter(Map<String, String> map) {
 		logger.info("filter() in >>> ");
@@ -59,7 +59,7 @@ public class PlanDao implements PlanIDao {
 	
 	
 	
-	// 占쏙옙占� 占싱븝옙트 占쏙옙占쏙옙占쏙옙占쏙옙
+	// feedCalendar 페이지에 표시될 전체 일정 select
 	@Override
 	public ArrayList<PlanMstDto> selectAllPlan(String userId) {
 		logger.info("getCalendarEvent(" + userId + ") in >>>");
@@ -70,7 +70,7 @@ public class PlanDao implements PlanIDao {
 		return dtos;
 	}
 	
-	// planNum占쏙옙占쏙옙 planMst 占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙
+	// 포스트 생성 페이지로 이동시 해당 일정 정보 select
 	@Override
 	public PlanMstDto selectPlanMst(String planNum, String userId) {
 		logger.info("selectPlan (" + planNum + ") in >>>");
@@ -87,7 +87,7 @@ public class PlanDao implements PlanIDao {
 	}
 
 	
-	// planNum占쏙옙占쏙옙 planDt 占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙
+	// planNum이 같은 PlanDt 전체 select
 	@Override
 	public ArrayList<PlanDtDto> selectPlanDt(String planNum, String userId) {
 		logger.info("selectPlanDt (" + planNum + ") in >>> ");
@@ -105,13 +105,14 @@ public class PlanDao implements PlanIDao {
 	
 	
 	
-	// modal창占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占쌥울옙
+	// modal창 일정 수정시 처리
 	@Override
 	@Transactional
 	public String modifyPlanMst(PlanMstDto mstDto, List<PlanDtDto> updatePlanDt, List<PlanDtDto> deletePlanDt, List<PlanDtDto> insertPlanDt, String userId) {
 		logger.info("modifyPlanMst in >>> ");
 		String result = null;
 		
+		// PlanMst 테이블 수정
 		if( mstDto != null ) {
 		
 			int resMst = sqlSession.update("updatePlanMst", mstDto);
@@ -120,6 +121,7 @@ public class PlanDao implements PlanIDao {
 			
 		} 
 		
+		// 1. 원래보다 일정이 짧은 경우 : 상세 일정 삭제 필요
 		if (deletePlanDt.isEmpty() == false ) {
 			
 			int resDt1 = sqlSession.delete("deletePlanDt1", deletePlanDt);
@@ -128,6 +130,7 @@ public class PlanDao implements PlanIDao {
 			
 		}
 		
+		// 2. 원래보다 일정이 긴 경우 : 상세 일정 추가 필요
 		if (insertPlanDt.isEmpty() == false ) {			
 		
 			int resDt2 = sqlSession.insert("insertNullDt", insertPlanDt);
@@ -135,7 +138,8 @@ public class PlanDao implements PlanIDao {
 			logger.info("modifyPlanMst result 3 : " + result);		
 		
 		}
-
+		
+		// 3. 일정 수가 같음 [(날짜가 변경된 경우, 아무 변동 없는 경우) 모두 처리] : 상세 일정 업데이트 필요
 		if ( updatePlanDt.isEmpty() == false ) {
 		
 			int resDt3 = sqlSession.update("updatePlanDt1", updatePlanDt);
@@ -149,7 +153,7 @@ public class PlanDao implements PlanIDao {
 		return result;
 	}
 	
-	// modal창占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占쌥울옙
+	// modal창에서 일정을 삭제한 경우
 	@Override
 	@Transactional
 	public String deletePlanMst(String planNum, String userId) {
@@ -182,7 +186,8 @@ public class PlanDao implements PlanIDao {
 		logger.info("insertPlanDtDo >>> ");
 		
 		String result = null;
-
+		
+		// 1. [PlanMst] - insert
 		int res1 = sqlSession.insert("insertMst", mstDto);
 		result = res1 > 0 ? "success": "failed";
 		logger.trace("insertPlanDtDo res1(Mst) : " + result);
@@ -191,7 +196,7 @@ public class PlanDao implements PlanIDao {
 			dtDtos.get(i).setPlanNum(mstDto.getPlanNum());
 		}
 		
-		// 占썼열占쏙옙 占쏙옙占쏙옙占쏙옙 insert 占쏙옙占쏙옙
+		// 2. [PlanDt] - insert
 		int res2 = sqlSession.insert("insertDt", dtDtos);
 		result = res2 > 0 ? "success": "failed";
 		logger.trace("insertPlanDtDo res2(Dt) : " + result);
@@ -200,7 +205,7 @@ public class PlanDao implements PlanIDao {
 	}
 	
 	
-	// planDt modify(update, delete, insert 占쏙옙占쏙옙 占쌩삼옙)
+	// planDt modify(update, delete, insert)
 	@Override
 	@Transactional
 	public String detailModifyDo(ArrayList<PlanDtDto> deleteDtDtos, ArrayList<PlanDtDto> insertDtDtos, ArrayList<PlanDtDto> updateDtDtos) {
@@ -208,18 +213,21 @@ public class PlanDao implements PlanIDao {
 	
 		String result = null;
 		
+		// 1. 기존 상세 일정이 삭제된 경우
 		if ( deleteDtDtos.isEmpty() == false ) {
 			int res1 = sqlSession.delete("deleteDt", deleteDtDtos);
 			result = res1 > 0 ? "success": "failed";
 			logger.info("detailModifyDo result 1 : deletePlanDt ? " + result);	
 		} 
 		
+		// 2. 기존에 없던 상세 일정이 추가된 경우
 		if ( insertDtDtos.isEmpty() == false ) {	
 			int res2 = sqlSession.insert("insertNullDt", insertDtDtos);
 			result = res2 > 0 ? "success": "failed";
 			logger.info("detailModifyDo result 2 : insertPlanDt ? " + result);	
 		}
 		
+		// 3. 기존에 있던 상세 일정은 업데이트 처리 (변경사항이 없어도 처리)
 		if (updateDtDtos.isEmpty() == false ) {
 			int res3 = sqlSession.update("updatePlanDt2", updateDtDtos);
 			result = res3 > 0 ? "success": "failed";
@@ -229,6 +237,7 @@ public class PlanDao implements PlanIDao {
 		return result;
 	}
 	
+	// feedMap 에 표시할 상세 일정(PlanDt) 불러오기
 	@Override
 	public ArrayList<PlanDtDto> selectPlanDtMap(Map<String, String> map) {
 		logger.info("selectPlanDtMap() in >>>");
@@ -239,6 +248,7 @@ public class PlanDao implements PlanIDao {
 		return result;
 	}
 	
+	// myfeed 상단에 일정 개수 표시
 	@Override
 	public int countPlanMst(String email) {
 		int res = sqlSession.selectOne("countPlanMst", email);
