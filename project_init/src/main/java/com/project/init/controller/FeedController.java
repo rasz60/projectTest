@@ -67,17 +67,19 @@ public class FeedController {
 		Constant.passwordEncoder = passwordEncoder;
 	}
 	
-	
+	// myfeed Calendar page
 	@RequestMapping("")
 	public String feed(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User user = (User)authentication.getPrincipal();
 		String uId = user.getUsername();
 		
+		// feed 상단에 표시될 일정 개수와 포스트 개수
 		UserDto dto = udao.login(uId);
 		int planCount = dao.countPlanMst(uId);
 		int postCount = postDao.countPost(uId);
 		
+		// 유저 정보(dto), 일정 개수, 포스트 개수를 feed_calendar 페이지로 전달
 		model.addAttribute("user", dto);
 		model.addAttribute("planCount", planCount);
 		model.addAttribute("postCount", postCount);
@@ -86,6 +88,7 @@ public class FeedController {
 		return "feed/feed_calendar";
 	}
 	
+	// 캘린더에 표시될 전체 일정 불러오기
 	@ResponseBody
 	@RequestMapping(value="getAllPlans.do", produces="application/json; charset=UTF-8")
 	public ArrayList<PlanMstDto> getAllPlans() {
@@ -102,6 +105,7 @@ public class FeedController {
 		return result;
 	}
 	
+	// 캘린더 일정 클릭 시 modal창에 표시할 planDt 불러오기
 	@ResponseBody
 	@RequestMapping(value = "modify_modal.do", produces="application/json; charset=UTF-8")
 	public ArrayList<PlanDtDto> modifyModal(@RequestBody String planNum, Model model) {
@@ -118,7 +122,7 @@ public class FeedController {
 		return result;
 	}
 	
-	
+	// modal창에서 planMst 정보 수정 시
 	@ResponseBody
 	@RequestMapping(value = "modify_plan.do", produces="application/text; charset=UTF-8")
 	public String modifyPlan(HttpServletRequest request) {
@@ -135,6 +139,7 @@ public class FeedController {
 		return result;
 	}
 	
+	// modal창에서 planMst 정보 삭제 시
 	@ResponseBody
 	@RequestMapping(value = "delete_plan.do", produces="application/text; charset=UTF-8")
 	public String deleteMstPlan(@RequestBody String planNum) {
@@ -149,7 +154,7 @@ public class FeedController {
 		return result;
 	}
 	
-	
+	// feedMap Page
 	@RequestMapping("feedMap")
 	public String feedMap(Model model) {
 		logger.info("feedMap() in >>>>");
@@ -168,7 +173,8 @@ public class FeedController {
 		
 		return "feed/feed_map";
 	}
-
+	
+	// feedMap Page에서 filter 버튼 클릭 시
 	@ResponseBody
 	@RequestMapping(value="getAllPlansMap.do", produces="application/json; charset=UTF-8")
 	public ArrayList<Object> getAllPlansMap(HttpServletRequest request, Model model) {
@@ -186,6 +192,7 @@ public class FeedController {
 		return result;
 	}
 	
+	// feedMap Page post 등록된 planDt의 포스트 상세보기 버튼 클릭 시 
 	@ResponseBody
 	@RequestMapping(value="getMapPost.do", produces="application/json; charset=UTF-8")
 	public PostDto getMapPost(HttpServletRequest request, Model model) {
@@ -202,8 +209,7 @@ public class FeedController {
 		return dto;
 	}
 	
-	
-	
+	// mypage
 	@RequestMapping("feedInfo")
 	public String feedInfo(HttpServletRequest request, HttpServletResponse response, Model model) {
 		logger.info("feedInfo() in >>>>");
