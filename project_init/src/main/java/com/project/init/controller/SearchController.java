@@ -70,10 +70,14 @@ public class SearchController {
 		logger.info("search() in >>>>");
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDto dto = Constant.getUserInfo(authentication);
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		UserDto udto = udao.login(uId);
+		model.addAttribute("user", udto);
 		
 		
-		ArrayList<PostDto> post = postDao.list(dto.getUserEmail());
+		ArrayList<PostDto> post = postDao.list(udto.getUserEmail());
 		
 		if(post.size()==0) {
 			return "error/nullPage";			
@@ -87,7 +91,7 @@ public class SearchController {
 		return "search/searchResult";
 	}
 	
-	// 추천포스트 1 - 좋아요 순 post 더보기 버튼 클릭 시
+	// 추천포스트 2 - 좋아요 순 post 더보기 버튼 클릭 시
 	@RequestMapping("bestLikes")
 	public String bestLikes(HttpServletRequest request, Model model) {
 		logger.info("search() in >>>>");
@@ -106,16 +110,20 @@ public class SearchController {
 		return "search/searchResult";
 	}
 	
-	// 추천포스트 1 -  순 post 더보기 버튼 클릭 시
+	// 추천포스트 3 - 조회수 순 post 더보기 버튼 클릭 시
 	@RequestMapping("bestViews")
 	public String bestViews(HttpServletRequest request, Model model) {
 		logger.info("search() in >>>>");
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDto dto = Constant.getUserInfo(authentication);
+		User user = (User)authentication.getPrincipal();
+		String uId = user.getUsername();
+		
+		UserDto udto = udao.login(uId);
+		model.addAttribute("user", udto);
 		
 		
-		ArrayList<PostDto> viewList = postDao.viewList(dto.getUserEmail());
+		ArrayList<PostDto> viewList = postDao.viewList(udto.getUserEmail());
 		
 		if(viewList.size()==0) {
 			return "error/nullPage";			
