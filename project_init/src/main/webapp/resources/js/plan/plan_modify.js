@@ -69,6 +69,63 @@ $(document).ready(function() {
 		var p_address = markers2[i].address;
 		var p_category = markers2[i].category;
 		
+				switch(p_category){ // DB에는 카테고리의 code값이 들어가므로 code를 카테고리 명으로 변경
+			case "MT1" : 
+				p_category = "대형마트";
+				break;
+			case "CS2" : 
+				p_category = "편의점";
+				break;
+			case "PS3" : 
+				p_category = "어린이집, 유치원";
+				break;
+			case "SC4" : 
+				p_category = "학교";
+				break;
+			case "AC5" : 
+				p_category = "학원";
+				break;
+			case "PK6" : 
+				p_category = "주차장";
+				break;
+			case "OL7" : 
+				p_category = "주유소, 충전소";
+				break;
+			case "SW8" : 
+				p_category = "지하철역";
+				break;
+			case "BK9" : 
+				p_category = "은행";
+				break;
+			case "CT1" : 
+				p_category = "문화시설";
+				break;
+			case "AG2" : 
+				p_category = "중개업소";
+				break;
+			case "PO3" : 
+				p_category = "공공기관";
+				break;
+			case "AT4" : 
+				p_category = "관광명소";
+				break;
+			case "PO3" : 
+				p_category = "숙박";
+				break;
+			case "FD6" : 
+				p_category = "음식점";
+				break;
+			case "CE7" : 
+				p_category = "카페";
+				break;
+			case "HP8" : 
+				p_category = "병원";
+				break;
+			case "PM9" : 
+				p_category = "약국";
+				break;
+		}
+		
 		(function(p_marker, p_placeName, p_address, p_category) { //이벤트 등록
 			kakao.maps.event.addListener(p_marker, 'mouseover', function() { //마커에 마우스 올렸을 때
 	        	displayInfowindow(p_marker, p_placeName, p_address, p_category); // displayInfowindow()에서 처리
