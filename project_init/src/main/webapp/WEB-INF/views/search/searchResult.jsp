@@ -62,7 +62,9 @@ img {
 }
 
 .post-top {
+	max-height: 320px;
 	line-height: 320px;
+	overflow: hidden;
 }
 
 .post-top img {
@@ -75,10 +77,12 @@ img {
 }
 
 #post-profile {
+	text-align: center;
 	margin-left: 4px;
 	border-radius: 50%;
 	width: 35px;
 	height: 35px;
+	overflow: hidden;
 }
 
 #post-profile img {
