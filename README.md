@@ -1,5 +1,5 @@
 # project_init v.1.6.6.BETA (2022/04/25 11:50)
-#### 1차 codeReview시 발생 오류 업데이트 완료 (상세 spread-sheet 확인)
+##### 1차 codeReview시 발생 오류 업데이트 완료 (상세 spread-sheet 확인)
 
 # project_init v.1.5.5.BETA (2022/04/23 03:20)
 ##### init project 주석 복구
@@ -8,27 +8,27 @@
 ##### init project 완료 기능 오류 보완 (1차)
 
 # project_init v.1.4.4.BETA (2022/04/18 01:25)
-#### controller 추가 외 업데이트 완료 (상세 spread-sheet 확인)
+##### controller 추가 외 업데이트 완료 (상세 spread-sheet 확인)
 
 
 # project_init v.1.3.3.BETA (2022/04/04 14:42)
-#### controller 추가 외 업데이트 완료 (상세 spread-sheet 확인)
+##### controller 추가 외 업데이트 완료 (상세 spread-sheet 확인)
 
 
 # project_init v.1.2.2.BETA (2022/03/23 14:42)
-#### controller 추가 외 업데이트 완료 (상세 spread-sheet 확인)
+##### controller 추가 외 업데이트 완료 (상세 spread-sheet 확인)
 
 
 # project_init v.1.1.1.BETA (2022/03/23 00:15)
 
-#### dependency 2건 추가 완료 (상세 spread-sheet 확인)
-#### viewPage, java Class 초기 세팅 완료
+##### dependency 2건 추가 완료 (상세 spread-sheet 확인)
+##### viewPage, java Class 초기 세팅 완료
 
 
 
 # project_init v.1.0.0.BETA (2022/03/11 14:52)
 
-#### 최종 확정 dependency 추가 완료 (상세 spread-sheet 확인)
+##### 최종 확정 dependency 추가 완료 (상세 spread-sheet 확인)
 
 #### security server.xml setting 관련 (* git에 있는 tomcat파일로 연결하는 것 추천)
 ###### security 초기 설정 .jks server 폴더에 넣고 사용할 것
