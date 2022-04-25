@@ -174,28 +174,37 @@ function dayMap(planDay, map, clusterer) {
 
 function displayInfowindow(marker, placeName, address, theme, category, transportation, map) { //인포윈도우 생성
 
+	if ( category == null || category == '' ) {
+		category = '준비중';
+	}
+
+
 	var content = '<div class="wrap">' + 
-    	 	     '<div class="info">' + 
-	             '<div class="title">' + 
-	     				'<img src="images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;' + 
-	     				placeName + 
-	             '</div>' + 
-	             '<div class="body">' + 
-	                 '<div class="img">' +
-	                     '<img src="" width="75" height="85">' +
-	                '</div>' + 
-	                 '<div class="content">' + 
-	                     '<div class="address">' + '주소 : ' + address + '</div>' +
-	                     '<div class="theme cont">' + '목적 : ' + theme + '</div>' +
-	                     '<div class="theme cont">' + '장소 : ' + category + '</div>' +
-	                     '<div class="transportation">' + '이동수단 : ' + transportation + '</div>' +
-	                 '</div>' + 
-	             '</div>' + 
-	         '</div>' +    
-	       '</div>';
-	     
+    	       '<div class="info">' + 
+	           '<div class="title bg-info">' + 
+	     	   '<img src="/init/images/marker.png" width="25px" height="25px" background-color="white">&nbsp;&nbsp;&nbsp;' + 
+	     		placeName + 
+	            '</div>' + 
+	            '<div class="body">' + 
+	            '<div class="img">' +
+	            '<img src="/init/images/infowindow-logo.png">' +
+	            '</div>' + 
+	            '<div class="content">' + 
+	            '<div class="address">' + '주소 : ' + address + '</div>' +
+	            '<div class="category">' + '장소 : ' + category + '</div>' +
+				'<div class="theme">' + '테마 : ' + theme + '</div>' +
+				'<div class="transportation">' + '교통수단 : ' + transportation + '</div>' +
+	            '</div>' + 
+	            '</div>' + 
+	            '</div>' + 
+	         	'</div>' +    
+	       		'</div>'; 
+
 	infowindow.setContent(content);
 	infowindow.open(map, marker);
+	
+	$('div.wrap').parent().parent().css('border', 'none');
+	$('div.wrap').parent().parent().css('background-color', 'transparent');
 }
 
 

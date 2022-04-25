@@ -231,6 +231,8 @@ $('.post').click(function() {
 	var postNo = $(this).attr("data-value");
 	console.log(postNo);
 	
+	addview(postNo);
+	
 	$('#modalBtn').trigger('click');
 	$.ajax({
            url:"/init/post/getlist.do",
@@ -512,6 +514,30 @@ function modalLike(element, postNo) {
 		}
 	});
 };
+
+
+function addview(postNo){
+	//console.log(postNo);
+	$.ajax({
+		url :'/init/post/addView.do',
+		data : {
+			postNo : postNo,
+			email : email
+			},
+		type : 'post',
+		beforeSend: function(xhr){
+	 	   	var token = $("meta[name='_csrf']").attr('content');
+	 		var header = $("meta[name='_csrf_header']").attr('content');
+ 		    xhr.setRequestHeader(header, token);
+ 		},
+		success : function () {
+		},
+		error : function () {
+			//console.log('failed view up');
+		}
+	})
+};
+
 
 $(document).on('click', '.addcomment', function () {
 	console.log('진입');

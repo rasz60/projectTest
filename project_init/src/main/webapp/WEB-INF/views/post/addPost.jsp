@@ -23,6 +23,7 @@
 <link rel="stylesheet" type="text/css" href="../css/includes/header.css" />
 <link rel="stylesheet" type="text/css" href="../css/includes/footer.css" />
 <link rel="stylesheet" type="text/css" href="../css/post/addPost.css" />
+<script src="../js/post/addPost.js"></script>
 <title>List</title>
 </head>
 
@@ -177,7 +178,7 @@ var planDt = new Array();
 	</div>
 </section>
 <%@ include file="../includes/footer.jsp" %>
-<script src="../js/post/addPost.js"></script>
+
 
 </body>
 </html>

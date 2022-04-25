@@ -158,11 +158,11 @@ var planDt = new Array();
 				<hr />
 				
 				<!-- 등록했던 이미지 박스 -->
-				<p class="font-italic ml-1 mb-1">before</p>
-				<div class="beforeImg mb-2" style="display: flex; flex-wrap: nowrap;"></div>
+				<p class="font-italic col-12 ml-1 mb-1">before</p>
+				<div class="beforeImg col-12 mb-2" style="display: flex; flex-wrap: nowrap;"></div>
 				
-				<p class="font-italic ml-1 mb-1">added</p>
-				<div class="imgView" style="display: flex; flex-wrap: nowrap;"></div>
+				<p class="font-italic col-12 ml-1 mb-1">added</p>
+				<div class="imgView col-12" style="display: flex; flex-wrap: nowrap;"></div>
 				<!-- 이미지 보이는 박스 -->
 				<input name="addImg" type="file" class="addImg" multiple="multiple" style="display: none;">
 				<input name="images" type="hidden" class=" form-control images" value="${postDto.images}">

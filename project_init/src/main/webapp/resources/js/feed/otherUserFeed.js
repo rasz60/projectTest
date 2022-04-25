@@ -303,11 +303,11 @@ function displayInfowindow(marker, feedMapObj) { //인포윈도우 생성
 	content += '</div>';
 	content += '</div>';
 
-	$('div.wrap').parent().parent().css('border', 'none');
-	$('div.wrap').parent().parent().css('background-color', 'transparent');
-	
 	infowindow.setContent(content);
 	infowindow.open(map, marker);
+	
+	$('div.wrap').parent().parent().css('border', 'none');
+	$('div.wrap').parent().parent().css('background-color', 'transparent');
  }
 //마커 클러스터러에 클릭이벤트를 등록합니다
 //마커 클러스터러를 생성할 때 disableClickZoom을 true로 설정하지 않은 경우
@@ -324,7 +324,9 @@ kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
 $(document).on('click', 'button.post_link', function(e) {
 	e.preventDefault();
 	var postNo = $(this).attr('data-num');
-
+	
+	addview(postNo);
+	
 	$.ajax({
 		url : 'getMapPost.do',
 		type: 'post',
@@ -465,6 +467,28 @@ function modalLike(element, postNo) {
     	}
 	});
 };
+
+function addview(postNo){
+	//console.log(postNo);
+	$.ajax({
+		url :'/init/post/addView.do',
+		data : {
+			postNo : postNo,
+			email : myInfo},
+		type : 'post',
+		beforeSend: function(xhr){
+	 	   	var token = $("meta[name='_csrf']").attr('content');
+	 		var header = $("meta[name='_csrf_header']").attr('content');
+ 		    xhr.setRequestHeader(header, token);
+ 		},
+		success : function () {
+		},
+		error : function () {
+			//console.log('failed view up');
+		}
+	})
+};
+
 
 $(document).on('click', '.addcomment', function () {
 	console.log('진입');

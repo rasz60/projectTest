@@ -155,11 +155,23 @@ $(document).ready(function() {
 	});
 
 	$('.hashtag').keyup(function () {
-		
 		let element = $(this);
 		let count = element.val().split('#').length-1;
 		let hashtag = element.val().split('#');
 		let result = '';
+		let hashCheck =element.val().substr(0,1);
+		var pattern = /\s/g;
+		
+		
+		if(hashCheck !=='#'){
+			alert('해쉬태그는 #을 붙여주세요! ');
+			element.val('#');
+		}
+		
+		if ( element.val().match(pattern) ) {
+			element.val(element.val().replace(/\s/g, '#'));
+		}
+		
 		
 		if(count>=11){
 
@@ -274,31 +286,21 @@ $(document).ready(function() {
 
 function checkfrm() { 
 	
+	var files = $('.img')[0].files;
+	
 	if ($('.content').val() == '') {
 		alert('포스트 내용을 입력해주세요.');
 		$('.content').focus();
 		return false;
 	}
+
+	else if (files.length == 0 ){
+		alert('한 장 이상의 사진을 등록해주세요.');
+		return false;
+	}
+
 	
 	else {
-		var	dtNums = $('.delLocBtn').length;
-		var target1 = $('input.planDtNum');
-		var target2 = $('input.location');
-
-		if ( dtNums != 0 ) {
-			for(var i = 0; i < Number(dtNums); i++ ) {
-				var dtNum = $('.delLocBtn').eq(i).attr('data-index');
-				
-				if ( i == 0 ) {
-					target1.val(dtNum);
-					console.log($('.location-item').eq(i).text());
-				} else {
-					target1.val(target1.val() + '/' + dtNum);
-					console.log($('>' + '.location-item').eq(i).text());
-				}
-			}
-		}
-
 		$('#addForm').submit();
 	}
 }

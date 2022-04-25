@@ -222,7 +222,7 @@ public class PlanDao implements PlanIDao {
 		
 		// 2. 기존에 없던 상세 일정이 추가된 경우
 		if ( insertDtDtos.isEmpty() == false ) {	
-			int res2 = sqlSession.insert("insertNullDt", insertDtDtos);
+			int res2 = sqlSession.insert("insertDt", insertDtDtos);
 			result = res2 > 0 ? "success": "failed";
 			logger.info("detailModifyDo result 2 : insertPlanDt ? " + result);	
 		}

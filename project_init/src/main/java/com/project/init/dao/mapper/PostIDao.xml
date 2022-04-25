@@ -282,6 +282,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</foreach>
    </select>
    
+   	<select id="countPost" parameterType="String" resultType="int">
+		SELECT count(*) FROM post WHERE email = #{email}
+	</select>
+   
+   
    
 </mapper>
 

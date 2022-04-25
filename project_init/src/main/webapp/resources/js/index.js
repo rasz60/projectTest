@@ -1,6 +1,3 @@
-
-
-
 //메인 필터객체 생성
 var mainFilter = document.querySelector('.main-filter');
 //메인 필터 객체에 변화가 생겼을 때 이벤트가 실행될 수 있는 onchange이벤트 생성
@@ -273,11 +270,11 @@ function displayInfowindow(marker, placeName, address, category) { //인포윈�
 	         	'</div>' +    
 	       		'</div>'; 
 	
+	infowindow.setContent(content);
+	infowindow.open(map, marker);
+
 	$('div.wrap').parent().parent().css('border', 'none');
 	$('div.wrap').parent().parent().css('background-color', 'transparent');
-     
-	 infowindow.setContent(content);
-	 infowindow.open(map, marker);
 }
 
 
@@ -299,7 +296,7 @@ $(document).ready(function() {
 
 	$('.post').click(function() {
 		var postNo = $(this).attr("data-value");
-		console.log(postNo);
+		addview(postNo);
 		
 		$('#modalBtn').trigger('click');
 		$.ajax({
@@ -418,11 +415,6 @@ $(document).ready(function() {
 		});
 		getComments(postNo, email);
 	});
-	
-	
-
-	
-	
 });
 
 
@@ -557,6 +549,27 @@ $(document).on('click', '.modal-like', function(){
 	modalLike(element, postNo);
 });
 
+
+function addview(postNo){
+	console.log(postNo);
+	$.ajax({
+		url :'/init/post/addView.do',
+		data : {
+			postNo : postNo,
+			email : email},
+		type : 'post',
+		beforeSend: function(xhr){
+	 	   	var token = $("meta[name='_csrf']").attr('content');
+	 		var header = $("meta[name='_csrf_header']").attr('content');
+ 		    xhr.setRequestHeader(header, token);
+ 		},
+		success : function () {
+		},
+		error : function () {
+			console.log('failed view up');
+		}
+	})
+};
 
 
 function modalLike(element, postNo) {
