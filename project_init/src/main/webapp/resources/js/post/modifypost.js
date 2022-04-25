@@ -379,10 +379,15 @@ $(document).ready(function() {
 });
 
 function checkfrm() { 
+	var files = $('.img')[0].files;
 	
 	if ($('.content').val() == '') {
 		alert('포스트 내용을 입력해주세요.');
 		$('.content').focus();
+		return false;
+		
+	} else if (files.length == 0 ){
+		alert('한 장 이상의 사진을 등록해주세요.');
 		return false;
 	}
 	
