@@ -137,7 +137,7 @@ public class UserController {
 		udao.userVisit(uId); //로그인 날짜 업데이트
 		
 		// redirectAttribute에 아이디를 담아서 index 페이지로 redirect 시킴
-		rttr.addAttribute("login", uId);
+		rttr.addFlashAttribute("login", uId);
 		
 		logger.info("loginSuc() userAuth : " + auth);
 		
