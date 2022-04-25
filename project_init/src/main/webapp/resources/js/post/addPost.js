@@ -255,7 +255,14 @@ $(document).ready(function() {
 		} else {
 			let fileArray = Array.from(arr); //변수에 할당된 파일을 배열로 변환(FileList -> Array) 
 			for(var i=0; i<arr2.length; i++){				
-				fileArray.push(arr2[i]);				
+				extension = arr2[i].name.substring(arr2[i].name.lastIndexOf('.')+1).toLowerCase(); //확장자명 추출
+
+				if(extension =='jpg' || extension =='jpeg' || extension =='png'){   //확장자 확인      
+					fileArray.push(arr2[i]);            
+
+				}else{
+					alert(arr2[i].name+'은 지원하지 않은 확장자 파일입니다.');
+				}
 			}
 			
 			fileArray.forEach(file => { dataTransfer.items.add(file); }); //남은 배열을 dataTransfer로 처리(Array -> FileList) 
