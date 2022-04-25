@@ -215,7 +215,7 @@ $(document).ready(function() {
 		changeData = $('.img')[0].files;
 		imgView='';
 		for(var i=0; i<changeData.length; i++){
-			imgView +='<img src="'+URL.createObjectURL(changeData[i])+'" style="width :23%">'
+			imgView +='<img src="'+URL.createObjectURL(changeData[i])+'" style="width :23%; max-height: 150px;">'
 			imgView +='<i class="fa-solid fa-x reimg" index="'+i+'"></i>';
 			imgView +='<br/>';
 		}
@@ -276,7 +276,7 @@ $(document).ready(function() {
 		
 		for(var i=0; i<arr.length; i++){
 			
-			imgView +='<img src="'+URL.createObjectURL(arr[i])+'" style="width :23%">'
+			imgView +='<img src="'+URL.createObjectURL(arr[i])+'" style="width :23%; max-height: 150px;">'
 			imgView +='<i class="fa-solid fa-x reimg" index="'+i+'"></i>';
 			imgView +='<br/>'
 		}
