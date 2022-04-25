@@ -1,3 +1,9 @@
+# project_init v.1.6.6.BETA (2022/04/25 11:50)
+#### 1차 codeReview시 발생 오류 업데이트 완료 (상세 spread-sheet 확인)
+
+# project_init v.1.5.5.BETA (2022/04/23 03:20)
+##### init project 주석 복구
+
 # project_init v.1.5.5.BETA (2022/04/22 15:33)
 ##### init project 완료 기능 오류 보완 (1차)
 
